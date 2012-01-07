@@ -1,0 +1,59 @@
+#!/bin/sh
+
+LOGIN=MrBanane
+PROJ=game
+EXE=$PROJ
+
+CXXFLAGS="-W -Wall -Wabi -pedantic "`sdl-config --cflags`
+LDFLAGS="-lSDL_image -lGL -lGLU "`sdl-config --libs`
+
+flag_debug=0
+flag_help=0
+
+for i in $@ ; do
+    case $1 in
+	--with-debug )
+	    flag_debug=1
+	    ;;
+	--help )
+	    flag_help=1
+	    ;;
+	* )
+	    flag_help=1
+	    ;;
+    esac
+    shift 1
+done
+
+if [ $flag_help -ne 0 ]; then
+    echo "Usage:
+  --with-debug: Will add '-g' and remove '-DNDEBUG' in the CXXFLAGS.
+  --help: show this usage."
+    exit 1
+fi
+if [ $flag_debug -ne 0 ]; then
+    DNDEBUG="-g"
+else
+    DNDEBUG="-DNDEBUG"
+fi
+
+OS=`uname -s`
+echo "OS=$OS" > Makefile.rules
+CXX=/usr/bin/g++
+
+CXXFLAGS="$CXXFLAGS $DNDEBUG"
+echo "CXXFLAGS=$CXXFLAGS" >> Makefile.rules
+echo "LDFLAGS=$LDFLAGS" >> Makefile.rules
+echo "CXX=$CXX" >> Makefile.rules
+echo "PROJ=$PROJ" >> Makefile.rules
+echo "LOGIN=$LOGIN" >> Makefile.rules
+echo "EXE=$EXE" >> Makefile.rules
+
+# Display some information
+echo "Login:                $LOGIN"
+echo "Project name:         $PROJ"
+echo "Executable name:      $EXE"
+echo "Operating system:     $OS"
+echo "Compilation flags:    $CXXFLAGS"
+echo "Compilation linking:  $LDFLAGS"
+echo "Compilator:           $CXX"

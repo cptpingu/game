@@ -24,9 +24,9 @@ public:
   Vector3D& normalize();
 
 public:
-  double X;
-  double Y;
-  double Z;
+  double _x;
+  double _y;
+  double _z;
 };
 
 #endif /* !VECTOR3D_HH_ */

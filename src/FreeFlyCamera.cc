@@ -112,9 +112,9 @@ void FreeFlyCamera::VectorsFromAngles()
   else if (_phi < -89)
     _phi = -89;
   double r_temp = cos(_phi*M_PI/180);
-  _forward.Z = sin(_phi*M_PI/180);
-  _forward.X = r_temp*cos(_theta*M_PI/180);
-  _forward.Y = r_temp*sin(_theta*M_PI/180);
+  _forward._z = sin(_phi*M_PI/180);
+  _forward._x = r_temp*cos(_theta*M_PI/180);
+  _forward._y = r_temp*sin(_theta*M_PI/180);
 
   _left = up.crossProduct(_forward);
   _left.normalize();
@@ -124,8 +124,8 @@ void FreeFlyCamera::VectorsFromAngles()
 
 void FreeFlyCamera::look()
 {
-  gluLookAt(_position.X,_position.Y,_position.Z,
-	    _target.X,_target.Y,_target.Z,
+  gluLookAt(_position._x, _position._y, _position._z,
+	    _target._x, _target._y, _target._z,
 	    0,0,1);
 }
 

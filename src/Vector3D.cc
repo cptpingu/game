@@ -1,6 +1,8 @@
 #include "Vector3D.hh"
 #include <cmath>
 
+//konnard 
+
 Vector3D::Vector3D()
   : _x(0), _y(0), _z(0)
 {

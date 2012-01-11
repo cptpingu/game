@@ -2,6 +2,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <cstdlib>
+#include <iostream>
 
 #include "GLUtils.hh"
 #include "FreeFlyCamera.hh"

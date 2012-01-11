@@ -7,6 +7,11 @@
 #include "FreeFlyCamera.hh"
 #include "Scene.hh"
 
+#include <windows.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+
 #define FPS 50
 #define LARGEUR_FENETRE 640
 #define HAUTEUR_FENETRE 480
@@ -21,7 +26,8 @@ void stop()
   SDL_Quit();
 }
 
-int main(int argc, char *argv[])
+int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+//int main(int argc, char *argv[])
 {
   SDL_Event event;
   const Uint32 time_per_frame = 1000/FPS;
@@ -58,32 +64,32 @@ int main(int argc, char *argv[])
     {
       switch (event.type)
       {
-	case SDL_QUIT:
-	  exit(0);
-	  break;
-	case SDL_KEYDOWN:
-	  switch (event.key.keysym.sym)
-	  {
-	    case SDLK_p:
-	      takeScreenshot("test.bmp");
-	      break;
-	    case SDLK_ESCAPE:
-	      exit(0);
-	      break;
-	    default :
-	      camera->OnKeyboard(event.key);
-	  }
-	  break;
-	case SDL_KEYUP:
-	  camera->OnKeyboard(event.key);
-	  break;
-	case SDL_MOUSEMOTION:
-	  camera->OnMouseMotion(event.motion);
-	  break;
-	case SDL_MOUSEBUTTONUP:
-	case SDL_MOUSEBUTTONDOWN:
-	  camera->OnMouseButton(event.button);
-	  break;
+    case SDL_QUIT:
+      exit(0);
+      break;
+    case SDL_KEYDOWN:
+      switch (event.key.keysym.sym)
+      {
+        case SDLK_p:
+          takeScreenshot("test.bmp");
+          break;
+        case SDLK_ESCAPE:
+          exit(0);
+          break;
+        default :
+          camera->OnKeyboard(event.key);
+      }
+      break;
+    case SDL_KEYUP:
+      camera->OnKeyboard(event.key);
+      break;
+    case SDL_MOUSEMOTION:
+      camera->OnMouseMotion(event.motion);
+      break;
+    case SDL_MOUSEBUTTONUP:
+    case SDL_MOUSEBUTTONDOWN:
+      camera->OnMouseButton(event.button);
+      break;
       }
     }
 

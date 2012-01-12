@@ -8,10 +8,15 @@
 #include "FreeFlyCamera.hh"
 #include "Scene.hh"
 
-#include <windows.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
+#ifdef _WIN32
+# include <windows.h>
+# include <GL/gl.h>
+# include <GL/glu.h>
+# include <GL/glut.h>
+# define MAIN int WINAPI WinMain (HINSTANCE, HINSTANCE, LPSTR, int)
+#else
+# define MAIN int main(int, char**)
+#endif
 
 #define FPS 50
 #define LARGEUR_FENETRE 640
@@ -27,8 +32,7 @@ void stop()
   SDL_Quit();
 }
 
-int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-//int main(int argc, char *argv[])
+MAIN
 {
   SDL_Event event;
   const Uint32 time_per_frame = 1000/FPS;
@@ -36,12 +40,12 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
   unsigned int height = HAUTEUR_FENETRE;
 
   Uint32 last_time,current_time,elapsed_time; //for time animation
-  Uint32 start_time,stop_time; //for frame limit
+  Uint32 stop_time; //for frame limit
 
   SDL_Init(SDL_INIT_VIDEO);
   atexit(stop);
 
-  SDL_WM_SetCaption("SDL GL Application", NULL);
+  SDL_WM_SetCaption("SDL GL Application", 0);
   SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
   //initFullScreen(&width,&height);
 
@@ -59,8 +63,6 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
   last_time = SDL_GetTicks();
   for (;;)
   {
-    start_time = SDL_GetTicks();
-
     while (SDL_PollEvent(&event))
     {
       switch (event.type)

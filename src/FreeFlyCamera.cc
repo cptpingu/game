@@ -11,7 +11,7 @@ FreeFlyCamera::FreeFlyCamera(const Vector3D& position)
   VectorsFromAngles();
 
   _speed = 0.01;
-  _sensivity = 0.00002;
+  _sensivity = 0.02;
   _verticalMotionActive = false;
   _keyconf["forward"] = SDLK_UP;
   _keyconf["backward"] = SDLK_DOWN;
@@ -134,6 +134,6 @@ void FreeFlyCamera::VectorsFromAngles()
 void FreeFlyCamera::look()
 {
   gluLookAt(_position._x, _position._y, _position._z,
-	    _target._x, _target._y, _target._z,
-	    0, 0, 1);
+        _target._x, _target._y, _target._z,
+        0, 0, 1);
 }

@@ -2,6 +2,6 @@
 # define SCENE_HH_
 
 void chargerTextures();
-void dessinerScene();
+void go();
 
 #endif /* !SCENE_HH_ */

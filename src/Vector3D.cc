@@ -115,5 +115,13 @@ Vector3D& Vector3D::normalize()
     (*this) /= length();
     return (*this);
 }
+Vector3D Vector3D::Metoile(const Vector3D& v)const
+{
+    Vector3D t;
+    t._x = _x*v._x;
+    t._y = _y*v._y;
+    t._z = _z*v._z;
+    return t;
+}
 
 

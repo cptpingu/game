@@ -1,5 +1,5 @@
 #include "FreeFlyCamera.hh"
-
+#include "iostream"
 #include <cmath>
 #include <GL/glu.h>
 
@@ -36,9 +36,11 @@ FreeFlyCamera::~FreeFlyCamera()
 
 void FreeFlyCamera::OnMouseMotion(const SDL_MouseMotionEvent& event)
 {
-  _theta -= event.xrel * _sensivity;
-  _phi -= event.yrel * _sensivity;
+  _theta -= event.xrel; //* _sensivity;
+  _phi -= event.yrel; //* _sensivity;
   VectorsFromAngles();
+  std::cout << _theta <<std::endl;
+
 }
 
 void FreeFlyCamera::OnMouseButton(const SDL_MouseButtonEvent& event)
@@ -129,6 +131,8 @@ void FreeFlyCamera::VectorsFromAngles()
   _left.normalize();
 
   _target = _position + _forward;
+
+
 }
 
 void FreeFlyCamera::look()

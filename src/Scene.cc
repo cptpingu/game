@@ -6,11 +6,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-
-
-void block(const Vector3D & ou, int taille, char nature);
-
-void go();
 void chargerTextures()
 {
 
@@ -47,34 +42,6 @@ void chargerTextures()
   // puit
   textures.load("data/images/brick077.jpg", "brick2");
    textures.load("data/images/test.jpg", "test");
-}
-void go()
-{
-  //block
-  Vector3D la;
-  Vector3D b;
-  Vector3D c;
-
-  Vector3D e;
-  Vector3D f;
-  char d;
-  d = 'e';
-  la = Vector3D(0,0,0);
-  b = Vector3D(1,1,2);
-  c = Vector3D(10,0,0);
-  e= Vector3D(0,10,0);
-  f=Vector3D(0,0,10);
-
-  block(la,10,d);//creation d'un block
-  //la = la.Metoile(b);
-
-  block(la,10,d);
-  la = la + c;
-  block(la,10,'t');
-  la = la + e;
-  block(la,10,'t');
-  la = la + f;
-  block(la,10,'t');
 }
 
 void block(const Vector3D & ou,int taille,char nature )
@@ -155,4 +122,31 @@ void block(const Vector3D & ou,int taille,char nature )
   glPopMatrix();
 }
 
+void go()
+{
+  //block
+  Vector3D la;
+  Vector3D b;
+  Vector3D c;
 
+  Vector3D e;
+  Vector3D f;
+  char d;
+  d = 'e';
+  la = Vector3D(0,0,0);
+  b = Vector3D(1,1,2);
+  c = Vector3D(10,0,0);
+  e= Vector3D(0,10,0);
+  f=Vector3D(0,0,10);
+
+  block(la,10,d);//creation d'un block
+  //la = la.mStar(b);
+
+  block(la,10,d);
+  la = la + c;
+  block(la,10,'t');
+  la = la + e;
+  block(la,10,'t');
+  la = la + f;
+  block(la,10,'t');
+}

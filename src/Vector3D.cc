@@ -1,8 +1,6 @@
 #include "Vector3D.hh"
 #include <cmath>
 
-//konnard 
-
 Vector3D::Vector3D()
   : _x(0), _y(0), _z(0)
 {
@@ -69,7 +67,7 @@ Vector3D& Vector3D::operator*=(const double a)
     return *this;
 }
 
-Vector3D Vector3D::operator*(const double a)const
+Vector3D Vector3D::operator*(const double a) const
 {
     Vector3D t = *this;
     t *= a;
@@ -89,14 +87,14 @@ Vector3D& Vector3D::operator/=(const double a)
     return *this;
 }
 
-Vector3D Vector3D::operator/(const double a)const
+Vector3D Vector3D::operator/(const double a) const
 {
     Vector3D t = *this;
     t /= a;
     return t;
 }
 
-Vector3D Vector3D::crossProduct(const Vector3D& v)const
+Vector3D Vector3D::crossProduct(const Vector3D& v) const
 {
     Vector3D t;
     t._x = _y * v._z - _z * v._y;
@@ -105,7 +103,7 @@ Vector3D Vector3D::crossProduct(const Vector3D& v)const
     return t;
 }
 
-double Vector3D::length()const
+double Vector3D::length() const
 {
     return sqrt(_x * _x + _y * _y + _z * _z);
 }
@@ -115,12 +113,12 @@ Vector3D& Vector3D::normalize()
     (*this) /= length();
     return (*this);
 }
-Vector3D Vector3D::Metoile(const Vector3D& v)const
+Vector3D Vector3D::mStar(const Vector3D& v) const
 {
     Vector3D t;
-    t._x = _x*v._x;
-    t._y = _y*v._y;
-    t._z = _z*v._z;
+    t._x = _x * v._x;
+    t._y = _y * v._y;
+    t._z = _z * v._z;
     return t;
 }
 

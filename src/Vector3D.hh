@@ -22,7 +22,7 @@ public:
   Vector3D crossProduct(const Vector3D& v) const;
   double length() const;
   Vector3D& normalize();
-
+  Vector3D Metoile(const Vector3D & v) const;
 public:
   double _x;
   double _y;

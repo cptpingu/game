@@ -39,6 +39,11 @@ MAIN
   unsigned int width = LARGEUR_FENETRE;
   unsigned int height = HAUTEUR_FENETRE;
 
+
+
+
+
+
   Uint32 last_time,current_time,elapsed_time; //for time animation
   Uint32 stop_time; //for frame limit
 
@@ -57,6 +62,10 @@ MAIN
   glEnable(GL_TEXTURE_2D);
 
   chargerTextures();
+
+
+
+
 
   camera = new FreeFlyCamera(Vector3D(0,0,2));
 
@@ -121,8 +130,8 @@ void DrawGL()
 
   camera->look();
 
-  dessinerScene();
-
+  //dessinerScene();
+  go();
   glFlush();
   SDL_GL_SwapBuffers();
 }

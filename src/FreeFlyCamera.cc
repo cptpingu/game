@@ -39,7 +39,7 @@ void FreeFlyCamera::OnMouseMotion(const SDL_MouseMotionEvent& event)
   _theta -= event.xrel; //* _sensivity;
   _phi -= event.yrel; //* _sensivity;
   VectorsFromAngles();
-  std::cout << _theta <<std::endl;
+
 
 }
 

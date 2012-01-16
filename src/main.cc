@@ -49,15 +49,14 @@ void drawGL(const Map& map)
     glLoadIdentity();
 
     camera->look();
+    drawMap(map);
 
-    //dessinerScene();
-    // FIXME: Exemple à foutre dans une fonction de dessin.
-    //map(0, 0, 0)->draw();
 
-    //go();
-    //glFlush();
+
+    glFlush();
 
     SDL_GL_SwapBuffers();
+
 }
 
 MAIN
@@ -138,8 +137,8 @@ MAIN
 
         camera->animate(elapsed_time);
 
-
-
+        drawGL(map);
+        go();
         stop_time = SDL_GetTicks();
         if ((stop_time - last_time) < time_per_frame)
             SDL_Delay(time_per_frame - (stop_time - last_time));

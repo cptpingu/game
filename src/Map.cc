@@ -3,6 +3,7 @@
 
 Map::Map()
 {
+
 }
 
 Map::~Map()
@@ -15,16 +16,13 @@ bool Map::loadMap(const std::string& filename)
     std::ifstream file(filename.c_str());
     std::string line;
 
-    if (!file)
-        return false;
+    int x,y,z;
 
-    while (std::getline(file, line))
-    {
-        // FIXME Load le fichier ici !
-        std::cout << line << std::endl;
-        // Pour chaque truc chargé, ajouter un block (valeur de x,y,z à trouver).
-        _blocks.push_back(new Block(0, 0, 0, 10));
-        // !FIXME
+    while (file)
+    {   file >> x >> y >> z;
+
+        _blocks.push_back(new Block(x, y, z, 10));
+
     }
     return true;
 }
@@ -39,6 +37,16 @@ void Map::clear()
 
 Block* Map::operator()(int x, int y, int z) const
 {
-   // FIXME Trouver formule adéquate.
-   return _blocks[x + y * _blocks.size() + z];
+    return _blocks[x + y * _blocks.size() + z* _blocks.size()*_blocks.size()];
+}
+
+
+Map::const_iterator Map::begin() const
+{
+  return _blocks.begin();
+}
+
+Map::const_iterator Map::end() const
+{
+  return _blocks.end();
 }

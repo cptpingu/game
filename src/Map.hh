@@ -20,7 +20,8 @@ public:
     bool loadMap(const std::string& filename);
     void clear();
     Block* operator()(int x, int y, int z) const;
-
+    const_iterator begin() const;
+    const_iterator end() const;
 private:
     std::vector<Block*> _blocks;
 };

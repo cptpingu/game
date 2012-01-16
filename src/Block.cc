@@ -13,6 +13,8 @@ Block::Block(int x, int y, int z, int size)
 {
 }
 
+
+
 void Block::draw() const
 {
     glPushMatrix();
@@ -83,4 +85,5 @@ void Block::draw() const
 
     glEnd();
     glPopMatrix();
+    glFlush();
 }

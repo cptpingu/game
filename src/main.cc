@@ -23,6 +23,17 @@
 
 FreeFlyCamera* camera;
 
+void drawMap(const Map& map)
+{
+
+    Map::const_iterator end = map.end();
+    for (Map::const_iterator it = map.begin(); it != end; ++it)
+    (*it)->draw();
+
+}
+
+
+
 void stop()
 {
     delete camera;
@@ -43,8 +54,9 @@ void drawGL(const Map& map)
     // FIXME: Exemple à foutre dans une fonction de dessin.
     //map(0, 0, 0)->draw();
 
-    go();
-    glFlush();
+    //go();
+    //glFlush();
+
     SDL_GL_SwapBuffers();
 }
 
@@ -78,7 +90,8 @@ MAIN
     if (!map.loadMap(filename))
     {
         std::cerr << "Unable to load " << filename << std::endl;
-        //return 1;
+        return 1;
+
     }
 
     camera = new FreeFlyCamera(Vector3D(0, 0, 2));
@@ -125,7 +138,7 @@ MAIN
 
         camera->animate(elapsed_time);
 
-        drawGL(map);
+
 
         stop_time = SDL_GetTicks();
         if ((stop_time - last_time) < time_per_frame)

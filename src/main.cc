@@ -159,8 +159,8 @@ MAIN
         last_time = current_time;
 
         camera->animate(elapsed_time);
-        Chocopops.Debut();
-        Chocopops.Sol(50);
+        //Chocopops.Debut();
+        //Chocopops.Sol(50);
 
 
 

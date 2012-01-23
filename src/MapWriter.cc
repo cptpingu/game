@@ -5,6 +5,7 @@
 #include <fstream>
 #include <time.h>
 #include <cstdlib>
+#include <vector>
 
 MapWriter::MapWriter()
 {}
@@ -33,21 +34,23 @@ void MapWriter::Sol(int size)
 
 {
 
-    double* Altitude;
-    for  (int i=0;i<=size*size-1;i++)
+    std::vector<double> Altitude;
+    const unsigned int loopSize = size * size;
+    Altitude.reserve(loopSize);
+    for  (int i=0;i<loopSize;++i)
     {
 
                 Altitude[i] = rand()%50;
 
     }
 
-    for (int k=0;k<=5;k++)
+    for (int k=0;k<=5;++k)
     {
-        for (int i=0;i <= size-2;i++)
+        for (int i=0;i <= size-2;++i)
         {
-            for (int j=0; j <= size-2;j++)
+            for (int j=0; j <= size-2;++j)
             {
-            Altitude[i+j*size]= Altitude[i+1+j*size]+Altitude[i+(j+1)*size]+Altitude[i+1+(j+1)*size]+Altitude[i+j*size]/4;
+            Altitude[i+j*size]= (Altitude[i+1+j*size]+Altitude[i+(j+1)*size]+Altitude[i+1+(j+1)*size]+Altitude[i+j*size])/4;
             }
         }
 }

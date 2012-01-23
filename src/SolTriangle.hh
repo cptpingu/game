@@ -6,14 +6,14 @@ class SolTriangle
 
 public:
     void draw() const;
-    SolTriangle(int x, int y, int z);
+    SolTriangle(int x, int y, double z);
     SolTriangle();
 
 public:
 
     int _x;
     int _y;
-    int _z;
+    double _z;
 
 
 };

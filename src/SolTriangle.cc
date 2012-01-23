@@ -10,7 +10,7 @@ SolTriangle::SolTriangle()
 }
 
 
-SolTriangle::SolTriangle(int x, int y, int z)
+SolTriangle::SolTriangle(int x, int y, double z)
     :_x(x), _y(y), _z(z)
 {
 }

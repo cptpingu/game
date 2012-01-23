@@ -141,3 +141,10 @@ void FreeFlyCamera::look()
         _target._x, _target._y, _target._z,
         0, 0, 1);
 }
+
+Vector3D FreeFlyCamera::getCurrentPosition() const
+
+{ return _position; }
+
+
+

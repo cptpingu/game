@@ -85,5 +85,5 @@ void Block::draw() const
 
     glEnd();
     glPopMatrix();
-    glFlush();
+    //glFlush();
 }

@@ -4,7 +4,7 @@
 #include <GL/glu.h>
 
 SolTriangle::SolTriangle()
-    : _x(0), _y(0), z_(0)
+    : _x(0), _y(0), _z(0)
 
 {
 }
@@ -17,7 +17,7 @@ SolTriangle::SolTriangle(int x, int y, int z)
 
 
 
-SolTriangle::draw()
+void SolTriangle::draw() const
 {
     glPushMatrix();
 
@@ -27,17 +27,17 @@ SolTriangle::draw()
 
     glBegin(GL_TRIANGLE_STRIP);
 
-    glVertex3d(_x,_y,z);
-    glVertex3d(_x+1,_y,z);
-    glVertex3d(_x,_y+1,z);
+    glVertex3d(_x,_y,_z);
+    glVertex3d(_x+1,_y,_z);
+    glVertex3d(_x,_y+1,_z);
 
     glEnd();
 
     glBegin(GL_TRIANGLE_STRIP);
 
-    glVertex3d(_x+1,_y+1,0);
-    glVertex3d(_x,_y+1,0);
-    glVertex3d(_x+1,_y+1,0);
+    glVertex3d(_x+1,_y+1,_z);
+    glVertex3d(_x,_y+1,_z);
+    glVertex3d(_x+1,_y,_z);
 
     glEnd();
     glPopMatrix();

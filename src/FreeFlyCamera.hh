@@ -24,6 +24,9 @@ public:
     virtual void look();
 
     virtual ~FreeFlyCamera();
+
+    Vector3D getCurrentPosition()const;
+
 protected:
     double _speed;
     double _sensivity;

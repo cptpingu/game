@@ -4,10 +4,16 @@
 #include <cstdlib>
 #include <iostream>
 #include "Map.hh"
+#include "MapWriter.hh"
+#include "TextureManager.hh"
 
+#include <time.h>
 #include "GLUtils.hh"
 #include "FreeFlyCamera.hh"
 #include "Scene.hh"
+
+
+
 
 #ifdef _WIN32
 # include <windows.h>
@@ -30,6 +36,12 @@ void drawMap(const Map& map)
     for (Map::const_iterator it = map.begin(); it != end; ++it)
     (*it)->draw();
 
+
+    Map::const_iteratorT Tend = map.Tend();
+    for (Map::const_iteratorT itT = map.Tbegin(); itT != Tend; ++itT)
+    (*itT)->draw();
+
+
 }
 
 
@@ -51,8 +63,6 @@ void drawGL(const Map& map)
     camera->look();
     drawMap(map);
 
-
-
     glFlush();
 
     SDL_GL_SwapBuffers();
@@ -61,6 +71,11 @@ void drawGL(const Map& map)
 
 MAIN
 {
+
+
+    srand(time(0));
+
+    MapWriter Chocopops;
     Map map;
     SDL_Event event;
     const Uint32 time_per_frame = 1000/FPS;
@@ -89,6 +104,14 @@ MAIN
     if (!map.loadMap(filename))
     {
         std::cerr << "Unable to load " << filename << std::endl;
+        return 1;
+
+    }
+
+    static const std::string terrain = "Terrain.txt";
+    if (!map.loadMapT(terrain))
+    {
+        std::cerr << "Unable to load " << terrain << std::endl;
         return 1;
 
     }
@@ -136,9 +159,17 @@ MAIN
         last_time = current_time;
 
         camera->animate(elapsed_time);
+        Chocopops.Debut();
+        Chocopops.Sol(50);
+
+
 
         drawGL(map);
-        go();
+
+
+
+
+
         stop_time = SDL_GetTicks();
         if ((stop_time - last_time) < time_per_frame)
             SDL_Delay(time_per_frame - (stop_time - last_time));

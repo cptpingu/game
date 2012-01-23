@@ -12,7 +12,9 @@ SOURCES += \
     src/GLUtils.cc \
     src/FreeFlyCamera.cc \
     src/Block.cc \
-    src/Map.cc
+    src/Map.cc \
+    src/MapWriter.cc \
+    src/SolTriangle.cc
 
 HEADERS += \
     src/Vector3D.hh \
@@ -23,7 +25,9 @@ HEADERS += \
     src/GLUtils.hh \
     src/FreeFlyCamera.hh \
     src/Block.hh \
-    src/Map.hh
+    src/Map.hh \
+    src/MapWriter.hh \
+    src/SolTriangle.hh
 
 
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lglut

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <time.h>
+#include <cstdlib>
 
 MapWriter::MapWriter()
 {}
@@ -11,15 +13,13 @@ MapWriter::MapWriter()
 
 void MapWriter::Debut()
 {
-int i,j;
-using namespace std;
 
-ofstream fichier("Blocks.txt", ios::out | ios::trunc);  // ouverture en écriture avec effacement du fichier ouvert
+std::ofstream fichier("Carte.txt");  // ouverture en écriture avec effacement du fichier ouvert
 
 
- for(i=0;i<=10;i++)
+ for(int i=0; i<=10 ;i++)
  {
-         for(j = 0;j <= 10; j++)
+         for(int j = 0;j <= 10; j++)
     {
              fichier << i  << " " << j <<" "<< 1 << std::endl;
     }
@@ -27,51 +27,44 @@ ofstream fichier("Blocks.txt", ios::out | ios::trunc);  // ouverture en écriture
  }
 }
 
-void MapWriter::Sol()
+
+
+void MapWriter::Sol(int size)
 
 {
-    using namespace std;
 
-    ofstream fichier("Sol.txt", ios::out | ios::trunc);
+    double* Altitude;
+    for  (int i=0;i<=size*size-1;i++)
+    {
 
-        for(i=0;i<=49;i++)
+                Altitude[i] = rand()%50;
+
+    }
+
+    for (int k=0;k<=5;k++)
+    {
+        for (int i=0;i <= size-2;i++)
+        {
+            for (int j=0; j <= size-2;j++)
             {
-            for(j = 0;j <= 49; j++)
+            Altitude[i+j*size]= Altitude[i+1+j*size]+Altitude[i+(j+1)*size]+Altitude[i+1+(j+1)*size]+Altitude[i+j*size]/4;
+            }
+        }
+}
+    std::ofstream fichier("Terrain.txt");
+
+
+        for(int i = 0; i <= size-1; i++)
+            {
+            for(int j = 0; j <= size-1; j++)
                 {
-                fichier << i  << " " << j <<" "<< 0 << std::endl;
+                fichier << i  << " " << j <<" "<< Altitude[i+size*j]   << std::endl;
                 }
 
             }
-}
 
-
-
-
-SolTriangle*  MapWriter::Montagne(const & Vector3D ou,int HauteurMax);
-{
- int Sommet = rand()%HauteurMax;//hauteur max
- int Largeur = rand()%(2*Sommet);
-
-
-
-for (i=0;i<=Largeur;i++)
-
-        {
-         while(Sol[i])
-         Sol[i]._z= ou_.z + exp(-(ou._x-Sol._x*ou._x-Sol._x+ou._y-Sol._y*ou._y-Sol._y));
-        }
-
- return(Sol)
 
 }
-
-
-
-
-
-
-
-
 
 
 

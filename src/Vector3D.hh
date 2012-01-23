@@ -22,6 +22,9 @@ public:
   Vector3D crossProduct(const Vector3D& v) const;
   double length() const;
   Vector3D& normalize();
+
+  double Distance(int x,int y ,int z) const;
+  double Distance(const Vector3D& v) const;
   Vector3D mStar(const Vector3D& v) const;
 public:
   double _x;

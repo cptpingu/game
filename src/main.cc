@@ -11,7 +11,7 @@
 #include "GLUtils.hh"
 #include "FreeFlyCamera.hh"
 #include "Scene.hh"
-
+#include "Drawer.hh"
 
 
 
@@ -29,20 +29,6 @@
 
 FreeFlyCamera* camera;
 
-void drawMap(const Map& map)
-{
-
-    Map::const_iterator end = map.end();
-    for (Map::const_iterator it = map.begin(); it != end; ++it)
-    (*it)->draw();
-
-
-    Map::const_iteratorT Tend = map.Tend();
-    for (Map::const_iteratorT itT = map.Tbegin(); itT != Tend; ++itT)
-    (*itT)->draw();
-
-
-}
 
 
 
@@ -53,7 +39,7 @@ void stop()
 }
 
 
-void drawGL(const Map& map)
+void drawGL(const Map& map,const Drawer& Dede)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -61,7 +47,7 @@ void drawGL(const Map& map)
     glLoadIdentity();
 
     camera->look();
-    drawMap(map);
+    Dede.drawMap(map);
 
     glFlush();
 
@@ -74,6 +60,9 @@ MAIN
 
 
     srand(time(0));
+
+
+    Drawer Konnard;
 
     MapWriter Chocopops;
     Map map;
@@ -164,7 +153,7 @@ MAIN
 
 
 
-        drawGL(map);
+        drawGL(map,Konnard);
 
 
 

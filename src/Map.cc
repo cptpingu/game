@@ -11,10 +11,13 @@ Map::~Map()
     clear();
 }
 
+
+
+
 bool Map::loadMap(const std::string& filename)
 {
     std::ifstream file(filename.c_str());
-    std::string line;
+
 
     int x,y,z;
 
@@ -27,6 +30,7 @@ bool Map::loadMap(const std::string& filename)
         _blocks.push_back(new Block(x, y, z, 2));
 
     }
+
     return true;
 }
 
@@ -35,9 +39,10 @@ bool Map::loadMap(const std::string& filename)
 bool Map::loadMapT(const std::string& filename)
 {
     std::ifstream file(filename.c_str());
-    std::string line;
 
-    int x,y,z;
+
+    int x,y;
+    double z;
 
     if (!file)
     {return false;}

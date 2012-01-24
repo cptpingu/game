@@ -12,23 +12,9 @@
 
 //Le fonctionnement idéal du drawer => il recoit des listes d'objets typés et dessine les objets OPEN_GL correspondants
 
-
-Drawer::Drawer()
+namespace
 {
-}
-
-
-void Drawer::drawMap(const Map & map) const
-
-{
-
- draw(map._blocks);
- draw(map._triangles);
-
-}
-
-
-void Drawer::draw(std::vector<Block*> where)
+void draw(const Map::blocks_type &  where)
 
 {
 
@@ -112,7 +98,7 @@ void Drawer::draw(std::vector<Block*> where)
 
 
 
-void Drawer::draw(std::vector<SolTriangle*> where)
+void draw(const Map::solTriangle_type & where)
 {
     glPushMatrix();
 
@@ -130,5 +116,25 @@ void Drawer::draw(std::vector<SolTriangle*> where)
     glPopMatrix();
 }
 
+
+
+
+
+
+
+}
+Drawer::Drawer()
+{
+}
+
+
+void Drawer::drawMap(const Map & map) const
+
+{
+
+ draw(map._blocks);
+ draw(map._triangles);
+
+}
 
 

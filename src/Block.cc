@@ -4,7 +4,7 @@
 #include <GL/glu.h>
 
 Block::Block()
-    :_x(0), _y(0), _z(0), _size(10)
+    :_x(0), _y(0), _z(0), _size(1)
 {
 }
 
@@ -21,7 +21,7 @@ void Block::draw() const
     glTranslatef(_x * _size, _y * _size, _z * _size);
     TextureManager& textures = Singleton<TextureManager>::getInstance();
 
-    glBindTexture(GL_TEXTURE_2D, textures["test"]);
+    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
     glBegin(GL_QUADS);
     //par terre

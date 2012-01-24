@@ -14,8 +14,8 @@ class Drawer
 {
 public:
     Drawer();
-    void draw(std::vector<Block*> where);
-    void draw(std::vector<SolTriangle*> where);
+
+
     void drawMap(const Map & map)const ;
 };
 

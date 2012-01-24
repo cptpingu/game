@@ -14,7 +14,8 @@
 
 namespace
 {
-void draw(const Map::blocks_type &  where)
+void draw(const Map::blocks_type::const_iterator& from,
+          const Map::blocks_type::const_iterator& to)
 
 {
 
@@ -26,68 +27,68 @@ void draw(const Map::blocks_type &  where)
 
     glBegin(GL_QUADS);
 
-    for (int i=0;i<where.size();++i)//Besoin de la taille du vecteur where
+    for (Map::blocks_type::const_iterator it = from; it != to; ++it)
     {
-    glTranslatef(where[i]->_x * where[i]->_size, where[i]->_y * where[i]->_size, where[i]->_z * where[i]->_size);
+    glTranslatef((*it)->_x * (*it)->_size, (*it)->_y * (*it)->_size, (*it)->_z * (*it)->_size);
 
     //par terre
     glTexCoord2d(0, 0);
-    glVertex3d(-where[i]->_size / 2, -where[i]->_size / 2,0);
-    glTexCoord2d(where[i]->_size, 0);
-    glVertex3d(where[i]->_size / 2, -where[i]->_size / 2,0);
-    glTexCoord2d(where[i]->_size, where[i]->_size);
-    glVertex3d(where[i]->_size / 2, where[i]->_size / 2,0);
-    glTexCoord2d(0, where[i]->_size);
-    glVertex3d(-where[i]->_size / 2, where[i]->_size / 2,0);
+    glVertex3d(-(*it)->_size / 2, -(*it)->_size / 2,0);
+    glTexCoord2d((*it)->_size, 0);
+    glVertex3d((*it)->_size / 2, -(*it)->_size / 2,0);
+    glTexCoord2d((*it)->_size, (*it)->_size);
+    glVertex3d((*it)->_size / 2, (*it)->_size / 2,0);
+    glTexCoord2d(0, (*it)->_size);
+    glVertex3d(-(*it)->_size / 2, (*it)->_size / 2,0);
 
     //face droite
     glTexCoord2d(0, 0);
-    glVertex3d(-where[i]->_size / 2,-where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, 0);
-    glVertex3d(-where[i]->_size / 2, where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, where[i]->_size);
-    glVertex3d(-where[i]->_size / 2, where[i]->_size / 2, 0);
-    glTexCoord2d(0, where[i]->_size);
-    glVertex3d(-where[i]->_size / 2, -where[i]->_size / 2, 0);
+    glVertex3d(-(*it)->_size / 2,-(*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, 0);
+    glVertex3d(-(*it)->_size / 2, (*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, (*it)->_size);
+    glVertex3d(-(*it)->_size / 2, (*it)->_size / 2, 0);
+    glTexCoord2d(0, (*it)->_size);
+    glVertex3d(-(*it)->_size / 2, -(*it)->_size / 2, 0);
 
     //face gauche
     glTexCoord2d(0, 0);
-    glVertex3d(where[i]->_size / 2, -where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, 0);
-    glVertex3d(where[i]->_size / 2, where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, where[i]->_size);
-    glVertex3d(where[i]->_size / 2, where[i]->_size / 2, 0);
-    glTexCoord2d(0, where[i]->_size);
-    glVertex3d(where[i]->_size / 2, -where[i]->_size / 2, 0);
+    glVertex3d((*it)->_size / 2, -(*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, 0);
+    glVertex3d((*it)->_size / 2, (*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, (*it)->_size);
+    glVertex3d((*it)->_size / 2, (*it)->_size / 2, 0);
+    glTexCoord2d(0, (*it)->_size);
+    glVertex3d((*it)->_size / 2, -(*it)->_size / 2, 0);
 
     //face face
     glTexCoord2d(0, 0);
-    glVertex3d(-where[i]->_size / 2, where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, 0);
-    glVertex3d(where[i]->_size / 2, where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, where[i]->_size);
-    glVertex3d(where[i]->_size / 2, where[i]->_size / 2,0);
-    glTexCoord2d(0, where[i]->_size);
-    glVertex3d(-where[i]->_size / 2, where[i]->_size / 2,0);
+    glVertex3d(-(*it)->_size / 2, (*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, 0);
+    glVertex3d((*it)->_size / 2, (*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, (*it)->_size);
+    glVertex3d((*it)->_size / 2, (*it)->_size / 2,0);
+    glTexCoord2d(0, (*it)->_size);
+    glVertex3d(-(*it)->_size / 2, (*it)->_size / 2,0);
 
     //face derriere
     glTexCoord2d(0, 0);
-    glVertex3d(-where[i]->_size / 2, -where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, 0);
-    glVertex3d(where[i]->_size / 2, -where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, where[i]->_size);
-    glVertex3d(where[i]->_size / 2, -where[i]->_size / 2, 0);
-    glTexCoord2d(0, where[i]->_size);
-    glVertex3d(-where[i]->_size / 2, -where[i]->_size / 2,0);
+    glVertex3d(-(*it)->_size / 2, -(*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, 0);
+    glVertex3d((*it)->_size / 2, -(*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, (*it)->_size);
+    glVertex3d((*it)->_size / 2, -(*it)->_size / 2, 0);
+    glTexCoord2d(0, (*it)->_size);
+    glVertex3d(-(*it)->_size / 2, -(*it)->_size / 2,0);
     //face au ciel
     glTexCoord2d(0, 0);
-    glVertex3d(-where[i]->_size / 2, -where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, 0);
-    glVertex3d(where[i]->_size / 2, -where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(where[i]->_size, where[i]->_size);
-    glVertex3d(where[i]->_size / 2, where[i]->_size / 2, where[i]->_size);
-    glTexCoord2d(0, where[i]->_size);
-    glVertex3d(-where[i]->_size / 2, where[i]->_size / 2, where[i]->_size);
+    glVertex3d(-(*it)->_size / 2, -(*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, 0);
+    glVertex3d((*it)->_size / 2, -(*it)->_size / 2, (*it)->_size);
+    glTexCoord2d((*it)->_size, (*it)->_size);
+    glVertex3d((*it)->_size / 2, (*it)->_size / 2, (*it)->_size);
+    glTexCoord2d(0, (*it)->_size);
+    glVertex3d(-(*it)->_size / 2, (*it)->_size / 2, (*it)->_size);
 
 
     glPopMatrix();
@@ -98,7 +99,9 @@ void draw(const Map::blocks_type &  where)
 
 
 
-void draw(const Map::solTriangle_type & where)
+void draw(const Map::solTriangle_type::const_iterator& from,
+          const Map::solTriangle_type::const_iterator& to)
+
 {
     glPushMatrix();
 
@@ -108,10 +111,9 @@ void draw(const Map::solTriangle_type & where)
 
     glBegin(GL_TRIANGLE_STRIP);
 
-    for (int i=0;i<where.size();++i)//Taille de la liste de triangle, drawer suppose que l utilisateur sait ce qu il fait
-    {
-    glVertex3d(where[i]->_x,where[i]->_y,where[i]->_z);
-    }
+    for (Map::solTriangle_type::const_iterator it = from; it != to; ++it)
+        glVertex3d((*it)->_x,(*it)->_y,(*it)->_z);
+
     glEnd();
     glPopMatrix();
 }
@@ -131,10 +133,8 @@ Drawer::Drawer()
 void Drawer::drawMap(const Map & map) const
 
 {
-
- draw(map._blocks);
- draw(map._triangles);
-
+    draw(map.begin(), map.end());
+    draw(map.Tbegin(), map.Tend());
 }
 
 

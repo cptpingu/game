@@ -14,7 +14,8 @@ SOURCES += \
     src/Block.cc \
     src/Map.cc \
     src/MapWriter.cc \
-    src/SolTriangle.cc
+    src/SolTriangle.cc \
+    src/Drawer.cc
 
 HEADERS += \
     src/Vector3D.hh \

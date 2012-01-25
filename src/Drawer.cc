@@ -113,6 +113,7 @@ void draw(const Map::solTriangle_type::const_iterator& from,
             glColor3ub(0,0,255);
         k %= 51;
     }
+    glColor3ub(255, 255, 255);
 
     glEnd();
     glPopMatrix();

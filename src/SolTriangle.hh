@@ -5,7 +5,7 @@ class SolTriangle
 {
 
 public:
-    void draw() const;
+
     SolTriangle(int x, int y, double z);
     SolTriangle();
 

@@ -23,6 +23,7 @@ std::ofstream fichier("Carte.txt");  // ouverture en écriture avec effacement du
          for(int j = 0;j <= 10; j++)
     {
              fichier << i  << " " << j <<" "<< 1 << std::endl;
+
     }
 
  }
@@ -44,7 +45,7 @@ void MapWriter::Sol(int size)
 
     }
 
-    for (int k=0;k<=10;++k)
+    for (int k=0;k<=20;++k)
     {
         for (int i=0;i <= size-2;++i)
         {
@@ -55,24 +56,29 @@ void MapWriter::Sol(int size)
         }
 }
     std::ofstream fichier("Terrain.txt");
-
+        int k=0;
+        fichier << 0  << " " << 0 <<" "<<  Altitude[0]  << std::endl;
 
         for(int i = 0; i <= size-1; i++)
             {
             for(int j = 0; j <= size-1; j++)
                 {
-                fichier << i  << " " << j <<" "<< Altitude[i+size*j]   << std::endl;
-                }
 
-            }
+                    if(j != size-1)
+                    {
 
-
+                        fichier << i  << " " << k*(size) +   (j+1) -2*k*(j+1) <<" "<<  Altitude[i+size*(k*(size) +   (j+1) -2*k*(j+1))] << std::endl;
+                        fichier << i+1  << " " << k*(size)+  (j+1) -2*k*(j+1) <<" "<<  Altitude[i+1+size*(k*(size)+  (j+1) -2*k*(j+1))] << std::endl;
+                    }
+                    else
+                    {
+                     k=(k+1)%2;
+                     fichier << i+1  << " " << k*size <<" "<< Altitude[i+1 + k*(size-1)*size]  << std::endl;
+                     //fichier << i+2  << " " << k*size-1 <<" "<< 0   << std::endl;
+                    }
 }
-
-
-
-
-
+}
+}
 
 
 

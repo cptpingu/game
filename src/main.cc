@@ -149,7 +149,8 @@ MAIN
 
         camera->animate(elapsed_time);
         //Chocopops.Debut();
-        //Chocopops.Sol(50);
+        //
+        Chocopops.Sol(30);
 
 
 

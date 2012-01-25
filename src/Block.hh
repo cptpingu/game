@@ -4,7 +4,7 @@
 class Block
 {
 public:
-
+    void draw() const;
     Block(int x, int y, int z, int size);
     Block();
 

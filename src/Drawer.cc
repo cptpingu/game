@@ -19,13 +19,18 @@ void draw(const Map::blocks_type::const_iterator& from,
 
 {
 
+<<<<<<< HEAD
 
     glBegin(GL_QUADS);
+=======
+    glPushMatrix();
+>>>>>>> parent of 758d176... dsds
 
     TextureManager& textures = Singleton<TextureManager>::getInstance();
 
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
+<<<<<<< HEAD
 
 
     for (Map::blocks_type::const_iterator it = from; it != to; ++it)
@@ -35,6 +40,13 @@ void draw(const Map::blocks_type::const_iterator& from,
 
     glTranslatef((*it)->_x * (*it)->_size, (*it)->_y * (*it)->_size, (*it)->_z * (*it)->_size);
     glPushMatrix();
+=======
+    glBegin(GL_QUADS);
+
+    for (Map::blocks_type::const_iterator it = from; it != to; ++it)
+    {
+    glTranslatef((*it)->_x * (*it)->_size, (*it)->_y * (*it)->_size, (*it)->_z * (*it)->_size);
+>>>>>>> parent of 758d176... dsds
 
     //par terre
     glTexCoord2d(0, 0);
@@ -95,12 +107,19 @@ void draw(const Map::blocks_type::const_iterator& from,
     glTexCoord2d(0, (*it)->_size);
     glVertex3d(-(*it)->_size / 2, (*it)->_size / 2, (*it)->_size);
 
+<<<<<<< HEAD
     glPopMatrix();
     glEnd();
 
     }
 
 
+=======
+
+    glPopMatrix();
+    }
+    glEnd();
+>>>>>>> parent of 758d176... dsds
 
 }
 
@@ -114,6 +133,7 @@ void draw(const Map::solTriangle_type::const_iterator& from,
 
     TextureManager& textures = Singleton<TextureManager>::getInstance();
 
+<<<<<<< HEAD
     //glBindTexture(GL_TEXTURE_2D, textures["test"]);
 
 
@@ -128,17 +148,33 @@ glColor3ub(0,0,255);
     if (k==50){glColor3ub(0,0,255);}
      k=k%51;
     }
+=======
+    glBindTexture(GL_TEXTURE_2D, textures["test"]);
+
+    glBegin(GL_TRIANGLE_STRIP);
+
+    for (Map::solTriangle_type::const_iterator it = from; it != to; ++it)
+        glVertex3d((*it)->_x,(*it)->_y,(*it)->_z);
+>>>>>>> parent of 758d176... dsds
 
     glEnd();
     glPopMatrix();
 }
 
 
+<<<<<<< HEAD
 }
+=======
+>>>>>>> parent of 758d176... dsds
 
 
 
 
+<<<<<<< HEAD
+=======
+
+}
+>>>>>>> parent of 758d176... dsds
 Drawer::Drawer()
 {
 }

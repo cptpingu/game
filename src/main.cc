@@ -12,7 +12,7 @@
 #include "FreeFlyCamera.hh"
 #include "Scene.hh"
 #include "Drawer.hh"
-
+#include "ImageFile.hh"
 
 
 #ifdef _WIN32
@@ -249,7 +249,10 @@ MAIN
 
         drawGL(map,Konnard);
 
-
+        ImageFile img("data/images/test.jpg");
+        if (!img.loadImage())
+        {std::cout << "Erreur" << std::endl;
+             return 0;}
 
 
 

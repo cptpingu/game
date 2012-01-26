@@ -8,6 +8,7 @@
 #include <GL/glu.h>
 #include <SDL/SDL_image.h>
 
+
 class ImageFile
 {
 public:

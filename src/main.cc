@@ -137,8 +137,6 @@ void drawGL(const Map& map,const Drawer& Dede)
     // désactive transparence
     glDisable(GL_BLEND);
 
-
-
     glFlush();
 
 

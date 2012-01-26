@@ -15,7 +15,8 @@ SOURCES += \
     src/Map.cc \
     src/MapWriter.cc \
     src/SolTriangle.cc \
-    src/Drawer.cc
+    src/Drawer.cc \
+    src/ImageFile.cc
 
 HEADERS += \
     src/Vector3D.hh \
@@ -29,9 +30,10 @@ HEADERS += \
     src/Map.hh \
     src/MapWriter.hh \
     src/SolTriangle.hh \
-    src/Drawer.hh
+    src/Drawer.hh \
+    src/ImageFile.hh
 
-
+QMAKE_CXXFLAGS += -std=c++0x
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lglut
 
 INCLUDEPATH += $$PWD/../../include/SDL-1.2.14/include

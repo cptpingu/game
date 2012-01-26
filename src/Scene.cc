@@ -19,6 +19,7 @@ void chargerTextures()
   textures.load("data/images/rocket_top.jpg", "rocketTop");
   //autre texture
   textures.load("data/images/concrete001.jpg", "concrete");
+  textures.load("data/images/neige.jpg", "neige");
   textures.load("data/images/floor032.jpg", "floor1");
   textures.load("data/images/brick009.jpg", "brick1");
   textures.load("data/images/wood002.jpg", "wood1");

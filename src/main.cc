@@ -54,7 +54,7 @@ void drawGL(const Map& map,const Drawer& Dede)
     glEnable(GL_LIGHT0);
 
     double a=0;
-    int LightPos[4] = {0,0,30,1};
+    int LightPos[4] = {10,10,30,1};
     int MatSpec [4] = {1,1,1,1};
 
 
@@ -84,6 +84,59 @@ void drawGL(const Map& map,const Drawer& Dede)
 
 
     Dede.drawMap(map); 
+    glEnable(GL_FOG) ;
+    GLfloat fogcolor[4] = {0.5, 0.5, 0.5, 1} ;
+    GLint fogmode = GL_EXP ;
+    glFogi (GL_FOG_MODE, fogmode) ;
+    glFogfv(GL_FOG_COLOR, fogcolor) ;
+    glFogf(GL_FOG_DENSITY, 0.1) ;
+    glFogf(GL_FOG_START, 10.0) ;
+    glFogf(GL_FOG_END, 20.0) ;
+
+
+    glFrustum( 5,   5,   5,   5,   2,  10);
+
+
+    glColor3f(1.0f,1.0f,1.0f);
+    TextureManager& textures = Singleton<TextureManager>::getInstance();
+    glBindTexture(GL_TEXTURE_2D, textures["eau"]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+            glVertex3d(0,0,-2);
+
+            glTexCoord2f(2,0);
+            glVertex3d(0, 60,-2);
+
+            glTexCoord2f(2,2);
+        glVertex3d(60,60,-2);
+
+            glTexCoord2f(0,2);
+        glVertex3d(60,0,-2);
+    glEnd();
+
+    glColor4f(1.0f,1.0f,1.0f,0.55f);  // alpha 55%
+    // on active la transparence
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+
+
+    glBindTexture(GL_TEXTURE_2D, textures["eau"]);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+            glVertex3d(0,0,-2);
+
+            glTexCoord2f(2,0);
+            glVertex3d(0, 60,-2);
+
+            glTexCoord2f(2,2);
+        glVertex3d(60,60,-2);
+
+            glTexCoord2f(0,2);
+        glVertex3d(60,0,-2);
+    glEnd();
+    // désactive transparence
+    glDisable(GL_BLEND);
+
 
 
     glFlush();
@@ -192,7 +245,7 @@ MAIN
 
 
         Chocopops.Debut();
-        //Chocopops.Sol(50);
+        //Chocopops.Sol(100);
         Chocopops.Building(where,5,0,5);
 
 

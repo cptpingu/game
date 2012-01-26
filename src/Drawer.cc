@@ -98,14 +98,16 @@ void draw(const Map::solTriangle_type::const_iterator& from,
     glPushMatrix();
 
     TextureManager& textures = Singleton<TextureManager>::getInstance();
-    glBindTexture(GL_TEXTURE_2D, textures["test"]);
+    glBindTexture(GL_TEXTURE_2D, textures["veg2"]);
     glBegin(GL_TRIANGLE_STRIP);
 
     int Prout=0;
     int k = 0;
     for (Map::solTriangle_type::const_iterator it = from; it != to; ++it)
     {
+
         ++k;
+
 
         if (Prout==0)
         glTexCoord2i(0,0);
@@ -131,15 +133,21 @@ void draw(const Map::solTriangle_type::const_iterator& from,
             glColor3ub(0,255,0);
         k %= 76;
 
-    }
-    glColor3ub(255, 255, 255);
+        float composante[3] ;
+
+
+
+
+        }
+
+
+
 
     glEnd();
 
     glPopMatrix();
 }
-
-} // namespace
+}
 
 Drawer::Drawer()
 {

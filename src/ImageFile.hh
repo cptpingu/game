@@ -41,7 +41,11 @@ public:
     Color& operator()(int x, int y);
     const_iterator begin() const;
     const_iterator end() const;
+    int getWidth() const;
+    int getHeight() const;
 private:
+    int               _width;
+    int               _heigth;
     const std::string _filename;
     pixels_type       _pixels;
 };

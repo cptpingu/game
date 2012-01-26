@@ -17,6 +17,7 @@ public:
 
 
     void drawMap(const Map & map)const ;
+
 };
 
 #endif // DRAWER_HH

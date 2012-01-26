@@ -83,7 +83,7 @@ void drawGL(const Map& map,const Drawer& Dede)
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
 
 
-    Dede.drawMap(map); 
+    Dede.drawMap(map);
 
 
     glFlush();

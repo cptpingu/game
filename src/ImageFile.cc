@@ -88,3 +88,15 @@ ImageFile::end() const
 {
     return _pixels.end();
 }
+
+int
+ImageFile::getWidth() const
+{
+    return _width;
+}
+
+int
+ImageFile::getHeight() const
+{
+    return _heigth;
+}

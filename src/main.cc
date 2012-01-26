@@ -47,9 +47,48 @@ void drawGL(const Map& map,const Drawer& Dede)
     glLoadIdentity();
 
     camera->look();
-    Dede.drawMap(map);
+
+
+    glEnable(GL_DEPTH_TEST); 	// Active le test de profondeur
+    glEnable(GL_LIGHTING); 	// Active l'éclairage
+    glEnable(GL_LIGHT0);
+
+    double a=0;
+    int LightPos[4] = {0,0,30,1};
+    int MatSpec [4] = {1,1,1,1};
+
+
+    glMaterialiv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
+    glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,100);
+
+
+    glRotated(a,0,1,0);
+    glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+
+    a=+1;
+
+    float Light1Pos[4] = {15.0f, 15.0f, 20.0f, 1.0f};
+    float Light1Dif[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+    float Light1Spec[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+    float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+    float Spot1Dir[3] = {0.0f, 0.0f, -1.0f};
+
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, Light1Dif); 	//Et ceux de la lumière
+    glLightfv(GL_LIGHT1, GL_SPECULAR, Light1Spec);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, Light1Amb);
+    glEnable(GL_LIGHTING); 	//Et on allume la lumière
+    glEnable(GL_LIGHT1);
+    glLighti(GL_LIGHT1, GL_SPOT_CUTOFF, 30);
+    float Light1Dir[3] = {0.0f, 0.0f, -1.0f};
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
+
+
+    Dede.drawMap(map); 
+
 
     glFlush();
+
+
 
     SDL_GL_SwapBuffers();
 
@@ -148,9 +187,13 @@ MAIN
         last_time = current_time;
 
         camera->animate(elapsed_time);
-        //Chocopops.Debut();
-        //Chocopops.Sol(50);
 
+        Vector3D where(1,1,1);
+
+
+        Chocopops.Debut();
+        //Chocopops.Sol(50);
+        Chocopops.Building(where,5,0,5);
 
 
         drawGL(map,Konnard);

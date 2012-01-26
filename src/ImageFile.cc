@@ -71,6 +71,12 @@ ImageFile::operator()(int x, int y) const
     return _pixels[x + _pixels.size() + y];
 }
 
+ImageFile::Color&
+ImageFile::operator()(int x, int y)
+{
+    return _pixels[x + _pixels.size() + y];
+}
+
 ImageFile::const_iterator
 ImageFile::begin() const
 {

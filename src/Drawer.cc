@@ -132,6 +132,7 @@ void draw(const Map::solTriangle_type::const_iterator& from,
         k %= 76;
 
     }
+    glColor3ub(255, 255, 255);
 
     glEnd();
 

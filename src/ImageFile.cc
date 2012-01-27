@@ -1,11 +1,8 @@
 #include "ImageFile.hh"
+#include <cassert>
 
 ImageFile::ImageFile(const std::string& filename)
-    : _filename(filename)
-{
-}
-
-ImageFile::~ImageFile()
+    : _filename(filename), _width(0), _heigth(0), _isValid(false), _pixels()
 {
 }
 
@@ -51,6 +48,7 @@ ImageFile::loadImage()
 
     const int width = surface->w;
     const int height = surface->h;
+    _pixels.reserve(width * height);
     for (int x = 0; x < width; ++x)
     {
         for (int y = 0; y < height; ++y)
@@ -62,41 +60,61 @@ ImageFile::loadImage()
 
     SDL_UnlockSurface(surface);
 
+    _isValid = true;
     return true;
+}
+
+void
+ImageFile::write(std::ostream&) const
+{
+    // FIXME
+    assert(false && "Not implemented yet !");
 }
 
 const ImageFile::Color&
 ImageFile::operator()(int x, int y) const
 {
+    assert(_isValid && "Can't use invalid ImageFile !");
     return _pixels[x + _pixels.size() + y];
 }
 
 ImageFile::Color&
 ImageFile::operator()(int x, int y)
 {
+    assert(_isValid && "Can't use invalid ImageFile !");
     return _pixels[x + _pixels.size() + y];
 }
 
 ImageFile::const_iterator
 ImageFile::begin() const
 {
+    assert(_isValid && "Can't use invalid ImageFile !");
     return _pixels.begin();
 }
 
 ImageFile::const_iterator
 ImageFile::end() const
 {
+    assert(_isValid && "Can't use invalid ImageFile !");
     return _pixels.end();
 }
 
 int
 ImageFile::getWidth() const
 {
+    assert(_isValid && "Can't use invalid ImageFile !");
     return _width;
 }
 
 int
 ImageFile::getHeight() const
 {
+    assert(_isValid && "Can't use invalid ImageFile !");
     return _heigth;
+}
+
+bool
+ImageFile::isValid() const
+{
+    return _isValid;
 }

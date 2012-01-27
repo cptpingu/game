@@ -5,7 +5,13 @@ SRC=	main.cc			\
 	Scene.cc                \
 	GLUtils.cc              \
 	Vector3D.cc             \
-	TextureManager.cc
+	TextureManager.cc	\
+	Block.cc		\
+	Drawer.cc		\
+	ImageFile.cc		\
+	Map.cc			\
+	MapWriter.cc		\
+	SolTriangle.cc
 
 HEADER= Singleton.hh            \
 	Singleton.hxx           \
@@ -13,7 +19,13 @@ HEADER= Singleton.hh            \
 	Scene.hh                \
 	GLUtils.hh              \
 	Vector3D.hh             \
-	TextureManager.hh
+	TextureManager.hh	\
+	Block.hh		\
+	Drawer.hh		\
+	ImageFile.hh		\
+	Map.hh			\
+	MapWriter.hh		\
+	SolTriangle.hh
 
 TARGET=../$(EXE)
 

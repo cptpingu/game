@@ -43,7 +43,7 @@ void drawGL(const Map& map,const Drawer& Dede)
   camera->look();
 
 
-  glEnable(GL_DEPTH_TEST); 	// Active le test de profondeur
+  //glEnable(GL_DEPTH_TEST); 	// Active le test de profondeur
   glEnable(GL_LIGHTING); 	// Active l'éclairage
   glEnable(GL_LIGHT0);
 
@@ -235,7 +235,7 @@ MAIN
 
     camera->animate(elapsed_time);
 
-    Vector3D where(1,1,1);
+    //Vector3D where(1,1,1);
 
 
     //Chocopops.Debut();
@@ -245,12 +245,12 @@ MAIN
     drawAxis(2);
     drawGL(map,Konnard);
 
-    ImageFile img("data/images/test.jpg");
-    if (!img.loadImage())
-    {
-      std::cout << "Erreur" << std::endl;
-      return 0;
-    }
+   // ImageFile img("data/images/test.jpg");
+   // if (!img.loadImage())
+   // {
+    //  std::cout << "Erreur" << std::endl;
+    //  return 0;
+    // }
 
 
 

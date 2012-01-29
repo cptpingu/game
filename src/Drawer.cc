@@ -114,35 +114,16 @@ namespace
 
     TextureManager& textures = Singleton<TextureManager>::getInstance();
     glBindTexture(GL_TEXTURE_2D, textures["veg2"]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+
     glBegin(GL_TRIANGLE_STRIP);
 
-    int Prout=0;
-    int k = 0;
     auto end = triangles.end();
     for (auto it = triangles.begin(); it != end; ++it)
     {
-      ++k;
-      if (Prout==0)
-        glTexCoord2i(0,0);
-
-      if (Prout==1)
-        glTexCoord2i(0,1);
-
-      if (Prout==2)
-        glTexCoord2i(1,0);
-
+      glTexCoord2i((*it)->_x,(*it)->_y);
       glVertex3d((*it)->_x,(*it)->_y,(*it)->_z);
-      ++Prout;
-      Prout=Prout%3;
-
-      if (k == 25)
-        glColor3ub(255,0,0);
-
-      if (k == 50)
-        glColor3ub(0,0,255);
-      if (k == 75)
-        glColor3ub(0,255,0);
-      k %= 76;
     }
     glEnd();
     glPopMatrix();

@@ -1,7 +1,7 @@
 #ifndef SDLGLUTILS_HH_
 # define SDLGLUTILS_HH_
 
-#include <GL/gl.h>
+# include "Opengl.hh"
 #include <SDL/SDL.h>
 
 #ifndef GL_CLAMP_TO_EDGE

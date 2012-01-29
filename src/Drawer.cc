@@ -4,8 +4,7 @@
 #include "Block.hh"
 #include <vector>
 #include "TextureManager.hh"
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include "Opengl.hh"
 
 //Le fonctionnement idéal du drawer => il recoit des listes d'objets typés et dessine les objets OPEN_GL correspondants
 //Il n'est pas censé échanger quoi que ce soit avec le reste , c'est le côté open GL du programme.
@@ -113,19 +112,35 @@ namespace
     glPushMatrix();
 
     TextureManager& textures = Singleton<TextureManager>::getInstance();
-    glBindTexture(GL_TEXTURE_2D, textures["veg2"]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
+//    glActiveTexture(GL_TEXTURE0_ARB);
+//    glEnable(GL_TEXTURE_2D);
+//    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+//    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+//    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+//    glEnable(GL_TEXTURE_GEN_S);
+//    glEnable(GL_TEXTURE_GEN_T);
+
+//    glActiveTexture(GL_TEXTURE1_ARB);
+//    glEnable(GL_TEXTURE_2D);
+//    glBindTexture(GL_TEXTURE_2D, textures["wood"]);
+//    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+//    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+//    glEnable(GL_TEXTURE_GEN_S);
+//    glEnable(GL_TEXTURE_GEN_T);
+
+    int i = 0;
     glBegin(GL_TRIANGLE_STRIP);
-
     auto end = triangles.end();
     for (auto it = triangles.begin(); it != end; ++it)
     {
-      glTexCoord2i((*it)->_x,(*it)->_y);
-      glVertex3d((*it)->_x,(*it)->_y,(*it)->_z);
+      //glMultiTexCoord3i(GL_TEXTURE1, 0, 0, 0);
+      glTexCoord2i((*it)->_x, (*it)->_y);
+      glVertex3d((*it)->_x, (*it)->_y, (*it)->_z);
     }
     glEnd();
+
     glPopMatrix();
   }
 } // namespace

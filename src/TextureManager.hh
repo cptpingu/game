@@ -5,8 +5,7 @@
 # include <fstream>
 # include <map>
 # include <SDL/SDL.h>
-# include <GL/gl.h>
-# include <GL/glu.h>
+# include "Opengl.hh"
 # include "Singleton.hh"
 # include "GLUtils.hh"
 

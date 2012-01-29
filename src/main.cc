@@ -1,6 +1,6 @@
+#include "Opengl.hh"
 #include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+
 #include <cstdlib>
 #include <iostream>
 #include "Map.hh"
@@ -14,10 +14,7 @@
 #include "Drawer.hh"
 #include "ImageFile.hh"
 
-
 #ifdef _WIN32
-# include <windows.h>
-# include <GL/glut.h>
 # define MAIN int WINAPI WinMain (HINSTANCE, HINSTANCE, LPSTR, int)
 #else
 # define MAIN int main(int, char**)
@@ -28,9 +25,6 @@
 #define HAUTEUR_FENETRE 480
 
 FreeFlyCamera* camera;
-
-
-
 
 void stop()
 {
@@ -165,9 +159,17 @@ MAIN
   SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
   //initFullScreen(&width,&height);
 
+  if (!initExtensions())
+  {
+      SDL_Quit();
+      return 1;
+  }
+
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity();
   gluPerspective(70,(double)width/height,0.001,1000);
+
+
 
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_TEXTURE_2D);
@@ -240,7 +242,7 @@ MAIN
     //Chocopops.Sol(100);
     //Chocopops.Building(where,5,0,5);
 
-
+    drawAxis(2);
     drawGL(map,Konnard);
 
     ImageFile img("data/images/test.jpg");

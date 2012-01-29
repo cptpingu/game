@@ -1,7 +1,7 @@
 #include "GLUtils.hh"
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include <GL/glu.h>
+#include "Opengl.hh"
 
 #include <cstring>
 #include <cstdlib>

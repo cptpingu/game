@@ -1,7 +1,7 @@
 #include "FreeFlyCamera.hh"
 #include "iostream"
 #include <cmath>
-#include <GL/glu.h>
+#include "Opengl.hh"
 
 #ifndef M_PI
 # define M_PI 3.14159265

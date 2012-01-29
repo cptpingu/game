@@ -3,8 +3,7 @@
 #include "GLUtils.hh"
 #include "TextureManager.hh"
 #include "Vector3D.hh"
-#include <GL/gl.h>
-#include <GL/glu.h>
+# include "Opengl.hh"
 
 void chargerTextures()
 {

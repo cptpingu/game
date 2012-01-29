@@ -1,10 +1,10 @@
 #ifndef IMAGEFILE_HH_
 # define IMAGEFILE_HH_
 
-#include <string>
-#include <vector>
-#include <GL/gl.h>
-#include <SDL/SDL_image.h>
+# include <string>
+# include <vector>
+# include "Opengl.hh"
+# include <SDL/SDL_image.h>
 
 /*!
 ** @class ImageFile

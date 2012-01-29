@@ -5,8 +5,7 @@
 #include "Block.hh"
 #include <vector>
 #include "TextureManager.hh"
-#include <GL/gl.h>
-#include <GL/glu.h>
+# include "Opengl.hh"
 #include "Vector3D.hh"
 #include "Map.hh"
 

@@ -14,7 +14,8 @@ SOURCES += \
     src/Map.cc \
     src/MapWriter.cc \
     src/Drawer.cc \
-    src/ImageFile.cc
+    src/ImageFile.cc \
+    src/Opengl.cc
 
 HEADERS += \
     src/Vector3D.hh \
@@ -32,10 +33,11 @@ HEADERS += \
     src/ImageFile.hh \
     src/Core/Container3D.hh \
     src/Core/ListContainer3D.hh \
-    src/Core/ListContainer3D.hxx
+    src/Core/ListContainer3D.hxx \
+    src/Opengl.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
-LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lglut
+LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32
 
 INCLUDEPATH += $$PWD/../../include/SDL-1.2.14/include
 DEPENDPATH += $$PWD/../../include/SDL-1.2.14/include

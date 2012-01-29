@@ -25,6 +25,11 @@ namespace Core
     {
     }
 
+    bool operator==(const Container3D<T>& container) const
+    {
+      return _x == container._x && _y == container._y && _z == container._z;
+    }
+
   public:
     T _x;
     T _y;

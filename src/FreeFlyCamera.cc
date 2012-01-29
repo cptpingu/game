@@ -3,6 +3,10 @@
 #include <cmath>
 #include <GL/glu.h>
 
+#ifndef M_PI
+# define M_PI 3.14159265
+#endif
+
 FreeFlyCamera::FreeFlyCamera(const Vector3D& position)
 {
   _position = position;

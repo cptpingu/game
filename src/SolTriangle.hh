@@ -1,21 +1,17 @@
-#ifndef SOLTRIANGLE_HH
-#define SOLTRIANGLE_HH
+#ifndef SOLTRIANGLE_HH_
+# define SOLTRIANGLE_HH_
 
-class SolTriangle
+# include "Core/Container3D.hh"
+
+class SolTriangle : public Core::Container3D<double>
 {
+  typedef Core::Container3D<double> super;
 
 public:
-    void draw() const;
-    SolTriangle(int x, int y, double z);
-    SolTriangle();
-
-public:
-
-    int _x;
-    int _y;
-    double _z;
-
-
+  SolTriangle(double x, double y, double z)
+    : super(x, y, z)
+  {
+  }
 };
 
-#endif // SOLTRIANGLE_HH
+#endif /* !SOLTRIANGLE_HH_ */

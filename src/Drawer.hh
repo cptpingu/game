@@ -15,7 +15,7 @@ class Drawer
 public:
     Drawer();
 
-    void drawMap(const Map& map)const ;
+    void drawMap(const Map& map)const;
 
 };
 

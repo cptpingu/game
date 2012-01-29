@@ -34,7 +34,7 @@ HEADERS += \
     src/Core/ListContainer3D.hh \
     src/Core/ListContainer3D.hxx
 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lglut
 
 INCLUDEPATH += $$PWD/../../include/SDL-1.2.14/include

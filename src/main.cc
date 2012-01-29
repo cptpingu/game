@@ -67,11 +67,11 @@ void drawGL(const Map& map,const Drawer& Dede)
 
   a=+1;
 
-  float Light1Pos[4] = {15.0f, 15.0f, 20.0f, 1.0f};
+  //float Light1Pos[4] = {15.0f, 15.0f, 20.0f, 1.0f};
   float Light1Dif[4] = {1.0f, 0.2f, 0.2f, 1.0f};
   float Light1Spec[4] = {1.0f, 0.2f, 0.2f, 1.0f};
   float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-  float Spot1Dir[3] = {0.0f, 0.0f, -1.0f};
+  //float Spot1Dir[3] = {0.0f, 0.0f, -1.0f};
 
   glLightfv(GL_LIGHT1, GL_DIFFUSE, Light1Dif); 	//Et ceux de la lumière
   glLightfv(GL_LIGHT1, GL_SPECULAR, Light1Spec);

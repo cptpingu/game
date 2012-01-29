@@ -23,47 +23,39 @@ namespace
     return true;
   }
 
+  void checkAndLinks(const Map::temp_map_type& map, Block* block)
+  {
+#define LINK(X,Y,Z,ASSIGN) \
+    {\
+  auto found = map.find(Core::Container3D<int>(block->_x + X, block->_y + Y, block->_z + Z)); \
+  if (found != map.end())\
+  block->ASSIGN = found->second;\
+  }
+
+    LINK(1,0,0, _left);
+    LINK(-1,0,0, _right);
+    LINK(0,1,0, _front);
+    LINK(0,-1,0, _back);
+    LINK(0,0,1, _up);
+    LINK(0,0,-1, _down);
+
+#undef LINK
+  }
+
   void linkBlocks(Map::blocks_type& blocks)
   {
+    Map::temp_map_type map;
     auto end = blocks.end();
-    for (auto current = blocks.begin(); current != (end - 1); ++current)
+    for (auto it = blocks.begin(); it != end; ++it)
     {
-      for (auto it = current + 1; it != end; ++it)
-      {
-        if (((*it)->_x + 1) == (*current)->_x)
-        {
-          (*current)->_right = *it;
-          (*it)->_left = *current;
-        }
-        else if (((*it)->_x - 1) == (*current)->_x)
-        {
-          (*current)->_left = *it;
-          (*it)->_right = *current;
-        }
-
-        if (((*it)->_y + 1) == (*current)->_y)
-        {
-          (*current)->_up = *it;
-          (*it)->_down = *current;
-        }
-        else if (((*it)->_y - 1) == (*current)->_y)
-        {
-          (*current)->_down = *it;
-          (*it)->_up = *current;
-        }
-
-        if (((*it)->_z + 1) == (*current)->_z)
-        {
-          (*current)->_front = *it;
-          (*it)->_back = *current;
-        }
-        else if (((*it)->_z - 1) == (*current)->_z)
-        {
-          (*current)->_back = *it;
-          (*it)->_front = *current;
-        }
-      }
+      Core::Container3D<int> cont((*it)->_x, (*it)->_y, (*it)->_z);
+      Block* block = *it;
+      map.insert(Map::temp_map_type::value_type(cont, block));
     }
+
+    auto mapEnd = map.end();
+    for (auto it = map.begin(); it != mapEnd; ++it)
+      checkAndLinks(map, it->second);
   }
 } //namespace
 

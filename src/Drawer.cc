@@ -6,15 +6,12 @@
 #include "TextureManager.hh"
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <time.h>
-#include "Vector3D.hh"
 
 //Le fonctionnement idéal du drawer => il recoit des listes d'objets typés et dessine les objets OPEN_GL correspondants
 //Il n'est pas censé échanger quoi que ce soit avec le reste , c'est le côté open GL du programme.
 namespace
 {
   void draw(const Map::blocks_type& blocks)
-
   {
     TextureManager& textures = Singleton<TextureManager>::getInstance();
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
@@ -27,7 +24,7 @@ namespace
       glBegin(GL_QUADS);
 
       //par terre
-      if ((*it)->_down)
+      if (!(*it)->_down)
       {
         glTexCoord2d(0, 0);
         glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
@@ -40,7 +37,7 @@ namespace
       }
 
       //face droite
-      if ((*it)->_right)
+      if (!(*it)->_right)
       {
         glTexCoord2d(0, 0);
         glVertex3d(-Block::SIZE / 2,-Block::SIZE / 2, Block::SIZE);
@@ -53,7 +50,7 @@ namespace
       }
 
       //face gauche
-      if ((*it)->_left)
+      if (!(*it)->_left)
       {
         glTexCoord2d(0, 0);
         glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
@@ -66,7 +63,7 @@ namespace
       }
 
       //face face
-      if ((*it)->_front)
+      if (!(*it)->_front)
       {
         glTexCoord2d(0, 0);
         glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
@@ -79,7 +76,7 @@ namespace
       }
 
       //face derriere
-      if ((*it)->_back)
+      if (!(*it)->_back)
       {
         glTexCoord2d(0, 0);
         glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
@@ -92,7 +89,7 @@ namespace
       }
 
       //face au ciel
-      if ((*it)->_up)
+      if (!(*it)->_up)
       {
         glTexCoord2d(0, 0);
         glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);

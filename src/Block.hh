@@ -7,7 +7,7 @@ class Block : public Core::Container3D<int>
 {
   typedef Core::Container3D<int> super;
 public:
-    static const int SIZE = 1;
+    static const int SIZE = 2;
 public:
   Block(int x, int y, int z)
     : super(x, y, z),

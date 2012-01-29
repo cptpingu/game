@@ -1,19 +1,29 @@
 #ifndef BLOCK_HH_
 # define BLOCK_HH_
 
-class Block
+# include "Core/Container3D.hh"
+
+class Block : public Core::Container3D<int>
 {
+  typedef Core::Container3D<int> super;
 public:
-    void draw() const;
-    Block(int x, int y, int z, int size);
-    Block();
+    static const int SIZE = 1;
+public:
+  Block(int x, int y, int z)
+    : super(x, y, z),
+      _up(0), _down(0),
+      _left(0), _right(0),
+      _front(0), _back(0)
+  {
+  }
 
 public:
-    int _x;
-    int _y;
-    int _z;
-    int _size;
-
+  Block* _up;
+  Block* _down;
+  Block* _left;
+  Block* _right;
+  Block* _front;
+  Block* _back;
 };
 
 #endif /* !BLOCK_HH_ */

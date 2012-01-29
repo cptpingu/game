@@ -11,10 +11,8 @@ SOURCES += \
     src/main.cc \
     src/GLUtils.cc \
     src/FreeFlyCamera.cc \
-    src/Block.cc \
     src/Map.cc \
     src/MapWriter.cc \
-    src/SolTriangle.cc \
     src/Drawer.cc \
     src/ImageFile.cc
 
@@ -31,7 +29,10 @@ HEADERS += \
     src/MapWriter.hh \
     src/SolTriangle.hh \
     src/Drawer.hh \
-    src/ImageFile.hh
+    src/ImageFile.hh \
+    src/Core/Container3D.hh \
+    src/Core/ListContainer3D.hh \
+    src/Core/ListContainer3D.hxx
 
 QMAKE_CXXFLAGS += -std=c++0x
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lglut

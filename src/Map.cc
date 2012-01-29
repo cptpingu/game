@@ -1,94 +1,112 @@
 #include "Map.hh"
 #include <fstream>
 
+namespace
+{
+  template <typename T>
+  bool loadFromFile(const std::string& filename, T& collection)
+  {
+    std::ifstream file(filename.c_str());
+    typename T::type::type x;
+    typename T::type::type y;
+    typename T::type::type z;
+
+    if (!file)
+      return false;
+
+    while (file)
+    {
+      file >> x >> y >> z;
+      collection.add(new typename T::type(x, y, z));
+    }
+
+    return true;
+  }
+
+  void linkBlocks(Map::blocks_type& blocks)
+  {
+    auto end = blocks.end();
+    for (auto current = blocks.begin(); current != (end - 1); ++current)
+    {
+      for (auto it = current + 1; it != end; ++it)
+      {
+        if (((*it)->_x + 1) == (*current)->_x)
+        {
+          (*current)->_right = *it;
+          (*it)->_left = *current;
+        }
+        else if (((*it)->_x - 1) == (*current)->_x)
+        {
+          (*current)->_left = *it;
+          (*it)->_right = *current;
+        }
+
+        if (((*it)->_y + 1) == (*current)->_y)
+        {
+          (*current)->_up = *it;
+          (*it)->_down = *current;
+        }
+        else if (((*it)->_y - 1) == (*current)->_y)
+        {
+          (*current)->_down = *it;
+          (*it)->_up = *current;
+        }
+
+        if (((*it)->_z + 1) == (*current)->_z)
+        {
+          (*current)->_front = *it;
+          (*it)->_back = *current;
+        }
+        else if (((*it)->_z - 1) == (*current)->_z)
+        {
+          (*current)->_back = *it;
+          (*it)->_front = *current;
+        }
+      }
+    }
+  }
+} //namespace
+
 Map::Map()
 {
-
 }
 
 Map::~Map()
 {
-    clear();
+  clear();
 }
 
-
-
-
-bool Map::loadMap(const std::string& filename)
+bool
+Map::loadBlocks(const std::string& filename)
 {
-    std::ifstream file(filename.c_str());
+  if (!loadFromFile(filename, _blocks))
+    return false;
 
-
-    int x,y,z;
-
-    if (!file)
-    {return false;}
-
-    while (file)
-    {   file >> x >> y >> z;
-
-        _blocks.push_back(new Block(x, y, z, 2));
-
-    }
-
-    return true;
+  linkBlocks(_blocks);
+  return true;
 }
 
-
-
-bool Map::loadMapT(const std::string& filename)
+bool
+Map::loadTriangles(const std::string& filename)
 {
-    std::ifstream file(filename.c_str());
-
-
-    int x,y;
-    double z;
-
-    if (!file)
-    {return false;}
-
-    while (file)
-    {   file >> x >> y >> z;
-
-        _triangles.push_back(new SolTriangle(x, y, z));
-
-    }
-    return true;
+  return loadFromFile(filename, _triangles);
 }
 
-
-
-void Map::clear()
+void
+Map::clear()
 {
-    const_iterator end = _blocks.end();
-    for (const_iterator it = _blocks.begin(); it != end; ++it)
-        delete *it;
-    _blocks.clear();
+  _blocks.clear();
+  _triangles.clear();
 }
 
-Block* Map::operator()(int x, int y, int z) const
+const Map::blocks_type&
+Map::getBlocks() const
 {
-    return _blocks[x + y * _blocks.size() + z* _blocks.size()*_blocks.size()];
+  return _blocks;
 }
 
-
-Map::const_iterator Map::begin() const
+const Map::triangles_type&
+Map::getTriangles() const
 {
-  return _blocks.begin();
-}
-
-Map::const_iterator Map::end() const
-{
-  return _blocks.end();
-
-}
-Map::const_iteratorT Map::Tbegin() const
-{
-  return _triangles.begin();
-}
-
-Map::const_iteratorT Map::Tend() const
-{
-  return _triangles.end();
-
+  return _triangles;
 }

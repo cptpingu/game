@@ -49,6 +49,8 @@ public:
   bool loadTriangles(const std::string& filename);
   void clear();
 
+  blocks_type& getBlocks();
+  triangles_type& getTriangles();
   const blocks_type& getBlocks() const;
   const triangles_type& getTriangles() const;
 

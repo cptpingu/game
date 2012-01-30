@@ -142,7 +142,6 @@ MAIN
   srand(time(0));
 
   Drawer Konnard;
-  MapWriter Chocopops;
   Map map;
   SDL_Event event;
   const Uint32 time_per_frame = 1000/FPS;
@@ -164,6 +163,12 @@ MAIN
       SDL_Quit();
       return 1;
   }
+
+  // MapWriter Chocopops;
+  // Chocopops.Debut();
+  // Chocopops.Sol(100);
+  // Chocopops.Building(Vector3D(1,1,1), 5, 0, 5);
+
 
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity();
@@ -235,24 +240,8 @@ MAIN
 
     camera->animate(elapsed_time);
 
-    //Vector3D where(1,1,1);
-
-
-    //Chocopops.Debut();
-    //Chocopops.Sol(100);
-    //Chocopops.Building(where,5,0,5);
-
     drawAxis(2);
     drawGL(map,Konnard);
-
-   // ImageFile img("data/images/test.jpg");
-   // if (!img.loadImage())
-   // {
-    //  std::cout << "Erreur" << std::endl;
-    //  return 0;
-    // }
-
-
 
     stop_time = SDL_GetTicks();
     if ((stop_time - last_time) < time_per_frame)

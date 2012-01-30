@@ -9,7 +9,7 @@
 class FreeFlyCamera
 {
 public:
-    FreeFlyCamera(const Vector3D & position = Vector3D(0,0,0));
+    FreeFlyCamera();
 
     virtual void OnMouseMotion(const SDL_MouseMotionEvent & event);
     virtual void OnMouseButton(const SDL_MouseButtonEvent & event);

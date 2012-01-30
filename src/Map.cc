@@ -33,12 +33,9 @@ namespace
     static bool func(const std::string& filename, T& collection)
     {
       std::ifstream file(filename.c_str());
-      //    typename T::type::raw_type x;
-      //    typename T::type::raw_type y;
-      //    typename T::type::raw_type z;
-      double x;
-      double y;
-      double z;
+      typename T::type::raw_type x;
+      typename T::type::raw_type y;
+      typename T::type::raw_type z;
 
       if (!file)
         return false;

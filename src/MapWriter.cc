@@ -112,13 +112,14 @@ void MapWriter::Building(Vector3D where ,int Longueur,int Hauteur,int Largeur)
 }
 }
 
+/*
 void MapWriter::Objet(Vector3D where ,int Longueur,int Hauteur,int Largeur)
 {
 ImageFile Imageface;
 ImageFile Imageprofile;
 double Diff;
 
-/*
+
 vector::Objet<Vector3D*>
 
 for int (i=0;i<   ;++i)

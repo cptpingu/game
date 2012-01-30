@@ -167,7 +167,7 @@ MAIN
   // MapWriter Chocopops;
   // Chocopops.Debut();
   // Chocopops.Sol(100);
-  // Chocopops.Building(Vector3D(1,1,1), 5, 0, 5);
+   //Chocopops.Building(Vector3D(10,10,1), 5, 0, 5);
 
 
   glMatrixMode( GL_PROJECTION );

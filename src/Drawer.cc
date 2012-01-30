@@ -112,11 +112,25 @@ namespace
     glPushMatrix();
 
     TextureManager& textures = Singleton<TextureManager>::getInstance();
-    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
-    glActiveTexture(GL_TEXTURE0_ARB);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures["test"]);
     glEnable(GL_TEXTURE_2D);
+    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+    glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+
+
+
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+    glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
+
+   /* glActiveTexture(GL_TEXTURE0_ARB);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textures["test"]);
     glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
     glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
     glEnable(GL_TEXTURE_GEN_S);
@@ -129,12 +143,13 @@ namespace
     glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
     glEnable(GL_TEXTURE_GEN_S);
     glEnable(GL_TEXTURE_GEN_T);
-
+*/
     glBegin(GL_TRIANGLE_STRIP);
     auto end = triangles.end();
     for (auto it = triangles.begin(); it != end; ++it)
     {
       glMultiTexCoord3i(GL_TEXTURE1, 0, 0, 0);
+      glMultiTexCoord3i(GL_TEXTURE2, 0, 0, 0);
       glTexCoord2i((*it)->_x, (*it)->_y);
       glVertex3d((*it)->_x, (*it)->_y, (*it)->_z);
     }

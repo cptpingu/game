@@ -102,3 +102,15 @@ Map::getTriangles() const
 {
   return _triangles;
 }
+
+Map::blocks_type&
+Map::getBlocks()
+{
+  return _blocks;
+}
+
+Map::triangles_type&
+Map::getTriangles()
+{
+  return _triangles;
+}

@@ -1,26 +1,62 @@
 #include "Map.hh"
 #include <fstream>
+#include "Core/Traits.hh"
 
 namespace
 {
+  template <typename T, bool is_pointer>
+  struct LoadFromFileHelper
+  {
+    static bool func(const std::string& filename, T& collection)
+    {
+      std::ifstream file(filename.c_str());
+      typename T::raw_item_type::type x;
+      typename T::raw_item_type::type y;
+      typename T::raw_item_type::type z;
+
+      if (!file)
+        return false;
+
+      while (file)
+      {
+        file >> x >> y >> z;
+        collection.add(new typename T::raw_item_type(x, y, z));
+      }
+
+      return true;
+    }
+  };
+
+  template <typename T>
+  struct LoadFromFileHelper<T, false>
+  {
+    static bool func(const std::string& filename, T& collection)
+    {
+      std::ifstream file(filename.c_str());
+      //    typename T::type::raw_type x;
+      //    typename T::type::raw_type y;
+      //    typename T::type::raw_type z;
+      double x;
+      double y;
+      double z;
+
+      if (!file)
+        return false;
+
+      while (file)
+      {
+        file >> x >> y >> z;
+        collection.add(typename T::raw_item_type(x, y, z));
+      }
+
+      return true;
+    }
+  };
+
   template <typename T>
   bool loadFromFile(const std::string& filename, T& collection)
   {
-    std::ifstream file(filename.c_str());
-    typename T::type::type x;
-    typename T::type::type y;
-    typename T::type::type z;
-
-    if (!file)
-      return false;
-
-    while (file)
-    {
-      file >> x >> y >> z;
-      collection.add(new typename T::type(x, y, z));
-    }
-
-    return true;
+    return LoadFromFileHelper<T, Core::isPointer<typename T::item_type>::value>::func(filename, collection);
   }
 
   void checkAndLinks(const Map::temp_map_type& map, Block* block)
@@ -99,6 +135,18 @@ Map::getBlocks() const
 
 const Map::triangles_type&
 Map::getTriangles() const
+{
+  return _triangles;
+}
+
+Map::blocks_type&
+Map::getBlocks()
+{
+  return _blocks;
+}
+
+Map::triangles_type&
+Map::getTriangles()
 {
   return _triangles;
 }

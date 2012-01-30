@@ -34,7 +34,8 @@ HEADERS += \
     src/Core/Container3D.hh \
     src/Core/ListContainer3D.hh \
     src/Core/ListContainer3D.hxx \
-    src/Opengl.hh
+    src/Opengl.hh \
+    src/Core/Traits.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32

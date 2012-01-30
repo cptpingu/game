@@ -1,6 +1,9 @@
 #ifndef CORE_CONTAINER3D_HH_
 # define CORE_CONTAINER3D_HH_
 
+# include "Traits.hh"
+# include <cassert>
+
 namespace Core
 {
   /*!
@@ -18,6 +21,7 @@ namespace Core
     Container3D()
       : _x(), _y(), _z()
     {
+      assert(!isPointer<T>::value); // FIXME
     }
 
     Container3D(T x, T y, T z)

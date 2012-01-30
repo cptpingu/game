@@ -38,8 +38,9 @@ public:
   };
   typedef std::unordered_map<Core::Container3D<int>, Block*, Container3DIntHash> temp_map_type;
 public:
-  typedef Core::ListContainer3D<SolTriangle> triangles_type;
-  typedef Core::ListContainer3D<Block> blocks_type;
+  typedef Core::ListContainer3D<SolTriangle*> triangles_type;
+  typedef Core::ListContainer3D<Block*> blocks_type;
+  typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
 
 public:
   Map();
@@ -51,6 +52,8 @@ public:
 
   const blocks_type& getBlocks() const;
   const triangles_type& getTriangles() const;
+  blocks_type& getBlocks();
+  triangles_type& getTriangles();
 
 private:
   blocks_type _blocks;

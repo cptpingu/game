@@ -1,27 +1,27 @@
 namespace Core
 {
-  template <typename T>
-  ListContainer3D<T>::ListContainer3D()
+  template <typename T, bool is_pointer>
+  ListContainer3DTrait<T, is_pointer>::ListContainer3DTrait()
     : _list()
   {
   }
 
-  template <typename T>
-  ListContainer3D<T>::~ListContainer3D()
+  template <typename T, bool is_pointer>
+  ListContainer3DTrait<T, is_pointer>::~ListContainer3DTrait()
   {
     clear();
   }
 
-  template <typename T>
+  template <typename T, bool is_pointer>
   inline void
-  ListContainer3D<T>::add(T* item)
+  ListContainer3DTrait<T, is_pointer>::add(item_type item)
   {
     _list.push_back(item);
   }
 
-  template <typename T>
+  template <typename T, bool is_pointer>
   inline void
-  ListContainer3D<T>::clear()
+  ListContainer3DTrait<T, is_pointer>::clear()
   {
     const_iterator end = _list.end();
     for (const_iterator it = _list.begin(); it != end; ++it)
@@ -29,23 +29,23 @@ namespace Core
     _list.clear();
   }
 
-  template <typename T>
+  template <typename T, bool is_pointer>
   inline size_t
-  ListContainer3D<T>::size() const
+  ListContainer3DTrait<T, is_pointer>::size() const
   {
     return _list.size();
   }
 
-  template <typename T>
-  inline typename ListContainer3D<T>::const_iterator
-  ListContainer3D<T>::begin() const
+  template <typename T, bool is_pointer>
+  inline typename ListContainer3DTrait<T, is_pointer>::const_iterator
+  ListContainer3DTrait<T, is_pointer>::begin() const
   {
     return _list.begin();
   }
 
-  template <typename T>
-  inline typename ListContainer3D<T>::const_iterator
-  ListContainer3D<T>::end() const
+  template <typename T, bool is_pointer>
+  inline typename ListContainer3DTrait<T, is_pointer>::const_iterator
+  ListContainer3DTrait<T, is_pointer>::end() const
   {
     return _list.end();
   }

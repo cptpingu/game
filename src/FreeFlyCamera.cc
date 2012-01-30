@@ -7,9 +7,9 @@
 # define M_PI 3.14159265
 #endif
 
-FreeFlyCamera::FreeFlyCamera(const Vector3D& position)
+FreeFlyCamera::FreeFlyCamera()
 {
-  _position = position;
+  _position = Vector3D(0,0,0);
   _phi = 0;
   _theta = 0;
   VectorsFromAngles();

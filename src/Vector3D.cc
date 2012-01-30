@@ -125,7 +125,7 @@ double Vector3D::Distance(const Vector3D& v) const
 {
     return sqrt((_x-v._x)*(_x-v._x)+(_y-v._y)*(_y-v._y)+(_z*v._z)*(_z*v._z));
 }
-double Vector3D::Distance(int x,int y,int z) const
+double Vector3D::Distance(double x,double y,double z) const
 {
     return sqrt((_x-x)*(_x-x)+(_y-y)*(_y-y)+(_z*z)*(_z*z));
 }

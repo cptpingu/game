@@ -130,7 +130,6 @@ namespace
     glEnable(GL_TEXTURE_GEN_S);
     glEnable(GL_TEXTURE_GEN_T);
 
-    int i = 0;
     glBegin(GL_TRIANGLE_STRIP);
     auto end = triangles.end();
     for (auto it = triangles.begin(); it != end; ++it)

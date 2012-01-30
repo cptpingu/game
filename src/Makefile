@@ -44,7 +44,7 @@ $(TARGET): $(OBJ) Makefile.deps
 	$(CXX) -o $@ -c $<
 
 Makefile.deps: $(SRC) $(HEADER)
-	$(CXX) -MM $(SRC) > Makefile.deps
+	$(CXX) -MM $(CXXFLAGS) $(SRC) > Makefile.deps
 
 clean:
 	rm -f *.o *.~ *.core *.Dstore *.log *.ml *.err *\#*

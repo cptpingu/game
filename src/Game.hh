@@ -13,7 +13,6 @@
 #include <time.h>
 #include "GLUtils.hh"
 #include "FreeFlyCamera.hh"
-#include "Scene.hh"
 #include "Drawer.hh"
 #include "ImageFile.hh"
 
@@ -29,6 +28,7 @@ public:
   void play();
 
 private:
+  void loadtextures();
   void drawGL();
 
 private:

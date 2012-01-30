@@ -7,7 +7,6 @@ DESTDIR = .
 SOURCES += \
     src/Vector3D.cc \
     src/TextureManager.cc \
-    src/Scene.cc \
     src/main.cc \
     src/GLUtils.cc \
     src/FreeFlyCamera.cc \
@@ -23,7 +22,6 @@ HEADERS += \
     src/TextureManager.hh \
     src/Singleton.hxx \
     src/Singleton.hh \
-    src/Scene.hh \
     src/GLUtils.hh \
     src/FreeFlyCamera.hh \
     src/Block.hh \

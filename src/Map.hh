@@ -54,8 +54,7 @@ public:
   triangles_type& getTriangles();
   const blocks_type& getBlocks() const;
   const triangles_type& getTriangles() const;
-  blocks_type& getBlocks();
-  triangles_type& getTriangles();
+
 
 private:
   blocks_type _blocks;

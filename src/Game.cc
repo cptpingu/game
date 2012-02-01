@@ -11,7 +11,7 @@ Game::load()
   glEnable(GL_TEXTURE_2D);
 
   loadtextures();
-
+/*
   static const std::string filename = "Carte.txt";
   if (!_map.loadBlocks(filename))
   {
@@ -25,11 +25,11 @@ Game::load()
     std::cerr << "Unable to load " << terrain << std::endl;
     return false;
   }
-
+*/
   Map::triangles_type tmp2;
-  _architecte.ground(_map.getTriangles(),Vector3D (0,0,0),150);
+  _architecte.ground(_map.getTriangles(),Vector3D (0,0,1),40);
   //TEST.Ground(Vector3D (150,0,0),150);
-  _architecte.mountain(tmp2, Vector3D (10,10,0), 100, 10);
+  _architecte.mountain(tmp2, Vector3D (0,0,0), 200, 10);
   _architecte.mergeGround(_map.getTriangles(), tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;
@@ -191,7 +191,7 @@ Game::drawGL()
   _drawer.drawMap(_map);
   glEnable(GL_FOG) ;
   GLfloat fogcolor[4] = {0.5, 0.5, 0.5, 1} ;
-  GLint fogmode = GL_EXP ;
+  GLint fogmode = GL_LINEAR;//GL_EXP ;
   glFogi (GL_FOG_MODE, fogmode) ;
   glFogfv(GL_FOG_COLOR, fogcolor) ;
   glFogf(GL_FOG_DENSITY, 0.1) ;

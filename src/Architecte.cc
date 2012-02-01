@@ -54,25 +54,30 @@ Architecte::ground(Map::triangles_type & tmp, const Vector3D& where, int size)
   }
 
   int k = 0;
-  for (int i = 0; i <= size - 1; i++)
+  for (int i = 0; i < size ; i++)
   {
-    for(int j = 0; j <= size - 1; j++)
+    for(int j = 0; j < size ; j++)
     {
       if (j != size - 1)
       {
-        tmp.add(new SolTriangle(i + where._x,
+        tmp.add(new SolTriangle(i+k + where._x,
+                                k * (size - 1- 2*j) + j  + where._y,
+                                height[i+k + size * (k * (size - 1- 2*j) + j )] + where._z - heightMean));
+        tmp.add(new SolTriangle(i + (1-k) + where._x,
                                 k * (size - 1) + j - 2 * j * k + where._y,
-                                height[i + size * (k * (size - 1) + j - 2 * j * k)] + where._z - heightMean));
-        tmp.add(new SolTriangle(i + 1 + where._x,
-                                k * (size - 1) + j - 2 * j * k + where._y,
-                                height[i + 1 + size *(k * (size - 1) + j - 2 * j * k)] + where._z - heightMean));
+                                height[i + (1-k) + size *(k * (size - 1- 2*j) + j )] + where._z - heightMean));
       }
       else
       {
         k= (k + 1) % 2;
-        tmp.add(new SolTriangle(i + where._x,
-                                k * (size) - k + where._y,
-                                height[i + 1 + size *(k *(size - 1) - k)] + where._z - heightMean));
+        tmp.add(new SolTriangle(i + (1-k) + where._x,
+                                k*(size-1) + where._y ,
+                                height[i + (1-k) + size*(k*(size - 1) )] + where._z- heightMean));
+
+        tmp.add(new SolTriangle(i+k + where._x,
+                                k * (size-1) + where._y,
+                                height[i+k + size *(k *(size - 1) )] + where._z - heightMean));
+
       }
     }
   }
@@ -129,13 +134,24 @@ Architecte::mountain(Map::triangles_type& tmp, const Vector3D& where, double pea
     {
       if ( j != size - 1)
       {
-        tmp.add(new SolTriangle(i+where._x,k*(size-1)+j -2*j*k +where._y,height[i+size*(k*(size-1)+j -2*j*k)]+where._z));
-        tmp.add(new SolTriangle(i+1+where._x, k*(size-1)+j -2*j*k+where._y, height[i+1+size*(k*(size-1)+j -2*j*k)] +where._z));
+        tmp.add(new SolTriangle(i+k + where._x,
+                                k*(size-1)+j -2*j*k + where._y,
+                                height[i+k+size*(k*(size-1)+j -2*j*k)]+where._z));
+        tmp.add(new SolTriangle(i + (1-k) + where._x,
+                                k*(size-1)+j -2*j*k+where._y,
+                                height[i+(1-k)+size*(k*(size-1)+j -2*j*k)] +where._z));
       }
       else
       {
         k = (k + 1) % 2;
-        tmp.add(new SolTriangle(i+where._x,k*(size) -k +where._y ,height[i+1+size*(k*(size-1) -k)]+where._z));
+        tmp.add(new SolTriangle(i + (1-k) + where._x,
+                                k*(size-1) + where._y ,
+                                height[i + (1-k) + size*(k*(size - 1) )] + where._z));
+
+        tmp.add(new SolTriangle(i+k + where._x,
+                                k * (size-1) + where._y,
+                                height[i+k + size *(k *(size - 1) )] + where._z ));
+
       }
     }
 }
@@ -156,3 +172,5 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
     ++it1;
   }
 }
+
+

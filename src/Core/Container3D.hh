@@ -36,7 +36,7 @@ namespace Core
 
     bool operator!=(const Container3D<T>& container) const
     {
-      return !operator !=(container);
+      return !operator==(container);
     }
 
   public:

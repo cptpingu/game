@@ -146,7 +146,6 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   auto end1 = ground.end();
   auto end2 = deformation.end();
   auto it1 = ground.begin();
-  std::cout << (ground.begin() == ground.end()) << std::endl;
   for (auto it2 = deformation.begin(); it2 != end2; ++it2)
   {
     while (it1 != end1 && **it1 != **it2)

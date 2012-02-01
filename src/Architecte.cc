@@ -149,8 +149,10 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   for (auto it2 = deformation.begin(); it2 != end2; ++it2)
   {
     while (it1 != end1 && *it1 != *it2)
+
       ++it1;
     apply(*it2,*it1);
-    ++it1;
+    if(it1 !=end1)
+    {++it1;}
   }
 }

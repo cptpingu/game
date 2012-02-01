@@ -6,12 +6,12 @@
 #include <time.h>
 #include <cstdlib>
 #include <vector>
+#include <cmath>
 #include "Vector3D.hh"
-#include "Math.h"
+
 MapWriter::MapWriter()
-{}
-
-
+{
+}
 
 void MapWriter::Debut()
 {

@@ -6,11 +6,10 @@ all:
 clean:
 	rm -f *.o *.~ *.core *.Dstore *.log *.ml *.err *\#*
 	cd src && $(MAKE) clean && cd ..
-	cd bonus && $(MAKE) clean && cd ..
 
 distclean: clean
 	cd src && $(MAKE) distclean && cd ..
-	rm -f $(EXE) Makefile.rules Makefile.deps $(EXE)_bonus
+	rm -f $(EXE) Makefile.rules Makefile.deps
 
 
 rights:

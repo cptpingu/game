@@ -25,6 +25,22 @@ Game::load()
     return false;
   }
 
+
+  Map::triangles_type Tmp2;
+  _architecte.Ground(_map.getTriangles(),Vector3D (0,0,0),150);
+  //TEST.Ground(Vector3D (150,0,0),150);
+  _architecte.Montagne(Tmp2,Vector3D (10,10,0),15,20);
+  _architecte.MergeGround(_map.getTriangles(),Tmp2);
+  //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
+  //MapWriter Chocopops;
+  // Chocopops.Debut();
+   //Chocopops.Sol(150);
+   //Chocopops.Montagne(Vector3D(30,30,1),30,20);
+   //Chocopops.Building(Vector3D(10,10,1), 5, 0, 5);
+
+
+
+
   return true;
 }
 
@@ -80,6 +96,7 @@ Game::play()
 
     drawAxis(2);
     drawGL();
+
 
     stop_time = SDL_GetTicks();
     if ((stop_time - last_time) < time_per_frame)

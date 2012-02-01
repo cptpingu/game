@@ -118,6 +118,12 @@ Map::loadTriangles(const std::string& filename)
 }
 
 void
+Map::lazyChunkLoading(const Vector3D& position)
+{
+
+}
+
+void
 Map::clear()
 {
   _blocks.clear();

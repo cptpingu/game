@@ -3,6 +3,7 @@
 
 # include "Block.hh"
 # include "SolTriangle.hh"
+# include "Vector3D.hh"
 
 # include "Core/ListContainer3D.hh"
 
@@ -39,6 +40,7 @@ public:
   typedef std::unordered_map<Core::Container3D<int>, Block*, Container3DIntHash> temp_map_type;
 public:
   typedef Core::ListContainer3D<SolTriangle*> triangles_type;
+  typedef std::unordered_map<Core::Container3D<int>, triangles_type> chunks_type;
   typedef Core::ListContainer3D<Block*> blocks_type;
   typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
 
@@ -49,6 +51,15 @@ public:
   bool loadBlocks(const std::string& filename);
   bool loadTriangles(const std::string& filename);
   void clear();
+
+  /*!
+  ** Check if a map chunk need to be loaded.
+  ** Release too far map chunks.
+  ** Inexistant chunk is dynamically generated.
+  **
+  ** @param position The current position of the camera.
+  */
+  void lazyChunkLoading(const Vector3D& position);
 
   blocks_type& getBlocks();
   triangles_type& getTriangles();

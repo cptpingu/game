@@ -40,7 +40,7 @@ void MapWriter::Sol(int size)
     for  (int i=0;i<loopSize;++i)
     {
 
-                Altitude[i] = rand()%10;
+                Altitude[i] = rand()%50;
 
     }
 

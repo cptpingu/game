@@ -40,9 +40,9 @@ MAIN
     return 1;
   }
 
-  // MapWriter Chocopops;
-  // Chocopops.Debut();
-  // Chocopops.Sol(100);
+   MapWriter Chocopops;
+   Chocopops.Debut();
+   Chocopops.Sol(150);
    //Chocopops.Building(Vector3D(10,10,1), 5, 0, 5);
 
   Game game;

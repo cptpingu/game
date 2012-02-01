@@ -19,17 +19,18 @@ Game::load()
   }
 
   static const std::string terrain = "Terrain.txt";
-  if (!_map.loadTriangles(terrain))
-  {
-    std::cerr << "Unable to load " << terrain << std::endl;
-    return false;
-  }
+//  if (!_map.loadTriangles(terrain))
+//  {
+//    std::cerr << "Unable to load " << terrain << std::endl;
+//    return false;
+//  }
 
 
   Map::triangles_type Tmp2;
   _architecte.ground(_map.getTriangles(),Vector3D (0,0,0),150);
   //TEST.Ground(Vector3D (150,0,0),150);
-  _architecte.moutain(Tmp2,Vector3D (10,10,0),15,20);
+  //_architecte.moutain(Tmp2,Vector3D (10,10,0),15,20);
+  Tmp2.add(new SolTriangle(0,0,0));
   _architecte.mergeGround(_map.getTriangles(),Tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;

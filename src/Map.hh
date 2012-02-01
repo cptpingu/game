@@ -66,7 +66,6 @@ public:
   const blocks_type& getBlocks() const;
   const triangles_type& getTriangles() const;
 
-
 private:
   blocks_type _blocks;
   triangles_type _triangles;

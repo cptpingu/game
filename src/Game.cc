@@ -11,6 +11,7 @@ Game::load()
   glEnable(GL_TEXTURE_2D);
 
   loadtextures();
+
   static const std::string filename = "Carte.txt";
   if (!_map.loadBlocks(filename))
   {
@@ -19,25 +20,23 @@ Game::load()
   }
 
   static const std::string terrain = "Terrain.txt";
-//  if (!_map.loadTriangles(terrain))
-//  {
-//    std::cerr << "Unable to load " << terrain << std::endl;
-//    return false;
-//  }
+  if (!_map.loadTriangles(terrain))
+  {
+    std::cerr << "Unable to load " << terrain << std::endl;
+    return false;
+  }
 
-
-  Map::triangles_type Tmp2;
+  Map::triangles_type tmp2;
   _architecte.ground(_map.getTriangles(),Vector3D (0,0,0),150);
   //TEST.Ground(Vector3D (150,0,0),150);
-  //_architecte.moutain(Tmp2,Vector3D (10,10,0),15,20);
-  Tmp2.add(new SolTriangle(0,0,0));
-  _architecte.mergeGround(_map.getTriangles(),Tmp2);
+  _architecte.mountain(tmp2, Vector3D (10,10,0), 15, 20);
+  _architecte.mergeGround(_map.getTriangles(), tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;
   // Chocopops.Debut();
-   //Chocopops.Sol(150);
-   //Chocopops.Montagne(Vector3D(30,30,1),30,20);
-   //Chocopops.Building(Vector3D(10,10,1), 5, 0, 5);
+  //Chocopops.Sol(150);
+  //Chocopops.Montagne(Vector3D(30,30,1),30,20);
+  //Chocopops.Building(Vector3D(10,10,1), 5, 0, 5);
 
 
 

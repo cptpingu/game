@@ -11,26 +11,29 @@ Game::load()
   glEnable(GL_TEXTURE_2D);
 
   loadtextures();
+  /*
   static const std::string filename = "Carte.txt";
   if (!_map.loadBlocks(filename))
   {
     std::cerr << "Unable to load " << filename << std::endl;
     return false;
   }
-
+  */
+/*
   static const std::string terrain = "Terrain.txt";
   if (!_map.loadTriangles(terrain))
   {
     std::cerr << "Unable to load " << terrain << std::endl;
     return false;
   }
-
+*/
 
   Map::triangles_type Tmp2;
-  _architecte.ground(_map.getTriangles(),Vector3D (0,0,0),150);
+ // Tmp2.add(new SolTriangle(0,0,0));
+  //_architecte.ground(_map.getTriangles(),Vector3D (0,0,0),150);
   //TEST.Ground(Vector3D (150,0,0),150);
-  _architecte.moutain(Tmp2,Vector3D (10,10,0),15,20);
-  _architecte.mergeGround(_map.getTriangles(),Tmp2);
+// _architecte.mountain(Tmp2,Vector3D (10,10,0),15,20);
+ // _architecte.mergeGround(_map.getTriangles(),Tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;
   // Chocopops.Debut();

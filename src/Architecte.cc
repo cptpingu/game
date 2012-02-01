@@ -11,7 +11,7 @@ namespace
 {
   void apply(const SolTriangle* deformation, SolTriangle* original)
   {
-    original->_z = original->_z + deformation->_z/2;
+    original->_z = (original->_z + deformation->_z)/2;
   }
 } //namespace
 
@@ -21,7 +21,7 @@ Architecte::Architecte()
 //L'architecte fait les plans : les écrits dans un fichier et / ou les stock en memoire.
 
 void
-Architecte::ground(Map::triangles_type& tmp, const Vector3D& where, int size)
+Architecte::ground(Map::triangles_type & tmp, const Vector3D& where, int size)
 {
   std::vector<double> height;
   int loopSize = size * size;
@@ -107,7 +107,7 @@ Architecte::building(Map::blocks_type& tmp, const Vector3D& where, int longueur,
 }
 
 void
-Architecte::moutain(Map::triangles_type& tmp, const Vector3D& where, double peak, int size)
+Architecte::mountain(Map::triangles_type& tmp, const Vector3D& where, double peak, int size)
 {
   std::vector<double> height;
   int loopSize = size * size;
@@ -118,14 +118,14 @@ Architecte::moutain(Map::triangles_type& tmp, const Vector3D& where, double peak
       for (int j = 0; j < size; ++j)
         height[i + j * size] = peak * exp(-((i - size / 2) * (i - size / 2) + (j - size / 2) * (j - size / 2)));
 
-  for (int k = 0; k <= 10; ++k)
+  for (int k = 0; k <= 5; ++k)
     for (int i = 0; i < size - 1; ++i)
       for (int j = 0; j < size - 1; ++j)
         height[i + j * size] = (height[i + 1 + j * size] + height[i + (j + 1) * size] + height[i + 1 + (j + 1)  *size] + height[i + j * size]) / 4;
 
   int k = 0;
-  for (int i = 0; i <= size - 1; i++)
-    for (int j = 0; j <= size-1; j++)
+  for (int i = 0; i < size; i++)
+    for (int j = 0; j < size; j++)
     {
       if ( j != size - 1)
       {
@@ -150,7 +150,7 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   {
     while (it1 != end1 && *it1 != *it2)
       ++it1;
-    apply(*it1,*it2);
+    apply(*it2,*it1);
     ++it1;
   }
 }

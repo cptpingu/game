@@ -9,6 +9,7 @@
 #include "Map.hh"
 #include "MapWriter.hh"
 #include "TextureManager.hh"
+#include "architecte.h"
 
 #include <time.h>
 #include "GLUtils.hh"
@@ -35,6 +36,7 @@ private:
   FreeFlyCamera _camera;
   Map           _map;
   Drawer        _drawer;
+  Architecte    _architecte;
 };
 
 #endif /! *GAME_HH_ */

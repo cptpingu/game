@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
 
 #include "Architecte.hh"
 #include "Vector3D.hh"
@@ -165,7 +166,7 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
     while (it1 != end1 && (*it1)->_x != (*it2)->_x && (*it1)->_y != (*it2)->_y)
         ++it1;
     if(it1 == end1)
-      break;   
+      break;
     apply(*it2,*it1);
     ++it1;
   }

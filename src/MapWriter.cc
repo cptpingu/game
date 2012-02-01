@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <vector>
 #include "Vector3D.hh"
+#include "Math.h"
 MapWriter::MapWriter()
 {}
 
@@ -44,12 +45,13 @@ void MapWriter::Sol(int size)
 
     }
 
-    for (int k=0;k<=50;++k)
+    for (int k=0;k<=30;++k)
     {
         for (int i=0;i <= size-2;++i)
         {
             for (int j=0; j <= size-2;++j)
             {
+
             Altitude[i+j*size]= (Altitude[i+1+j*size]+Altitude[i+(j+1)*size]+Altitude[i+1+(j+1)*size]+Altitude[i+j*size])/4;
             }
         }
@@ -112,6 +114,96 @@ void MapWriter::Building(Vector3D where ,int Longueur,int Hauteur,int Largeur)
 }
 
 }
+
+
+
+
+
+
+
+
+void MapWriter::Montagne(Vector3D where ,double Sommet,int size)
+
+{
+    std::vector<double> Altitude;
+     int loopSize = size * size;
+    Altitude.reserve(loopSize);
+
+    for (int k=0;k<=10;++k)
+    {
+        for (int i=0;i < size;++i)
+        {
+            for (int j=0; j < size;++j)
+            {
+
+            Altitude[i+j*size]=  Sommet*exp(-((i-size/2)*(i-size/2)+(j-size/2)*(j-size/2)));
+                //Altitude[i+j*size]= Sommet*fabs(size/2i/size
+            }
+        }
+}
+ std::ofstream fichier("Terrain.txt",std::ios::app);
+
+int k=0;
+        for(int i = 0; i <= size-1; i++)
+            {
+            for(int j = 0; j <= size-1; j++)
+                {
+
+                if ( j != size-1)
+
+                {
+                fichier << i  << " " << k*(size-1)+j -2*j*k <<" "<< Altitude[i+size*(k*(size-1)+j -2*j*k)]  << std::endl;
+                fichier << i+1  << " " << k*(size-1)+j -2*j*k<<" "<< Altitude[i+1+size*(k*(size-1)+j -2*j*k)]   << std::endl;
+                }
+        else
+{
+                k=(k+1)%2;
+
+                fichier <<  i  << " " << k*(size) -k  << " " << Altitude[i+1+size*(k*(size-1) -k)] << std::endl;
+                //fichier <<  i  << " " << k*(size-) -k  << " " << Altitude[i+1+size*(k*(size-1) -k)] << std::endl;
+
+
+}
+}
+            }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
     void MapWriter::Village(Vector3D where ,int Longueur,int Hauteur,int Largeur)
 {

@@ -1,10 +1,8 @@
-#include "Architecte.hh"
-#include <cstdlib>
 #include <iostream>
+#include <cmath>
+
+#include "Architecte.hh"
 #include "Vector3D.hh"
-#include <vector>
-#include <fstream>
-#include "Math.h"
 #include "Map.hh"
 
 namespace

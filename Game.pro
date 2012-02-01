@@ -15,7 +15,8 @@ SOURCES += \
     src/Drawer.cc \
     src/ImageFile.cc \
     src/Opengl.cc \
-    src/Game.cc
+    src/Game.cc \
+    src/Architecte.cc
 
 HEADERS += \
     src/Vector3D.hh \
@@ -35,7 +36,8 @@ HEADERS += \
     src/Core/ListContainer3D.hxx \
     src/Opengl.hh \
     src/Core/Traits.hh \
-    src/Game.hh
+    src/Game.hh \
+    src/Architecte.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32

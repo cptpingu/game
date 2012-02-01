@@ -12,6 +12,8 @@ public:
     void Debut();
     void Sol(int size);
     void Building(Vector3D where ,int Longueur,int Hauteur, int Largeur);
+    void Montagne(Vector3D where ,double Sommet,int size);
+
 };
 
 #endif // MAPWRITER_HH

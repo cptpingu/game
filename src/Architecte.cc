@@ -1,10 +1,9 @@
-#include "Architecte.hh"
-#include <cstdlib>
 #include <iostream>
+#include <cmath>
+#include <cstdlib>
+
+#include "Architecte.hh"
 #include "Vector3D.hh"
-#include <vector>
-#include <fstream>
-#include "Math.h"
 #include "Map.hh"
 
 namespace
@@ -174,8 +173,6 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
     {++it1;}
     if(it1 == end1)
     {break;}
-
-
 
     apply(*it2,*it1);
 

@@ -27,9 +27,10 @@ Game::load()
   }
 */
   Map::triangles_type tmp2;
-  _architecte.ground(_map.getTriangles(),Vector3D (0,0,1),40);
+  _architecte.ground(_map.getTriangles(),Vector3D (0,0,0),100);
+
   //TEST.Ground(Vector3D (150,0,0),150);
-  _architecte.mountain(tmp2, Vector3D (0,0,0), 200, 10);
+  _architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );
   _architecte.mergeGround(_map.getTriangles(), tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;

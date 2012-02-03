@@ -39,4 +39,4 @@ private:
   Architecte    _architecte;
 };
 
-#endif /! *GAME_HH_ */
+#endif /* !GAME_HH_ */

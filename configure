@@ -41,6 +41,9 @@ OS=`uname -s`
 echo "OS=$OS" > Makefile.rules
 CXX=/usr/bin/g++
 
+SRC=`cat Game.pro | grep -E "src/.*\.cc" | sed 's/src\///'`
+HEADER=`cat Game.pro | grep -E "src/.*\.h(h|xx)" | sed 's/src\///'`
+
 CXXFLAGS="$CXXFLAGS $DNDEBUG"
 echo "CXXFLAGS=$CXXFLAGS" >> Makefile.rules
 echo "LDFLAGS=$LDFLAGS" >> Makefile.rules
@@ -48,6 +51,8 @@ echo "CXX=$CXX" >> Makefile.rules
 echo "PROJ=$PROJ" >> Makefile.rules
 echo "LOGIN=$LOGIN" >> Makefile.rules
 echo "EXE=$EXE" >> Makefile.rules
+echo "SRC=$SRC" >> Makefile.rules
+echo "HEADER=$HEADER" >> Makefile.rules
 
 # Display some information
 echo "Login:                $LOGIN"

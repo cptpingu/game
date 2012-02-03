@@ -11,7 +11,9 @@ namespace
 {
   void apply(const SolTriangle* deformation, SolTriangle* original)
   {
+
     original->_z = (original->_z + deformation->_z)/2;
+
   }
 } //namespace
 
@@ -135,22 +137,25 @@ Architecte::mountain(Map::triangles_type& tmp, const Vector3D& where, double pea
       if ( j != size - 1)
       {
         tmp.add(new SolTriangle(i+k + where._x,
-                                k*(size-1)+j -2*j*k + where._y,
+                                k*(size-1-2*j)+j + where._y,
                                 height[i+k+size*(k*(size-1)+j -2*j*k)]+where._z));
+
         tmp.add(new SolTriangle(i + (1-k) + where._x,
-                                k*(size-1)+j -2*j*k+where._y,
-                                height[i+(1-k)+size*(k*(size-1)+j -2*j*k)] +where._z));
+                                k*(size-1-2*j)+j + where._y,
+                                height[i+(1-k)+size*(k*(size-1)+j -2*j*k)] + where._z));
       }
       else
       {
         k = (k + 1) % 2;
+
         tmp.add(new SolTriangle(i + (1-k) + where._x,
                                 k*(size-1) + where._y ,
                                 height[i + (1-k) + size*(k*(size - 1) )] + where._z));
 
-        tmp.add(new SolTriangle(i+k + where._x,
+        tmp.add(new SolTriangle(i+ k + where._x,
                                 k * (size-1) + where._y,
                                 height[i+k + size *(k *(size - 1) )] + where._z ));
+
 
       }
     }
@@ -164,12 +169,18 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   auto it1 = ground.begin();
   for (auto it2 = deformation.begin(); it2 != end2; ++it2)
   {
-    while (it1 != end1 && (*it1)->_x != (*it2)->_x && (*it1)->_y != (*it2)->_y)
-        ++it1;
+
+    while (it1 != end1 && (*it1)->_x != (*it2)->_x || (*it1)->_y != (*it2)->_y)
+    {++it1;}
     if(it1 == end1)
-      break;   
+    {break;}
+
+
+
     apply(*it2,*it1);
+
     ++it1;
+
   }
 }
 

@@ -4,6 +4,7 @@
 # include "Block.hh"
 # include "SolTriangle.hh"
 # include "Vector3D.hh"
+# include "Chunk.hh"
 
 # include "Core/ListContainer3D.hh"
 
@@ -39,7 +40,8 @@ public:
   };
   typedef std::unordered_map<Core::Container3D<int>, Block*, Container3DIntHash> temp_map_type;
 public:
-  typedef Core::ListContainer3D<SolTriangle*> triangles_type;
+  //typedef Core::ListContainer3D<SolTriangle*> triangles_type;
+  typedef Chunk triangles_type;
   typedef std::unordered_map<Core::Container3D<int>, triangles_type> chunks_type;
   typedef Core::ListContainer3D<Block*> blocks_type;
   typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;

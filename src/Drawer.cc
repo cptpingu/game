@@ -145,13 +145,13 @@ namespace
     glEnable(GL_TEXTURE_GEN_T);
 */
     glBegin(GL_TRIANGLE_STRIP);
-    auto end = triangles.end();
-    for (auto it = triangles.begin(); it != end; ++it)
+    auto end = triangles.cend();
+    for (auto it = triangles.cbegin(); it != end; ++it)
     {
       glMultiTexCoord3i(GL_TEXTURE1, 0, 0, 0);
       glMultiTexCoord3i(GL_TEXTURE2, 0, 0, 0);
-      glTexCoord2i((*it)->_x, (*it)->_y);
-      glVertex3d((*it)->_x, (*it)->_y, (*it)->_z);
+      glTexCoord2i((*it)->getX(), (*it)->getY());
+      glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());
     }
     glEnd();
 

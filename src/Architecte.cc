@@ -8,11 +8,9 @@
 
 namespace
 {
-  void apply(const SolTriangle* deformation, SolTriangle* original)
+  void apply(Chunk::Coord* original, const Chunk::Coord* deformation)
   {
-
-    original->_z = (original->_z + deformation->_z)/2;
-
+    original->setZ((original->getZ() + deformation->getZ()) / 2);
   }
 } //namespace
 
@@ -22,7 +20,7 @@ Architecte::Architecte()
 //L'architecte fait les plans : les écrits dans un fichier et / ou les stock en memoire.
 
 void
-Architecte::ground(Map::triangles_type & tmp, const Vector3D& where, int size)
+Architecte::generateRandomGround(Map::triangles_type & tmp, const Vector3D& where, int size)
 {
   std::vector<double> height;
   int loopSize = size * size;
@@ -61,24 +59,23 @@ Architecte::ground(Map::triangles_type & tmp, const Vector3D& where, int size)
     {
       if (j != size - 1)
       {
-        tmp.add(new SolTriangle(i+k + where._x,
-                                k * (size - 1- 2*j) + j  + where._y,
-                                height[i+k + size * (k * (size - 1- 2*j) + j )] + where._z - heightMean));
-        tmp.add(new SolTriangle(i + (1-k) + where._x,
-                                k * (size - 1) + j - 2 * j * k + where._y,
-                                height[i + (1-k) + size *(k * (size - 1- 2*j) + j )] + where._z - heightMean));
+        tmp.add(i+k + where._x,
+                k * (size - 1- 2*j) + j  + where._y,
+                height[i+k + size * (k * (size - 1- 2*j) + j )] + where._z - heightMean);
+        tmp.add(i + (1-k) + where._x,
+                k * (size - 1) + j - 2 * j * k + where._y,
+                height[i + (1-k) + size *(k * (size - 1- 2*j) + j )] + where._z - heightMean);
       }
       else
       {
         k= (k + 1) % 2;
-        tmp.add(new SolTriangle(i + (1-k) + where._x,
-                                k*(size-1) + where._y ,
-                                height[i + (1-k) + size*(k*(size - 1) )] + where._z- heightMean));
+        tmp.add(i + (1-k) + where._x,
+                k*(size-1) + where._y ,
+                height[i + (1-k) + size*(k*(size - 1) )] + where._z- heightMean);
 
-        tmp.add(new SolTriangle(i+k + where._x,
-                                k * (size-1) + where._y,
-                                height[i+k + size *(k *(size - 1) )] + where._z - heightMean));
-
+        tmp.add(i+k + where._x,
+                k * (size-1) + where._y,
+                height[i+k + size *(k *(size - 1) )] + where._z - heightMean);
       }
     }
   }
@@ -135,25 +132,25 @@ Architecte::mountain(Map::triangles_type& tmp, const Vector3D& where, double pea
     {
       if ( j != size - 1)
       {
-        tmp.add(new SolTriangle(i+k + where._x,
-                                k*(size-1-2*j)+j + where._y,
-                                height[i+k+size*(k*(size-1)+j -2*j*k)]+where._z));
+        tmp.add(i+k + where._x,
+                k*(size-1-2*j)+j + where._y,
+                height[i+k+size*(k*(size-1)+j -2*j*k)]+where._z);
 
-        tmp.add(new SolTriangle(i + (1-k) + where._x,
-                                k*(size-1-2*j)+j + where._y,
-                                height[i+(1-k)+size*(k*(size-1)+j -2*j*k)] + where._z));
+        tmp.add(i + (1-k) + where._x,
+                k*(size-1-2*j)+j + where._y,
+                height[i+(1-k)+size*(k*(size-1)+j -2*j*k)] + where._z);
       }
       else
       {
         k = (k + 1) % 2;
 
-        tmp.add(new SolTriangle(i + (1-k) + where._x,
-                                k*(size-1) + where._y ,
-                                height[i + (1-k) + size*(k*(size - 1) )] + where._z));
+        tmp.add(i + (1-k) + where._x,
+                k*(size-1) + where._y ,
+                height[i + (1-k) + size*(k*(size - 1) )] + where._z);
 
-        tmp.add(new SolTriangle(i+ k + where._x,
-                                k * (size-1) + where._y,
-                                height[i+k + size *(k *(size - 1) )] + where._z ));
+        tmp.add(i+ k + where._x,
+                k * (size-1) + where._y,
+                height[i+k + size *(k *(size - 1) )] + where._z );
 
 
       }
@@ -164,21 +161,15 @@ void
 Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& deformation)
 {
   auto end1 = ground.end();
-  auto end2 = deformation.end();
+  auto end2 = deformation.cend();
   auto it1 = ground.begin();
-  for (auto it2 = deformation.begin(); it2 != end2; ++it2)
+  for (auto it2 = deformation.cbegin(); it2 != end2; ++it2)
   {
-
-    while (it1 != end1 && (*it1)->_x != (*it2)->_x || (*it1)->_y != (*it2)->_y)
-    {++it1;}
-    if(it1 == end1)
-    {break;}
-
-    apply(*it2,*it1);
-
+    while (it1 != end1 && ((*it1)->getX() != (*it2)->getX() || (*it1)->getY() != (*it2)->getY()))
+      ++it1;
+    if (it1 == end1)
+      break;
+    apply(*it1, *it2);
     ++it1;
-
   }
 }
-
-

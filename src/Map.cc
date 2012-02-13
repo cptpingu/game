@@ -114,7 +114,21 @@ Map::loadBlocks(const std::string& filename)
 bool
 Map::loadTriangles(const std::string& filename)
 {
-  return loadFromFile(filename, _triangles);
+  std::ifstream file(filename.c_str());
+  double x;
+  double y;
+  double z;
+
+  if (!file)
+    return false;
+
+  while (file)
+  {
+    file >> x >> y >> z;
+    _triangles.add(x, y, z);
+  }
+
+  return true;
 }
 
 void

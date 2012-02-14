@@ -106,8 +106,7 @@ namespace
     }
   }
 
-  void draw(const Map::triangles_type& triangles)
-
+  void draw(const Chunk& triangles)
   {
     glPushMatrix();
 
@@ -115,7 +114,7 @@ namespace
 
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textures["test"]);
+    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
     glEnable(GL_TEXTURE_2D);
     glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
     glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
@@ -157,6 +156,14 @@ namespace
 
     glPopMatrix();
   }
+
+  void draw(const Map::chunks_type& chunks)
+  {
+    auto end = chunks.cend();
+    for (auto it = chunks.cbegin(); it != end; ++it)
+      draw(*it->second);
+  }
+
 } // namespace
 
 Drawer::Drawer()
@@ -166,5 +173,6 @@ Drawer::Drawer()
 void Drawer::drawMap(const Map& map) const
 {
   draw(map.getBlocks());
-  draw(map.getTriangles());
+  //draw(map.getTriangles());
+  draw(map.getChunks());
 }

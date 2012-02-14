@@ -25,7 +25,7 @@ public:
 
     virtual ~FreeFlyCamera();
 
-    Vector3D getCurrentPosition()const;
+    Vector3D getCurrentPosition() const;
 
 protected:
     double _speed;

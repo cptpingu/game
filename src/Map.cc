@@ -1,6 +1,7 @@
 #include "Map.hh"
 #include <fstream>
 #include "Core/Traits.hh"
+#include "Architecte.hh"
 
 namespace
 {
@@ -58,12 +59,12 @@ namespace
 
   void checkAndLinks(const Map::temp_map_type& map, Block* block)
   {
-#define LINK(X,Y,Z,ASSIGN) \
-    {\
-  auto found = map.find(Core::Container3D<int>(block->_x + X, block->_y + Y, block->_z + Z)); \
-  if (found != map.end())\
-  block->ASSIGN = found->second;\
-  }
+#define LINK(X,Y,Z,ASSIGN)                                              \
+    {                                                                   \
+      auto found = map.find(Core::Container3D<int>(block->_x + X, block->_y + Y, block->_z + Z)); \
+      if (found != map.end())                                           \
+        block->ASSIGN = found->second;                                  \
+    }
 
     LINK(1,0,0, _left);
     LINK(-1,0,0, _right);
@@ -131,10 +132,43 @@ Map::loadTriangles(const std::string& filename)
   return true;
 }
 
+namespace
+{
+  Chunk* loadChunk(int x, int y)
+  {
+    const Vector3D where(x * Chunk::SIZE, y * Chunk::SIZE, 0);
+    Architecte architecte;
+    Chunk* chunk = new Chunk;
+    architecte.generateRandomGround(*chunk, where, Chunk::SIZE);
+    // FIXME generate from file if it exists
+
+    return chunk;
+  }
+} // namespace
+
 void
 Map::lazyChunkLoading(const Vector3D& position)
 {
+#define LAZY_LOAD(X, Y) \
+  { \
+    std::pair<int, int> current((position._x / Chunk::SIZE) + (X),      \
+                                (position._y / Chunk::SIZE) + (Y));     \
+    if (_chunks.find(current) == _chunks.end())                         \
+      _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
+  }
 
+  LAZY_LOAD(0, 0);
+
+  LAZY_LOAD(-1, 0);
+  LAZY_LOAD(-1, -1);
+  LAZY_LOAD(0, -1);
+  LAZY_LOAD(1, -1);
+  LAZY_LOAD(0, 1);
+  LAZY_LOAD(1, 1);
+  LAZY_LOAD(1, 0);
+  LAZY_LOAD(-1, 1);
+
+#undef LAZY_LOAD
 }
 
 void
@@ -142,6 +176,25 @@ Map::clear()
 {
   _blocks.clear();
   _triangles.clear();
+  _chunks.clear();
+}
+
+Map::blocks_type&
+Map::getBlocks()
+{
+  return _blocks;
+}
+
+Map::triangles_type&
+Map::getTriangles()
+{
+  return _triangles;
+}
+
+Map::chunks_type&
+Map::getChunks()
+{
+  return _chunks;
 }
 
 const Map::blocks_type&
@@ -156,14 +209,8 @@ Map::getTriangles() const
   return _triangles;
 }
 
-Map::blocks_type&
-Map::getBlocks()
+const Map::chunks_type&
+Map::getChunks() const
 {
-  return _blocks;
-}
-
-Map::triangles_type&
-Map::getTriangles()
-{
-  return _triangles;
+  return _chunks;
 }

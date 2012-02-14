@@ -95,6 +95,7 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
+    _map.lazyChunkLoading(_camera.getCurrentPosition());
     _camera.animate(elapsed_time);
 
     drawAxis(2);
@@ -158,92 +159,90 @@ Game::drawGL()
   _camera.look();
 
 
-  //glEnable(GL_DEPTH_TEST); 	// Active le test de profondeur
-  glEnable(GL_LIGHTING); 	// Active l'éclairage
-  glEnable(GL_LIGHT0);
+  glEnable(GL_DEPTH_TEST);
+  // glEnable(GL_LIGHTING);
+  // glEnable(GL_LIGHT0);
 
-  double a=0;
-  int LightPos[4] = {10,10,30,1};
-  int MatSpec [4] = {1,1,1,1};
-
-
-  glMaterialiv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
-  glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,100);
+  // double a=0;
+  // int LightPos[4] = {10,10,30,1};
+  // int MatSpec [4] = {1,1,1,1};
 
 
-  glRotated(a,0,1,0);
-  glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+  // glMaterialiv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
+  // glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,100);
 
-  a=+1;
 
+  // glRotated(a,0,1,0);
+  // glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+  // a=+1;
   //float Light1Pos[4] = {15.0f, 15.0f, 20.0f, 1.0f};
-  float Light1Dif[4] = {1.0f, 0.2f, 0.2f, 1.0f};
-  float Light1Spec[4] = {1.0f, 0.2f, 0.2f, 1.0f};
-  float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+  // float Light1Dif[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+  // float Light1Spec[4] = {1.0f, 0.2f, 0.2f, 1.0f};
+  // float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
   //float Spot1Dir[3] = {0.0f, 0.0f, -1.0f};
 
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, Light1Dif); 	//Et ceux de la lumière
-  glLightfv(GL_LIGHT1, GL_SPECULAR, Light1Spec);
-  glLightfv(GL_LIGHT1, GL_AMBIENT, Light1Amb);
-  glEnable(GL_LIGHTING); 	//Et on allume la lumière
-  glEnable(GL_LIGHT1);
-  glLighti(GL_LIGHT1, GL_SPOT_CUTOFF, 30);
-  float Light1Dir[3] = {0.0f, 0.0f, -1.0f};
-  glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
+  // glLightfv(GL_LIGHT1, GL_DIFFUSE, Light1Dif); 	//Et ceux de la lumière
+  // glLightfv(GL_LIGHT1, GL_SPECULAR, Light1Spec);
+  // glLightfv(GL_LIGHT1, GL_AMBIENT, Light1Amb);
+  // glEnable(GL_LIGHTING); 	//Et on allume la lumière
+  // glEnable(GL_LIGHT1);
+  // glLighti(GL_LIGHT1, GL_SPOT_CUTOFF, 30);
+  // float Light1Dir[3] = {0.0f, 0.0f, -1.0f};
+  // glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
 
   _drawer.drawMap(_map);
-  glEnable(GL_FOG) ;
-  GLfloat fogcolor[4] = {0.5, 0.5, 0.5, 1} ;
-  GLint fogmode = GL_LINEAR;//GL_EXP ;
-  glFogi (GL_FOG_MODE, fogmode) ;
-  glFogfv(GL_FOG_COLOR, fogcolor) ;
-  glFogf(GL_FOG_DENSITY, 0.1) ;
-  glFogf(GL_FOG_START, 10.0) ;
-  glFogf(GL_FOG_END, 20.0) ;
+  // glEnable(GL_FOG) ;
+  // GLfloat fogcolor[4] = {0.5, 0.5, 0.5, 1} ;
+  // GLint fogmode = GL_LINEAR;//GL_EXP ;
+  // glFogi (GL_FOG_MODE, fogmode) ;
+  // glFogfv(GL_FOG_COLOR, fogcolor) ;
+  // glFogf(GL_FOG_DENSITY, 0.1) ;
+  // glFogf(GL_FOG_START, 10.0) ;
+  // glFogf(GL_FOG_END, 20.0) ;
 
 
   glFrustum( 5,   5,   5,   5,   2,  10);
 
 
-  glColor3f(1.0f,1.0f,1.0f);
-  TextureManager& textures = Singleton<TextureManager>::getInstance();
-  glBindTexture(GL_TEXTURE_2D, textures["eau"]);
-  glBegin(GL_QUADS);
-  glTexCoord2f(0,0);
-  glVertex3d(0,0,-2);
+  // glColor3f(1.0f,1.0f,1.0f);
+  // TextureManager& textures = Singleton<TextureManager>::getInstance();
+  // glBindTexture(GL_TEXTURE_2D, textures["eau"]);
+  // glBegin(GL_QUADS);
+  // glTexCoord2f(0,0);
+  // glVertex3d(0,0,-2);
 
-  glTexCoord2f(2,0);
-  glVertex3d(0, 60,-2);
+  // glTexCoord2f(2,0);
+  // glVertex3d(0, 60,-2);
 
-  glTexCoord2f(2,2);
-  glVertex3d(60,60,-2);
+  // glTexCoord2f(2,2);
+  // glVertex3d(60,60,-2);
 
-  glTexCoord2f(0,2);
-  glVertex3d(60,0,-2);
-  glEnd();
+  // glTexCoord2f(0,2);
+  // glVertex3d(60,0,-2);
+  // glEnd();
 
-  glColor4f(1.0f,1.0f,1.0f,0.55f);  // alpha 55%
-  // on active la transparence
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+  // glColor4f(1.0f,1.0f,1.0f,0.55f);  // alpha 55%
+  // // on active la transparence
+  // glEnable(GL_BLEND);
+  // glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 
 
-  glBindTexture(GL_TEXTURE_2D, textures["eau"]);
-  glBegin(GL_QUADS);
-  glTexCoord2f(0,0);
-  glVertex3d(0,0,-2);
+  // glBindTexture(GL_TEXTURE_2D, textures["eau"]);
+  // glBegin(GL_QUADS);
+  // glTexCoord2f(0,0);
+  // glVertex3d(0,0,-2);
 
-  glTexCoord2f(2,0);
-  glVertex3d(0, 60,-2);
+  // glTexCoord2f(2,0);
+  // glVertex3d(0, 60,-2);
 
-  glTexCoord2f(2,2);
-  glVertex3d(60,60,-2);
+  // glTexCoord2f(2,2);
+  // glVertex3d(60,60,-2);
 
-  glTexCoord2f(0,2);
-  glVertex3d(60,0,-2);
-  glEnd();
-  // désactive transparence
-  glDisable(GL_BLEND);
+  // glTexCoord2f(0,2);
+  // glVertex3d(60,0,-2);
+  // glEnd();
+  // // désactive transparence
+  // glDisable(GL_BLEND);
 
   glFlush();
 

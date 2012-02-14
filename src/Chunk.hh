@@ -8,6 +8,9 @@
 class Chunk
 {
 public:
+  static const int SIZE = 50;
+
+public:
   class Coord : private Core::Container3D<double>
   {
   public:

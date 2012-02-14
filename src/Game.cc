@@ -27,13 +27,17 @@ Game::load()
   }
 */
 
-  _architecte.generateRandomGround(_map.getTriangles(), Vector3D (0, 0, 0), 100);
-  _map.getTriangles().meshAllCoord();
+  Chunk* chunk = new Chunk;
+  _architecte.generateRandomGround(*chunk,
+                                   Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0),
+                                   Chunk::SIZE);
+  chunk->meshAllCoord();
+  _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
 
   Map::triangles_type tmp2;
   //TEST.Ground(Vector3D (150,0,0),150);
   _architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );
-  _architecte.mergeGround(_map.getTriangles(), tmp2);
+  _architecte.mergeGround(*chunk, tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;
   // Chocopops.Debut();

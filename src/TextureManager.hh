@@ -29,7 +29,7 @@ private:
   }
 
   GLuint base_;
-  std::map<std::string, GLuint>	texture_;
+  std::map<std::string, GLuint>	_texture;
 };
 
 #endif /* !TEXTURE_MANAGER_HH_ */

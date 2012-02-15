@@ -35,6 +35,9 @@ Game::load()
   chunk->meshAllCoord();
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
 
+
+  chunk->generateTexture("genTexture.bmp");
+
   Map::triangles_type tmp2;
   //TEST.Ground(Vector3D (150,0,0),150);
   _architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );

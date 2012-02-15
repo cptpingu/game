@@ -21,7 +21,7 @@ FreeFlyCamera::FreeFlyCamera()
   _keyconf["backward"] = SDLK_DOWN;
   _keyconf["strafe_left"] = SDLK_LEFT;
   _keyconf["strafe_right"] = SDLK_RIGHT;
-  _keyconf["boost"] = SDLK_LSHIFT;
+  _keyconf["boost"] = SDLK_RSHIFT;
   _keystates[_keyconf["forward"]] = false;
   _keystates[_keyconf["backward"]] = false;
   _keystates[_keyconf["strafe_left"]] = false;
@@ -43,8 +43,6 @@ void FreeFlyCamera::OnMouseMotion(const SDL_MouseMotionEvent& event)
   _theta -= event.xrel; //* _sensivity;
   _phi -= event.yrel; //* _sensivity;
   VectorsFromAngles();
-
-
 }
 
 void FreeFlyCamera::OnMouseButton(const SDL_MouseButtonEvent& event)

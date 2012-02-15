@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include <sstream>
 
 bool
 Game::load()
@@ -6,9 +7,6 @@ Game::load()
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);
-
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_TEXTURE_2D);
 
   loadtextures();
 /*
@@ -55,7 +53,7 @@ void
 Game::play()
 {
   SDL_Event event;
-  const Uint32 time_per_frame = 1000/FPS;
+  const Uint32 time_per_frame = 1000 / FPS;
   Uint32 last_time,current_time,elapsed_time; //for time animation
   Uint32 stop_time; //for frame limit
 
@@ -115,9 +113,11 @@ Game::play()
 void
 Game::loadtextures()
 {
-
   TextureManager& textures = Singleton<TextureManager>::getInstance();
   //TextureManager& textures = TextureManager::getInstance();
+
+  textures.load("data/images/font.png", "font");
+  textures.BuildFont();
 
   textures.load("data/images/metal091.jpg", "metal");
   textures.load("data/images/rocket_motor.jpg", "rocketMotor");
@@ -161,7 +161,6 @@ Game::drawGL()
   glLoadIdentity();
 
   _camera.look();
-
 
   glEnable(GL_DEPTH_TEST);
   // glEnable(GL_LIGHTING);
@@ -248,7 +247,44 @@ Game::drawGL()
   // // désactive transparence
   // glDisable(GL_BLEND);
 
+  showCoord();
+
   glFlush();
 
   SDL_GL_SwapBuffers();
+}
+
+void
+Game::showCoord()
+{
+  auto pos = _camera.getCurrentPosition();
+  std::stringstream buff;
+
+  const int x = (static_cast<double>(pos._x) / Chunk::SIZE) + 0.5;
+  const int y = (static_cast<double>(pos._y) / Chunk::SIZE) + 0.5;
+  buff << "Coord\n"
+       << "X: " << pos._x << "\n"
+       << "Y: " << pos._y << "\n"
+       << "Z: " << pos._z << "\n\n"
+       << "Chunk coord\n"
+       << "X: " << x << "\n"
+       << "Y: " << y << "\n";
+
+  TextureManager& textures = Singleton<TextureManager>::getInstance();
+
+  std::string line;
+  int row = 0;
+  while (std::getline(buff, line))
+  {
+    ++row;
+    if (!line.empty())
+      textures.glPrint(0, 480 - (16 * row), line.c_str(), 0);
+  }
+
+  // textures.glPrint(0, 480 - (16 * 1), " !\"#$%&'()*+,-./", 0);
+  // textures.glPrint(0, 480 - (16 * 2), "0123456789:;<=>?", 0);
+  // textures.glPrint(0, 480 - (16 * 3), "@ABCDEFGHIJKLMNO", 0);
+  // textures.glPrint(0, 480 - (16 * 4), "PQRSTUVWXYZ[\\]^_", 0);
+  // textures.glPrint(0, 480 - (16 * 5), "`abcdefghijklmno", 0);
+  // textures.glPrint(0, 480 - (16 * 6), "pqrstuvwxyz{|}~ ", 0);
 }

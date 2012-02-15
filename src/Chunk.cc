@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include <iostream>
+#include <tuple>
 
 Chunk::Chunk()
 {
@@ -37,15 +38,15 @@ Chunk::meshAllCoord()
   auto mapEnd = map.end();
   for (auto it = map.begin(); it != mapEnd; ++it)
   {
-    auto pairIt = map.equal_range(it->first);
-    auto first = pairIt.first;
-    auto second = pairIt.first;
-    ++second;
-
-    if (first == pairIt.second)
+    map_type::iterator first;
+    map_type::iterator tmpEnd;
+    std::tie(first, tmpEnd) = map.equal_range(it->first);
+    if (first == tmpEnd)
       continue;
 
-    if (first != second)
+    map_type::iterator second = first;
+    ++second;
+    if (second != tmpEnd && first != second)
     {
       first->second->setLink(second->second);
       second->second->setLink(first->second);

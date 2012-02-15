@@ -18,7 +18,7 @@ TextureManager::BuildFont()
   glBindTexture(GL_TEXTURE_2D, _texture["font"]);
   for (GLuint loop = 0; loop < 256; ++loop)
   {
-    float cx = (float) (loop % 16) / FONT_HEIGHT;
+    float cx = (15 - (float) (loop % 16)) / FONT_HEIGHT;
     float cy = (float) (loop / 16) / FONT_HEIGHT;
     glNewList(base_ + (255 - loop), GL_COMPILE);
     glBegin(GL_QUADS);
@@ -31,7 +31,7 @@ TextureManager::BuildFont()
     glTexCoord2f(cx, cy + FONT_WIDTH);
     glVertex2i(0, 16);
     glEnd();
-    glTranslated(16, 0, 0);
+    glTranslated(13, 0, 0);
     glEndList();
   }
 }
@@ -53,7 +53,7 @@ TextureManager::glPrint(GLint x, GLint y, const std::string& s, int set)
   glPushMatrix();
   glLoadIdentity();
   glTranslated(x, y, 0);
-  glListBase(base_ /*- 32*/ + (128 * set));
+  glListBase(base_ - 32 + (128 * set));
   glCallLists(s.size(), GL_BYTE, s.c_str());
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();

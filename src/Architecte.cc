@@ -174,7 +174,7 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   }
 }
 
-Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
+/*Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
 {
 
     Chunk Superchunk;
@@ -187,7 +187,7 @@ Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tm
 
     }
 
-/*
+
     Architecte::generateRandomGround(Map::triangles_type & Tmp, const Vector3D& where, int size)
 
 

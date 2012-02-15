@@ -9,7 +9,7 @@ Game::load()
   gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   loadtextures();
 /*
@@ -75,6 +75,12 @@ Game::play()
           {
             case SDLK_p:
               takeScreenshot("test.bmp");
+              break;
+            case SDLK_w:
+              glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+              break;
+            case SDLK_x:
+              glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
               break;
             case SDLK_ESCAPE:
               exit(0);

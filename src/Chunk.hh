@@ -2,9 +2,11 @@
 # define CHUNK_HH_
 
 # include "Core/Container3D.hh"
+# include "Core/PairHash.hh"
 # include <vector>
 # include <cstddef>
 # include <string>
+# include <unordered_map>
 
 class Chunk
 {
@@ -46,6 +48,8 @@ public:
   };
 
   typedef std::vector<Coord*> chunk_type;
+  typedef std::unordered_map<std::pair<int, int>, int,
+          Core::PairHash<int, int> > fast_access_chunk_type;
   typedef chunk_type::iterator iterator;
   typedef chunk_type::const_iterator const_iterator;
 
@@ -67,6 +71,7 @@ public:
   void generateTexture(const std::string& filename) const;
 private:
   chunk_type _chunk;
+  fast_access_chunk_type _fast_access_chunk;
 };
 
 #endif /* !CHUNK_HH_ */

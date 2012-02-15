@@ -6,6 +6,8 @@
 #include <tuple>
 #include <SDL/SDL_image.h>
 
+#include <iostream>
+
 Chunk::Chunk()
 {
 }
@@ -19,6 +21,7 @@ void
 Chunk::add(double x, double y, double z)
 {
   _chunk.push_back(new Coord(x, y, z));
+  _fast_access_chunk.insert(fast_access_chunk_type::value_type(std::make_pair(x, y), z));
 }
 
 void
@@ -117,10 +120,13 @@ Chunk::generateTexture(const std::string& filename) const
   {
     for (int y = 0; y < resSurface->h; ++y)
     {
+      auto it = _fast_access_chunk.find(std::make_pair(x, y));
+      const int z = it != _fast_access_chunk.cend() ? it->second : 0;
       SDL_Surface* surface;
-      if (x < 50 && y < 50)
+
+      if (z < 1)
         surface = vegSurface;
-      else if (x < 200 && y < 200)
+      else if (z < 2)
         surface = woodSurface;
       else
         surface = brickSurface;
@@ -138,13 +144,16 @@ Chunk::generateTexture(const std::string& filename) const
       const unsigned char* localB = (static_cast<unsigned char*>(surface->pixels)) +
         localX * 3 * surface->w + localY * 3 + 2;
 
-      *r = *localR;
-      *g = *localG;
-      *b = *localB;
+//      *r = *localR;
+//      *g = *localG;
+//      *b = *localB;
+
+      *r = z * 5;
+      *g = z * 5;
+      *b = z * 5;
     }
   }
   SDL_UnlockSurface(resSurface);
-
   SDL_SaveBMP(resSurface, filename.c_str());
 
   SDL_FreeSurface(resSurface);

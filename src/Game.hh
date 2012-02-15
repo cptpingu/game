@@ -31,6 +31,7 @@ public:
 private:
   void loadtextures();
   void drawGL();
+  void showCoord();
 
 private:
   FreeFlyCamera _camera;

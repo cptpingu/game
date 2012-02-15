@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include <sstream>
 
 bool
 Game::load()
@@ -246,10 +247,38 @@ Game::drawGL()
   // // désactive transparence
   // glDisable(GL_BLEND);
 
-  TextureManager& textures = Singleton<TextureManager>::getInstance();
-  textures.glPrint(10, 10, "0123456789aaaabcdefghijklmnopqrstuvwxyz", 0);
+  showCoord();
 
   glFlush();
 
   SDL_GL_SwapBuffers();
+}
+
+void
+Game::showCoord()
+{
+  auto pos = _camera.getCurrentPosition();
+  std::stringstream buff;
+
+  buff << "Coord\n"
+       << "X: " << pos._x << "\n"
+       << "Y: " << pos._y << "\n"
+       << "Z: " << pos._z;
+
+  TextureManager& textures = Singleton<TextureManager>::getInstance();
+
+  std::string line;
+  int row = 0;
+  while (std::getline(buff, line))
+  {
+    ++row;
+    textures.glPrint(0, 480 - (16 * row), line.c_str(), 0);
+  }
+
+  // textures.glPrint(0, 480 - (16 * 1), " !\"#$%&'()*+,-./", 0);
+  // textures.glPrint(0, 480 - (16 * 2), "0123456789:;<=>?", 0);
+  // textures.glPrint(0, 480 - (16 * 3), "@ABCDEFGHIJKLMNO", 0);
+  // textures.glPrint(0, 480 - (16 * 4), "PQRSTUVWXYZ[\\]^_", 0);
+  // textures.glPrint(0, 480 - (16 * 5), "`abcdefghijklmno", 0);
+  // textures.glPrint(0, 480 - (16 * 6), "pqrstuvwxyz{|}~ ", 0);
 }

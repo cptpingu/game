@@ -7,9 +7,6 @@ Game::load()
   glLoadIdentity();
   gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);
 
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_TEXTURE_2D);
-
   loadtextures();
 /*
   static const std::string filename = "Carte.txt";
@@ -55,7 +52,7 @@ void
 Game::play()
 {
   SDL_Event event;
-  const Uint32 time_per_frame = 1000/FPS;
+  const Uint32 time_per_frame = 1000 / FPS;
   Uint32 last_time,current_time,elapsed_time; //for time animation
   Uint32 stop_time; //for frame limit
 

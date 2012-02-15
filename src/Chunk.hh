@@ -61,6 +61,7 @@ public:
   const_iterator cbegin() const;
   const_iterator cend() const;
 
+  static int absoluteToChunkCoord(double absolute);
 private:
   chunk_type _chunk;
 };

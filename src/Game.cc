@@ -260,10 +260,8 @@ Game::showCoord()
   auto pos = _camera.getCurrentPosition();
   std::stringstream buff;
 
-  int xsign = pos._x < 0 ? -1 : 1;
-  int ysign = pos._y < 0 ? -1 : 1;
-  const int x = (static_cast<double>(pos._x) / Chunk::SIZE) + xsign * 0.5;
-  const int y = (static_cast<double>(pos._y) / Chunk::SIZE) + ysign * 0.5;
+  const int x = Chunk::absoluteToChunkCoord(pos._x);
+  const int y = Chunk::absoluteToChunkCoord(pos._y);
   buff << "Coord\n"
        << "X: " << pos._x << "\n"
        << "Y: " << pos._y << "\n"

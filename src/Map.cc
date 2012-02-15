@@ -154,10 +154,8 @@ Map::lazyChunkLoading(const Vector3D& position)
 {
 #define LAZY_LOAD(X, Y)                                                 \
   {                                                                     \
-    const int xsign = (X) < 0 ? -1 : 1;                                 \
-    const int ysign = (Y) < 0 ? -1 : 1;                                 \
-    const int x = (static_cast<double>(position._x) / Chunk::SIZE) + xsign * 0.5; \
-    const int y = (static_cast<double>(position._y) / Chunk::SIZE) + ysign * 0.5; \
+    const int x = Chunk::absoluteToChunkCoord(position._x);             \
+    const int y = Chunk::absoluteToChunkCoord(position._y);             \
     std::pair<int, int> current(x + (X), y + (Y));                      \
     if (_chunks.find(current) == _chunks.end())                         \
       _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \

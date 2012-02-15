@@ -136,7 +136,9 @@ namespace
 {
   Chunk* loadChunk(int x, int y)
   {
-    const Vector3D where((x * Chunk::SIZE) - (Chunk::SIZE / 2), y * Chunk::SIZE - (Chunk::SIZE / 2), 0);
+    const Vector3D where((x * Chunk::SIZE) - (Chunk::SIZE / 2),
+                         (y * Chunk::SIZE) - (Chunk::SIZE / 2),
+                         0);
     Architecte architecte;
     Chunk* chunk = new Chunk;
     architecte.generateRandomGround(*chunk, where, Chunk::SIZE);
@@ -150,10 +152,12 @@ namespace
 void
 Map::lazyChunkLoading(const Vector3D& position)
 {
-#define LAZY_LOAD(X, Y) \
-  { \
-    const int x = (static_cast<double>(position._x) / Chunk::SIZE) + 0.5; \
-    const int y = (static_cast<double>(position._y) / Chunk::SIZE) + 0.5; \
+#define LAZY_LOAD(X, Y)                                                 \
+  {                                                                     \
+    const int xsign = (X) < 0 ? -1 : 1;                                 \
+    const int ysign = (Y) < 0 ? -1 : 1;                                 \
+    const int x = (static_cast<double>(position._x) / Chunk::SIZE) + xsign * 0.5; \
+    const int y = (static_cast<double>(position._y) / Chunk::SIZE) + ysign * 0.5; \
     std::pair<int, int> current(x + (X), y + (Y));                      \
     if (_chunks.find(current) == _chunks.end())                         \
       _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \

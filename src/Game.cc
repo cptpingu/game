@@ -113,8 +113,7 @@ Game::play()
 void
 Game::loadtextures()
 {
-  TextureManager& textures = Singleton<TextureManager>::getInstance();
-  //TextureManager& textures = TextureManager::getInstance();
+  TextureManager& textures = TextureManager::getInstance();
 
   textures.load("data/images/font.png", "font");
   textures.BuildFont();
@@ -270,7 +269,7 @@ Game::showCoord()
        << "X: " << x << "\n"
        << "Y: " << y << "\n";
 
-  TextureManager& textures = Singleton<TextureManager>::getInstance();
+  TextureManager& textures = TextureManager::getInstance();
 
   std::string line;
   int row = 0;

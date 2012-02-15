@@ -16,7 +16,6 @@ class TextureManager : public Singleton<TextureManager>
 public:
   GLvoid BuildFont();
   GLvoid glPrint(GLint x, GLint y, const std::string& s, int set);
-  static TextureManager& getInstance();
   void destroy();
   void load(const std::string& path, const std::string& name);
   GLuint operator[](const std::string& name);

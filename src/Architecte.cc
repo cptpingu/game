@@ -231,6 +231,3 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
 
 }
 */
-
-
-

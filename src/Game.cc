@@ -8,6 +8,9 @@ Game::load()
   glLoadIdentity();
   gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);
 
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
   loadtextures();
 /*
   static const std::string filename = "Carte.txt";
@@ -32,9 +35,11 @@ Game::load()
   chunk->meshAllCoord();
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
 
+  chunk->generateTexture("genTexture.bmp");
+
   Map::triangles_type tmp2;
   //TEST.Ground(Vector3D (150,0,0),150);
-  _architecte.mountain(tmp2, Vector3D (20,10,0), 200,10 );
+  _architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );
   _architecte.mergeGround(*chunk, tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;
@@ -42,9 +47,6 @@ Game::load()
   //Chocopops.Sol(150);
   //Chocopops.Montagne(Vector3D(30,30,1),30,20);
   //Chocopops.Building(Vector3D(10,10,1), 5, 0, 5);
-
-
-
 
   return true;
 }
@@ -71,12 +73,22 @@ Game::play()
           switch (event.key.keysym.sym)
           {
             case SDLK_p:
-              takeScreenshot("test.bmp");
+              {
+                std::ostringstream buff;
+                buff << "screenshot-" << time(0) << ".bmp";
+                takeScreenshot(buff.str().c_str());
+                break;
+              }
+            case SDLK_w:
+              glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+              break;
+            case SDLK_x:
+              glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
               break;
             case SDLK_ESCAPE:
               exit(0);
               break;
-            default :
+            default:
               _camera.OnKeyboard(event.key);
           }
           break;
@@ -113,8 +125,7 @@ Game::play()
 void
 Game::loadtextures()
 {
-  TextureManager& textures = Singleton<TextureManager>::getInstance();
-  //TextureManager& textures = TextureManager::getInstance();
+  TextureManager& textures = TextureManager::getInstance();
 
   textures.load("data/images/font.png", "font");
   textures.BuildFont();
@@ -260,8 +271,8 @@ Game::showCoord()
   auto pos = _camera.getCurrentPosition();
   std::stringstream buff;
 
-  const int x = (static_cast<double>(pos._x) / Chunk::SIZE) + 0.5;
-  const int y = (static_cast<double>(pos._y) / Chunk::SIZE) + 0.5;
+  const int x = Chunk::absoluteToChunkCoord(pos._x);
+  const int y = Chunk::absoluteToChunkCoord(pos._y);
   buff << "Coord\n"
        << "X: " << pos._x << "\n"
        << "Y: " << pos._y << "\n"
@@ -270,7 +281,7 @@ Game::showCoord()
        << "X: " << x << "\n"
        << "Y: " << y << "\n";
 
-  TextureManager& textures = Singleton<TextureManager>::getInstance();
+  TextureManager& textures = TextureManager::getInstance();
 
   std::string line;
   int row = 0;
@@ -278,7 +289,7 @@ Game::showCoord()
   {
     ++row;
     if (!line.empty())
-      textures.glPrint(0, 480 - (16 * row), line.c_str(), 0);
+      textures.glPrint(0, WINDOW_HEIGHT - (16 * row), line.c_str(), 0);
   }
 
   // textures.glPrint(0, 480 - (16 * 1), " !\"#$%&'()*+,-./", 0);

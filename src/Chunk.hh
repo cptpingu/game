@@ -4,6 +4,7 @@
 # include "Core/Container3D.hh"
 # include <vector>
 # include <cstddef>
+# include <string>
 
 class Chunk
 {
@@ -61,6 +62,9 @@ public:
   const_iterator cbegin() const;
   const_iterator cend() const;
 
+  static int absoluteToChunkCoord(double absolute);
+
+  void generateTexture(const std::string& filename) const;
 private:
   chunk_type _chunk;
 };

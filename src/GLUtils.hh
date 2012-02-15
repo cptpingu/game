@@ -14,5 +14,7 @@ void drawAxis(double scale = 1);
 int initFullScreen(unsigned int* width = 0, unsigned int* height = 0);
 int XPMFromImage(const char* imagefile, const char* XPMfile);
 SDL_Cursor* cursorFromXPM(const char* xpm[]);
+SDL_Surface* createSurface(int width, int height, SDL_Surface* display);
+SDL_Surface* createDefaultSurface(int width, int height);
 
 #endif /* !SDLGLUTILS_HH_ */

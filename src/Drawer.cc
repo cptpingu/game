@@ -12,7 +12,7 @@ namespace
 {
   void draw(const Map::blocks_type& blocks)
   {
-    TextureManager& textures = Singleton<TextureManager>::getInstance();
+    TextureManager& textures = TextureManager::getInstance();
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
     auto end = blocks.end();
@@ -110,8 +110,7 @@ namespace
   {
     glPushMatrix();
 
-    TextureManager& textures = Singleton<TextureManager>::getInstance();
-
+    TextureManager& textures = TextureManager::getInstance();
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);

@@ -1,7 +1,11 @@
 #include "Map.hh"
-#include <fstream>
+
+
 #include "Core/Traits.hh"
 #include "Architecte.hh"
+
+#include <fstream>
+#include <algorithm>
 
 namespace
 {
@@ -136,7 +140,9 @@ namespace
 {
   Chunk* loadChunk(int x, int y)
   {
-    const Vector3D where((x * Chunk::SIZE) - (Chunk::SIZE / 2), y * Chunk::SIZE - (Chunk::SIZE / 2), 0);
+    const Vector3D where((x * Chunk::SIZE) - (Chunk::SIZE / 2),
+                         (y * Chunk::SIZE) - (Chunk::SIZE / 2),
+                         0);
     Architecte architecte;
     Chunk* chunk = new Chunk;
     architecte.generateRandomGround(*chunk, where, Chunk::SIZE);
@@ -150,11 +156,14 @@ namespace
 void
 Map::lazyChunkLoading(const Vector3D& position)
 {
-#define LAZY_LOAD(X, Y) \
-  { \
-    const int x = (static_cast<double>(position._x) / Chunk::SIZE) + 0.5; \
-    const int y = (static_cast<double>(position._y) / Chunk::SIZE) + 0.5; \
+  const int x = Chunk::absoluteToChunkCoord(position._x);
+  const int y = Chunk::absoluteToChunkCoord(position._y);
+  std::vector<std::pair<int, int> > tmpChunkList;
+
+#define LAZY_LOAD(X, Y)                                                 \
+  {                                                                     \
     std::pair<int, int> current(x + (X), y + (Y));                      \
+    tmpChunkList.push_back(current);                                    \
     if (_chunks.find(current) == _chunks.end())                         \
       _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
   }
@@ -172,6 +181,16 @@ Map::lazyChunkLoading(const Vector3D& position)
   LAZY_LOAD(-1, 1);
 
 #undef LAZY_LOAD
+
+  auto end = _chunks.end();
+  for (auto it =_chunks.begin(); it != end; ++it)
+  {
+    if (std::find(tmpChunkList.begin(), tmpChunkList.end(), it->first) == tmpChunkList.end())
+    {
+      delete it->second;
+      _chunks.erase(it->first);
+    }
+  }
 }
 
 void

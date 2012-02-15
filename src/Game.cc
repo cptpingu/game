@@ -36,7 +36,7 @@ Game::load()
 
   Map::triangles_type tmp2;
   //TEST.Ground(Vector3D (150,0,0),150);
-  _architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );
+  _architecte.mountain(tmp2, Vector3D (20,10,0), 200,10 );
   _architecte.mergeGround(*chunk, tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;

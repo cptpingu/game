@@ -173,3 +173,64 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
     ++it1;
   }
 }
+
+Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
+{
+
+    Chunk Superchunk;
+
+    Superchunk.add()
+
+    auto currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() - 1));
+    if (currentChunk != chunks.end())
+    {
+
+    }
+
+/*
+    Architecte::generateRandomGround(Map::triangles_type & Tmp, const Vector3D& where, int size)
+
+
+
+    }
+
+
+    currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 1));
+    if (currentChunk != chunks.end())
+
+    currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() - 1));
+    if (currentChunk != chunks.end())
+
+    currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 1));
+    if (currentChunk != chunks.end())
+
+    currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 0));
+    if (currentChunk != chunks.end())
+
+    currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() - 1));
+    if (currentChunk != chunks.end())
+
+    currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 0));
+    if (currentChunk != chunks.end())
+
+     currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() + 1));
+
+    if (currentChunk != chunks.end())
+      // pas trouvé
+    // sinon
+    // trouvé et tu es dessus (currentChunk->getX())
+
+  {
+    const int x = (static_cast<double>(position._x) / Chunk::SIZE) + 0.5; \
+    const int y = (static_cast<double>(position._y) / Chunk::SIZE) + 0.5; \
+    std::pair<int, int> current(x + (X), y + (Y));                      \
+    if (_chunks.find(current) == _chunks.end())                         \
+      _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
+  }
+
+
+}
+*/
+
+
+

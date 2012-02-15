@@ -278,7 +278,7 @@ Game::showCoord()
   {
     ++row;
     if (!line.empty())
-      textures.glPrint(0, 480 - (16 * row), line.c_str(), 0);
+      textures.glPrint(0, WINDOW_HEIGHT - (16 * row), line.c_str(), 0);
   }
 
   // textures.glPrint(0, 480 - (16 * 1), " !\"#$%&'()*+,-./", 0);

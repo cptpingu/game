@@ -89,7 +89,7 @@ Game::play()
             case SDLK_ESCAPE:
               exit(0);
               break;
-            default :
+            default:
               _camera.OnKeyboard(event.key);
           }
           break;

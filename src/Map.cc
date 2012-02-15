@@ -1,7 +1,9 @@
 #include "Map.hh"
-#include <fstream>
 #include "Core/Traits.hh"
 #include "Architecte.hh"
+
+#include <fstream>
+#include <algorithm>
 
 namespace
 {
@@ -152,11 +154,14 @@ namespace
 void
 Map::lazyChunkLoading(const Vector3D& position)
 {
+  const int x = Chunk::absoluteToChunkCoord(position._x);
+  const int y = Chunk::absoluteToChunkCoord(position._y);
+  std::vector<std::pair<int, int> > tmpChunkList;
+
 #define LAZY_LOAD(X, Y)                                                 \
   {                                                                     \
-    const int x = Chunk::absoluteToChunkCoord(position._x);             \
-    const int y = Chunk::absoluteToChunkCoord(position._y);             \
     std::pair<int, int> current(x + (X), y + (Y));                      \
+    tmpChunkList.push_back(current);                                    \
     if (_chunks.find(current) == _chunks.end())                         \
       _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
   }
@@ -174,6 +179,19 @@ Map::lazyChunkLoading(const Vector3D& position)
   LAZY_LOAD(-1, 1);
 
 #undef LAZY_LOAD
+
+  auto end = _chunks.end();
+  for (auto it =_chunks.begin(); it != end; ++it)
+  {
+    if (std::find(tmpChunkList.begin(), tmpChunkList.end(), it->first) == tmpChunkList.end())
+    {
+      delete it->second;
+      _chunks.erase(it->first);
+    }
+  }
+
+
+
 }
 
 void

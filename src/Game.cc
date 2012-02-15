@@ -8,6 +8,9 @@ Game::load()
   glLoadIdentity();
   gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);
 
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
   loadtextures();
 /*
   static const std::string filename = "Carte.txt";

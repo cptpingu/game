@@ -115,9 +115,11 @@ Game::play()
 void
 Game::loadtextures()
 {
-
   TextureManager& textures = Singleton<TextureManager>::getInstance();
   //TextureManager& textures = TextureManager::getInstance();
+
+  textures.load("data/images/font.png", "font");
+  textures.BuildFont();
 
   textures.load("data/images/metal091.jpg", "metal");
   textures.load("data/images/rocket_motor.jpg", "rocketMotor");
@@ -161,7 +163,6 @@ Game::drawGL()
   glLoadIdentity();
 
   _camera.look();
-
 
   glEnable(GL_DEPTH_TEST);
   // glEnable(GL_LIGHTING);
@@ -247,6 +248,9 @@ Game::drawGL()
   // glEnd();
   // // désactive transparence
   // glDisable(GL_BLEND);
+
+  TextureManager& textures = Singleton<TextureManager>::getInstance();
+  textures.glPrint(10, 10, "0123456789aaaabcdefghijklmnopqrstuvwxyz", 0);
 
   glFlush();
 

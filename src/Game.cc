@@ -74,8 +74,12 @@ Game::play()
           switch (event.key.keysym.sym)
           {
             case SDLK_p:
-              takeScreenshot("test.bmp");
-              break;
+              {
+                std::ostringstream buff;
+                buff << "screenshot-" << time(0) << ".bmp";
+                takeScreenshot(buff.str().c_str());
+                break;
+              }
             case SDLK_w:
               glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
               break;

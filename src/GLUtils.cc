@@ -331,7 +331,7 @@ SDL_Cursor * cursorFromXPM(const char * xpm[])
   return cursor;
 }
 
-SDL_Surface* createSurface(int width, int height, SDL_Surface* display)
+SDL_Surface* createSurface(int width, int height, const SDL_Surface* display)
 {
   int flags = 0;//SDL_HWSURFACE;
   const SDL_PixelFormat& fmt = *(display->format);

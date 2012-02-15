@@ -111,25 +111,33 @@ Chunk::generateTexture(const std::string& filename) const
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
   SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
   SDL_Surface* resSurface = createSurface(10 * SIZE, 10 * SIZE, vegSurface);
+  //SDL_Surface* resSurface = createDefaultSurface(10 * SIZE, 10 * SIZE);
 
   SDL_LockSurface(resSurface);
-  resSurface->pitch = 768;
   for (int x = 0; x < resSurface->w; ++x)
   {
     for (int y = 0; y < resSurface->h; ++y)
     {
+      SDL_Surface* surface;
+      if (x < 50 && y < 50)
+        surface = vegSurface;
+      else if (x < 200 && y < 200)
+        surface = woodSurface;
+      else
+        surface = brickSurface;
+
       unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 0;
       unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 1;
       unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 2;
-      int localX = x % vegSurface->w;
-      int localY = y % vegSurface->h;
+      int localX = x % surface->w;
+      int localY = y % surface->h;
 
-      const unsigned char* localR = (static_cast<unsigned char*>(vegSurface->pixels)) +
-        localX * 3 * vegSurface->w + localY * 3 + 0;
-      const unsigned char* localG = (static_cast<unsigned char*>(vegSurface->pixels)) +
-        localX * 3 * vegSurface->w + localY * 3 + 1;
-      const unsigned char* localB = (static_cast<unsigned char*>(vegSurface->pixels)) +
-        localX * 3 * vegSurface->w + localY * 3 + 2;
+      const unsigned char* localR = (static_cast<unsigned char*>(surface->pixels)) +
+        localX * 3 * surface->w + localY * 3 + 0;
+      const unsigned char* localG = (static_cast<unsigned char*>(surface->pixels)) +
+        localX * 3 * surface->w + localY * 3 + 1;
+      const unsigned char* localB = (static_cast<unsigned char*>(surface->pixels)) +
+        localX * 3 * surface->w + localY * 3 + 2;
 
       *r = *localR;
       *g = *localG;

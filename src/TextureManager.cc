@@ -84,3 +84,21 @@ TextureManager::operator[](const std::string& name)
 {
   return (_texture[name]);
 }
+
+TextureManager::iterator
+TextureManager::find(const std::string& name)
+{
+  return _texture.find(name);
+}
+
+TextureManager::iterator
+TextureManager::begin()
+{
+  return _texture.begin();
+}
+
+TextureManager::iterator
+TextureManager::end()
+{
+  return _texture.end();
+}

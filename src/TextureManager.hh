@@ -12,6 +12,9 @@
 class TextureManager : public Singleton<TextureManager>
 {
   friend class Singleton<TextureManager>;
+public:
+  typedef std::map<std::string, GLuint>::const_iterator const_iterator;
+  typedef std::map<std::string, GLuint>::iterator iterator;
 
 public:
   GLvoid BuildFont();
@@ -19,6 +22,10 @@ public:
   void destroy();
   void load(const std::string& path, const std::string& name);
   GLuint operator[](const std::string& name);
+  iterator find(const std::string& name);
+  iterator begin();
+  iterator end();
+
 private:
   TextureManager()
   {

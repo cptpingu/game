@@ -36,14 +36,14 @@ Game::load()
   chunk->meshAllCoord();
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
 
-  chunk->generateTexture("genTexture.bmp");
+  chunk->generateTexture("chunk_0_0.bmp");
   TextureManager& textures = TextureManager::getInstance();
-  textures.load("genTexture.bmp", "special");
+  textures.load("chunk_0_0.bmp", "chunk_0_0");
 
-  Map::triangles_type tmp2;
+  //  Map::triangles_type tmp2;
   //TEST.Ground(Vector3D (150,0,0),150);
-  _architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );
-  _architecte.mergeGround(*chunk, tmp2);
+  //_architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );
+  //_architecte.mergeGround(*chunk, tmp2);
   //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
   //MapWriter Chocopops;
   // Chocopops.Debut();

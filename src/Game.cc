@@ -112,7 +112,7 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    //_map.lazyChunkLoading(_camera.getCurrentPosition());
+    _map.lazyChunkLoading(_camera.getCurrentPosition());
     _camera.animate(elapsed_time);
 
     drawAxis(2);

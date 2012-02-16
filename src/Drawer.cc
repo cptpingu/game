@@ -118,7 +118,8 @@ namespace
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
     glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
-
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 /*
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
@@ -144,8 +145,10 @@ namespace
 */
     glBegin(GL_TRIANGLE_STRIP);
     auto end = triangles.cend();
+
     for (auto it = triangles.cbegin(); it != end; ++it)
     {
+
       glTexCoord2f(((*it)->getY() + Chunk::SIZE / 2) / Chunk::SIZE,
                    1.0 - ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
       glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());

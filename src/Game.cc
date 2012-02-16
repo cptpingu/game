@@ -36,9 +36,9 @@ Game::load()
   chunk->meshAllCoord();
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
 
-  chunk->generateTexture("genTexture.bmp");
+  chunk->generateTexture("chunk_0_0.bmp");
   TextureManager& textures = TextureManager::getInstance();
-  textures.load("genTexture.bmp", "special");
+  textures.load("chunk_0_0.bmp", "chunk_0_0");
 
   //  Map::triangles_type tmp2;
   //TEST.Ground(Vector3D (150,0,0),150);
@@ -112,7 +112,7 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    //_map.lazyChunkLoading(_camera.getCurrentPosition());
+    _map.lazyChunkLoading(_camera.getCurrentPosition());
     _camera.animate(elapsed_time);
 
     drawAxis(2);

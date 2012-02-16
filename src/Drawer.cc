@@ -2,9 +2,11 @@
 #include "Drawer.hh"
 #include "SolTriangle.hh"
 #include "Block.hh"
-#include <vector>
 #include "TextureManager.hh"
 #include "Opengl.hh"
+
+#include <vector>
+#include <sstream>
 
 //Le fonctionnement idéal du drawer => il recoit des listes d'objets typés et dessine les objets OPEN_GL correspondants
 //Il n'est pas censé échanger quoi que ce soit avec le reste , c'est le côté open GL du programme.
@@ -108,40 +110,6 @@ namespace
 
   void draw(const Chunk& triangles)
   {
-    glPushMatrix();
-
-    TextureManager& textures = TextureManager::getInstance();
-
-    //glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
-    glBindTexture(GL_TEXTURE_2D, textures["special"]);
-    glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
-
-/*
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
-    glEnable(GL_TEXTURE_2D);
-    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-    glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
-
-    glActiveTexture(GL_TEXTURE0_ARB);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, textures["test"]);
-    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-    glEnable(GL_TEXTURE_GEN_S);
-    glEnable(GL_TEXTURE_GEN_T);
-
-    glActiveTexture(GL_TEXTURE1_ARB);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, textures["wood"]);
-    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-    glEnable(GL_TEXTURE_GEN_S);
-    glEnable(GL_TEXTURE_GEN_T);
-*/
     glBegin(GL_TRIANGLE_STRIP);
     auto end = triangles.cend();
     for (auto it = triangles.cbegin(); it != end; ++it)
@@ -151,6 +119,23 @@ namespace
       glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());
     }
     glEnd();
+  }
+
+  void draw(const std::pair<int, int>& coord, const Chunk& chunk)
+  {
+    glPushMatrix();
+    TextureManager& textures = TextureManager::getInstance();
+    std::ostringstream buff;
+    buff << "chunk_" << coord.first << "_" << coord.second;
+    const std::string textureName = buff.str();
+    auto tex = textures.find(textureName);
+    if (tex == textures.end())
+      tex = textures.find("brick1");
+
+    glBindTexture(GL_TEXTURE_2D, tex->second);
+    glEnable(GL_TEXTURE_2D);
+
+    draw(chunk);
 
     glPopMatrix();
   }
@@ -159,7 +144,7 @@ namespace
   {
     auto end = chunks.cend();
     for (auto it = chunks.cbegin(); it != end; ++it)
-      draw(*it->second);
+      draw(it->first, *it->second);
   }
 
 } // namespace

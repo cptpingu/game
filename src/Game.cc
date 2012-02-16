@@ -28,6 +28,7 @@ Game::load()
   }
 */
 
+  //srand(0);
   Chunk* chunk = new Chunk;
   _architecte.generateRandomGround(*chunk,
                                    Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0),
@@ -36,6 +37,8 @@ Game::load()
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
 
   chunk->generateTexture("genTexture.bmp");
+  TextureManager& textures = TextureManager::getInstance();
+  textures.load("genTexture.bmp", "special");
 
   Map::triangles_type tmp2;
   //TEST.Ground(Vector3D (150,0,0),150);
@@ -109,12 +112,11 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    _map.lazyChunkLoading(_camera.getCurrentPosition());
+    //_map.lazyChunkLoading(_camera.getCurrentPosition());
     _camera.animate(elapsed_time);
 
     drawAxis(2);
     drawGL();
-
 
     stop_time = SDL_GetTicks();
     if ((stop_time - last_time) < time_per_frame)

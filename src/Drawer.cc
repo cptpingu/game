@@ -112,12 +112,12 @@ namespace
 
     TextureManager& textures = TextureManager::getInstance();
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+    //glActiveTexture(GL_TEXTURE0);
+    //glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+    glBindTexture(GL_TEXTURE_2D, textures["special"]);
     glEnable(GL_TEXTURE_2D);
-    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-    glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
-
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
 
 /*
     glActiveTexture(GL_TEXTURE1);
@@ -125,8 +125,8 @@ namespace
     glEnable(GL_TEXTURE_2D);
     glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
     glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_INCR);
-*/
-   /* glActiveTexture(GL_TEXTURE0_ARB);
+
+    glActiveTexture(GL_TEXTURE0_ARB);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, textures["test"]);
     glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
@@ -146,9 +146,8 @@ namespace
     auto end = triangles.cend();
     for (auto it = triangles.cbegin(); it != end; ++it)
     {
-      glMultiTexCoord3i(GL_TEXTURE1, 0, 0, 0);
-      glMultiTexCoord3i(GL_TEXTURE2, 0, 0, 0);
-      glTexCoord2i((*it)->getX(), (*it)->getY());
+      glTexCoord2f(((*it)->getY() + 25) / 50.0, ((*it)->getX() + 25) / 50.0);
+      //glTexCoord2i((*it)->getX(), (*it)->getY());
       glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());
     }
     glEnd();

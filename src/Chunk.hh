@@ -11,7 +11,8 @@
 class Chunk
 {
 public:
-  static const int SIZE = 50;
+  static const int SIZE = 64;
+  static const int TEXTURE_SIZE = 64 * 64;
 
 public:
   class Coord : private Core::Container3D<double>

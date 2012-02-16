@@ -30,16 +30,16 @@ Chunk::meshAllCoord()
   typedef std::unordered_multimap<std::pair<double, double>,
                                   Coord*,
                                   Core::PairHash<double, double> > map_type;
-  map_type map;
+map_type map;
 
-  auto end = _chunk.end();
-  for (auto it = _chunk.begin(); it != end; ++it)
-  {
-    map.insert(map_type::value_type(std::make_pair((*it)->getX(), (*it)->getY()), *it));
-  }
+auto end = _chunk.end();
+for (auto it = _chunk.begin(); it != end; ++it)
+ {
+   map.insert(map_type::value_type(std::make_pair((*it)->getX(), (*it)->getY()), *it));
+ }
 
- auto mapEnd = map.end();
- for (auto it = map.begin(); it != mapEnd; ++it)
+auto mapEnd = map.end();
+for (auto it = map.begin(); it != mapEnd; ++it)
  {
    map_type::iterator first;
    map_type::iterator tmpEnd;
@@ -103,6 +103,13 @@ Chunk::absoluteToChunkCoord(double absolute)
   return absolute / SIZE + sign * 0.5;
 }
 
+int
+absoluteToTextureCoord(double absolute)
+{
+  // FIXME: bad
+  return absolute - Chunk::SIZE / 2;
+}
+
 void
 Chunk::generateTexture(const std::string& filename) const
 {
@@ -112,47 +119,100 @@ Chunk::generateTexture(const std::string& filename) const
   SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
   SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
-  SDL_Surface* resSurface = createSurface(10 * SIZE, 10 * SIZE, vegSurface);
+  SDL_Surface* resSurface = createSurface(TEXTURE_SIZE, TEXTURE_SIZE, vegSurface);
   //SDL_Surface* resSurface = createDefaultSurface(10 * SIZE, 10 * SIZE);
 
+  int i = 0;
+  const int adapterSize = TEXTURE_SIZE / SIZE;
+  const int halfAdapterSize = adapterSize / 2;
   SDL_LockSurface(resSurface);
-  for (int x = 0; x < resSurface->w; ++x)
+  for (int x = halfAdapterSize; x < resSurface->w; x += adapterSize)
   {
-    for (int y = 0; y < resSurface->h; ++y)
+    for (int y = halfAdapterSize; y < resSurface->h; y += adapterSize)
     {
-      auto it = _fast_access_chunk.find(std::make_pair(x, y));
+      auto it = _fast_access_chunk.find(std::make_pair(absoluteToTextureCoord((x - halfAdapterSize) / adapterSize),
+                                                       absoluteToTextureCoord((y - halfAdapterSize) / adapterSize)));
       const int z = it != _fast_access_chunk.cend() ? it->second : 0;
-      SDL_Surface* surface;
+      SDL_Surface* surface1 = 0;
+      SDL_Surface* surface2 = 0;
+      int coeff1 = 0;
+      int coeff2 = 0;
 
-      if (z < 1)
-        surface = vegSurface;
-      else if (z < 2)
-        surface = woodSurface;
+      if (z < 2)
+      {
+        if (z < 1)
+        {
+          coeff1 = 100;
+          coeff2 = 0;
+        }
+        else
+        {
+          coeff1 = 100 - ((z - 1) * 100);
+          coeff2 = 100 - coeff2;
+        }
+        surface1 = vegSurface;
+        surface2 = woodSurface;
+      }
       else
-        surface = brickSurface;
+      {
+        if (z < 3)
+        {
+          coeff1 = 100;
+          coeff2 = 0;
+        }
+        else if (z < 4)
+        {
+          coeff1 = 100 - ((z - 2) * 100);
+          coeff2 = 100 - coeff2;
+        }
+        else
+        {
+          coeff1 = 0;
+          coeff2 = 100;
+        }
+        surface1 = woodSurface;
+        surface2 = brickSurface;
+      }
 
-      unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 0;
-      unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 1;
-      unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 2;
-      int localX = x % surface->w;
-      int localY = y % surface->h;
+      const int xFrom = x - halfAdapterSize > 0 ? x - halfAdapterSize : 0;
+      const int xTo = x + halfAdapterSize < resSurface->w ? x + halfAdapterSize : resSurface->w;
+      const int yFrom = y - halfAdapterSize > 0 ? y - halfAdapterSize : 0;
+      const int yTo = y + halfAdapterSize < resSurface->h ? y + halfAdapterSize : resSurface->h;
+      for (int xAdapt = xFrom; xAdapt < xTo; ++xAdapt)
+      {
+        for (int yAdapt = yFrom; yAdapt < yTo; ++yAdapt)
+        {
+          unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + xAdapt * 3 * resSurface->w + yAdapt * 3 + 0;
+          unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + xAdapt * 3 * resSurface->w + yAdapt * 3 + 1;
+          unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + xAdapt * 3 * resSurface->w + yAdapt * 3 + 2;
 
-      const unsigned char* localR = (static_cast<unsigned char*>(surface->pixels)) +
-        localX * 3 * surface->w + localY * 3 + 0;
-      const unsigned char* localG = (static_cast<unsigned char*>(surface->pixels)) +
-        localX * 3 * surface->w + localY * 3 + 1;
-      const unsigned char* localB = (static_cast<unsigned char*>(surface->pixels)) +
-        localX * 3 * surface->w + localY * 3 + 2;
+          int localX = xAdapt % surface1->w;
+          int localY = yAdapt % surface1->h;
+          const unsigned char* localR = (static_cast<unsigned char*>(surface1->pixels)) +
+            localX * 3 * surface1->w + localY * 3 + 0;
+          const unsigned char* localG = (static_cast<unsigned char*>(surface1->pixels)) +
+            localX * 3 * surface1->w + localY * 3 + 1;
+          const unsigned char* localB = (static_cast<unsigned char*>(surface1->pixels)) +
+            localX * 3 * surface1->w + localY * 3 + 2;
 
-//      *r = *localR;
-//      *g = *localG;
-//      *b = *localB;
+          int local2X = xAdapt % surface2->w;
+          int local2Y = yAdapt % surface2->h;
+          const unsigned char* localR2 = (static_cast<unsigned char*>(surface2->pixels)) +
+            local2X * 3 * surface2->w + local2Y * 3 + 0;
+          const unsigned char* localG2 = (static_cast<unsigned char*>(surface2->pixels)) +
+            local2X * 3 * surface2->w + local2Y * 3 + 1;
+          const unsigned char* localB2 = (static_cast<unsigned char*>(surface2->pixels)) +
+            local2X * 3 * surface2->w + local2Y * 3 + 2;
 
-      *r = z * 5;
-      *g = z * 5;
-      *b = z * 5;
+          *r = (*localR * coeff1 + *localR2 * coeff2) / 200;
+          *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
+          *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
+        }
+      }
+
     }
   }
+
   SDL_UnlockSurface(resSurface);
   SDL_SaveBMP(resSurface, filename.c_str());
 

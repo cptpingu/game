@@ -28,7 +28,7 @@ Game::load()
   }
 */
 
-  srand(0);
+  //srand(0);
   Chunk* chunk = new Chunk;
   _architecte.generateRandomGround(*chunk,
                                    Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0),

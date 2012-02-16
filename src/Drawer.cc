@@ -147,8 +147,7 @@ namespace
     for (auto it = triangles.cbegin(); it != end; ++it)
     {
       glTexCoord2f(((*it)->getY() + Chunk::SIZE / 2) / Chunk::SIZE,
-                   ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
-      //glTexCoord2i((*it)->getX(), (*it)->getY());
+                   1.0 - ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
       glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());
     }
     glEnd();

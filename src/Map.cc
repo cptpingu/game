@@ -145,7 +145,7 @@ namespace
                          0);
     Architecte architecte;
     Chunk* chunk = new Chunk;
-    architecte.generateRandomGround(*chunk, where, Chunk::SIZE);
+    architecte.generateRandomGround(*chunk, where);
     chunk->meshAllCoord();
     // FIXME generate from file if it exists
 

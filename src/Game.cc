@@ -31,8 +31,8 @@ Game::load()
   //srand(0);
   Chunk* chunk = new Chunk;
   _architecte.generateRandomGround(*chunk,
-                                   Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0),
-                                   Chunk::SIZE);
+                                   Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0)
+                                   );
   chunk->meshAllCoord();
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
 

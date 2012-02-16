@@ -9,6 +9,8 @@
 
 namespace
 {
+
+
   void apply(Chunk::Coord* original, const Chunk::Coord* deformation)
   {
     original->setZ((original->getZ() + deformation->getZ()) / 2);
@@ -21,10 +23,10 @@ Architecte::Architecte()
 //L'architecte fait les plans : les écrits dans un fichier et / ou les stock en memoire.
 
 void
-Architecte::generateRandomGround(Chunk& tmp, const Vector3D& where, int size)
+Architecte::generateRandomGround(Chunk& tmp, const Vector3D& where)
 {
   std::vector<double> height;
-  int loopSize = size * size;
+  int loopSize = Chunk::SIZE * Chunk::SIZE;
   height.reserve(loopSize);
   double heightMean=0;
 
@@ -36,47 +38,47 @@ Architecte::generateRandomGround(Chunk& tmp, const Vector3D& where, int size)
   heightMean = heightMean / loopSize;
   for (int k = 0; k <= 30; ++k)
   {
-    for (int i = 0; i < size - 1; ++i)
+    for (int i = 0; i < Chunk::SIZE - 1; ++i)
     {
-      for (int j = 0; j < size - 1; ++j)
+      for (int j = 0; j < Chunk::SIZE - 1; ++j)
       {
-        height[i + j * size] = (height[i + 1 + j * size] +
-                                height[i + (j + 1) * size] +
-                                height[i + 1 +( j + 1) * size] +
-                                height[i + j * size]) / 4;
-        if (i == size - 2)
-          height[i + 1 + j * size] = height[i + j * size];
+        height[i + j * Chunk::SIZE] = (height[i + 1 + j * Chunk::SIZE] +
+                                height[i + (j + 1) * Chunk::SIZE] +
+                                height[i + 1 +( j + 1) * Chunk::SIZE] +
+                                height[i + j * Chunk::SIZE]) / 4;
+        if (i == Chunk::SIZE - 2)
+          height[i + 1 + j * Chunk::SIZE] = height[i + j * Chunk::SIZE];
 
-        if (j == size - 2)
-          height[i + (j + 1) * size] = height[i + j * size];
+        if (j == Chunk::SIZE - 2)
+          height[i + (j + 1) * Chunk::SIZE] = height[i + j * Chunk::SIZE];
       }
     }
   }
 
   int k = 0;
-  for (int i = 0; i < size ; i++)
+  for (int i = 0; i < Chunk::SIZE ; i++)
   {
-    for(int j = 0; j < size ; j++)
+    for(int j = 0; j < Chunk::SIZE ; j++)
     {
-      if (j != size - 1)
+      if (j != Chunk::SIZE - 1)
       {
         tmp.add(i+k + where._x,
-                k * (size - 1- 2*j) + j  + where._y,
-                height[i+k + size * (k * (size - 1- 2*j) + j )] + where._z - heightMean);
+                k * (Chunk::SIZE - 1- 2*j) + j  + where._y,
+                height[i+k +Chunk::SIZE * (k * (Chunk::SIZE - 1- 2*j) + j )] + where._z - heightMean);
         tmp.add(i + (1-k) + where._x,
-                k * (size - 1) + j - 2 * j * k + where._y,
-                height[i + (1-k) + size *(k * (size - 1- 2*j) + j )] + where._z - heightMean);
+                k * (Chunk::SIZE - 1) + j - 2 * j * k + where._y,
+                height[i + (1-k) + Chunk::SIZE*(k * (Chunk::SIZE - 1- 2*j) + j )] + where._z - heightMean);
       }
       else
       {
         k= (k + 1) % 2;
         tmp.add(i + (1-k) + where._x,
-                k*(size-1) + where._y ,
-                height[i + (1-k) + size*(k*(size - 1) )] + where._z- heightMean);
+                k*(Chunk::SIZE-1) + where._y ,
+                height[i + (1-k) + Chunk::SIZE*(k*(Chunk::SIZE - 1) )] + where._z- heightMean);
 
         tmp.add(i+k + where._x,
-                k * (size-1) + where._y,
-                height[i+k + size *(k *(size - 1) )] + where._z - heightMean);
+                k * (Chunk::SIZE-1) + where._y,
+                height[i+k + Chunk::SIZE *(k *(Chunk::SIZE - 1) )] + where._z - heightMean);
       }
     }
   }
@@ -271,3 +273,28 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
 
 }
 */
+void Architecte::interpolateCoords(std::vector<Chunk::Coord*> destination, const std::vector<Chunk::Coord*>& source)
+
+{
+    auto end = source.end();
+    auto it2 = source.begin();
+    for ( auto it1 = source.begin(); it1 != end ; ++it1)
+    {
+        it2 = it1+1;
+        destination.push_back(new Chunk::Coord ((*it1)->getX(),(*it1)->getY(),(*it1)->getZ()));
+        for (double i=1;i < Chunk::SIZE;++i)
+        {
+        destination.push_back(new Chunk::Coord ( ((*it1)->getX()+(*it2)->getX())* i/Chunk::SIZE
+                                                ,((*it1)->getY()+(*it2)->getY())*i/Chunk::SIZE
+                                                ,((*it1)->getZ()+(*it2)->getZ())*i/Chunk::SIZE
+                                                ));
+
+        }
+
+
+    }
+
+}
+
+
+

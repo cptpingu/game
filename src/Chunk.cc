@@ -164,42 +164,6 @@ Chunk::generateTexture(const std::string& filename) const
         surface2 = woodSurface;
       }
 
-      // if (z < 2)
-      // {
-      //   if (z < 1)
-      //   {
-      //     coeff1 = 100;
-      //     coeff2 = 0;
-      //   }
-      //   else
-      //   {
-      //     coeff1 = 100 - ((z - 1) * 100);
-      //     coeff2 = 100 - coeff2;
-      //   }
-      //   surface1 = vegSurface;
-      //   surface2 = woodSurface;
-      // }
-      // else
-      // {
-      //   if (z < 3)
-      //   {
-      //     coeff1 = 100;
-      //     coeff2 = 0;
-      //   }
-      //   else if (z < 4)
-      //   {
-      //     coeff1 = 100 - ((z - 2) * 100);
-      //     coeff2 = 100 - coeff2;
-      //   }
-      //   else
-      //   {
-      //     coeff1 = 0;
-      //     coeff2 = 100;
-      //   }
-      //   surface1 = woodSurface;
-      //   surface2 = brickSurface;
-      // }
-
       const int xFrom = x - halfAdapterSize > 0 ? x - halfAdapterSize : 0;
       const int xTo = x + halfAdapterSize < resSurface->w ? x + halfAdapterSize : resSurface->w;
       const int yFrom = y - halfAdapterSize > 0 ? y - halfAdapterSize : 0;

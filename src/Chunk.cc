@@ -27,34 +27,32 @@ Chunk::add(double x, double y, double z)
 void
 Chunk::meshAllCoord()
 {
-  typedef std::unordered_multimap<std::pair<double, double>,
-                                  Coord*,
-                                  Core::PairHash<double, double> > map_type;
-map_type map;
+  typedef std::pair<double, double> pair_type;
+  typedef Core::PairHash<double, double> hash_type;
+  typedef std::unordered_multimap<pair_type, Coord*, hash_type> map_type;
+  map_type map;
 
-auto end = _chunk.end();
-for (auto it = _chunk.begin(); it != end; ++it)
- {
-   map.insert(map_type::value_type(std::make_pair((*it)->getX(), (*it)->getY()), *it));
- }
+  auto end = _chunk.end();
+  for (auto it = _chunk.begin(); it != end; ++it)
+    map.insert(map_type::value_type(std::make_pair((*it)->getX(), (*it)->getY()), *it));
 
-auto mapEnd = map.end();
-for (auto it = map.begin(); it != mapEnd; ++it)
- {
-   map_type::iterator first;
-   map_type::iterator tmpEnd;
-   std::tie(first, tmpEnd) = map.equal_range(it->first);
-   if (first == tmpEnd)
-     continue;
+  auto mapEnd = map.end();
+  for (auto it = map.begin(); it != mapEnd; ++it)
+  {
+    map_type::iterator first;
+    map_type::iterator tmpEnd;
+    std::tie(first, tmpEnd) = map.equal_range(it->first);
+    if (first == tmpEnd)
+      continue;
 
-   map_type::iterator second = first;
-   ++second;
-   if (second != tmpEnd && first != second)
-   {
-     first->second->setLink(second->second);
-     second->second->setLink(first->second);
-   }
- }
+    map_type::iterator second = first;
+    ++second;
+    if (second != tmpEnd && first != second)
+    {
+      first->second->setLink(second->second);
+      second->second->setLink(first->second);
+    }
+  }
 }
 
 void
@@ -133,46 +131,74 @@ Chunk::generateTexture(const std::string& filename) const
       auto it = _fast_access_chunk.find(std::make_pair(absoluteToTextureCoord((x - halfAdapterSize) / adapterSize),
                                                        absoluteToTextureCoord((y - halfAdapterSize) / adapterSize)));
       const int z = it != _fast_access_chunk.cend() ? it->second : 0;
+
       SDL_Surface* surface1 = 0;
       SDL_Surface* surface2 = 0;
       int coeff1 = 0;
       int coeff2 = 0;
 
-      if (z < 2)
+      if (z <= 0)
       {
-        if (z < 1)
-        {
-          coeff1 = 100;
-          coeff2 = 0;
-        }
-        else
-        {
-          coeff1 = 100 - ((z - 1) * 100);
-          coeff2 = 100 - coeff2;
-        }
+        coeff1 = 100;
         surface1 = vegSurface;
+        surface2 = vegSurface;
+      }
+      else if (z <= 4)
+      {
+        coeff1 = ((4 - z) * 100) / 4;
+        coeff2 = 100 - coeff1;
+        surface1 = vegSurface;
+        surface2 = brickSurface;
+      }
+      else if (z <= 8)
+      {
+        coeff1 = ((8 - z) * 100) / 8;
+        coeff2 = 100 - coeff1;
+        surface1 = brickSurface;
         surface2 = woodSurface;
       }
       else
       {
-        if (z < 3)
-        {
-          coeff1 = 100;
-          coeff2 = 0;
-        }
-        else if (z < 4)
-        {
-          coeff1 = 100 - ((z - 2) * 100);
-          coeff2 = 100 - coeff2;
-        }
-        else
-        {
-          coeff1 = 0;
-          coeff2 = 100;
-        }
+        coeff2 = 100;
         surface1 = woodSurface;
-        surface2 = brickSurface;
+        surface2 = woodSurface;
       }
+
+      // if (z < 2)
+      // {
+      //   if (z < 1)
+      //   {
+      //     coeff1 = 100;
+      //     coeff2 = 0;
+      //   }
+      //   else
+      //   {
+      //     coeff1 = 100 - ((z - 1) * 100);
+      //     coeff2 = 100 - coeff2;
+      //   }
+      //   surface1 = vegSurface;
+      //   surface2 = woodSurface;
+      // }
+      // else
+      // {
+      //   if (z < 3)
+      //   {
+      //     coeff1 = 100;
+      //     coeff2 = 0;
+      //   }
+      //   else if (z < 4)
+      //   {
+      //     coeff1 = 100 - ((z - 2) * 100);
+      //     coeff2 = 100 - coeff2;
+      //   }
+      //   else
+      //   {
+      //     coeff1 = 0;
+      //     coeff2 = 100;
+      //   }
+      //   surface1 = woodSurface;
+      //   surface2 = brickSurface;
+      // }
 
       const int xFrom = x - halfAdapterSize > 0 ? x - halfAdapterSize : 0;
       const int xTo = x + halfAdapterSize < resSurface->w ? x + halfAdapterSize : resSurface->w;

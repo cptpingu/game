@@ -5,6 +5,7 @@
 #include "Architecte.hh"
 #include "Vector3D.hh"
 #include "Map.hh"
+#include "Chunk.hh"
 
 namespace
 {
@@ -20,7 +21,7 @@ Architecte::Architecte()
 //L'architecte fait les plans : les écrits dans un fichier et / ou les stock en memoire.
 
 void
-Architecte::generateRandomGround(Map::triangles_type & tmp, const Vector3D& where, int size)
+Architecte::generateRandomGround(Chunk& tmp, const Vector3D& where, int size)
 {
   std::vector<double> height;
   int loopSize = size * size;
@@ -29,7 +30,7 @@ Architecte::generateRandomGround(Map::triangles_type & tmp, const Vector3D& wher
 
   for (int i = 0; i < loopSize; ++i)
   {
-    height[i] = rand() % 50;
+    height[i] = rand() % Chunk::SIZE;
     heightMean = heightMean + height[i];
   }
   heightMean = heightMean / loopSize;

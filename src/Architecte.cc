@@ -273,6 +273,7 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
 
 }
 */
+/*
 void Architecte::interpolateCoords(std::vector<Chunk::Coord*> destination, const std::vector<Chunk::Coord*>& source)
 
 {
@@ -295,6 +296,46 @@ void Architecte::interpolateCoords(std::vector<Chunk::Coord*> destination, const
     }
 
 }
+*/
+std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE > &&  Architecte::generateGround()
+{
+
+std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE > TabPoints;
+
+double heightMean;
+
+for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; ++i)
+    {
+    TabPoints[i] = rand() % Chunk::SIZE;
+    heightMean = heightMean + TabPoints[i];
+    }
+
+heightMean = heightMean / Chunk::TEXTURE_SIZE*Chunk::TEXTURE_SIZE;
+
+
+for (int k = 0; k <= 20; ++k)
+{
+  for (int i = 0; i < Chunk::TEXTURE_SIZE ; ++i)
+  {
+    for (int j = 0; j < Chunk::TEXTURE_SIZE ; ++j)
+    {
+      TabPoints[i + j * Chunk::TEXTURE_SIZE] = (TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] +
+                              TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] +
+                              TabPoints[i + 1 +( j + 1) * Chunk::TEXTURE_SIZE] +
+                              TabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
+      if (i == Chunk::TEXTURE_SIZE - 1)
+        TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
+
+      if (j == Chunk::TEXTURE_SIZE - 1)
+        TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
+    }
+  }
+}
+
+return TabPoints;
+}
+
+
 
 
 

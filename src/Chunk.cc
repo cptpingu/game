@@ -197,6 +197,9 @@ Chunk::generateTexture(const std::string& filename) const
           *r = (*localR * coeff1 + *localR2 * coeff2) / 200;
           *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
           *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
+          /**r = z* 10;
+                *g = z* 10;
+                *b = z* 10;*/
         }
       }
 

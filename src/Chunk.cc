@@ -311,7 +311,7 @@ void
 Chunk::createRealCoord(const texture_coord_type& coords)
 {
 #define ADD(X, Y)                                                       \
-  add((X) - HALF, (Y) - HALF, 0 * coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)]);
+  add((X) - HALF, (Y) - HALF, coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)]);
 
   static const int RATIO = TEXTURE_SIZE / SIZE;
   static const int HALF = SIZE / 2;
@@ -328,6 +328,11 @@ Chunk::createRealCoord(const texture_coord_type& coords)
   }
 
   meshAllCoord();
+  // int i = 0;
+  // for (auto it = _chunk.cbegin(); it != _chunk.cend(); ++it, ++i)
+  //   if (i % 10 == 0)
+  //     (*it)->setZ(10);
+
 
 #undef ADD
 }

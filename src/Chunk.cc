@@ -321,18 +321,13 @@ Chunk::createRealCoord(const texture_coord_type& coords)
   {
     for (int j = 0; j < SIZE; ++j)
     {
-        ADD(i + k, k * (SIZE - 1 - 2 * j) + j);
-        ADD(i + 1 - k, k * (SIZE - 1) + j - (2 * j * k));
+      ADD(i + k, k * (SIZE - 1 - 2 * j) + j);
+      ADD(i + 1 - k, k * (SIZE - 1) + j - (2 * j * k));
     }
     k = (k + 1) % 2;
   }
 
   meshAllCoord();
-  // int i = 0;
-  // for (auto it = _chunk.cbegin(); it != _chunk.cend(); ++it, ++i)
-  //   if (i % 10 == 0)
-  //     (*it)->setZ(10);
-
 
 #undef ADD
 }

@@ -5,7 +5,6 @@
 #include "Architecte.hh"
 #include "Vector3D.hh"
 #include "Map.hh"
-#include "Chunk.hh"
 
 namespace
 {
@@ -175,7 +174,8 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   }
 }
 
-/*Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
+/*
+  Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
   {
 
   Chunk Superchunk;
@@ -188,7 +188,7 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   {
   Superchunk.add(*it);
   }
-  /*if (it->getX() == SIZE*Tmp.);
+  if (it->getX() == SIZE*Tmp.);
 
 
   it->getY();it->getZ();
@@ -270,8 +270,7 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   meshAllCoord()
 
   }
-*/
-/*
+
   void Architecte::interpolateCoords(std::vector<Chunk::Coord*> destination, const std::vector<Chunk::Coord*>& source)
 
   {
@@ -295,40 +294,40 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
 
   }
 */
-std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE>&&
+
+Chunk::texture_coord_type
 Architecte::generateGround()
 {
-  std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE> TabPoints;
+  Chunk::texture_coord_type tabPoints;
+  tabPoints.resize(Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE);
 
-  double heightMean;
-
+  double heightMean = 0;
   for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; ++i)
   {
-    TabPoints[i] = rand() % Chunk::SIZE;
-    heightMean = heightMean + TabPoints[i];
+    tabPoints[i] = rand() % Chunk::SIZE;
+    heightMean += tabPoints[i];
   }
 
-  heightMean = heightMean / Chunk::TEXTURE_SIZE*Chunk::TEXTURE_SIZE;
+  heightMean /= Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE;
 
-
-  for (int k = 0; k <= 20; ++k)
+  //for (int k = 0; k <= 20; ++k)
   {
-    for (int i = 0; i < Chunk::TEXTURE_SIZE ; ++i)
+    for (int i = 0; i < Chunk::TEXTURE_SIZE - 1; ++i)
     {
-      for (int j = 0; j < Chunk::TEXTURE_SIZE ; ++j)
+      for (int j = 0; j < Chunk::TEXTURE_SIZE - 1; ++j)
       {
-        TabPoints[i + j * Chunk::TEXTURE_SIZE] = (TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] +
-                                                  TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] +
-                                                  TabPoints[i + 1 +( j + 1) * Chunk::TEXTURE_SIZE] +
-                                                  TabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
+        tabPoints[i + j * Chunk::TEXTURE_SIZE] = (tabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] +
+                                                  tabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] +
+                                                  tabPoints[i + 1 + (j + 1) * Chunk::TEXTURE_SIZE] +
+                                                  tabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
         if (i == Chunk::TEXTURE_SIZE - 1)
-          TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
+          tabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
 
         if (j == Chunk::TEXTURE_SIZE - 1)
-          TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
+          tabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
       }
     }
   }
 
-  return std::move(TabPoints);
+  return tabPoints;
 }

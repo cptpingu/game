@@ -2,7 +2,7 @@
 #define ARCHITECTE_H
 #include "Vector3D.hh"
 #include "Map.hh"
-#include <array>
+#include "Chunk.hh"
 
 class Architecte
 {
@@ -13,7 +13,7 @@ public:
   void mountain(Map::triangles_type& tmp,const Vector3D& where, double peak, int size);
   void mergeGround(Map::triangles_type& generateRandomGround, const Map::triangles_type& deformation);
   /*static void interpolateCoords(std::vector<Chunk::Coord*> destination , const std::vector<Chunk::Coord*>& source);*/
-  std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE>&& generateGround();
+  static Chunk::texture_coord_type generateGround();
 };
 
 #endif // ARCHITECTE_H

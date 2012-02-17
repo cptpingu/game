@@ -1,6 +1,7 @@
 #include "Chunk.hh"
 #include "Core/PairHash.hh"
 #include "GLUtils.hh"
+#include "Architecte.hh"
 
 #include <unordered_map>
 #include <tuple>
@@ -212,4 +213,108 @@ Chunk::generateTexture(const std::string& filename) const
   SDL_FreeSurface(brickSurface);
   SDL_FreeSurface(woodSurface);
   SDL_FreeSurface(vegSurface);
+}
+
+void
+Chunk::generateChunk()
+{
+  const texture_coord_type&& coords = Architecte::generateGround();
+
+  SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
+  SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
+  SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
+  SDL_Surface* resSurface = createSurface(TEXTURE_SIZE, TEXTURE_SIZE, vegSurface);
+
+  SDL_LockSurface(resSurface);
+  for (int x = 0; x < resSurface->w; ++x)
+  {
+    for (int y = 0; y < resSurface->h; ++y)
+    {
+      int z = coords[x * TEXTURE_SIZE + y];
+
+      SDL_Surface* surface1 = 0;
+      SDL_Surface* surface2 = 0;
+      int coeff1 = 0;
+      int coeff2 = 0;
+
+      if (z <= 0)
+      {
+        coeff1 = 100;
+        surface1 = vegSurface;
+        surface2 = vegSurface;
+      }
+      else if (z <= 4)
+      {
+        coeff1 = ((4 - z) * 100) / 4;
+        coeff2 = 100 - coeff1;
+        surface1 = vegSurface;
+        surface2 = brickSurface;
+      }
+      else if (z <= 8)
+      {
+        coeff1 = ((8 - z) * 100) / 8;
+        coeff2 = 100 - coeff1;
+        surface1 = brickSurface;
+        surface2 = woodSurface;
+      }
+      else
+      {
+        coeff2 = 100;
+        surface1 = woodSurface;
+        surface2 = woodSurface;
+      }
+
+      unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 0;
+      unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 1;
+      unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 2;
+
+      int localX = x % surface1->w;
+      int localY = y % surface1->h;
+      const unsigned char* localR = (static_cast<unsigned char*>(surface1->pixels)) +
+        localX * 3 * surface1->w + localY * 3 + 0;
+      const unsigned char* localG = (static_cast<unsigned char*>(surface1->pixels)) +
+        localX * 3 * surface1->w + localY * 3 + 1;
+      const unsigned char* localB = (static_cast<unsigned char*>(surface1->pixels)) +
+        localX * 3 * surface1->w + localY * 3 + 2;
+
+      int local2X = x % surface2->w;
+      int local2Y = y % surface2->h;
+      const unsigned char* localR2 = (static_cast<unsigned char*>(surface2->pixels)) +
+        local2X * 3 * surface2->w + local2Y * 3 + 0;
+      const unsigned char* localG2 = (static_cast<unsigned char*>(surface2->pixels)) +
+        local2X * 3 * surface2->w + local2Y * 3 + 1;
+      const unsigned char* localB2 = (static_cast<unsigned char*>(surface2->pixels)) +
+        local2X * 3 * surface2->w + local2Y * 3 + 2;
+
+      *r = (*localR * coeff1 + *localR2 * coeff2) / 200;
+      *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
+      *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
+
+      *r = z * 10;
+      *g = z * 10 + 255;
+      *b = z * 10;
+    }
+  }
+
+  SDL_UnlockSurface(resSurface);
+  SDL_SaveBMP(resSurface, "chunk_0_0.bmp");
+
+  SDL_FreeSurface(resSurface);
+  SDL_FreeSurface(brickSurface);
+  SDL_FreeSurface(woodSurface);
+  SDL_FreeSurface(vegSurface);
+
+  createRealCoord(coords);
+}
+
+void
+Chunk::createRealCoord(const Chunk::texture_coord_type& coords)
+{
+  static const int RATIO = TEXTURE_SIZE / SIZE;
+
+  for (int x = 0; x < TEXTURE_SIZE; x += RATIO)
+    for (int y = 0; y < TEXTURE_SIZE; y += RATIO)
+      add(x / SIZE - (SIZE / 2), y / SIZE - (SIZE / 2), coords[x * TEXTURE_SIZE + y]);
+
+  meshAllCoord();
 }

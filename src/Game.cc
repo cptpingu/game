@@ -30,13 +30,13 @@ Game::load()
 
   //srand(0);
   Chunk* chunk = new Chunk;
-  _architecte.generateRandomGround(*chunk,
-                                   Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0)
-                                   );
-  chunk->meshAllCoord();
+  chunk->generateChunk();
+  // _architecte.generateRandomGround(*chunk,
+  //                                  Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0)
+  //                                  );
+  // chunk->meshAllCoord();
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
-
-  chunk->generateTexture("chunk_0_0.bmp");
+  // chunk->generateTexture("chunk_0_0.bmp");
   TextureManager& textures = TextureManager::getInstance();
   textures.load("chunk_0_0.bmp", "chunk_0_0");
 

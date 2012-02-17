@@ -53,6 +53,7 @@ public:
           Core::PairHash<int, int> > fast_access_chunk_type;
   typedef chunk_type::iterator iterator;
   typedef chunk_type::const_iterator const_iterator;
+  typedef std::vector<double> texture_coord_type;
 
 public:
   Chunk();
@@ -70,6 +71,11 @@ public:
   static int absoluteToChunkCoord(double absolute);
 
   void generateTexture(const std::string& filename) const;
+
+  void generateChunk();
+private:
+  void createRealCoord(const Chunk::texture_coord_type& coords);
+
 private:
   chunk_type _chunk;
   fast_access_chunk_type _fast_access_chunk;

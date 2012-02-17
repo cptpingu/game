@@ -12,117 +12,117 @@
 //Il n'est pas censé échanger quoi que ce soit avec le reste , c'est le côté open GL du programme.
 namespace
 {
-void draw(const Map::blocks_type& blocks)
-{
+  void draw(const Map::blocks_type& blocks)
+  {
     TextureManager& textures = TextureManager::getInstance();
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
     auto end = blocks.end();
     for (auto it = blocks.begin(); it != end; ++it)
     {
-        glPushMatrix();
-        glTranslatef((*it)->_x * Block::SIZE, (*it)->_y * Block::SIZE, (*it)->_z * Block::SIZE);
-        glBegin(GL_QUADS);
+      glPushMatrix();
+      glTranslatef((*it)->_x * Block::SIZE, (*it)->_y * Block::SIZE, (*it)->_z * Block::SIZE);
+      glBegin(GL_QUADS);
 
-        //par terre
-        if (!(*it)->_down)
-        {
-            glTexCoord2d(0, 0);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
-            glTexCoord2d(0, Block::SIZE);
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-        }
+      //par terre
+      if (!(*it)->_down)
+      {
+        glTexCoord2d(0, 0);
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, 0);
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(0, Block::SIZE);
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+      }
 
-        //face droite
-        if (!(*it)->_right)
-        {
-            glTexCoord2d(0, 0);
-            glVertex3d(-Block::SIZE / 2,-Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, 0);
-            glTexCoord2d(0, Block::SIZE);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, 0);
-        }
+      //face droite
+      if (!(*it)->_right)
+      {
+        glTexCoord2d(0, 0);
+        glVertex3d(-Block::SIZE / 2,-Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, 0);
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, 0);
+        glTexCoord2d(0, Block::SIZE);
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, 0);
+      }
 
-        //face gauche
-        if (!(*it)->_left)
-        {
-            glTexCoord2d(0, 0);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            glVertex3d(Block::SIZE / 2, Block::SIZE / 2, 0);
-            glTexCoord2d(0, Block::SIZE);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
-        }
+      //face gauche
+      if (!(*it)->_left)
+      {
+        glTexCoord2d(0, 0);
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, 0);
+        glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        glVertex3d(Block::SIZE / 2, Block::SIZE / 2, 0);
+        glTexCoord2d(0, Block::SIZE);
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
+      }
 
-        //face face
-        if (!(*it)->_front)
-        {
-            glTexCoord2d(0, 0);
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
-            glTexCoord2d(0, Block::SIZE);
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-        }
+      //face face
+      if (!(*it)->_front)
+      {
+        glTexCoord2d(0, 0);
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, 0);
+        glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(0, Block::SIZE);
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+      }
 
-        //face derriere
-        if (!(*it)->_back)
-        {
-            glTexCoord2d(0, 0);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
-            glTexCoord2d(0, Block::SIZE);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-        }
+      //face derriere
+      if (!(*it)->_back)
+      {
+        glTexCoord2d(0, 0);
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, 0);
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
+        glTexCoord2d(0, Block::SIZE);
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+      }
 
-        //face au ciel
-        if (!(*it)->_up)
-        {
-            glTexCoord2d(0, 0);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-            glTexCoord2d(0, Block::SIZE);
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-        }
+      //face au ciel
+      if (!(*it)->_up)
+      {
+        glTexCoord2d(0, 0);
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, 0);
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+        glTexCoord2d(0, Block::SIZE);
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+      }
 
-        glEnd();
+      glEnd();
 
-        glPopMatrix();
+      glPopMatrix();
     }
-}
+  }
 
-void draw(const Chunk& triangles)
-{
+  void draw(const Chunk& triangles)
+  {
     glBegin(GL_TRIANGLE_STRIP);
     auto end = triangles.cend();
     for (auto it = triangles.cbegin(); it != end; ++it)
     {
-        glTexCoord2f(((*it)->getY() + Chunk::SIZE / 2) / Chunk::SIZE,
-                     1.0 - ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
-        glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());
+      glTexCoord2f(((*it)->getY() + Chunk::SIZE / 2) / Chunk::SIZE,
+                   1.0 - ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
+      glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());
     }
     glEnd();
-}
+  }
 
-void draw(const std::pair<int, int>& coord, const Chunk& chunk)
-{
+  void draw(const std::pair<int, int>& coord, const Chunk& chunk)
+  {
     glPushMatrix();
     TextureManager& textures = TextureManager::getInstance();
     std::ostringstream buff;
@@ -130,7 +130,7 @@ void draw(const std::pair<int, int>& coord, const Chunk& chunk)
     const std::string textureName = buff.str();
     auto tex = textures.find(textureName);
     if (tex == textures.end())
-        tex = textures.find("brick1");
+      tex = textures.find("brick1");
 
     glBindTexture(GL_TEXTURE_2D, tex->second);
     glEnable(GL_TEXTURE_2D);
@@ -138,14 +138,14 @@ void draw(const std::pair<int, int>& coord, const Chunk& chunk)
     draw(chunk);
 
     glPopMatrix();
-}
+  }
 
-void draw(const Map::chunks_type& chunks)
-{
+  void draw(const Map::chunks_type& chunks)
+  {
     auto end = chunks.cend();
     for (auto it = chunks.cbegin(); it != end; ++it)
-        draw(it->first, *it->second);
-}
+      draw(it->first, *it->second);
+  }
 
 } // namespace
 
@@ -155,7 +155,7 @@ Drawer::Drawer()
 
 void Drawer::drawMap(const Map& map) const
 {
-    draw(map.getBlocks());
-    //draw(map.getTriangles());
-    draw(map.getChunks());
+  draw(map.getBlocks());
+  //draw(map.getTriangles());
+  draw(map.getChunks());
 }

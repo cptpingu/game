@@ -1,6 +1,5 @@
 #include "Map.hh"
 
-
 #include "Core/Traits.hh"
 #include "Architecte.hh"
 

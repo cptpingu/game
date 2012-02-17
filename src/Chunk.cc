@@ -118,9 +118,7 @@ Chunk::generateTexture(const std::string& filename) const
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
   SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
   SDL_Surface* resSurface = createSurface(TEXTURE_SIZE, TEXTURE_SIZE, vegSurface);
-  //SDL_Surface* resSurface = createDefaultSurface(10 * SIZE, 10 * SIZE);
 
-  int i = 0;
   const int adapterSize = TEXTURE_SIZE / SIZE;
   const int halfAdapterSize = adapterSize / 2;
   SDL_LockSurface(resSurface);
@@ -197,9 +195,10 @@ Chunk::generateTexture(const std::string& filename) const
           *r = (*localR * coeff1 + *localR2 * coeff2) / 200;
           *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
           *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
-          /**r = z* 10;
-                *g = z* 10;
-                *b = z* 10;*/
+
+          // *r = z* 10;
+          // *g = z* 10;
+          // *b = z* 10;
         }
       }
 

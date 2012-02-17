@@ -9,8 +9,6 @@
 
 namespace
 {
-
-
   void apply(Chunk::Coord* original, const Chunk::Coord* deformation)
   {
     original->setZ((original->getZ() + deformation->getZ()) / 2);
@@ -43,9 +41,9 @@ Architecte::generateRandomGround(Chunk& tmp, const Vector3D& where)
       for (int j = 0; j < Chunk::SIZE - 1; ++j)
       {
         height[i + j * Chunk::SIZE] = (height[i + 1 + j * Chunk::SIZE] +
-                                height[i + (j + 1) * Chunk::SIZE] +
-                                height[i + 1 +( j + 1) * Chunk::SIZE] +
-                                height[i + j * Chunk::SIZE]) / 4;
+                                       height[i + (j + 1) * Chunk::SIZE] +
+                                       height[i + 1 +( j + 1) * Chunk::SIZE] +
+                                       height[i + j * Chunk::SIZE]) / 4;
         if (i == Chunk::SIZE - 2)
           height[i + 1 + j * Chunk::SIZE] = height[i + j * Chunk::SIZE];
 
@@ -178,164 +176,159 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
 }
 
 /*Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
-{
+  {
 
-    Chunk Superchunk;    
+  Chunk Superchunk;
 
-    auto currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() - 1));
-    if (currentChunk != chunks.end())
-    {
-    auto end = currentchunk.cend();
-    for (auto it = currentchunk.cbegin(); it != end; ++it)
-    {
-    Superchunk.add(*it);
-    }
-    /*if (it->getX() == SIZE*Tmp.);
-
-
-    it->getY();it->getZ();
-    CurrentChunk.
-    Superchunk.add()
+  auto currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() - 1));
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
+  /*if (it->getX() == SIZE*Tmp.);
 
 
-    currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 1));
-    if (currentChunk != chunks.end())
-    {
-    auto end = currentchunk.cend();
-    for (auto it = currentchunk.cbegin(); it != end; ++it)
-    {
-    Superchunk.add(*it);
-    }
+  it->getY();it->getZ();
+  CurrentChunk.
+  Superchunk.add()
 
-    currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() - 1));
-    if (currentChunk != chunks.end())
-    {
-    auto end = currentchunk.cend();
-    for (auto it = currentchunk.cbegin(); it != end; ++it)
-    {
-    Superchunk.add(*it);
-    }
 
-    currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 1));
-    if (currentChunk != chunks.end())
-    {
-    auto end = currentchunk.cend();
-    for (auto it = currentchunk.cbegin(); it != end; ++it)
-    {
-    Superchunk.add(*it);
-    }
+  currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 1));
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
 
-    currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 0));
-    if (currentChunk != chunks.end())
-    {
-    auto end = currentchunk.cend();
-    for (auto it = currentchunk.cbegin(); it != end; ++it)
-    {
-    Superchunk.add(*it);
-    }
+  currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() - 1));
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
 
-    currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() - 1));
-    if (currentChunk != chunks.end())
-    {
-    auto end = currentchunk.cend();
-    for (auto it = currentchunk.cbegin(); it != end; ++it)
-    {
-    Superchunk.add(*it);
-    }
+  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 1));
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
 
-    currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 0));
-    if (currentChunk != chunks.end())
-    {
-    auto end = currentchunk.cend();
-    for (auto it = currentchunk.cbegin(); it != end; ++it)
-    {
-    Superchunk.add(*it);
-    }
+  currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 0));
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
 
-     currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() + 1));
+  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() - 1));
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
 
-     if (currentChunk != chunks.end())
-     {
-     auto end = currentchunk.cend();
-     for (auto it = currentchunk.cbegin(); it != end; ++it)
-     {
-     Superchunk.add(*it);
-     }
+  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 0));
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
+
+  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() + 1));
+
+  if (currentChunk != chunks.end())
+  {
+  auto end = currentchunk.cend();
+  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  {
+  Superchunk.add(*it);
+  }
 
   {
-    const int x = (static_cast<double>(position._x) / Chunk::SIZE) + 0.5; \
-    const int y = (static_cast<double>(position._y) / Chunk::SIZE) + 0.5; \
-    std::pair<int, int> current(x + (X), y + (Y));                      \
-    if (_chunks.find(current) == _chunks.end())                         \
-      _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
+  const int x = (static_cast<double>(position._x) / Chunk::SIZE) + 0.5; \
+  const int y = (static_cast<double>(position._y) / Chunk::SIZE) + 0.5; \
+  std::pair<int, int> current(x + (X), y + (Y));                      \
+  if (_chunks.find(current) == _chunks.end())                         \
+  _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
   }
-    meshAllCoord()
+  meshAllCoord()
 
-}
+  }
 */
 /*
-void Architecte::interpolateCoords(std::vector<Chunk::Coord*> destination, const std::vector<Chunk::Coord*>& source)
+  void Architecte::interpolateCoords(std::vector<Chunk::Coord*> destination, const std::vector<Chunk::Coord*>& source)
 
-{
-    auto end = source.end();
-    auto it2 = source.begin();
-    for ( auto it1 = source.begin(); it1 != end ; ++it1)
-    {
-        it2 = it1+1;
-        destination.push_back(new Chunk::Coord ((*it1)->getX(),(*it1)->getY(),(*it1)->getZ()));
-        for (double i=1;i < Chunk::SIZE;++i)
-        {
-        destination.push_back(new Chunk::Coord ( ((*it1)->getX()+(*it2)->getX())* i/Chunk::SIZE
-                                                ,((*it1)->getY()+(*it2)->getY())*i/Chunk::SIZE
-                                                ,((*it1)->getZ()+(*it2)->getZ())*i/Chunk::SIZE
-                                                ));
+  {
+  auto end = source.end();
+  auto it2 = source.begin();
+  for ( auto it1 = source.begin(); it1 != end ; ++it1)
+  {
+  it2 = it1+1;
+  destination.push_back(new Chunk::Coord ((*it1)->getX(),(*it1)->getY(),(*it1)->getZ()));
+  for (double i=1;i < Chunk::SIZE;++i)
+  {
+  destination.push_back(new Chunk::Coord ( ((*it1)->getX()+(*it2)->getX())* i/Chunk::SIZE
+  ,((*it1)->getY()+(*it2)->getY())*i/Chunk::SIZE
+  ,((*it1)->getZ()+(*it2)->getZ())*i/Chunk::SIZE
+  ));
 
-        }
+  }
 
 
-    }
+  }
 
-}
+  }
 */
-std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE > &&  Architecte::generateGround()
+std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE>&&
+Architecte::generateGround()
 {
+  std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE> TabPoints;
 
-std::array<double, Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE > TabPoints;
+  double heightMean;
 
-double heightMean;
-
-for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; ++i)
-    {
+  for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; ++i)
+  {
     TabPoints[i] = rand() % Chunk::SIZE;
     heightMean = heightMean + TabPoints[i];
-    }
+  }
 
-heightMean = heightMean / Chunk::TEXTURE_SIZE*Chunk::TEXTURE_SIZE;
+  heightMean = heightMean / Chunk::TEXTURE_SIZE*Chunk::TEXTURE_SIZE;
 
 
-for (int k = 0; k <= 20; ++k)
-{
-  for (int i = 0; i < Chunk::TEXTURE_SIZE ; ++i)
+  for (int k = 0; k <= 20; ++k)
   {
-    for (int j = 0; j < Chunk::TEXTURE_SIZE ; ++j)
+    for (int i = 0; i < Chunk::TEXTURE_SIZE ; ++i)
     {
-      TabPoints[i + j * Chunk::TEXTURE_SIZE] = (TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] +
-                              TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] +
-                              TabPoints[i + 1 +( j + 1) * Chunk::TEXTURE_SIZE] +
-                              TabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
-      if (i == Chunk::TEXTURE_SIZE - 1)
-        TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
+      for (int j = 0; j < Chunk::TEXTURE_SIZE ; ++j)
+      {
+        TabPoints[i + j * Chunk::TEXTURE_SIZE] = (TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] +
+                                                  TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] +
+                                                  TabPoints[i + 1 +( j + 1) * Chunk::TEXTURE_SIZE] +
+                                                  TabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
+        if (i == Chunk::TEXTURE_SIZE - 1)
+          TabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
 
-      if (j == Chunk::TEXTURE_SIZE - 1)
-        TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
+        if (j == Chunk::TEXTURE_SIZE - 1)
+          TabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] = TabPoints[i + j * Chunk::TEXTURE_SIZE];
+      }
     }
   }
+
+  return std::move(TabPoints);
 }
-
-return TabPoints;
-}
-
-
-
-
-

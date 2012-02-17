@@ -295,6 +295,59 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   }
 */
 
+//int interpolate(int y1, int y2, int n, int delta)
+//{
+//  if (n != 0)
+//    return y1 + delta * (y2 - y1) / n;
+
+//  return y1;
+//}
+
+int interpolate(int y1, int y2, int n, int delta)
+{
+  if (n == 0)
+    return y1;
+
+  if (n == 1)
+    return y2;
+
+  float a = static_cast<float>(delta) / n;
+  float v1 = 3 * pow(1 - a, 2) - 2 * pow(1 - a,3);
+  float v2 = 3 * pow(a, 2) - 2 * pow(a, 3);
+
+  return y1 * v1 + y2 * v2;
+}
+
+int interpolation(const Chunk::texture_coord_type& coords, int i, int j, int frequence)
+{
+  const int size = coords.size();
+  float step = static_cast<float>(coords.size()) / frequence;
+
+  int q = i / step;
+  int bound1x = q * step;
+  int bound2x = (q + 1) * step;
+  if (bound2x >= size)
+    bound2x = size - 1;
+
+  q = j / step;
+  int bound1y = q * step;
+  int bound2y = (q + 1)*step;
+
+  if (bound2y >= size)
+    bound2y = size - 1;
+
+  int b00 = coords[bound1x + bound1y * size];
+  int b01 = coords[bound1x + bound2y * size];
+  int b10 = coords[bound2x + bound1y * size];
+  int b11 = coords[bound2x + bound2y * size];
+
+  int v1  = interpolate(b00, b01, bound2y - bound1y, j - bound1y);
+  int v2  = interpolate(b10, b11, bound2y - bound1y, j - bound1y);
+  int res = interpolate(v1, v2, bound2x - bound1x , i - bound1x);
+
+  return res;
+}
+
 Chunk::texture_coord_type
 Architecte::generateGround()
 {
@@ -302,32 +355,36 @@ Architecte::generateGround()
   tabPoints.resize(Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE);
 
   double heightMean = 0;
-  for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; ++i)
+  for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; i += Chunk::SIZE)
   {
     tabPoints[i] = rand() % Chunk::SIZE;
     heightMean += tabPoints[i];
   }
 
-  heightMean /= Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE;
+  heightMean /= Chunk::SIZE * Chunk::SIZE;
 
-  //for (int k = 0; k <= 20; ++k)
+  for (int k = 0; k <= 20; ++k)
   {
-    for (int i = 0; i < Chunk::TEXTURE_SIZE - 1; ++i)
+    for (int i = 0; i < Chunk::TEXTURE_SIZE - Chunk::SIZE; i += Chunk::SIZE)
     {
-      for (int j = 0; j < Chunk::TEXTURE_SIZE - 1; ++j)
+      for (int j = 0; j < Chunk::TEXTURE_SIZE - Chunk::SIZE; j += Chunk::SIZE)
       {
-        tabPoints[i + j * Chunk::TEXTURE_SIZE] = (tabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] +
-                                                  tabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] +
-                                                  tabPoints[i + 1 + (j + 1) * Chunk::TEXTURE_SIZE] +
+        tabPoints[i + j * Chunk::TEXTURE_SIZE] = (tabPoints[i + Chunk::SIZE + j * Chunk::TEXTURE_SIZE] +
+                                                  tabPoints[i + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] +
+                                                  tabPoints[i + Chunk::SIZE + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] +
                                                   tabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
-        if (i == Chunk::TEXTURE_SIZE - 1)
-          tabPoints[i + 1 + j * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
-
-        if (j == Chunk::TEXTURE_SIZE - 1)
-          tabPoints[i + (j + 1) * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
+        if (i == Chunk::TEXTURE_SIZE - Chunk::SIZE)
+          tabPoints[i + Chunk::SIZE + j * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
+        if (j == Chunk::TEXTURE_SIZE - Chunk::SIZE)
+          tabPoints[i + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
       }
     }
   }
+
+  for (int i = 0; i < Chunk::TEXTURE_SIZE; ++i)
+    for (int j = 0; j < Chunk::TEXTURE_SIZE; ++j)
+      if (i % Chunk::SIZE != 0 || j % Chunk::SIZE != 0)
+        tabPoints[i + j * Chunk::TEXTURE_SIZE] = interpolation(tabPoints, i, j, Chunk::SIZE);
 
   return tabPoints;
 }

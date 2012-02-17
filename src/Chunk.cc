@@ -218,7 +218,7 @@ Chunk::generateTexture(const std::string& filename) const
 void
 Chunk::generateChunk()
 {
-  const texture_coord_type&& coords = Architecte::generateGround();
+  const texture_coord_type& coords = Architecte::generateGround();
 
   SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
@@ -290,9 +290,9 @@ Chunk::generateChunk()
       *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
       *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
 
-      *r = z * 10;
-      *g = z * 10 + 255;
-      *b = z * 10;
+      *r = z;
+      *g = z;
+      *b = z;
     }
   }
 
@@ -313,16 +313,17 @@ Chunk::createRealCoord(const texture_coord_type& coords)
 #define ADD(X, Y)                                                       \
   add((X) - HALF, (Y) - HALF, coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)]);
 
+  std::cout << __LINE__ << std::endl;
   static const int RATIO = TEXTURE_SIZE / SIZE;
   static const int HALF = SIZE / 2;
 
   int k = 0;
-  for (int i = 0; i < SIZE; ++i)
+  for (int i = 0; i < SIZE - 1; ++i)
   {
     for (int j = 0; j < SIZE; ++j)
     {
       ADD(i + k, k * (SIZE - 1 - 2 * j) + j);
-      ADD(i + 1 - k, k * (SIZE - 1) + j - (2 * j * k));
+      ADD(i + 1 - k, k * (SIZE - 1) + j - (2 * j * k) /*k * (SIZE - 1 - 2 * j) + j*/);
     }
     k = (k + 1) % 2;
   }

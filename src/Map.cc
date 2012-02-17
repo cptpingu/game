@@ -181,14 +181,17 @@ Map::lazyChunkLoading(const Vector3D& position)
 
 #undef LAZY_LOAD
 
-  auto end = _chunks.end();
-  for (auto it =_chunks.begin(); it != end; ++it)
-  {
+  std::vector<std::pair<int, int> > deleteList;
+  auto chunkEnd = _chunks.end();
+  for (auto it =_chunks.begin(); it != chunkEnd; ++it)
     if (std::find(tmpChunkList.begin(), tmpChunkList.end(), it->first) == tmpChunkList.end())
-    {
-      delete it->second;
-      _chunks.erase(it->first);
-    }
+      deleteList.push_back(it->first);
+
+  auto deleteEnd = deleteList.end();
+  for (auto it = deleteList.begin(); it != deleteEnd; ++it)
+  {
+    delete _chunks[*it];
+    _chunks.erase(*it);
   }
 }
 

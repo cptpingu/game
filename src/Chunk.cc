@@ -313,8 +313,16 @@ Chunk::createRealCoord(const Chunk::texture_coord_type& coords)
   static const int RATIO = TEXTURE_SIZE / SIZE;
 
   for (int x = 0; x < TEXTURE_SIZE; x += RATIO)
-    for (int y = 0; y < TEXTURE_SIZE; y += RATIO)
-      add(x / SIZE - (SIZE / 2), y / SIZE - (SIZE / 2), coords[x * TEXTURE_SIZE + y]);
+  {
+    if (x % 2 == 0)
+    {
+      for (int y = 0; y < TEXTURE_SIZE; y += RATIO)
+        add(x / SIZE - (SIZE / 2), y / SIZE - (SIZE / 2), coords[x * TEXTURE_SIZE + y]);
+    }
+    else
+      for (int y = TEXTURE_SIZE - 1; y >= 0; y -= RATIO)
+        add(x / SIZE - (SIZE / 2), y / SIZE - (SIZE / 2), coords[x * TEXTURE_SIZE + y]);
+  }
 
   meshAllCoord();
 }

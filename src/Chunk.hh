@@ -74,7 +74,7 @@ public:
 
   void generateChunk();
 private:
-  void createRealCoord(const Chunk::texture_coord_type& coords);
+  void createRealCoord(const texture_coord_type& coords);
 
 private:
   chunk_type _chunk;

@@ -219,6 +219,13 @@ void
 Chunk::generateChunk()
 {
   const texture_coord_type& coords = Architecte::generateGround();
+  double min = coords.empty() ? 0 : coords[0];
+  double max = coords.empty() ? 0 : coords[0];
+  for (auto it = coords.begin(); it != coords.end(); ++it)
+    if (*it > max)
+      max = *it;
+    else if (*it < min)
+      min = *it;
 
   SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
@@ -230,29 +237,30 @@ Chunk::generateChunk()
   {
     for (int y = 0; y < resSurface->h; ++y)
     {
-      int z = coords[x * TEXTURE_SIZE + y];
+      double coord = coords[x * TEXTURE_SIZE + y];
+      int z = (255 * (coord - min)) / (max - min);
 
       SDL_Surface* surface1 = 0;
       SDL_Surface* surface2 = 0;
       int coeff1 = 0;
       int coeff2 = 0;
 
-      if (z <= 0)
+      if (z <= 96)
       {
         coeff1 = 100;
         surface1 = vegSurface;
         surface2 = vegSurface;
       }
-      else if (z <= 4)
+      else if (z <= 160)
       {
-        coeff1 = ((4 - z) * 100) / 4;
+        coeff1 = ((160 - z) * 100) / 160;
         coeff2 = 100 - coeff1;
         surface1 = vegSurface;
         surface2 = brickSurface;
       }
-      else if (z <= 8)
+      else if (z <= 224)
       {
-        coeff1 = ((8 - z) * 100) / 8;
+        coeff1 = ((224 - z) * 100) / 224;
         coeff2 = 100 - coeff1;
         surface1 = brickSurface;
         surface2 = woodSurface;
@@ -286,13 +294,13 @@ Chunk::generateChunk()
       const unsigned char* localB2 = (static_cast<unsigned char*>(surface2->pixels)) +
         local2X * 3 * surface2->w + local2Y * 3 + 2;
 
-      *r = (*localR * coeff1 + *localR2 * coeff2) / 200;
-      *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
-      *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
+      *r = (*localR * coeff1 + *localR2 * coeff2) / 100;
+      *g = (*localG * coeff1 + *localG2 * coeff2) / 100;
+      *b = (*localB * coeff1 + *localB2 * coeff2) / 100;
 
-      *r = z;
-      *g = z;
-      *b = z;
+//      *r = z;
+//      *g = z;
+//      *b = z;
     }
   }
 

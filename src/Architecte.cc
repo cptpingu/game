@@ -295,52 +295,51 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   }
 */
 
-//int interpolate(int y1, int y2, int n, int delta)
-//{
-//  if (n != 0)
-//    return y1 + delta * (y2 - y1) / n;
-
-//  return y1;
-//}
 int interpolate(int y1, int y2, int n, int delta)
 {
-  if (n == 0)
-    return y1;
+  if (n != 0)
+    return y1 + delta * (y2 - y1) / n;
 
-  if (n == 1)
-    return y2;
-
-  float a = static_cast<float>(delta) / n;
-  float v1 = 3 * pow(1 - a, 2) - 2 * pow(1 - a,3);
-  float v2 = 3 * pow(a, 2) - 2 * pow(a, 3);
-
-  return y1 * v1 + y2 * v2;
+  return y1;
 }
 
-int interpolation(const Chunk::texture_coord_type& coords, int i, int j, int frequence)
+//int interpolate(int y1, int y2, int n, int delta)
+//{
+//  if (n == 0)
+//    return y1;
+
+//  if (n == 1)
+//    return y2;
+
+//  float a = static_cast<float>(delta) / n;
+//  float v1 = 3 * pow(1 - a, 2) - 2 * pow(1 - a,3);
+//  float v2 = 3 * pow(a, 2) - 2 * pow(a, 3);
+
+//  return y1 * v1 + y2 * v2;
+//}
+
+int interpolation(const Chunk::texture_coord_type& coords, int i, int j, float step)
 {
-  static const float step = Chunk::SIZE;
+  //static const float step = Chunk::SIZE;
 
   int q = i / step;
-  int bound1x = q * step;
+  int bound1x = (q * step);
   int bound2x = ((q + 1) * step) - 1;
-  if (bound2x >= Chunk::TEXTURE_SIZE)
-    bound2x = Chunk::TEXTURE_SIZE - 1;
+  int tex2x = bound2x + 1 < Chunk::TEXTURE_SIZE ? bound2x + 1 : Chunk::TEXTURE_SIZE - 1;
 
-  q = j / step;
-  int bound1y = q * step;
-  int bound2y = ((q + 1) * step) - 1;
-  if (bound2y >= Chunk::TEXTURE_SIZE)
-    bound2y = Chunk::TEXTURE_SIZE - 1;
+  int q2 = j / step;
+  int bound1y = (q2 * step);
+  int bound2y = ((q2 + 1) * step) - 1;
+  int tex2y = bound2y + 1 < Chunk::TEXTURE_SIZE ? bound2y + 1 : Chunk::TEXTURE_SIZE - 1;
 
   int b00 = coords[bound1x + bound1y * Chunk::TEXTURE_SIZE];
-  int b01 = coords[bound1x + bound2y * Chunk::TEXTURE_SIZE];
-  int b10 = coords[bound2x + bound1y * Chunk::TEXTURE_SIZE];
-  int b11 = coords[bound2x + bound2y * Chunk::TEXTURE_SIZE];
+  int b01 = coords[bound1x + tex2y * Chunk::TEXTURE_SIZE];
+  int b10 = coords[tex2x + bound1y * Chunk::TEXTURE_SIZE];
+  int b11 = coords[tex2x + tex2y * Chunk::TEXTURE_SIZE];
 
   int v1 = interpolate(b00, b01, bound2y - bound1y, j - bound1y);
   int v2 = interpolate(b10, b11, bound2y - bound1y, j - bound1y);
-  int res = interpolate(v1, v2, bound2x - bound1x , i - bound1x);
+  int res = interpolate(v1, v2, bound2x - bound1x, i - bound1x);
 
   return res;
 }
@@ -375,7 +374,11 @@ Architecte::generateGround()
         if (j == Chunk::TEXTURE_SIZE - Chunk::SIZE)
           tabPoints[i + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
       }
+      tabPoints[i + (Chunk::TEXTURE_SIZE - Chunk::SIZE) * Chunk::TEXTURE_SIZE] =
+          tabPoints[i + (Chunk::TEXTURE_SIZE - (2 * Chunk::SIZE)) * Chunk::TEXTURE_SIZE];
     }
+    tabPoints[Chunk::TEXTURE_SIZE - Chunk::SIZE + (Chunk::TEXTURE_SIZE - Chunk::SIZE) * Chunk::TEXTURE_SIZE] =
+        tabPoints[Chunk::TEXTURE_SIZE - (2 * Chunk::SIZE) + (Chunk::TEXTURE_SIZE - (2 * Chunk::SIZE)) * Chunk::TEXTURE_SIZE];
   }
 
   for (int i = 0; i < Chunk::TEXTURE_SIZE; ++i)

@@ -290,9 +290,9 @@ Chunk::generateChunk()
       *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
       *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
 
-      *r = 255;
-      *g = 0;
-      *b = 0;
+      *r = z;
+      *g = z;
+      *b = z;
     }
   }
 
@@ -313,7 +313,6 @@ Chunk::createRealCoord(const texture_coord_type& coords)
 #define ADD(X, Y)                                                       \
   add((X) - HALF, (Y) - HALF, coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)]);
 
-  std::cout << __LINE__ << std::endl;
   static const int RATIO = TEXTURE_SIZE / SIZE;
   static const int HALF = SIZE / 2;
 

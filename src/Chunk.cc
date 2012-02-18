@@ -7,6 +7,7 @@
 #include <tuple>
 #include <SDL/SDL_image.h>
 
+#include <array>
 #include <iostream>
 
 Chunk::Chunk()
@@ -215,6 +216,54 @@ Chunk::generateTexture(const std::string& filename) const
   SDL_FreeSurface(vegSurface);
 }
 
+void computeTextureCoeff(std::array<double, 3>& coeffs, unsigned char z)
+{
+  if (z < 60)
+  {
+    coeffs[0] = 1.0;
+    coeffs[1] = 0.0;
+    coeffs[2] = 0.0;
+  }
+  else if (z < 130)
+  {
+    coeffs[0] = 1.0 - (z - 60.0) / 70.0;
+    coeffs[1] = (z - 60.0) / 70.0;
+    coeffs[2] = 0.0;
+  }
+  else if (z < 180)
+  {
+    coeffs[0] = 0.0;
+    coeffs[1] = 1.0;
+    coeffs[2] = 0.0;
+  }
+  else if (z < 220)
+  {
+    coeffs[0] = 0.0;
+    coeffs[1] = 1.0 - (z - 180.0) / 40.0;
+    coeffs[2] = (z - 180.0) / 40.0;
+  }
+  else
+  {
+    coeffs[0] = 0.0;
+    coeffs[1] = 0.0;
+    coeffs[2] = 1.0;
+  }
+}
+
+const Core::Container3D<int> getTexturePixelColor(const SDL_Surface* surface, int x, int y)
+{
+  const int localX = x % surface->w;
+  const int localY = y % surface->h;
+  const unsigned char* r = (static_cast<unsigned char*>(surface->pixels)) +
+    localX * 3 * surface->w + localY * 3 + 0;
+  const unsigned char* g = (static_cast<unsigned char*>(surface->pixels)) +
+    localX * 3 * surface->w + localY * 3 + 1;
+  const unsigned char* b = (static_cast<unsigned char*>(surface->pixels)) +
+    localX * 3 * surface->w + localY * 3 + 2;
+
+  return Core::Container3D<int>(*r, *g, *b);
+}
+
 void
 Chunk::generateChunk()
 {
@@ -228,9 +277,10 @@ Chunk::generateChunk()
       min = *it;
 
   SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
-  SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
   SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
+  SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
   SDL_Surface* resSurface = createSurface(TEXTURE_SIZE, TEXTURE_SIZE, vegSurface);
+  std::array<double, 3> coeffs;
 
   SDL_LockSurface(resSurface);
   for (int x = 0; x < resSurface->w; ++x)
@@ -238,65 +288,20 @@ Chunk::generateChunk()
     for (int y = 0; y < resSurface->h; ++y)
     {
       double coord = coords[x * TEXTURE_SIZE + y];
-      int z = (255 * (coord - min)) / (max - min);
-
-      SDL_Surface* surface1 = 0;
-      SDL_Surface* surface2 = 0;
-      int coeff1 = 0;
-      int coeff2 = 0;
-
-      if (z <= 96)
-      {
-        coeff1 = 100;
-        surface1 = vegSurface;
-        surface2 = vegSurface;
-      }
-      else if (z <= 160)
-      {
-        coeff1 = ((160 - z) * 100) / 160;
-        coeff2 = 100 - coeff1;
-        surface1 = vegSurface;
-        surface2 = brickSurface;
-      }
-      else if (z <= 224)
-      {
-        coeff1 = ((224 - z) * 100) / 224;
-        coeff2 = 100 - coeff1;
-        surface1 = brickSurface;
-        surface2 = woodSurface;
-      }
-      else
-      {
-        coeff2 = 100;
-        surface1 = woodSurface;
-        surface2 = woodSurface;
-      }
+      double z = (255.0 * (coord - min)) / (max - min);
+      computeTextureCoeff(coeffs, z);
 
       unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 0;
       unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 1;
       unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 2;
 
-      int localX = x % surface1->w;
-      int localY = y % surface1->h;
-      const unsigned char* localR = (static_cast<unsigned char*>(surface1->pixels)) +
-        localX * 3 * surface1->w + localY * 3 + 0;
-      const unsigned char* localG = (static_cast<unsigned char*>(surface1->pixels)) +
-        localX * 3 * surface1->w + localY * 3 + 1;
-      const unsigned char* localB = (static_cast<unsigned char*>(surface1->pixels)) +
-        localX * 3 * surface1->w + localY * 3 + 2;
+      const Core::Container3D<int> vegColor = getTexturePixelColor(vegSurface, x, y);
+      const Core::Container3D<int> brickColor = getTexturePixelColor(brickSurface, x, y);
+      const Core::Container3D<int> woodColor = getTexturePixelColor(woodSurface, x, y);
 
-      int local2X = x % surface2->w;
-      int local2Y = y % surface2->h;
-      const unsigned char* localR2 = (static_cast<unsigned char*>(surface2->pixels)) +
-        local2X * 3 * surface2->w + local2Y * 3 + 0;
-      const unsigned char* localG2 = (static_cast<unsigned char*>(surface2->pixels)) +
-        local2X * 3 * surface2->w + local2Y * 3 + 1;
-      const unsigned char* localB2 = (static_cast<unsigned char*>(surface2->pixels)) +
-        local2X * 3 * surface2->w + local2Y * 3 + 2;
-
-      *r = (*localR * coeff1 + *localR2 * coeff2) / 100;
-      *g = (*localG * coeff1 + *localG2 * coeff2) / 100;
-      *b = (*localB * coeff1 + *localB2 * coeff2) / 100;
+      *r = coeffs[0] * vegColor._x + coeffs[1] * brickColor._x + coeffs[2] * woodColor._x;
+      *g = coeffs[0] * vegColor._y + coeffs[1] * brickColor._y + coeffs[2] * woodColor._y;
+      *b = coeffs[0] * vegColor._z + coeffs[1] * brickColor._z + coeffs[2] * woodColor._z;
 
 //      *r = z;
 //      *g = z;
@@ -319,7 +324,7 @@ void
 Chunk::createRealCoord(const texture_coord_type& coords)
 {
 #define ADD(X, Y)                                                       \
-  add((X) - HALF, (Y) - HALF, coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)]);
+  add((X) - HALF, (Y) - HALF, coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)] / (10));
 
   static const int RATIO = TEXTURE_SIZE / SIZE;
   static const int HALF = SIZE / 2;

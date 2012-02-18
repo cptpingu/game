@@ -353,7 +353,7 @@ Architecte::generateGround()
   double heightMean = 0;
   for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; i += Chunk::SIZE)
   {
-    tabPoints[i] = Random::rand() % Chunk::SIZE;
+    tabPoints[i] = Random::rand() % (Chunk::SIZE * 10);
     heightMean += tabPoints[i];
   }
 

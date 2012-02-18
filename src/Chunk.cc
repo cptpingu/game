@@ -290,9 +290,9 @@ Chunk::generateChunk()
       *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
       *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
 
-      *r = z;
-      *g = z;
-      *b = z;
+      *r = 255;
+      *g = 0;
+      *b = 0;
     }
   }
 

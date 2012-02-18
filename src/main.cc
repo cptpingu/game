@@ -1,9 +1,6 @@
 #include "Opengl.hh"
 #include <SDL/SDL.h>
-
-#include <cstdlib>
 #include <iostream>
-#include <time.h>
 
 #include "Game.hh"
 
@@ -23,7 +20,6 @@ namespace
 
 MAIN
 {
-  srand(time(0));
   unsigned int width = Game::WINDOW_WIDTH;
   unsigned int height = Game::WINDOW_HEIGHT;
 

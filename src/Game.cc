@@ -28,7 +28,6 @@ Game::load()
   }
 */
 
-  //srand(0);
   Chunk* chunk = new Chunk;
   chunk->generateChunk();
   // _architecte.generateRandomGround(*chunk,

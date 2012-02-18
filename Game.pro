@@ -17,7 +17,8 @@ SOURCES += \
     src/Opengl.cc \
     src/Game.cc \
     src/Architecte.cc \
-    src/Chunk.cc
+    src/Chunk.cc \
+    src/Random.cc
 
 HEADERS += \
     src/Vector3D.hh \
@@ -40,7 +41,8 @@ HEADERS += \
     src/Game.hh \
     src/Architecte.hh \
     src/Chunk.hh \
-    src/Core/PairHash.hh
+    src/Core/PairHash.hh \
+    src/Random.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32

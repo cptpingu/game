@@ -1,10 +1,10 @@
 #include <iostream>
 #include <cmath>
-#include <cstdlib>
 
 #include "Architecte.hh"
 #include "Vector3D.hh"
 #include "Map.hh"
+#include "Random.hh"
 
 namespace
 {
@@ -357,7 +357,7 @@ Architecte::generateGround()
   double heightMean = 0;
   for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; i += Chunk::SIZE)
   {
-    tabPoints[i] = rand() % Chunk::SIZE;
+    tabPoints[i] = Random::rand() % Chunk::SIZE;
     heightMean += tabPoints[i];
   }
 

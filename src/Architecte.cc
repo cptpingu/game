@@ -385,9 +385,9 @@ namespace Architecte
     return tabPoints;
   }
 
-  const Chunk::texture_coord_type& generateNeighbor(const std::pair<int, int>& chunkCoord)
+  const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& chunkCoord)
   {
-    Chunk::texture_coord_type coords;
+    Chunk::chunk_type coords;
     coords.resize(0); // nb points centre + nbpoints gauche + nbpoints droite
     // + nbpoints haut + nbpoints bas
 
@@ -402,7 +402,7 @@ namespace Architecte
     return coords;
   }
 
-  void generateGround(Chunk::texture_coord_type& coords, int size)
+  void generateGround(Chunk::chunk_type& coords, int size)
   {
     // size est nécessaire, puisque tu dois connaitre la taille du coté du carré.
     // Agit sur les Z pour lisser.
@@ -412,10 +412,10 @@ namespace Architecte
   }
 
   const Chunk::texture_coord_type&
-  extractCoords(const Chunk::texture_coord_type& coords, int size, int borderSize)
+  extractCoords(const Chunk::chunk_type& coords, int size, int borderSize)
   {
     Chunk::texture_coord_type extracted;
-    extracted.resize(0); // Nb points dans la grille du milieu.
+    extracted.resize(0); // Nb points dans la grille du milieu * Chunk::SIZE.
 
     // Extraie la grille du milieu.
     // Récupère tout de (0 + borderSize, 0 + borderSize) à (size - borderSize, size - borderSize)

@@ -4,8 +4,8 @@ LOGIN=MrBanane
 PROJ=game
 EXE=$PROJ
 
-CXXFLAGS="-W -Wall -Wabi -pedantic "`sdl-config --cflags`" -std=c++0x"
-LDFLAGS="-lSDL_image -lGL -lGLU "`sdl-config --libs`" -std=c++0x"
+CXXFLAGS="-W -Wall -Wabi -pedantic "`sdl-config --cflags`" -std=c++0x -I `pwd`"
+LDFLAGS="-lSDL_image -lGL -lGLU "`sdl-config --libs`" -std=c++0x -lpng"
 
 flag_debug=0
 flag_help=0

@@ -37,7 +37,6 @@ private:
   FreeFlyCamera _camera;
   Map           _map;
   Drawer        _drawer;
-  Architecte    _architecte;
 };
 
 #endif /* !GAME_HH_ */

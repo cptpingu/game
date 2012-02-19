@@ -142,9 +142,8 @@ namespace
     const Vector3D where((x * Chunk::SIZE) - (Chunk::SIZE / 2),
                          (y * Chunk::SIZE) - (Chunk::SIZE / 2),
                          0);
-    Architecte architecte;
     Chunk* chunk = new Chunk;
-    architecte.generateRandomGround(*chunk, where);
+    Architecte::generateRandomGround(*chunk, where);
     chunk->meshAllCoord();
     // FIXME generate from file if it exists
 

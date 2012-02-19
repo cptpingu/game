@@ -198,9 +198,9 @@ Chunk::generateTexture(const std::string& filename) const
           *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
           *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
 
-          // *r = z* 10;
-          // *g = z* 10;
-          // *b = z* 10;
+           //*r = z;
+           //*g = z;
+          // *b = z;
         }
       }
 
@@ -303,9 +303,9 @@ Chunk::generateChunk()
       *g = coeffs[0] * vegColor._y + coeffs[1] * brickColor._y + coeffs[2] * woodColor._y;
       *b = coeffs[0] * vegColor._z + coeffs[1] * brickColor._z + coeffs[2] * woodColor._z;
 
-//      *r = z;
-//      *g = z;
-//      *b = z;
+    *r = z;
+    *g = z;
+    *b = z;
     }
   }
 
@@ -344,3 +344,8 @@ Chunk::createRealCoord(const texture_coord_type& coords)
 
 #undef ADD
 }
+
+
+
+
+

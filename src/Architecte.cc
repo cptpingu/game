@@ -173,8 +173,8 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
     ++it1;
   }
 }
-
 /*
+
   Architecte::NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
   {
 
@@ -184,8 +184,10 @@ Architecte::mergeGround(Map::triangles_type& ground, const Map::triangles_type& 
   if (currentChunk != chunks.end())
   {
   auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
+  for (auto it = currentchunk.cbegin()+Chunk::SIZE/2; it != end; ++it)
   {
+      currentChunk._fast_access_chunk
+
   Superchunk.add(*it);
   }
   if (it->getX() == SIZE*Tmp.);
@@ -359,7 +361,7 @@ Architecte::generateGround()
 
   heightMean /= Chunk::SIZE * Chunk::SIZE;
 
-  for (int k = 0; k <= 20; ++k)
+  for (int k = 0; k <= 10; ++k)
   {
     for (int i = 0; i < Chunk::TEXTURE_SIZE - Chunk::SIZE; i += Chunk::SIZE)
     {
@@ -369,9 +371,9 @@ Architecte::generateGround()
                                                   tabPoints[i + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] +
                                                   tabPoints[i + Chunk::SIZE + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] +
                                                   tabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
-        if (i == Chunk::TEXTURE_SIZE - Chunk::SIZE)
+        if (i == Chunk::TEXTURE_SIZE - 2*Chunk::SIZE)
           tabPoints[i + Chunk::SIZE + j * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
-        if (j == Chunk::TEXTURE_SIZE - Chunk::SIZE)
+        if (j == Chunk::TEXTURE_SIZE - 2*Chunk::SIZE)
           tabPoints[i + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
       }
       tabPoints[i + (Chunk::TEXTURE_SIZE - Chunk::SIZE) * Chunk::TEXTURE_SIZE] =

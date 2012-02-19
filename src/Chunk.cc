@@ -20,7 +20,7 @@ Chunk::~Chunk()
 }
 
 void
-Chunk::add(int x, int y, int z)
+Chunk::add(double x, double y, double z)
 {
   _chunk.push_back(new Coord(x, y, z));
   _fast_access_chunk.insert(fast_access_chunk_type::value_type(std::make_pair(x, y), z));
@@ -29,8 +29,8 @@ Chunk::add(int x, int y, int z)
 void
 Chunk::meshAllCoord()
 {
-  typedef std::pair<int, int> pair_type;
-  typedef Core::PairHash<int, int> hash_type;
+  typedef std::pair<double, double> pair_type;
+  typedef Core::PairHash<double, double> hash_type;
   typedef std::unordered_multimap<pair_type, Coord*, hash_type> map_type;
   map_type map;
 
@@ -265,7 +265,7 @@ const Core::Container3D<int> getTexturePixelColor(const SDL_Surface* surface, in
 }
 
 int
-Chunk::operator()(int x, int y) const
+Chunk::operator()(double x, double y) const
 {
   auto found = _fast_access_chunk.find(fast_access_chunk_type::key_type(x, y));
   if (found == _fast_access_chunk.cend())

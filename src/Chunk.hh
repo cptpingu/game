@@ -15,26 +15,26 @@ public:
   static const int TEXTURE_SIZE = 64 * 64;
 
 public:
-  class Coord : private Core::Container3D<int>
+  class Coord : private Core::Container3D<double>
   {
   public:
     Coord()
-      : Core::Container3D<int>(), _link(0)
+      : Core::Container3D<double>(), _link(0)
     {
     }
 
-    Coord(int x, int y, int z)
-      : Core::Container3D<int>(x, y, z), _link(0)
+    Coord(double x, double y, double z)
+      : Core::Container3D<double>(x, y, z), _link(0)
     {
     }
 
-    int getX() const { return _x;}
-    int getY() const { return _y;}
-    int getZ() const { return _z;}
+    double getX() const { return _x;}
+    double getY() const { return _y;}
+    double getZ() const { return _z;}
 
-    void setX(int x) { _x = x;}
-    void setY(int y) { _y = y;}
-    void setZ(int z)
+    void setX(double x) { _x = x;}
+    void setY(double y) { _y = y;}
+    void setZ(double z)
     {
       _z = z;
       if (_link)
@@ -49,8 +49,8 @@ public:
   };
 
   typedef std::vector<Coord*> chunk_type;
-  typedef std::unordered_map<std::pair<int, int>, int,
-          Core::PairHash<int, int> > fast_access_chunk_type;
+  typedef std::unordered_map<std::pair<double, double>, double,
+          Core::PairHash<double, double> > fast_access_chunk_type;
   typedef chunk_type::iterator iterator;
   typedef chunk_type::const_iterator const_iterator;
   typedef std::vector<double> texture_coord_type;
@@ -59,7 +59,7 @@ public:
   Chunk();
   ~Chunk();
 
-  void add(int x, int y, int z);
+  void add(double x, double y, double z);
   void meshAllCoord();
   void clear();
   size_t size() const;
@@ -73,7 +73,7 @@ public:
   void generateTexture(const std::string& filename) const;
 
   void generateChunk();
-  int operator()(int x, int y) const;
+  int operator()(double x, double y) const;
 private:
   void createRealCoord(const texture_coord_type& coords);
 

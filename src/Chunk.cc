@@ -2,6 +2,7 @@
 #include "Core/PairHash.hh"
 #include "GLUtils.hh"
 #include "Architecte.hh"
+#include "SDL/SavePng.hh"
 
 #include <unordered_map>
 #include <tuple>
@@ -321,6 +322,7 @@ Chunk::generateChunk()
 
   SDL_UnlockSurface(resSurface);
   SDL_SaveBMP(resSurface, "chunk_0_0.bmp");
+  SDL::savePng(resSurface, "chunk_0_0.png");
 
   SDL_FreeSurface(resSurface);
   SDL_FreeSurface(brickSurface);

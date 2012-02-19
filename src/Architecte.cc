@@ -385,11 +385,72 @@ namespace Architecte
     return tabPoints;
   }
 
-  const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& chunkCoord)
+  const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& Where, const Map::chunks_type& chunks)
   {
     Chunk::chunk_type coords;
     coords.resize(0); // nb points centre + nbpoints gauche + nbpoints droite
     // + nbpoints haut + nbpoints bas
+
+      //Les points sont initialisés au hasard...
+    for (int i = 0; i < Chunk::SIZE * Chunk::SIZE; ++i)
+    {
+      coords[i] = Random::rand() % (Chunk::SIZE * 10);
+    }
+
+        //Corrigés sur les frontières....
+    auto currentChunk = chunks.find(std::make_pair(Where.first + 1, Where.second ));
+     if (currentChunk != chunks.end())
+    {
+         fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1,1,0);
+    }
+
+     currentChunk = chunks.find(std::make_pair(Where.first , Where.second +1));
+     if (currentChunk != chunks.end())
+     {
+        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,0,1);
+     }
+
+     currentChunk = chunks.find(std::make_pair(Where.first+1 , Where.second +1));
+     if (currentChunk != chunks.end())
+     {
+        fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,1,1);
+     }
+
+     currentChunk = chunks.find(std::make_pair(Where.first-1 , Where.second ));
+     if (currentChunk != chunks.end())
+     {
+        fillCoords(coords,currentChunk,0,0,0,Chunk::SIZE-1,-1,0);
+     }
+
+     currentChunk = chunks.find(std::make_pair(Where.first-1 , Where.second -1));
+     if (currentChunk != chunks.end())
+     {
+        fillCoords(coords,currentChunk,0,0,0,0,-1,-1);
+     }
+
+     currentChunk = chunks.find(std::make_pair(Where.first , Where.second -1));
+     if (currentChunk != chunks.end())
+     {
+        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,0,0,0,-1);
+     }
+
+     currentChunk = chunks.find(std::make_pair(Where.first+1 , Where.second -1));
+     if (currentChunk != chunks.end())
+     {
+        fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,0,0,1,-1);
+     }
+
+     currentChunk = chunks.find(std::make_pair(Where.first-1 , Where.second +1));
+     if (currentChunk != chunks.end())
+     {
+        fillCoords(coords,currentChunk,0,0,Chunk::SIZE-1,Chunk::SIZE-1,-1,1);
+     }
+
+
+
+
+
+
 
     // FIXME
     // Ajout taille haut (si non existant, on met des 0 ou de l'alea)
@@ -399,17 +460,53 @@ namespace Architecte
     // Remplissage aléatoire centre.
     // Retourne la grande grille.
 
+
+     //Retourne donc une liste valide de coord pour un chunk , chunk::size*chunk::size !
     return coords;
+  }
+
+void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,int Yfrom,int Yto,int PosX,int PosY)
+  {
+      for (int y = Yfrom; y< Yto;++y)
+      for (int i = Xfrom; i< Xto;++i)
+      {
+      {
+              coords[i+y*Chunk::SIZE] = currentChunk(PosX*(Chunk::SIZE-1) - PosX*i + (1-PosX)*i,
+                                                     PosY*(Chunk::SIZE-1)- PosY*y + (1-PosY)*y);
+      }
+      }
   }
 
   void generateGround(Chunk::chunk_type& coords, int size)
   {
+   for (int k = 0;k<20;++k)
+   {
+    for (int x=0;x<size-1;++x)
+    {
+
+       for (int y=0;y<size-1;++y)
+       {
+           coords[x + size*y] = (coords[x + size*y] +
+                                coords[x+1 + size*y]+
+                                coords[x+1 + size*(y+1)]+
+                                coords[x + size*(y+1)])/4;
+       }
+
+   }
+ //Gére les problémes de frontière de l'algo
+  for (int x=0;x<size-1;++x)
+    { coords[x + size*(size-1)] = (coords[x + size*(size-1)]+coords[x + size*(size-2)])/2;
+      coords[size-1 + size*x] = (coords[size-1 + size*x]+coords[size-2 + size*x])/2;}
+    }
+
+  }
+
     // size est nécessaire, puisque tu dois connaitre la taille du coté du carré.
     // Agit sur les Z pour lisser.
 
     // PS: dans chunk.cc, la méthode extractCoords, se chargera de récupérer le centre
     // de cette grande grille.
-  }
+
 
   const Chunk::texture_coord_type&
   extractCoords(const Chunk::chunk_type& coords, int size, int borderSize)

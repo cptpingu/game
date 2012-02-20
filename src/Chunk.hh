@@ -72,7 +72,7 @@ public:
 
   void generateTexture(const std::string& filename) const;
 
-  void generateChunk();
+  void generateChunk(const texture_coord_type& coords);
   int operator()(double x, double y) const;
 private:
   void createRealCoord(const texture_coord_type& coords);

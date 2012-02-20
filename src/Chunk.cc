@@ -276,9 +276,8 @@ Chunk::operator()(double x, double y) const
 }
 
 void
-Chunk::generateChunk()
+Chunk::generateChunk(const texture_coord_type& coords)
 {
-  const texture_coord_type& coords = Architecte::generateGround();
   double min = coords.empty() ? 0 : coords[0];
   double max = coords.empty() ? 0 : coords[0];
   for (auto it = coords.begin(); it != coords.end(); ++it)

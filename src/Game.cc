@@ -29,7 +29,10 @@ Game::load()
 */
 
   Chunk* chunk = new Chunk;
-  chunk->generateChunk();
+  Chunk::chunk_type&& coords = Architecte::initChunk(std::make_pair(0, 0), _map.getChunks());
+  Architecte::smoothGround(coords, Chunk::SIZE);
+  //const Chunk::texture_coord_type& coords = Architecte::generateGround();
+  chunk->generateChunk(Architecte::extractCoords(coords, Chunk::SIZE));
   // _architecte.generateRandomGround(*chunk,
   //                                  Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0)
   //                                  );

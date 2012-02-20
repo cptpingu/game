@@ -386,6 +386,27 @@ namespace Architecte
   }
 
 
+
+  //Permet de copier une zone d'un chunk dans une liste de points (un autre chunk en gros,mais pas forcement).
+  void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,int Yfrom,int Yto,int Wherex , int Wherey,int size)
+    {
+
+
+      if  (Wherex+(Xto-Xfrom)> size || Wherey+(Yto-Yfrom)> size)
+      {
+          std::cout << "Warning: Fillcoords not use on Chunk -> check Architecte namespace" << std::endl;
+
+      }
+        for (int y = Yfrom; y< Yto;++y)
+        for (int x = Xfrom; x< Xto;++x)
+        {
+        {
+                coords[x+y*size] ->setZ(currentChunk(x+Wherex,y+Wherey));
+
+      }
+  }
+  }
+
   //Initialisation d'un chunk en fonction de ses voisins.
 const Chunk::chunk_type& InitChunk(const std::pair<int, int>& Where, const Map::chunks_type& chunks)
   {
@@ -396,34 +417,34 @@ const Chunk::chunk_type& InitChunk(const std::pair<int, int>& Where, const Map::
       //Les points sont initialisés au hasard...
     for (int i = 0; i < Chunk::SIZE * Chunk::SIZE; ++i)
     {
-      coords[i] = Random::rand() % (Chunk::SIZE * 10);
+      coords[i] ->setZ(Random::rand() % (Chunk::SIZE * 10));
     }
 
         //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)
     auto currentChunk = chunks.find(std::make_pair(Where.first + 1, Where.second ));
      if (currentChunk != chunks.end())
     {
-         fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1,-Chunk::SIZE-1,0);
+         fillCoords(coords,*currentChunk->second,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1,-Chunk::SIZE-1,0,Chunk::SIZE-1);
     }
 
      currentChunk = chunks.find(std::make_pair(Where.first , Where.second +1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,0,-Chunk::SIZE-1);
+        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,0,-Chunk::SIZE-1,Chunk::SIZE-1);
      }
 
 
      currentChunk = chunks.find(std::make_pair(Where.first-1 , Where.second ));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,currentChunk,0,0,0,Chunk::SIZE-1,Chunk::SIZE-1,0);
+        fillCoords(coords,*currentChunk->second,0,0,0,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1);
      }
 
 
      currentChunk = chunks.find(std::make_pair(Where.first , Where.second -1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,0,0,0,Chunk::SIZE-1);
+        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,0,0,0,Chunk::SIZE-1,Chunk::SIZE-1);
      }
 
 
@@ -446,25 +467,6 @@ const Chunk::chunk_type& InitChunk(const std::pair<int, int>& Where, const Map::
   }
 
 
-//Permet de copier une zone d'un chunk dans une liste de points (un autre chunk en gros,mais pas forcement).
-void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,int Yfrom,int Yto,int Wherex , int Wherey)
-  {
-
-
-    if  (Wherex+(Xto-Xfrom)> Chunk::SIZE-1 || Wherey+(Yto-Yfrom)> Chunk::SIZE-1)
-    {
-        std::cout << "Warning: Fillcoords not use on Chunk -> check Architecte namespace" << std::endl;
-
-    }
-      for (int y = Yfrom; y< Yto;++y)
-      for (int i = Xfrom; i< Xto;++i)
-      {
-      {
-              coords[i+y*Chunk::SIZE] = currentChunk(i+Wherex,y+WhereY);
-
-    }
-}
-}
 
 //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
   void SmoothGround(Chunk::chunk_type& coords, int size)
@@ -476,21 +478,21 @@ void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,
 
        for (int y=0;y<size-1;++y)
        {
-           coords[x + size*y] = (coords[x + size*y] +
-                                coords[x+1 + size*y]+
-                                coords[x+1 + size*(y+1)]+
-                                coords[x + size*(y+1)])/4;
+           coords[x + size * y]->setZ((coords[x + size * y]->getZ() +
+                                                   coords[x + 1 + size * y]->getZ() +
+                                                   coords[x + 1 + size * (y + 1)]->getZ() +
+                                                   coords[x + size * (y + 1)]->getZ()) / 4);
        }
 
    }
  //Gére les problémes de frontière de l'algo
   for (int x=0;x<size-1;++x)
-    { coords[x + size*(size-1)] = (coords[x + size*(size-1)]+coords[x + size*(size-2)])/2;
-      coords[size-1 + size*x] = (coords[size-1 + size*x]+coords[size-2 + size*x])/2;}
+  { coords[x + size*(size-1)]->setZ((coords[x + size*(size-1)]->getZ()+coords[x + size*(size-2)]->getZ())/2);
+      coords[size-1 + size*x]->setZ((coords[size-1 + size*x]->getZ()+coords[size-2 + size*x]->getZ())/2);
     }
 
   }
-
+}
     // size est nécessaire, puisque tu dois connaitre la taille du coté du carré.
     // Agit sur les Z pour lisser.
 
@@ -504,11 +506,24 @@ void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,
     Chunk::texture_coord_type extracted;
     extracted.resize(size*size*size*size); // Nb points dans la grille du milieu * Chunk::SIZE.
 
-    for (int i = 0; i < size*size; ++i)
-      for (int j = 0; j < size*size; ++j)
-        if (i % size != 0 || j % size != 0)
-          extracted[i + j * size] = interpolation(coords, i, j, size);
+    for (int i = 0; i < size; ++i)
+      {for (int j = 0; j < size; ++j)
+          {
 
+
+            extracted[i*size + j * size*size]= coords[i+j*size]->getZ();
+        }
+}
+
+
+    for (int i = 0; i < size*size; ++i)
+      {for (int j = 0; j < size*size; ++j)
+          {
+
+        if (i % size != 0 || j % size != 0)
+          extracted[i + j * size]=interpolation(extracted, i, j, size);
+        }
+}
     // Extraie la grille du milieu.
     // Récupère tout de (0 + borderSize, 0 + borderSize) à (size - borderSize, size - borderSize)
     return extracted;

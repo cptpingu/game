@@ -413,9 +413,11 @@ namespace Architecte
     // + nbpoints haut + nbpoints bas
 
       //Les points sont initialisés au hasard...
-    for (int i = 0; i < Chunk::SIZE * Chunk::SIZE; ++i)
+    for (int i = 0; i < Chunk::SIZE; ++i)
+    {for (int j = 0;i < Chunk::SIZE;++j)
     {
-      coords[i]->setZ(Random::rand() % (Chunk::SIZE * 10));
+      coords[i]=new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE * 10));
+    }
     }
 
         //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)

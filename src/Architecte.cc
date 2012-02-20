@@ -385,7 +385,9 @@ namespace Architecte
     return tabPoints;
   }
 
-const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& Where, const Map::chunks_type& chunks)
+
+  //Initialisation d'un chunk en fonction de ses voisins.
+const Chunk::chunk_type& InitChunk(const std::pair<int, int>& Where, const Map::chunks_type& chunks)
   {
     Chunk::chunk_type coords;
     coords.resize(0); // nb points centre + nbpoints gauche + nbpoints droite
@@ -427,6 +429,9 @@ const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& Where, cons
 
 
 
+
+
+
     // FIXME
     // Ajout taille haut (si non existant, on met des 0 ou de l'alea)
     // ...etc
@@ -441,14 +446,14 @@ const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& Where, cons
   }
 
 
-//Permet de copier une zone d'un chunk dans un autre.
+//Permet de copier une zone d'un chunk dans une liste de points (un autre chunk en gros,mais pas forcement).
 void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,int Yfrom,int Yto,int Wherex , int Wherey)
   {
 
 
     if  (Wherex+(Xto-Xfrom)> Chunk::SIZE-1 || Wherey+(Yto-Yfrom)> Chunk::SIZE-1)
     {
-        std::cout << "Fill Coords fail, segmentation fault";
+        std::cout << "Warning: Fillcoords not use on Chunk -> check Architecte namespace" << std::endl;
 
     }
       for (int y = Yfrom; y< Yto;++y)
@@ -461,8 +466,8 @@ void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,
 }
 }
 
-//Lisse le sol
-  void generateGround(Chunk::chunk_type& coords, int size)
+//Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
+  void SmoothGround(Chunk::chunk_type& coords, int size)
   {
    for (int k = 0;k<20;++k)
    {
@@ -494,10 +499,15 @@ void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,
 
 
   const Chunk::texture_coord_type&
-  extractCoords(const Chunk::chunk_type& coords, int size, int borderSize)
+  extractCoords(const Chunk::chunk_type& coords, int size)
   {
     Chunk::texture_coord_type extracted;
-    extracted.resize(0); // Nb points dans la grille du milieu * Chunk::SIZE.
+    extracted.resize(size*size*size*size); // Nb points dans la grille du milieu * Chunk::SIZE.
+
+    for (int i = 0; i < size*size; ++i)
+      for (int j = 0; j < size*size; ++j)
+        if (i % size != 0 || j % size != 0)
+          extracted[i + j * size] = interpolation(coords, i, j, size);
 
     // Extraie la grille du milieu.
     // Récupère tout de (0 + borderSize, 0 + borderSize) à (size - borderSize, size - borderSize)

@@ -12,11 +12,11 @@ namespace Architecte
   void mountain(Map::triangles_type& tmp,const Vector3D& where, double peak, int size);
   void mergeGround(Map::triangles_type& generateRandomGround, const Map::triangles_type& deformation);
   /*void interpolateCoords(std::vector<Chunk::Coord*> destination , const std::vector<Chunk::Coord*>& source);*/
-  Chunk::texture_coord_type generateGround();
 
-  Chunk::chunk_type initChunk(const std::pair<int, int>& Where, const Map::chunks_type& chunks);
+  void generateGroundOLD(Chunk::texture_coord_type& tabPoints);
+  void initChunk(Chunk::chunk_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks);
   void smoothGround(Chunk::chunk_type& coords, int size);
-  Chunk::texture_coord_type extractCoords(const Chunk::chunk_type& coords, int size);
+  void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_type& coords, int size);
 }
 
 #endif /* !ARCHITECTE_HH_ */

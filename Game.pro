@@ -44,7 +44,8 @@ HEADERS += \
     src/Chunk.hh \
     src/Core/PairHash.hh \
     src/Random.hh \
-    src/SDL/SavePng.hh
+    src/SDL/SavePng.hh \
+    src/Core/NonCopyable.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

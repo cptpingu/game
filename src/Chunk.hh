@@ -3,6 +3,8 @@
 
 # include "Core/Container3D.hh"
 # include "Core/PairHash.hh"
+# include "Core/NonCopyable.hh"
+
 # include <vector>
 # include <cstddef>
 # include <string>
@@ -48,12 +50,22 @@ public:
     Coord* _link;
   };
 
-  typedef std::vector<Coord*> chunk_type;
+  struct ChunkType : private Core::NonCopyable<std::vector<Coord*> >,
+                     public std::vector<Coord*>
+  {
+  };
+
+  struct TextureCoordType : private Core::NonCopyable<std::vector<double> >,
+                            public std::vector<double>
+  {
+  };
+
+  typedef ChunkType chunk_type;
   typedef std::unordered_map<std::pair<double, double>, double,
           Core::PairHash<double, double> > fast_access_chunk_type;
   typedef chunk_type::iterator iterator;
   typedef chunk_type::const_iterator const_iterator;
-  typedef std::vector<double> texture_coord_type;
+  typedef TextureCoordType texture_coord_type;
 
 public:
   Chunk();

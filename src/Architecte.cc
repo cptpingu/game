@@ -341,9 +341,8 @@ namespace Architecte
     return res;
   }
 
-  Chunk::texture_coord_type generateGround()
+  void generateGroundOLD(Chunk::texture_coord_type& tabPoints)
   {
-    Chunk::texture_coord_type tabPoints;
     tabPoints.resize(Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE);
 
     double heightMean = 0;
@@ -381,8 +380,6 @@ namespace Architecte
       for (int j = 0; j < Chunk::TEXTURE_SIZE; ++j)
         if (i % Chunk::SIZE != 0 || j % Chunk::SIZE != 0)
           tabPoints[i + j * Chunk::TEXTURE_SIZE] = interpolation(tabPoints, i, j, Chunk::SIZE);
-
-    return tabPoints;
   }
 
 
@@ -406,19 +403,16 @@ namespace Architecte
   }
 
   //Initialisation d'un chunk en fonction de ses voisins.
-  Chunk::chunk_type initChunk(const std::pair<int, int>& where, const Map::chunks_type& chunks)
+  void initChunk(Chunk::chunk_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
   {
-    Chunk::chunk_type coords;
     coords.resize(Chunk::SIZE * Chunk::SIZE); // nb points centre + nbpoints gauche + nbpoints droite
     // + nbpoints haut + nbpoints bas
 
       //Les points sont initialisés au hasard...
     for (int i = 0; i < Chunk::SIZE; ++i)
-    {for (int j = 0;i < Chunk::SIZE;++j)
-    {
-      coords[i]=new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE * 10));
-    }
-    }
+      for (int j = 0; j < Chunk::SIZE; ++j)
+        coords[i + j * Chunk::SIZE] = new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE * 10));
+
 
         //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)
     auto currentChunk = chunks.find(std::make_pair(where.first + 1, where.second ));
@@ -463,7 +457,6 @@ namespace Architecte
 
 
      //Retourne donc une liste valide de coord pour un chunk , chunk::size*chunk::size !
-    return coords;
   }
 
 
@@ -500,32 +493,22 @@ namespace Architecte
     // de cette grande grille.
 
 
-  Chunk::texture_coord_type extractCoords(const Chunk::chunk_type& coords, int size)
+  void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_type& coords, int size)
   {
-    Chunk::texture_coord_type extracted;
-    extracted.resize(size*size*size*size); // Nb points dans la grille du milieu * Chunk::SIZE.
+    const int texSize = size * size;
+    extracted.resize(texSize * texSize); // Nb points dans la grille du milieu * Chunk::SIZE.
 
     for (int i = 0; i < size; ++i)
-      {for (int j = 0; j < size; ++j)
-          {
-
-
-            extracted[i*size + j * size*size]= coords[i+j*size]->getZ();
-        }
-}
-
+      for (int j = 0; j < size; ++j)
+        extracted[i * size + j * texSize] = coords[i + j * size]->getZ();
 
     for (int i = 0; i < size*size; ++i)
-      {for (int j = 0; j < size*size; ++j)
-          {
-
+      for (int j = 0; j < size*size; ++j)
         if (i % size != 0 || j % size != 0)
-          extracted[i + j * size]=interpolation(extracted, i, j, size);
-        }
-}
+          extracted[i + j * size] = interpolation(extracted, i, j, size);
+
     // Extraie la grille du milieu.
     // Récupère tout de (0 + borderSize, 0 + borderSize) à (size - borderSize, size - borderSize)
-    return extracted;
   }
 
   // Enfin, generateChunk prendra en argument un const Chunk::texture_coord_type&

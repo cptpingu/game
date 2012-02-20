@@ -412,7 +412,7 @@ namespace Architecte
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
         {coords[i + j * Chunk::SIZE] = new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE * 10));
-          //std::cout<< coords[i + j * Chunk::SIZE]->getZ() << std::endl;
+
         }
         //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)
     auto currentChunk = chunks.find(std::make_pair(where.first + 1, where.second ));
@@ -442,7 +442,6 @@ namespace Architecte
      }
 
 
-//std::cout<< coords[i + j * Chunk::SIZE]->getZ() << std::endl;
 
 
 
@@ -464,7 +463,7 @@ namespace Architecte
 //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
   void smoothGround(Chunk::chunk_type& coords, int size)
   {
-   for (int k = 0;k<20;++k)
+   for (int k = 0;k<10;++k)
    {
     for (int x=0;x<size-1;++x)
     {
@@ -502,13 +501,13 @@ namespace Architecte
 
     for (int i = 0; i < size; ++i)
       for (int j = 0; j < size; ++j)
-        extracted[i * size + j * texSize] = coords[i + j * size]->getZ();
+        extracted[i * size + j *size* texSize] = coords[i + j * size]->getZ();
 
 
-    for (int i = 0; i < size*size; ++i)
-      for (int j = 0; j < size*size; ++j)
+    for (int i = 0; i < texSize; ++i)
+      for (int j = 0; j < texSize; ++j)
         if (i % size != 0 || j % size != 0)
-          extracted[i + j * size*size] = interpolation(extracted, i, j, size*size);
+          extracted[i + j * texSize] = interpolation(extracted, i, j, size);
 
     // Extraie la grille du milieu.
     // Récupère tout de (0 + borderSize, 0 + borderSize) à (size - borderSize, size - borderSize)

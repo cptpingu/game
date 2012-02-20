@@ -31,14 +31,8 @@ Game::load()
   Chunk* chunk = new Chunk;
   Chunk::chunk_type coords;
   Architecte::initChunk(coords, std::make_pair(0, 0), _map.getChunks());
-  int i = 0;
-  std::map<int, int> count;
-  for (auto it = coords.begin(); it != coords.end(); ++it, ++i)
-  {
-    std::cout << i << " " << (*it)->getZ() << std::endl;
-    ++count[(*it)->getZ()];
-  }
-  std::cout << "nb 0: " << count[0] << std::endl;
+
+  Architecte::smoothGround(coords, Chunk::SIZE);
   Chunk::texture_coord_type extracted;
   Architecte::extractCoords(extracted, coords, Chunk::SIZE);
 

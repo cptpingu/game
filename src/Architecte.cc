@@ -385,7 +385,7 @@ namespace Architecte
     return tabPoints;
   }
 
-  const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& Where, const Map::chunks_type& chunks)
+const Chunk::chunk_type& generateNeighbor(const std::pair<int, int>& Where, const Map::chunks_type& chunks)
   {
     Chunk::chunk_type coords;
     coords.resize(0); // nb points centre + nbpoints gauche + nbpoints droite
@@ -397,57 +397,32 @@ namespace Architecte
       coords[i] = Random::rand() % (Chunk::SIZE * 10);
     }
 
-        //Corrigés sur les frontières....
+        //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)
     auto currentChunk = chunks.find(std::make_pair(Where.first + 1, Where.second ));
      if (currentChunk != chunks.end())
     {
-         fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1,1,0);
+         fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1,-Chunk::SIZE-1,0);
     }
 
      currentChunk = chunks.find(std::make_pair(Where.first , Where.second +1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,0,1);
+        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,0,-Chunk::SIZE-1);
      }
 
-     currentChunk = chunks.find(std::make_pair(Where.first+1 , Where.second +1));
-     if (currentChunk != chunks.end())
-     {
-        fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,1,1);
-     }
 
      currentChunk = chunks.find(std::make_pair(Where.first-1 , Where.second ));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,currentChunk,0,0,0,Chunk::SIZE-1,-1,0);
+        fillCoords(coords,currentChunk,0,0,0,Chunk::SIZE-1,Chunk::SIZE-1,0);
      }
 
-     currentChunk = chunks.find(std::make_pair(Where.first-1 , Where.second -1));
-     if (currentChunk != chunks.end())
-     {
-        fillCoords(coords,currentChunk,0,0,0,0,-1,-1);
-     }
 
      currentChunk = chunks.find(std::make_pair(Where.first , Where.second -1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,0,0,0,-1);
+        fillCoords(coords,currentChunk,0,Chunk::SIZE-1,0,0,0,Chunk::SIZE-1);
      }
-
-     currentChunk = chunks.find(std::make_pair(Where.first+1 , Where.second -1));
-     if (currentChunk != chunks.end())
-     {
-        fillCoords(coords,currentChunk,Chunk::SIZE-1,Chunk::SIZE-1,0,0,1,-1);
-     }
-
-     currentChunk = chunks.find(std::make_pair(Where.first-1 , Where.second +1));
-     if (currentChunk != chunks.end())
-     {
-        fillCoords(coords,currentChunk,0,0,Chunk::SIZE-1,Chunk::SIZE-1,-1,1);
-     }
-
-
-
 
 
 
@@ -465,18 +440,28 @@ namespace Architecte
     return coords;
   }
 
-void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,int Yfrom,int Yto,int PosX,int PosY)
+
+//Permet de copier une zone d'un chunk dans un autre.
+void fillCoords(Chunk::chunk_type& coords,Chunk& currentChunk,int Xfrom,int Xto,int Yfrom,int Yto,int Wherex , int Wherey)
   {
+
+
+    if  (Wherex+(Xto-Xfrom)> Chunk::SIZE-1 || Wherey+(Yto-Yfrom)> Chunk::SIZE-1)
+    {
+        std::cout << "Fill Coords fail, segmentation fault";
+
+    }
       for (int y = Yfrom; y< Yto;++y)
       for (int i = Xfrom; i< Xto;++i)
       {
       {
-              coords[i+y*Chunk::SIZE] = currentChunk(PosX*(Chunk::SIZE-1) - PosX*i + (1-PosX)*i,
-                                                     PosY*(Chunk::SIZE-1)- PosY*y + (1-PosY)*y);
-      }
-      }
-  }
+              coords[i+y*Chunk::SIZE] = currentChunk(i+Wherex,y+WhereY);
 
+    }
+}
+}
+
+//Lisse le sol
   void generateGround(Chunk::chunk_type& coords, int size)
   {
    for (int k = 0;k<20;++k)

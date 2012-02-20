@@ -411,9 +411,9 @@ namespace Architecte
       //Les points sont initialisés au hasard...
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        coords[i + j * Chunk::SIZE] = new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE * 10));
-
-
+        {coords[i + j * Chunk::SIZE] = new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE * 10));
+          //std::cout<< coords[i + j * Chunk::SIZE]->getZ() << std::endl;
+        }
         //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)
     auto currentChunk = chunks.find(std::make_pair(where.first + 1, where.second ));
      if (currentChunk != chunks.end())
@@ -442,7 +442,7 @@ namespace Architecte
      }
 
 
-
+//std::cout<< coords[i + j * Chunk::SIZE]->getZ() << std::endl;
 
 
 
@@ -475,6 +475,7 @@ namespace Architecte
                                                    coords[x + 1 + size * y]->getZ() +
                                                    coords[x + 1 + size * (y + 1)]->getZ() +
                                                    coords[x + size * (y + 1)]->getZ()) / 4);
+
        }
 
    }
@@ -482,7 +483,8 @@ namespace Architecte
   for (int x=0;x<size-1;++x)
   { coords[x + size*(size-1)]->setZ((coords[x + size*(size-1)]->getZ()+coords[x + size*(size-2)]->getZ())/2);
       coords[size-1 + size*x]->setZ((coords[size-1 + size*x]->getZ()+coords[size-2 + size*x]->getZ())/2);
-    }
+
+  }
 
   }
 }
@@ -502,10 +504,11 @@ namespace Architecte
       for (int j = 0; j < size; ++j)
         extracted[i * size + j * texSize] = coords[i + j * size]->getZ();
 
+
     for (int i = 0; i < size*size; ++i)
       for (int j = 0; j < size*size; ++j)
         if (i % size != 0 || j % size != 0)
-          extracted[i + j * size] = interpolation(extracted, i, j, size);
+          extracted[i + j * size*size] = interpolation(extracted, i, j, size*size);
 
     // Extraie la grille du milieu.
     // Récupère tout de (0 + borderSize, 0 + borderSize) à (size - borderSize, size - borderSize)

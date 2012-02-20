@@ -108,19 +108,6 @@ namespace
     }
   }
 
-  void draw(const Chunk& triangles)
-  {
-    glBegin(GL_TRIANGLE_STRIP);
-    auto end = triangles.cend();
-    for (auto it = triangles.cbegin(); it != end; ++it)
-    {
-      glTexCoord2f(((*it)->getY() + Chunk::SIZE / 2) / Chunk::SIZE,
-                   1.0 - ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
-      glVertex3d((*it)->getX(), (*it)->getY(), (*it)->getZ());
-    }
-    glEnd();
-  }
-
   void draw(const std::pair<int, int>& coord, const Chunk& chunk)
   {
     glPushMatrix();
@@ -135,7 +122,17 @@ namespace
     glBindTexture(GL_TEXTURE_2D, tex->second);
     glEnable(GL_TEXTURE_2D);
 
-    draw(chunk);
+    glBegin(GL_TRIANGLE_STRIP);
+    auto end = chunk.cend();
+    for (auto it = chunk.cbegin(); it != end; ++it)
+    {
+      glTexCoord2f(((*it)->getY() + Chunk::SIZE / 2) / Chunk::SIZE,
+                   1.0 - ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
+      glVertex3d((*it)->getX() + coord.first * Chunk::SIZE,
+                 (*it)->getY() + coord.second * Chunk::SIZE,
+                 (*it)->getZ());
+    }
+    glEnd();
 
     glPopMatrix();
   }

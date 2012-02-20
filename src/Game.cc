@@ -12,51 +12,27 @@ Game::load()
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   loadtextures();
-/*
-  static const std::string filename = "Carte.txt";
-  if (!_map.loadBlocks(filename))
-  {
-    std::cerr << "Unable to load " << filename << std::endl;
-    return false;
-  }
-
-  static const std::string terrain = "Terrain.txt";
-  if (!_map.loadTriangles(terrain))
-  {
-    std::cerr << "Unable to load " << terrain << std::endl;
-    return false;
-  }
-*/
 
   Chunk* chunk = new Chunk;
   Chunk::chunk_type coords;
   Architecte::initChunk(coords, std::make_pair(0, 0), _map.getChunks());
-
   Architecte::smoothGround(coords, Chunk::SIZE);
   Chunk::texture_coord_type extracted;
   Architecte::extractCoords(extracted, coords, Chunk::SIZE);
-
-  //const Chunk::texture_coord_type& coords = Architecte::generateGround();
   chunk->generateChunk(extracted);
-  // _architecte.generateRandomGround(*chunk,
-  //                                  Vector3D(-Chunk::SIZE / 2, -Chunk::SIZE / 2, 0)
-  //                                  );
-  // chunk->meshAllCoord();
   _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 0), chunk));
-  // chunk->generateTexture("chunk_0_0.bmp");
   TextureManager& textures = TextureManager::getInstance();
   textures.load("chunk_0_0.bmp", "chunk_0_0");
 
-  //  Map::triangles_type tmp2;
-  //TEST.Ground(Vector3D (150,0,0),150);
-  //_architecte.mountain(tmp2, Vector3D (20,10,0), 200,20 );
-  //_architecte.mergeGround(*chunk, tmp2);
-  //TEST.Building(Vector3D(10,10,0), 5, 4, 5);
-  //MapWriter Chocopops;
-  // Chocopops.Debut();
-  //Chocopops.Sol(150);
-  //Chocopops.Montagne(Vector3D(30,30,1),30,20);
-  //Chocopops.Building(Vector3D(10,10,1), 5, 0, 5);
+  Chunk* chunk2 = new Chunk;
+  Chunk::chunk_type coords2;
+  Architecte::initChunk(coords2, std::make_pair(0, 1), _map.getChunks());
+  Architecte::smoothGround(coords2, Chunk::SIZE);
+  Chunk::texture_coord_type extracted2;
+  Architecte::extractCoords(extracted2, coords2, Chunk::SIZE);
+  chunk2->generateChunk(extracted2);
+  _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(0, 1), chunk2));
+  textures.load("chunk_0_1.bmp", "chunk_0_1");
 
   return true;
 }
@@ -119,7 +95,7 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    _map.lazyChunkLoading(_camera.getCurrentPosition());
+    // _map.lazyChunkLoading(_camera.getCurrentPosition());
     _camera.animate(elapsed_time);
 
     drawAxis(2);

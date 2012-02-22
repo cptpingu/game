@@ -267,7 +267,7 @@ namespace Architecte
   {
       if  (whereX+(toX-fromX)> size || whereY+(toY-fromY)> size)
       {
-          std::cout << "Warning: Fillcoords not use on Chunk -> check Architecte namespace" << std::endl;
+          std::cout << "Warning: Fillcoords not used on Chunk -> check Architecte namespace" << std::endl;
 
       }
         for (int x = fromX; x < toX;++x)
@@ -277,7 +277,7 @@ namespace Architecte
 
 
         coords[x+y*size]->setZ(currentChunk(x+whereX,y+whereY));
-
+        //coords[x+y*size]->setZ(0);
       }
   }
   }
@@ -311,8 +311,11 @@ namespace Architecte
      currentChunk = chunks.find(std::make_pair(where.first-1 , where.second ));
      if (currentChunk != chunks.end())
      {
-        //fillCoords(coords,*currentChunk->second,0,1,0,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE);
-         fillCoords(coords,*currentChunk->second,0,Chunk::SIZE,0,1,0,Chunk::SIZE-1,Chunk::SIZE);
+         std::cout << "coonard" << std::endl;
+        //fillCoords(coords,*currentChunk->second,0,Chunk::SIZE,Chunk::SIZE-1,Chunk::SIZE,0,-(Chunk::SIZE-1),Chunk::SIZE);
+        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE,0,1,0,+(Chunk::SIZE-1),Chunk::SIZE);
+        //fillCoords(coords,*currentChunk->second,Chunk::SIZE-1,Chunk::SIZE,0,Chunk::SIZE,-(Chunk::SIZE-1),0,Chunk::SIZE);
+        //fillCoords(coords,*currentChunk->second,0,1,0,Chunk::SIZE,Chunk::SIZE-1,0,Chunk::SIZE);
 
 
      }

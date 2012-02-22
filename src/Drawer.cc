@@ -126,8 +126,8 @@ namespace
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      glTexCoord2f(((*it)->getY() + Chunk::SIZE / 2) / Chunk::SIZE,
-                   1.0 - ((*it)->getX() + Chunk::SIZE / 2) / Chunk::SIZE);
+      glTexCoord2f((((*it)->getY()) / Chunk::SIZE),
+                   1.0 - ((*it)->getX()) / Chunk::SIZE);
       glVertex3d((*it)->getX() + coord.first * Chunk::SIZE - (Chunk::SIZE / 2),
                  (*it)->getY() + coord.second * Chunk::SIZE - (Chunk::SIZE / 2),
                  (*it)->getZ());

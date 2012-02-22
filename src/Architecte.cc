@@ -168,129 +168,7 @@ namespace Architecte
       ++it1;
     }
   }
-  /*
 
-  void NeighbourChunkgenerator(const Map::chunks_type & chunks , Chunk & Tmp , const Vector3D& where, int SIZE)
-  {
-
-  Chunk Superchunk;
-
-  auto currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() - 1));
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin()+Chunk::SIZE/2; it != end; ++it)
-  {
-      currentChunk._fast_access_chunk
-
-  Superchunk.add(*it);
-  }
-  if (it->getX() == SIZE*Tmp.);
-
-
-  it->getY();it->getZ();
-  CurrentChunk.
-  Superchunk.add()
-
-
-  currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 1));
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
-  {
-  Superchunk.add(*it);
-  }
-
-  currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() - 1));
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
-  {
-  Superchunk.add(*it);
-  }
-
-  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 1));
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
-  {
-  Superchunk.add(*it);
-  }
-
-  currentChunk = chunks.find(std::make_pair(Tmp.getX() - 1, Tmp.getY() + 0));
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
-  {
-  Superchunk.add(*it);
-  }
-
-  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() - 1));
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
-  {
-  Superchunk.add(*it);
-  }
-
-  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 1, Tmp.getY() + 0));
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
-  {
-  Superchunk.add(*it);
-  }
-
-  currentChunk = chunks.find(std::make_pair(Tmp.getX() + 0, Tmp.getY() + 1));
-
-  if (currentChunk != chunks.end())
-  {
-  auto end = currentchunk.cend();
-  for (auto it = currentchunk.cbegin(); it != end; ++it)
-  {
-  Superchunk.add(*it);
-  }
-
-  {
-  const int x = (static_cast<double>(position._x) / Chunk::SIZE) + 0.5; \
-  const int y = (static_cast<double>(position._y) / Chunk::SIZE) + 0.5; \
-  std::pair<int, int> current(x + (X), y + (Y));                      \
-  if (_chunks.find(current) == _chunks.end())                         \
-  _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
-  }
-  meshAllCoord()
-
-  }
-
-  void interpolateCoords(std::vector<Chunk::Coord*> destination, const std::vector<Chunk::Coord*>& source)
-
-  {
-  auto end = source.end();
-  auto it2 = source.begin();
-  for ( auto it1 = source.begin(); it1 != end ; ++it1)
-  {
-  it2 = it1+1;
-  destination.push_back(new Chunk::Coord ((*it1)->getX(),(*it1)->getY(),(*it1)->getZ()));
-  for (double i=1;i < Chunk::SIZE;++i)
-  {
-  destination.push_back(new Chunk::Coord ( ((*it1)->getX()+(*it2)->getX())* i/Chunk::SIZE
-  ,((*it1)->getY()+(*it2)->getY())*i/Chunk::SIZE
-  ,((*it1)->getZ()+(*it2)->getZ())*i/Chunk::SIZE
-  ));
-
-  }
-
-
-  }
-
-  }
-*/
 
   int interpolate(int y1, int y2, int n, int delta)
   {
@@ -348,7 +226,7 @@ namespace Architecte
     double heightMean = 0;
     for (int i = 0; i < Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE; i += Chunk::SIZE)
     {
-      tabPoints[i] = Random::rand() % (Chunk::SIZE * 10);
+      tabPoints[i] = Random::rand() % 10;//(Chunk::SIZE );
       heightMean += tabPoints[i];
     }
 
@@ -392,16 +270,13 @@ namespace Architecte
           std::cout << "Warning: Fillcoords not use on Chunk -> check Architecte namespace" << std::endl;
 
       }
-        for (int x = fromX; x< toX;++x)
-        {for (int y = fromY; y< toY;++y)
+        for (int x = fromX; x < toX;++x)
+        {for (int y = fromY; y < toY;++y)
 
         {
-        std::cout << x << std::endl;
-        std::cout << y << std::endl;
-        std::cout << x+whereX << std::endl;
-        std::cout << y+whereY << std::endl;
 
-        coords[x+y*size] ->setZ(currentChunk(x+whereX,y+whereY));
+
+        coords[x+y*size]->setZ(currentChunk(x+whereX,y+whereY));
 
       }
   }
@@ -416,36 +291,37 @@ namespace Architecte
       //Les points sont initialisés au hasard...
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        {coords[i + j * Chunk::SIZE] = new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE * 10));
+        {coords[i + j * Chunk::SIZE] = new Chunk::Coord(i,j,Random::rand() % (Chunk::SIZE ));
 
         }
         //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)
     auto currentChunk = chunks.find(std::make_pair(where.first + 1, where.second ));
      if (currentChunk != chunks.end())
     {
-std::cout<< "choucroute"<< std::endl;
          fillCoords(coords,*currentChunk->second,Chunk::SIZE-1,Chunk::SIZE,0,Chunk::SIZE-1,-(Chunk::SIZE-1),0,Chunk::SIZE);
     }
 
      currentChunk = chunks.find(std::make_pair(where.first , where.second +1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,Chunk::SIZE,Chunk::SIZE-1,0,-Chunk::SIZE-1,Chunk::SIZE);
+        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,Chunk::SIZE,Chunk::SIZE-1,0,-(Chunk::SIZE-1),Chunk::SIZE);
      }
 
 
      currentChunk = chunks.find(std::make_pair(where.first-1 , where.second ));
      if (currentChunk != chunks.end())
      {
-         std::cout<< "choucuroute"<< std::endl;
-        fillCoords(coords,*currentChunk->second,0,1,0,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE);
+        //fillCoords(coords,*currentChunk->second,0,1,0,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE);
+         fillCoords(coords,*currentChunk->second,0,Chunk::SIZE,0,1,0,Chunk::SIZE-1,Chunk::SIZE);
+
+
      }
 
 
      currentChunk = chunks.find(std::make_pair(where.first , where.second -1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,0,0,0,Chunk::SIZE-1,Chunk::SIZE);
+        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,0,1,0,Chunk::SIZE-1,Chunk::SIZE);
      }
 
 
@@ -457,28 +333,33 @@ std::cout<< "choucroute"<< std::endl;
 //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
   void smoothGround(Chunk::chunk_type& coords, int size)
   {
-   for (int k = 0;k<10;++k)
+   for (int k = 0;k<5;++k)
    {
-    for (int x=0;x<size-1;++x)
+    for (int x=1;x<size-1;++x)
     {
 
-       for (int y=0;y<size-1;++y)
+       for (int y=1;y<size-1;++y)
        {
            coords[x + size * y]->setZ((coords[x + size * y]->getZ() +
                                                    coords[x + 1 + size * y]->getZ() +
                                                    coords[x + 1 + size * (y + 1)]->getZ() +
-                                                   coords[x + size * (y + 1)]->getZ()) / 4);
+                                                   coords[x + 1 + size * (y - 1)]->getZ()+
+                                                   coords[x - 1 + size * y]->getZ() +
+                                                   coords[x - 1 + size * (y + 1)]->getZ() +
+                                                   coords[x -1 + size * (y - 1)]->getZ()+
+                                                   coords[x  + size * (y + 1)]->getZ() +
+                                                   coords[x  + size * (y - 1)]->getZ()) /9 );
 
        }
 
-   }
+   }/*
  //Gére les problémes de frontière de l'algo
   for (int x=0;x<size-1;++x)
   { coords[x + size*(size-1)]->setZ((coords[x + size*(size-1)]->getZ()+coords[x + size*(size-2)]->getZ())/2);
       coords[size-1 + size*x]->setZ((coords[size-1 + size*x]->getZ()+coords[size-2 + size*x]->getZ())/2);
 
   }
-
+*/
   }
 }
 

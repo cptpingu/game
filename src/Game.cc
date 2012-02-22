@@ -29,17 +29,17 @@ Game::load()
 
 
 
-  CHUNK_TMP(1, -1);
+  //CHUNK_TMP(1, -1);
   CHUNK_TMP(1, 0);
-  CHUNK_TMP(1, 1);
+  //CHUNK_TMP(1, 1);
 
-  CHUNK_TMP(0, -1);
+  //CHUNK_TMP(0, -1);
   CHUNK_TMP(0, 0);
-  CHUNK_TMP(0, 1);
+  //CHUNK_TMP(0, 1);
 
-  CHUNK_TMP(-1, -1);
-  CHUNK_TMP(-1, 0);
-  CHUNK_TMP(-1, 1);
+  //CHUNK_TMP(-1, -1);
+  //CHUNK_TMP(-1, 0);
+  //CHUNK_TMP(-1, 1);
 
 #undef CHUNK_TMP
 

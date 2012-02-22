@@ -392,11 +392,16 @@ namespace Architecte
           std::cout << "Warning: Fillcoords not use on Chunk -> check Architecte namespace" << std::endl;
 
       }
-        for (int y = fromY; y< toY;++y)
         for (int x = fromX; x< toX;++x)
+        {for (int y = fromY; y< toY;++y)
+
         {
-        {
-                coords[x+y*size] ->setZ(currentChunk(x+whereX,y+whereY));
+        std::cout << x << std::endl;
+        std::cout << y << std::endl;
+        std::cout << x+whereX << std::endl;
+        std::cout << y+whereY << std::endl;
+
+        coords[x+y*size] ->setZ(currentChunk(x+whereX,y+whereY));
 
       }
   }
@@ -418,41 +423,30 @@ namespace Architecte
     auto currentChunk = chunks.find(std::make_pair(where.first + 1, where.second ));
      if (currentChunk != chunks.end())
     {
-         fillCoords(coords,*currentChunk->second,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1,-Chunk::SIZE-1,0,Chunk::SIZE-1);
+std::cout<< "choucroute"<< std::endl;
+         fillCoords(coords,*currentChunk->second,Chunk::SIZE-1,Chunk::SIZE,0,Chunk::SIZE-1,-(Chunk::SIZE-1),0,Chunk::SIZE);
     }
 
      currentChunk = chunks.find(std::make_pair(where.first , where.second +1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,Chunk::SIZE-1,Chunk::SIZE-1,0,-Chunk::SIZE-1,Chunk::SIZE-1);
+        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,Chunk::SIZE,Chunk::SIZE-1,0,-Chunk::SIZE-1,Chunk::SIZE);
      }
 
 
      currentChunk = chunks.find(std::make_pair(where.first-1 , where.second ));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,*currentChunk->second,0,0,0,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE-1);
+         std::cout<< "choucuroute"<< std::endl;
+        fillCoords(coords,*currentChunk->second,0,1,0,Chunk::SIZE-1,Chunk::SIZE-1,0,Chunk::SIZE);
      }
 
 
      currentChunk = chunks.find(std::make_pair(where.first , where.second -1));
      if (currentChunk != chunks.end())
      {
-        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,0,0,0,Chunk::SIZE-1,Chunk::SIZE-1);
+        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,0,0,0,Chunk::SIZE-1,Chunk::SIZE);
      }
-
-
-
-
-
-
-    // FIXME
-    // Ajout taille haut (si non existant, on met des 0 ou de l'alea)
-    // ...etc
-    // Ajout taille bas (si non existant, on met des 0 ou de l'alea)
-
-    // Remplissage aléatoire centre.
-    // Retourne la grande grille.
 
 
      //Retourne donc une liste valide de coord pour un chunk , chunk::size*chunk::size !
@@ -487,12 +481,6 @@ namespace Architecte
 
   }
 }
-    // size est nécessaire, puisque tu dois connaitre la taille du coté du carré.
-    // Agit sur les Z pour lisser.
-
-    // PS: dans chunk.cc, la méthode extractCoords, se chargera de récupérer le centre
-    // de cette grande grille.
-
 
   void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_type& coords, int size)
   {
@@ -509,10 +497,9 @@ namespace Architecte
         if (i % size != 0 || j % size != 0)
           extracted[i + j * texSize] = interpolation(extracted, i, j, size);
 
-    // Extraie la grille du milieu.
-    // Récupère tout de (0 + borderSize, 0 + borderSize) à (size - borderSize, size - borderSize)
+
   }
 
-  // Enfin, generateChunk prendra en argument un const Chunk::texture_coord_type&
+
 
 } // Architecte

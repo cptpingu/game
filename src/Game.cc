@@ -15,16 +15,14 @@ Game::load()
 
 #define CHUNK_TMP(X, Y) \
   { \
-  Chunk* chunk = new Chunk; \
-  Chunk::chunk_type coords; \
-  Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
-  Architecte::smoothGround(coords, Chunk::SIZE); \
-  Chunk::texture_coord_type extracted; \
-  Architecte::extractCoords(extracted, coords, Chunk::SIZE); \
-  chunk->generateChunk(extracted); \
-  _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
-  TextureManager& textures = TextureManager::getInstance(); \
-  textures.load("chunk_0_0.bmp", "chunk_0_0"); \
+    Chunk* chunk = new Chunk((X), (Y)); \
+    Chunk::chunk_type coords; \
+    Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
+    Architecte::smoothGround(coords, Chunk::SIZE); \
+    Chunk::texture_coord_type extracted; \
+    Architecte::extractCoords(extracted, coords, Chunk::SIZE); \
+    chunk->generateChunk(extracted); \
+    _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
   }
 
 
@@ -42,6 +40,16 @@ Game::load()
   //CHUNK_TMP(-1, 1);
 
 #undef CHUNK_TMP
+
+  Chunk* chunk00 = _map.getChunks().find(std::make_pair(0,0))->second;
+  Chunk* chunk10 = _map.getChunks().find(std::make_pair(1,0))->second;
+
+  std::cout << "chunk00\t\tchunk10" << std::endl;
+  for (int y = 0; y < Chunk::SIZE; ++y)
+  {
+      std::cout << (*chunk00)(Chunk::SIZE - 1, y) << "\t\t"
+                << (*chunk10)(0, y) << std::endl;
+  }
 
   return true;
 }

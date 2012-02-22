@@ -9,8 +9,8 @@ namespace Architecte
 {
   void generateRandomGround(Chunk& tmp, const Vector3D& where);
   void building(Map::blocks_type& tmp, const Vector3D& where, int longueur, int hauteur, int largeur);
-  void mountain(Map::triangles_type& tmp,const Vector3D& where, double peak, int size);
-  void mergeGround(Map::triangles_type& generateRandomGround, const Map::triangles_type& deformation);
+  void mountain(Chunk& tmp,const Vector3D& where, double peak, int size);
+  void mergeGround(Chunk& generateRandomGround, const Chunk& deformation);
   /*void interpolateCoords(std::vector<Chunk::Coord*> destination , const std::vector<Chunk::Coord*>& source);*/
 
   void generateGroundOLD(Chunk::texture_coord_type& tabPoints);

@@ -115,26 +115,6 @@ Map::loadBlocks(const std::string& filename)
   return true;
 }
 
-bool
-Map::loadTriangles(const std::string& filename)
-{
-  std::ifstream file(filename.c_str());
-  double x;
-  double y;
-  double z;
-
-  if (!file)
-    return false;
-
-  while (file)
-  {
-    file >> x >> y >> z;
-    _triangles.add(x, y, z);
-  }
-
-  return true;
-}
-
 namespace
 {
   Chunk* loadChunk(int x, int y)
@@ -142,7 +122,7 @@ namespace
     const Vector3D where((x * Chunk::SIZE) - (Chunk::SIZE / 2),
                          (y * Chunk::SIZE) - (Chunk::SIZE / 2),
                          0);
-    Chunk* chunk = new Chunk;
+    Chunk* chunk = new Chunk(x, y);
     Architecte::generateRandomGround(*chunk, where);
     chunk->meshAllCoord();
     // FIXME generate from file if it exists
@@ -198,7 +178,6 @@ void
 Map::clear()
 {
   _blocks.clear();
-  _triangles.clear();
   _chunks.clear();
 }
 
@@ -206,12 +185,6 @@ Map::blocks_type&
 Map::getBlocks()
 {
   return _blocks;
-}
-
-Map::triangles_type&
-Map::getTriangles()
-{
-  return _triangles;
 }
 
 Map::chunks_type&
@@ -224,12 +197,6 @@ const Map::blocks_type&
 Map::getBlocks() const
 {
   return _blocks;
-}
-
-const Map::triangles_type&
-Map::getTriangles() const
-{
-  return _triangles;
 }
 
 const Map::chunks_type&

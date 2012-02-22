@@ -106,7 +106,7 @@ namespace Architecte
     }
   }
 
-  void mountain(Map::triangles_type& tmp, const Vector3D& where, double peak, int size)
+  void mountain(Chunk& tmp, const Vector3D& where, double peak, int size)
   {
     std::vector<double> height;
     int loopSize = size * size;
@@ -153,7 +153,7 @@ namespace Architecte
       }
   }
 
-  void mergeGround(Map::triangles_type& ground, const Map::triangles_type& deformation)
+  void mergeGround(Chunk& ground, const Chunk& deformation)
   {
     auto end1 = ground.end();
     auto end2 = deformation.cend();

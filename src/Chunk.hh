@@ -68,7 +68,7 @@ public:
   typedef TextureCoordType texture_coord_type;
 
 public:
-  Chunk();
+  Chunk(int x, int y);
   ~Chunk();
 
   void add(double x, double y, double z);
@@ -90,6 +90,8 @@ private:
   void createRealCoord(const texture_coord_type& coords);
 
 private:
+  int _x;
+  int _y;
   chunk_type _chunk;
   fast_access_chunk_type _fast_access_chunk;
 };

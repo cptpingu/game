@@ -2,6 +2,7 @@
 #include "Core/PairHash.hh"
 #include "GLUtils.hh"
 #include "Architecte.hh"
+#include "TextureManager.hh"
 #include "SDL/SavePng.hh"
 
 #include <unordered_map>
@@ -10,8 +11,10 @@
 
 #include <array>
 #include <iostream>
+#include <sstream>
 
-Chunk::Chunk()
+Chunk::Chunk(int x, int y)
+    : _x(x), _y(y)
 {
 }
 
@@ -320,8 +323,13 @@ Chunk::generateChunk(const texture_coord_type& coords)
   }
 
   SDL_UnlockSurface(resSurface);
-  SDL_SaveBMP(resSurface, "chunk_0_0.bmp");
-  SDL::savePng(resSurface, "chunk_0_0.png");
+  std::ostringstream buff;
+  buff << "chunk_" << _x << "_" << _y;
+  const std::string textureName = buff.str();
+  const std::string textureFilename = buff.str() + ".png";
+  SDL::savePng(resSurface, textureFilename.c_str());
+  TextureManager& textures = TextureManager::getInstance();
+  textures.load(textureFilename, textureName);
 
   SDL_FreeSurface(resSurface);
   SDL_FreeSurface(brickSurface);
@@ -346,7 +354,7 @@ Chunk::createRealCoord(const texture_coord_type& coords)
     for (int j = 0; j < SIZE; ++j)
     {
       ADD(i + k, k * (SIZE - 1 - 2 * j) + j);
-      ADD(i + 1 - k, k * (SIZE - 1) + j - (2 * j * k) /*k * (SIZE - 1 - 2 * j) + j*/);
+      ADD(i + 1 - k, k * (SIZE - 1) + j - (2 * j * k));
     }
     k = (k + 1) % 2;
   }

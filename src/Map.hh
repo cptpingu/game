@@ -42,7 +42,7 @@ public:
   typedef std::unordered_map<Core::Container3D<int>, Block*, Container3DIntHash> temp_map_type;
 public:
   //typedef Core::ListContainer3D<SolTriangle*> triangles_type;
-  typedef Chunk triangles_type;
+
   typedef std::unordered_map<std::pair<int, int>, Chunk*, Core::PairHash<int, int> > chunks_type;
   typedef Core::ListContainer3D<Block*> blocks_type;
   typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
@@ -52,7 +52,6 @@ public:
   ~Map();
 
   bool loadBlocks(const std::string& filename);
-  bool loadTriangles(const std::string& filename);
   void clear();
 
   /*!
@@ -65,16 +64,13 @@ public:
   void lazyChunkLoading(const Vector3D& position);
 
   blocks_type& getBlocks();
-  triangles_type& getTriangles();
   chunks_type& getChunks();
 
   const blocks_type& getBlocks() const;
-  const triangles_type& getTriangles() const;
   const chunks_type& getChunks() const;
 
 private:
   blocks_type _blocks;
-  triangles_type _triangles;
   chunks_type _chunks;
 };
 

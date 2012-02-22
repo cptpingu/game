@@ -335,7 +335,7 @@ void
 Chunk::createRealCoord(const texture_coord_type& coords)
 {
 #define ADD(X, Y)                                                       \
-  add((X) - HALF, (Y) - HALF, coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)] / (10));
+  add((X), (Y), coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)] / (10));
 
   static const int RATIO = TEXTURE_SIZE / SIZE;
   static const int HALF = SIZE / 2;

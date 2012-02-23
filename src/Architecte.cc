@@ -197,15 +197,19 @@ namespace Architecte
     const int q = i / step;
     const int bound1x = (q * step);
     const int bound2x = (q + 1) * step;
+    //const int tex2x = bound2x < Chunk::TEXTURE_SIZE ? bound2x : Chunk::TEXTURE_SIZE - 1;
+    const int tex2x = bound2x;
 
     const int q2 = j / step;
     const int bound1y = (q2 * step);
     const int bound2y = (q2 + 1) * step;
+    //const int tex2y = bound2y < Chunk::TEXTURE_SIZE ? bound2y : Chunk::TEXTURE_SIZE - 1;
+    const int tex2y = bound2y;
 
     const int b00 = coords(bound1x, bound1y);
-    const int b01 = coords(bound1x, bound2y);
-    const int b10 = coords(bound2x, bound1y);
-    const int b11 = coords(bound2x, bound2y);
+    const int b01 = coords(bound1x, tex2y);
+    const int b10 = coords(tex2x, bound1y);
+    const int b11 = coords(tex2x, tex2y);
 
     const int v1 = interpolate(b00, b01, bound2y - bound1y, j - bound1y);
     const int v2 = interpolate(b10, b11, bound2y - bound1y, j - bound1y);
@@ -265,7 +269,6 @@ namespace Architecte
     // Right bottom corner ?
   }
 
-
   //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
   void smoothGround(Chunk::chunk_coord_type& coords)
   {
@@ -303,8 +306,8 @@ namespace Architecte
       for (int j = 0; j < Chunk::SIZE; ++j)
         extracted(i * Chunk::RATIO, j * Chunk::RATIO) = coords(i, j);
 
-    for (int i = 0; i < Chunk::TEXTURE_SIZE; ++i)
-      for (int j = 0; j < Chunk::TEXTURE_SIZE; ++j)
+    for (int i = 0; i < Chunk::TEXTURE_SIZE - 1; ++i)
+      for (int j = 0; j < Chunk::TEXTURE_SIZE - 1; ++j)
         if (i % Chunk::RATIO != 0 || j % Chunk::RATIO != 0)
           extracted(i, j) = interpolation(extracted, i, j, Chunk::RATIO);
   }

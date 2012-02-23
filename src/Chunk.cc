@@ -292,7 +292,7 @@ Chunk::generateChunk(const texture_coord_type& coords)
   SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
   SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
-  SDL_Surface* resSurface = createDefaultSurface(TEXTURE_SIZE, TEXTURE_SIZE);
+  SDL_Surface* resSurface = createDefaultSurface(TEXTURE_SIZE - 1, TEXTURE_SIZE - 1);
   std::array<double, 3> coeffs;
 
   SDL_LockSurface(resSurface);
@@ -345,7 +345,7 @@ void
 Chunk::createRealCoord(const texture_coord_type& coords)
 {
   int k = 0;
-  for (int i = 0; i < SIZE; ++i)
+  for (int i = 0; i < SIZE - 1; ++i)
   {
     for (int j = 0; j < SIZE; ++j)
     {

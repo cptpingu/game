@@ -4,6 +4,10 @@
 bool
 Game::load()
 {
+  std::cout << "SIZE: " << Chunk::SIZE << std::endl;
+  std::cout << "QUALITY: " << Chunk::QUALITY << std::endl;
+  std::cout << "TEXTURE_SIZE: " << Chunk::TEXTURE_SIZE << std::endl;
+
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);

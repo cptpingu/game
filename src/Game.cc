@@ -16,11 +16,11 @@ Game::load()
 #define CHUNK_TMP(X, Y) \
   { \
     Chunk* chunk = new Chunk((X), (Y)); \
-    Chunk::chunk_type coords; \
+    Chunk::chunk_coord_type coords; \
     Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
-    Architecte::smoothGround(coords, Chunk::SIZE); \
+    /*Architecte::smoothGround(coords);*/ \
     Chunk::texture_coord_type extracted; \
-    Architecte::extractCoords(extracted, coords, Chunk::SIZE); \
+    Architecte::extractCoords(extracted, coords); \
     chunk->generateChunk(extracted); \
     _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
   }
@@ -47,8 +47,20 @@ Game::load()
   std::cout << "chunk00\t\tchunk10" << std::endl;
   for (int y = 0; y < Chunk::SIZE; ++y)
   {
-      std::cout << (*chunk00)(Chunk::SIZE - 1, y) << "\t\t"
-                << (*chunk10)(0, y) << std::endl;
+    for (int x = 0; x < Chunk::SIZE; ++x)
+    {
+      std::cout << (*chunk00)(x, y) << "\t\t";
+    }
+    std::cout << std::endl;
+  }
+  std::cout << std::endl;
+  for (int y = 0; y < Chunk::SIZE; ++y)
+  {
+    for (int x = 0; x < Chunk::SIZE; ++x)
+    {
+      std::cout << (*chunk10)(x, y) << "\t\t";
+    }
+    std::cout << std::endl;
   }
 
   return true;

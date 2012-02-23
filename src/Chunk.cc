@@ -281,8 +281,8 @@ Chunk::operator()(double x, double y) const
 void
 Chunk::generateChunk(const texture_coord_type& coords)
 {
-  double min = coords.empty() ? 0 : coords[0];
-  double max = coords.empty() ? 0 : coords[0];
+  double min = coords.empty() ? 0 : coords(0, 0);
+  double max = coords.empty() ? 0 : coords(0, 0);
   for (auto it = coords.begin(); it != coords.end(); ++it)
     if (*it > max)
       max = *it;
@@ -300,7 +300,7 @@ Chunk::generateChunk(const texture_coord_type& coords)
   {
     for (int y = 0; y < resSurface->h; ++y)
     {
-      double coord = coords[x * TEXTURE_SIZE + y];
+      double coord = coords(x, y);
       double z = (255.0 * (coord - min)) / (max - min);
       computeTextureCoeff(coeffs, z);
 
@@ -342,19 +342,20 @@ Chunk::generateChunk(const texture_coord_type& coords)
 void
 Chunk::createRealCoord(const texture_coord_type& coords)
 {
-#define ADD(X, Y)                                                       \
-  add((X), (Y), coords[((X) * RATIO) * TEXTURE_SIZE + ((Y) * RATIO)]);
-
   static const int RATIO = TEXTURE_SIZE / SIZE;
-  static const int HALF = SIZE / 2;
 
   int k = 0;
-  for (int i = 0; i < SIZE - 1; ++i)
+  for (int i = 0; i < SIZE; ++i)
   {
     for (int j = 0; j < SIZE; ++j)
     {
-      ADD(i + k, k * (SIZE - 1 - 2 * j) + j);
-      ADD(i + 1 - k, k * (SIZE - 1) + j - (2 * j * k));
+      const int x1 = i + k;
+      const int y1 = k * (SIZE - 1 - 2 * j) + j;
+      add(x1, y1, coords(x1 * RATIO, y1 * RATIO));
+
+      const int x2 = i + 1 - k;
+      const int y2 = k * (SIZE - 1) + j - (2 * j * k);
+      add(x2, y2, coords(x2 * RATIO, y2 * RATIO));
     }
     k = (k + 1) % 2;
   }

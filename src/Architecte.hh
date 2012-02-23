@@ -14,9 +14,9 @@ namespace Architecte
   /*void interpolateCoords(std::vector<Chunk::Coord*> destination , const std::vector<Chunk::Coord*>& source);*/
 
   void generateGroundOLD(Chunk::texture_coord_type& tabPoints);
-  void initChunk(Chunk::chunk_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks);
-  void smoothGround(Chunk::chunk_type& coords, int size);
-  void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_type& coords, int size);
+  void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks);
+  void smoothGround(Chunk::chunk_coord_type& coords);
+  void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords);
 }
 
 #endif /* !ARCHITECTE_HH_ */

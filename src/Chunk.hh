@@ -3,7 +3,7 @@
 
 # include "Core/Container3D.hh"
 # include "Core/PairHash.hh"
-# include "Core/NonCopyable.hh"
+# include "Core/Array2D.hh"
 
 # include <vector>
 # include <cstddef>
@@ -13,8 +13,11 @@
 class Chunk
 {
 public:
-  static const int SIZE = 64;
-  static const int TEXTURE_SIZE = 64 * 64;
+  static const int SIZE = 3;
+  static const int QUALITY = 2;
+
+  static const int TEXTURE_SIZE = (QUALITY + 1) * (SIZE - 1) + 1;
+  static const int RATIO = (TEXTURE_SIZE + 1) / SIZE;
 
 public:
   class Coord : private Core::Container3D<double>
@@ -50,22 +53,14 @@ public:
     Coord* _link;
   };
 
-  struct ChunkType : private Core::NonCopyable<std::vector<Coord*> >,
-                     public std::vector<Coord*>
-  {
-  };
+  typedef Core::Array2D<double, Chunk::SIZE> chunk_coord_type;
+  typedef Core::Array2D<Coord*, Chunk::SIZE, 0> chunk_mesh_type;
+  typedef Core::Array2D<double, Chunk::TEXTURE_SIZE> texture_coord_type;
 
-  struct TextureCoordType : private Core::NonCopyable<std::vector<double> >,
-                            public std::vector<double>
-  {
-  };
-
-  typedef ChunkType chunk_type;
   typedef std::unordered_map<std::pair<double, double>, double,
           Core::PairHash<double, double> > fast_access_chunk_type;
-  typedef chunk_type::iterator iterator;
-  typedef chunk_type::const_iterator const_iterator;
-  typedef TextureCoordType texture_coord_type;
+  typedef chunk_mesh_type::iterator iterator;
+  typedef chunk_mesh_type::const_iterator const_iterator;
 
 public:
   Chunk(int x, int y);
@@ -92,7 +87,7 @@ private:
 private:
   int _x;
   int _y;
-  chunk_type _chunk;
+  chunk_mesh_type _chunk;
   fast_access_chunk_type _fast_access_chunk;
 };
 

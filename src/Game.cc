@@ -22,14 +22,14 @@ Game::load()
     Chunk* chunk = new Chunk((X), (Y)); \
     Chunk::chunk_coord_type coords; \
     Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
-    Architecte::smoothGround(coords);                                   \
+                                      \
     Chunk::texture_coord_type extracted; \
     Architecte::extractCoords(extracted, coords); \
     chunk->generateChunk(extracted); \
     _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
-    /*                                                                  \
+                                                                      \
     Chunk* chunk00 = _map.getChunks().find(std::make_pair((X), (Y)))->second; \
-    std::cout << "Dump" << (X) << " " << (Y) << std::endl;              \
+    /*std::cout << "Dump" << (X) << " " << (Y) << std::endl;              \
     for (int y = 0; y < Chunk::SIZE; ++y)       \
     {                                           \
       for (int x = 0; x < Chunk::SIZE; ++x)     \
@@ -38,8 +38,8 @@ Game::load()
       }                                                 \
       std::cout << std::endl;                           \
     }                                                   \
-    std::cout << std::endl;                             \
-  */                                                    \
+    std::cout << std::endl;*/                             \
+                                                      \
   }
 
   CHUNK_TMP(-1,  1);

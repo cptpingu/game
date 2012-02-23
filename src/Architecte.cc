@@ -217,62 +217,10 @@ namespace Architecte
 
     return res;
   }
-
-  //Permet de copier une zone d'un chunk dans une liste de points (un autre chunk en gros,mais pas forcement).
-  void fillCoords(Chunk::chunk_coord_type& coords, int whereX, int whereY,
-                  Chunk& neighborChunk, int fromX,int toX,int fromY, int toY)
-  {
-    assert(whereX + (toX - fromX) <= Chunk::SIZE && "X out of bound");
-    assert(whereY + (toY - fromY) <= Chunk::SIZE && "Y out of bound");
-
-    int posX = whereX;
-    for (int x = fromX; x < toX; ++x, ++posX)
-    {
-      int posY = whereY;
-      for (int y = fromY; y < toY; ++y, ++posY)
-        coords(posX, posY) = neighborChunk(x, y);
-    }
-  }
-
-  void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
-  {
-    for (int i = 0; i < Chunk::SIZE; ++i)
-      for (int j = 0; j < Chunk::SIZE; ++j)
-        coords(i, j) = Random::rand() % 255;
-
-    // Left top corner ?
-
-    // Top
-    auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
-    if (neighborChunk != chunks.end())
-      fillCoords(coords, 0, 0, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE - 1, Chunk::SIZE);
-
-    // Right top corner ?
-
-    // Left
-    neighborChunk = chunks.find(std::make_pair(where.first - 1, where.second));
-    if (neighborChunk != chunks.end())
-      fillCoords(coords, 0, 0, *neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
-
-    // Right
-    neighborChunk = chunks.find(std::make_pair(where.first + 1, where.second));
-    if (neighborChunk != chunks.end())
-      fillCoords(coords, Chunk::SIZE - 1, 0, *neighborChunk->second, 0, 1, 0, Chunk::SIZE);
-
-    // Left bottom corner ?
-
-    // Bottom
-    neighborChunk = chunks.find(std::make_pair(where.first, where.second - 1));
-    if (neighborChunk != chunks.end())
-      fillCoords(coords, 0, Chunk::SIZE - 1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
-
-    // Right bottom corner ?
-  }
-
   //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
   void smoothGround(Chunk::chunk_coord_type& coords)
   {
-    for (int k = 0; k < 5; ++k)
+    for (int k = 0; k < 20; ++k)
     {
       for (int x = 1; x < Chunk::SIZE - 1; ++x)
       {
@@ -292,13 +240,72 @@ namespace Architecte
       }
 
       //Gére les problémes de frontière de l'algo
-      for (int x = 0; x < Chunk::SIZE - 1; ++x)
+     for (int x = 0; x < Chunk::SIZE ; ++x)
       {
+        coords(x,0) = (coords(x, 0) + coords(x,1)) / 2;
+        coords(0,x) = (coords(0, x) + coords(1,x)) / 2;
         coords(x, Chunk::SIZE- 1) = (coords(x, Chunk::SIZE - 1) + coords(x, Chunk::SIZE - 2)) / 2;
         coords(Chunk::SIZE- 1, x) = (coords(Chunk::SIZE - 1, x) + coords(Chunk::SIZE - 2, x)) / 2;
       }
     }
   }
+
+  //Permet de copier une zone d'un chunk dans une liste de points (un autre chunk en gros,mais pas forcement).
+  void fillCoords(Chunk::chunk_coord_type& coords, int whereX, int whereY,
+                  Chunk& neighborChunk, int fromX,int toX,int fromY, int toY)
+  {
+    assert(whereX + (toX - fromX) <= Chunk::SIZE && "X out of bound");
+    assert(whereY + (toY - fromY) <= Chunk::SIZE && "Y out of bound");
+
+
+    int posX = whereX;
+    for (int x = fromX; x < toX; ++x, ++posX)
+    {
+      int posY = whereY;
+      for (int y = fromY; y < toY; ++y, ++posY)
+        {coords(posX, posY) = neighborChunk(x, y);
+      }
+    }
+  }
+
+  void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
+  {
+    for (int i = 0; i < Chunk::SIZE; ++i)
+      for (int j = 0; j < Chunk::SIZE; ++j)
+        coords(i, j) = Random::rand() % 255;
+
+    // Left top corner ?
+    smoothGround(coords);
+    // Top
+
+
+    auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
+    if (neighborChunk != chunks.end())
+      fillCoords(coords, 0,Chunk::SIZE-1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
+
+    // Right top corner ?
+
+    // Left
+    neighborChunk = chunks.find(std::make_pair(where.first - 1, where.second));
+    if (neighborChunk != chunks.end())
+      fillCoords(coords, 0, 0, *neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
+
+    // Right
+    neighborChunk = chunks.find(std::make_pair(where.first + 1, where.second));
+    if (neighborChunk != chunks.end())
+      fillCoords(coords, Chunk::SIZE - 1, 0, *neighborChunk->second, 0, 1, 0, Chunk::SIZE);
+
+    // Left bottom corner ?
+
+    // Bottom
+    neighborChunk = chunks.find(std::make_pair(where.first, where.second - 1));
+    if (neighborChunk != chunks.end())    
+      fillCoords(coords, 0, Chunk::SIZE - 1, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE-1,Chunk::SIZE);
+
+    // Right bottom corner ?
+  }
+
+
 
   void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords)
   {

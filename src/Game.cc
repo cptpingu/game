@@ -29,16 +29,7 @@ Game::load()
     _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
                                                                       \
     Chunk* chunk00 = _map.getChunks().find(std::make_pair((X), (Y)))->second; \
-    /*std::cout << "Dump" << (X) << " " << (Y) << std::endl;              \
-    for (int y = 0; y < Chunk::SIZE; ++y)       \
-    {                                           \
-      for (int x = 0; x < Chunk::SIZE; ++x)     \
-      {                                         \
-        std::cout << (*chunk00)(x, y) << "\t\t";        \
-      }                                                 \
-      std::cout << std::endl;                           \
-    }                                                   \
-    std::cout << std::endl;*/                             \
+                           \
                                                       \
   }
 

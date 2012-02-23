@@ -335,11 +335,44 @@ SDL_Surface* createSurface(int width, int height, const SDL_Surface* display)
 {
   int flags = 0;//SDL_HWSURFACE;
   const SDL_PixelFormat& fmt = *(display->format);
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  const Uint32 rmask = 0xff000000;
+  const Uint32 gmask = 0x00ff0000;
+  const Uint32 bmask = 0x0000ff00;
+  const Uint32 amask = 0x000000ff;
+#else
+  const Uint32 rmask = 0x000000ff;
+  const Uint32 gmask = 0x0000ff00;
+  const Uint32 bmask = 0x00ff0000;
+  const Uint32 amask = 0xff000000;
+#endif
+
+
+  std::cout << " " << "DBG " << " " << width << " " << height << " " << (int)fmt.BitsPerPixel << std::endl
+            << (int)fmt.Rmask << " " << rmask << std::endl
+            << (int)fmt.Gmask << " " << gmask << std::endl
+            << (int)fmt.Bmask << " " << bmask << std::endl
+            << (int)fmt.Amask << " " << amask << std::endl;
+
   return SDL_CreateRGBSurface(flags, width, height, fmt.BitsPerPixel,
                               fmt.Rmask, fmt.Gmask, fmt.Bmask, fmt.Amask);
 }
 
 SDL_Surface* createDefaultSurface(int width, int height)
 {
-  return createSurface(width, height, SDL_GetVideoSurface());
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  const Uint32 rmask = 0xff000000;
+  const Uint32 gmask = 0x00ff0000;
+  const Uint32 bmask = 0x0000ff00;
+  const Uint32 amask = 0x000000ff;
+#else
+  const Uint32 rmask = 0x000000ff;
+  const Uint32 gmask = 0x0000ff00;
+  const Uint32 bmask = 0x00ff0000;
+  const Uint32 amask = 0xff000000;
+#endif
+
+  return SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32,
+                              rmask, gmask, bmask, amask);
 }

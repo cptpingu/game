@@ -18,50 +18,39 @@ Game::load()
     Chunk* chunk = new Chunk((X), (Y)); \
     Chunk::chunk_coord_type coords; \
     Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
-    /*Architecte::smoothGround(coords);*/ \
+    Architecte::smoothGround(coords);                                   \
     Chunk::texture_coord_type extracted; \
     Architecte::extractCoords(extracted, coords); \
     chunk->generateChunk(extracted); \
     _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
+    /*                                                                  \
+    Chunk* chunk00 = _map.getChunks().find(std::make_pair((X), (Y)))->second; \
+    std::cout << "Dump" << (X) << " " << (Y) << std::endl;              \
+    for (int y = 0; y < Chunk::SIZE; ++y)       \
+    {                                           \
+      for (int x = 0; x < Chunk::SIZE; ++x)     \
+      {                                         \
+        std::cout << (*chunk00)(x, y) << "\t\t";        \
+      }                                                 \
+      std::cout << std::endl;                           \
+    }                                                   \
+    std::cout << std::endl;                             \
+  */                                                    \
   }
 
+  CHUNK_TMP(-1,  1);
+  CHUNK_TMP( 0,  1);
+  CHUNK_TMP( 1,  1);
 
+  CHUNK_TMP(-1,  0);
+  CHUNK_TMP( 0,  0);
+  CHUNK_TMP( 1,  0);
 
-  //CHUNK_TMP(1, -1);
-  CHUNK_TMP(0, 0);
-  //CHUNK_TMP(1, 1);
-
-  //CHUNK_TMP(0, -1);
-  CHUNK_TMP(1, 0);
-  //CHUNK_TMP(0, 1);
-
-  //CHUNK_TMP(-1, -1);
-  //CHUNK_TMP(-1, 0);
-  //CHUNK_TMP(-1, 1);
+  CHUNK_TMP(-1, -1);
+  CHUNK_TMP( 0, -1);
+  CHUNK_TMP( 1, -1);
 
 #undef CHUNK_TMP
-
-  Chunk* chunk00 = _map.getChunks().find(std::make_pair(0,0))->second;
-  Chunk* chunk10 = _map.getChunks().find(std::make_pair(1,0))->second;
-
-  std::cout << "chunk00\t\tchunk10" << std::endl;
-  for (int y = 0; y < Chunk::SIZE; ++y)
-  {
-    for (int x = 0; x < Chunk::SIZE; ++x)
-    {
-      std::cout << (*chunk00)(x, y) << "\t\t";
-    }
-    std::cout << std::endl;
-  }
-  std::cout << std::endl;
-  for (int y = 0; y < Chunk::SIZE; ++y)
-  {
-    for (int x = 0; x < Chunk::SIZE; ++x)
-    {
-      std::cout << (*chunk10)(x, y) << "\t\t";
-    }
-    std::cout << std::endl;
-  }
 
   return true;
 }

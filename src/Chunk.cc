@@ -292,7 +292,7 @@ Chunk::generateChunk(const texture_coord_type& coords)
   SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
   SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
-  SDL_Surface* resSurface = createSurface(TEXTURE_SIZE, TEXTURE_SIZE, vegSurface);
+  SDL_Surface* resSurface = createDefaultSurface(TEXTURE_SIZE, TEXTURE_SIZE);
   std::array<double, 3> coeffs;
 
   SDL_LockSurface(resSurface);
@@ -300,13 +300,14 @@ Chunk::generateChunk(const texture_coord_type& coords)
   {
     for (int y = 0; y < resSurface->h; ++y)
     {
-      double coord = coords(x, y);
+      double coord = coords(y, x);
       double z = (255.0 * (coord - min)) / (max - min);
       computeTextureCoeff(coeffs, z);
 
-      unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 0;
-      unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 1;
-      unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + x * 3 * resSurface->w + y * 3 + 2;
+      unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 0;
+      unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 1;
+      unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 2;
+      unsigned char* a = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 3;
 
       const Core::Container3D<int> vegColor = getTexturePixelColor(vegSurface, x, y);
       const Core::Container3D<int> brickColor = getTexturePixelColor(brickSurface, x, y);
@@ -316,9 +317,10 @@ Chunk::generateChunk(const texture_coord_type& coords)
       *g = coeffs[0] * vegColor._y + coeffs[1] * brickColor._y + coeffs[2] * woodColor._y;
       *b = coeffs[0] * vegColor._z + coeffs[1] * brickColor._z + coeffs[2] * woodColor._z;
 
-    *r = z;
-    *g = z;
-    *b = z;
+      *r = z;
+      *g = z;
+      *b = z;
+      *a = 255;
     }
   }
 
@@ -342,8 +344,6 @@ Chunk::generateChunk(const texture_coord_type& coords)
 void
 Chunk::createRealCoord(const texture_coord_type& coords)
 {
-  static const int RATIO = TEXTURE_SIZE / SIZE;
-
   int k = 0;
   for (int i = 0; i < SIZE; ++i)
   {

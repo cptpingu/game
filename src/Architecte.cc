@@ -169,7 +169,6 @@ namespace Architecte
     }
   }
 
-
   int interpolate(int y1, int y2, int n, int delta)
   {
     if (n != 0)
@@ -215,171 +214,98 @@ namespace Architecte
     return res;
   }
 
-//  void generateGroundOLD(Chunk::texture_coord_type& tabPoints)
-//  {
-//    tabPoints.resize(Chunk::TEXTURE_SIZE * Chunk::TEXTURE_SIZE);
-
-//    double heightMean = 0;
-//    for (int i = 0; i < Chunk::TEXTURE_SIZE; ++i)
-//      for (int j = 0; j < Chunk::TEXTURE_SIZE; ++j)
-//      {
-//        tabPoints(i, j) = Random::rand() % 10;//(Chunk::SIZE );
-//        heightMean += tabPoints(i, j);
-//      }
-
-//    heightMean /= Chunk::SIZE * Chunk::SIZE;
-
-//    for (int k = 0; k <= 10; ++k)
-//    {
-//      for (int i = 0; i < Chunk::TEXTURE_SIZE - Chunk::SIZE; i += Chunk::SIZE)
-//      {
-//        for (int j = 0; j < Chunk::TEXTURE_SIZE - Chunk::SIZE; j += Chunk::SIZE)
-//        {
-//          tabPoints[i + j * Chunk::TEXTURE_SIZE] = (tabPoints[i + Chunk::SIZE + j * Chunk::TEXTURE_SIZE] +
-//                                                    tabPoints[i + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] +
-//                                                    tabPoints[i + Chunk::SIZE + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] +
-//                                                    tabPoints[i + j * Chunk::TEXTURE_SIZE]) / 4;
-//          if (i == Chunk::TEXTURE_SIZE - 2*Chunk::SIZE)
-//            tabPoints[i + Chunk::SIZE + j * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
-//          if (j == Chunk::TEXTURE_SIZE - 2*Chunk::SIZE)
-//            tabPoints[i + (j + Chunk::SIZE) * Chunk::TEXTURE_SIZE] = tabPoints[i + j * Chunk::TEXTURE_SIZE];
-//        }
-//        tabPoints[i + (Chunk::TEXTURE_SIZE - Chunk::SIZE) * Chunk::TEXTURE_SIZE] =
-//            tabPoints[i + (Chunk::TEXTURE_SIZE - (2 * Chunk::SIZE)) * Chunk::TEXTURE_SIZE];
-//      }
-//      tabPoints[Chunk::TEXTURE_SIZE - Chunk::SIZE + (Chunk::TEXTURE_SIZE - Chunk::SIZE) * Chunk::TEXTURE_SIZE] =
-//          tabPoints[Chunk::TEXTURE_SIZE - (2 * Chunk::SIZE) + (Chunk::TEXTURE_SIZE - (2 * Chunk::SIZE)) * Chunk::TEXTURE_SIZE];
-//    }
-
-//    for (int i = 0; i < Chunk::TEXTURE_SIZE; ++i)
-//      for (int j = 0; j < Chunk::TEXTURE_SIZE; ++j)
-//        if (i % Chunk::SIZE != 0 || j % Chunk::SIZE != 0)
-//          tabPoints[i + j * Chunk::TEXTURE_SIZE] = interpolation(tabPoints, i, j, Chunk::SIZE);
-//  }
-
-
   //Permet de copier une zone d'un chunk dans une liste de points (un autre chunk en gros,mais pas forcement).
-  void fillCoords(Chunk::chunk_coord_type& coords,Chunk& currentChunk,int fromX,int toX,int fromY, int toY,int whereX, int whereY, int size)
+  void fillCoords(Chunk::chunk_coord_type& coords, int whereX, int whereY,
+                  Chunk& neighborChunk, int fromX,int toX,int fromY, int toY)
   {
-    if  (whereX + (toX - fromX)> size || whereY + (toY - fromY) > size)
-    {
-      std::cout << "Warning: Fillcoords not used on Chunk -> check Architecte namespace" << std::endl;
-    }
+    assert(whereX + (toX - fromX) <= Chunk::SIZE && "X out of bound");
+    assert(whereY + (toY - fromY) <= Chunk::SIZE && "Y out of bound");
 
-    for (int x = fromX; x < toX; ++x)
+    int posX = whereX;
+    for (int x = fromX; x < toX; ++x, ++posX)
     {
-      for (int y = fromY; y < toY; ++y)
+      int posY = whereY;
+      for (int y = fromY; y < toY; ++y, ++posY)
+        coords(posX, posY) = neighborChunk(x, y);
+    }
+  }
+
+  void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
+  {
+    for (int i = 0; i < Chunk::SIZE; ++i)
+      for (int j = 0; j < Chunk::SIZE; ++j)
+        coords(i, j) = Random::rand() % 255;
+
+    // Left top corner ?
+
+    // Top
+    auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
+    if (neighborChunk != chunks.end())
+      fillCoords(coords, 0, 0, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE - 1, Chunk::SIZE);
+
+    // Right top corner ?
+
+    // Left
+    neighborChunk = chunks.find(std::make_pair(where.first - 1, where.second));
+    if (neighborChunk != chunks.end())
+      fillCoords(coords, 0, 0, *neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
+
+    // Right
+    neighborChunk = chunks.find(std::make_pair(where.first + 1, where.second));
+    if (neighborChunk != chunks.end())
+      fillCoords(coords, Chunk::SIZE - 1, 0, *neighborChunk->second, 0, 1, 0, Chunk::SIZE);
+
+    // Left bottom corner ?
+
+    // Bottom
+    neighborChunk = chunks.find(std::make_pair(where.first, where.second - 1));
+    if (neighborChunk != chunks.end())
+      fillCoords(coords, 0, Chunk::SIZE - 1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
+
+    // Right bottom corner ?
+  }
+
+
+  //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
+  void smoothGround(Chunk::chunk_coord_type& coords)
+  {
+    for (int k = 0; k < 5; ++k)
+    {
+      for (int x = 1; x < Chunk::SIZE - 1; ++x)
       {
-        coords(x, y) = currentChunk(x + whereX, y + whereY);
-        //coords[x+y*size]->setZ(0);
+        for (int y = 1; y < Chunk::SIZE - 1; ++y)
+        {
+          coords(x, y) = (coords(x, y) +
+                          coords(x + 1, y) +
+                          coords(x + 1, y + 1) +
+                          coords(x + 1, y - 1) +
+                          coords(x - 1, y) +
+                          coords(x - 1, y + 1) +
+                          coords(x - 1, y - 1) +
+                          coords(x, y + 1) +
+                          coords(x, y - 1)) / 9;
+
+        }
+      }
+
+      //Gére les problémes de frontière de l'algo
+      for (int x = 0; x < Chunk::SIZE - 1; ++x)
+      {
+        coords(x, Chunk::SIZE- 1) = (coords(x, Chunk::SIZE - 1) + coords(x, Chunk::SIZE - 2)) / 2;
+        coords(Chunk::SIZE- 1, x) = (coords(Chunk::SIZE - 1, x) + coords(Chunk::SIZE - 2, x)) / 2;
       }
     }
   }
 
-  //Initialisation d'un chunk en fonction de ses voisins.
-  void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
-  {
-    //coords.resize(Chunk::SIZE * Chunk::SIZE); // nb points centre + nbpoints gauche + nbpoints droite
-    // + nbpoints haut + nbpoints bas
-
-      //Les points sont initialisés au hasard...
-    for (int i = 0; i < Chunk::SIZE; ++i)
-      for (int j = 0; j < Chunk::SIZE; ++j)
-        coords(i, j) = Random::rand() % (Chunk::SIZE);
-
-        //Corrigés sur les frontières....(bas gauche droite haut pour l'instant)
-//    auto currentChunk = chunks.find(std::make_pair(where.first + 1, where.second ));
-//     if (currentChunk != chunks.end())
-//    {
-//         fillCoords(coords,*currentChunk->second,Chunk::SIZE-1,Chunk::SIZE,0,Chunk::SIZE-1,-(Chunk::SIZE-1),0,Chunk::SIZE);
-//    }
-
-//     currentChunk = chunks.find(std::make_pair(where.first , where.second +1));
-//     if (currentChunk != chunks.end())
-//     {
-//        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,Chunk::SIZE,Chunk::SIZE-1,0,-(Chunk::SIZE-1),Chunk::SIZE);
-//     }
-
-
-//     currentChunk = chunks.find(std::make_pair(where.first-1 , where.second ));
-//     if (currentChunk != chunks.end())
-//     {
-//         std::cout << "coonard" << std::endl;
-//        //fillCoords(coords,*currentChunk->second,0,Chunk::SIZE,Chunk::SIZE-1,Chunk::SIZE,0,-(Chunk::SIZE-1),Chunk::SIZE);
-//        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE,0,1,0,+(Chunk::SIZE-1),Chunk::SIZE);
-//        //fillCoords(coords,*currentChunk->second,Chunk::SIZE-1,Chunk::SIZE,0,Chunk::SIZE,-(Chunk::SIZE-1),0,Chunk::SIZE);
-//        //fillCoords(coords,*currentChunk->second,0,1,0,Chunk::SIZE,Chunk::SIZE-1,0,Chunk::SIZE);
-
-
-//     }
-
-
-//     currentChunk = chunks.find(std::make_pair(where.first , where.second -1));
-//     if (currentChunk != chunks.end())
-//     {
-//        fillCoords(coords,*currentChunk->second,0,Chunk::SIZE-1,0,1,0,Chunk::SIZE-1,Chunk::SIZE);
-//     }
-
-     for (int y = 0; y < Chunk::SIZE; ++y)
-     {
-       for (int x = 0; x < Chunk::SIZE; ++x)
-         std::cout << coords(x, y) << "\t\t";
-       std::cout << std::endl;
-     }
-
-     std::cout << "endpouet" << std::endl << std::endl;
-     //Retourne donc une liste valide de coord pour un chunk , chunk::size*chunk::size !
-  }
-
-
-
-//Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
-  void smoothGround(Chunk::chunk_coord_type& coords, int size)
-  {
-   for (int k = 0; k < 5; ++k)
-   {
-    for (int x = 1; x < Chunk::SIZE - 1; ++x)
-    {
-       for (int y = 1; y < Chunk::SIZE - 1; ++y)
-       {
-           coords(x, y) = (coords(x, y) +
-                           coords(x + 1, y) +
-                           coords(x + 1, y + 1) +
-                           coords(x + 1, y - 1) +
-                           coords(x - 1, y) +
-                           coords(x - 1, y + 1) +
-                           coords(x - 1, y - 1) +
-                           coords(x, y + 1) +
-                           coords(x, y - 1)) / 9;
-
-       }
-
-   }/*
- //Gére les problémes de frontière de l'algo
-  for (int x=0;x<size-1;++x)
-  { coords[x + size*(size-1)]->setZ((coords[x + size*(size-1)]->getZ()+coords[x + size*(size-2)]->getZ())/2);
-      coords[size-1 + size*x]->setZ((coords[size-1 + size*x]->getZ()+coords[size-2 + size*x]->getZ())/2);
-
-  }
-*/
-  }
-}
-
   void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords)
   {
-//    const int texSize = size * size;
-//    extracted.resize(texSize * texSize); // Nb points dans la grille du milieu * Chunk::SIZE.
-
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
         extracted(i * Chunk::RATIO, j * Chunk::RATIO) = coords(i, j);
 
-//    for (int i = 0; i < texSize; ++i)
-//      for (int j = 0; j < texSize; ++j)
-//        if (i % size != 0 || j % size != 0)
-//          extracted[i + j * texSize] = interpolation(extracted, i, j, size);
+    for (int i = 0; i < Chunk::TEXTURE_SIZE; ++i)
+      for (int j = 0; j < Chunk::TEXTURE_SIZE; ++j)
+        if (i % Chunk::RATIO != 0 || j % Chunk::RATIO != 0)
+          extracted(i, j) = interpolation(extracted, i, j, Chunk::RATIO);
   }
-
-
-
 } // Architecte

@@ -13,11 +13,11 @@
 class Chunk
 {
 public:
-  static const int SIZE = 3;
-  static const int QUALITY = 2;
+  static const int SIZE = 64;
+  static const int QUALITY = 4;
 
-  static const int TEXTURE_SIZE = (QUALITY + 1) * (SIZE - 1) + 1;
-  static const int RATIO = (TEXTURE_SIZE + 1) / SIZE;
+  static const int TEXTURE_SIZE = QUALITY * (SIZE - 1) + 1;
+  static const int RATIO = QUALITY;
 
 public:
   class Coord : private Core::Container3D<double>

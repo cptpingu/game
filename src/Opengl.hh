@@ -1,11 +1,12 @@
 #ifndef OPENGL_HH_
 # define OPENGL_HH_
 
+//# define GL_GLEXT_PROTOTYPES 1
 # ifdef _WIN32
+# define NO_SDL_GLEXT 1
 #  include <windows.h>
+#  include <SDL/SDL_opengl.h>
 #  include <GL/glut.h>
-# else
-# define GL_GLEXT_PROTOTYPES 1
 # endif
 
 # include <GL/gl.h>
@@ -15,7 +16,6 @@
 bool initExtensions();
 
 # ifndef GL_GLEXT_PROTOTYPES
-
 #  define EXPORT_EXTENSION(EXT, TYPE) extern PFN##TYPE##PROC EXT
 
 EXPORT_EXTENSION(glMultiTexCoord2fARB, GLMULTITEXCOORD2FARB);

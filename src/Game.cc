@@ -6,9 +6,10 @@
 bool
 Game::load()
 {
-  std::cout << "SIZE: " << Chunk::SIZE << std::endl;
-  std::cout << "QUALITY: " << Chunk::QUALITY << std::endl;
-  std::cout << "TEXTURE_SIZE: " << Chunk::TEXTURE_SIZE << std::endl;
+  std::cout << "SIZE: " << Chunk::SIZE << std::endl
+            << "QUALITY: " << Chunk::QUALITY << std::endl
+            << "TEXTURE_SIZE: " << Chunk::TEXTURE_SIZE << std::endl
+            << "OpenGL v: " << glGetString(GL_VERSION) << std::endl;
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -133,7 +134,6 @@ Game::loadtextures()
   textures.load("data/images/rocket_top.jpg", "rocketTop");
   //autre texture
   textures.load("data/images/concrete001.jpg", "concrete");
-  textures.load("data/images/neige.jpg", "neige");
   textures.load("data/images/floor032.jpg", "floor1");
   textures.load("data/images/brick009.jpg", "brick1");
   textures.load("data/images/wood002.jpg", "wood1");
@@ -156,7 +156,6 @@ Game::loadtextures()
   textures.load("data/images/veg010.jpg", "veg2");
   // puit
   textures.load("data/images/brick077.jpg", "brick2");
-  textures.load("data/images/test.jpg", "test");
 }
 
 void

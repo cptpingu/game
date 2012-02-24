@@ -1,4 +1,5 @@
 game
+.gdb_history
 *.o
 Makefile.rules
 src/Makefile.deps

@@ -128,7 +128,7 @@ namespace
     {
       glTexCoord2f((((*it)->getY()) / Chunk::SIZE),
                    1.0 - ((*it)->getX()) / Chunk::SIZE);
-      glVertex3d((*it)->getX() + coord.first * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
+      glVertex3f((*it)->getX() + coord.first * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
                  (*it)->getY() + coord.second * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
                  (*it)->getZ());
     }

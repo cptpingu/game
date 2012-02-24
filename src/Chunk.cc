@@ -267,7 +267,7 @@ const Core::Container3D<int> getTexturePixelColor(const SDL_Surface* surface, in
   return Core::Container3D<int>(*r, *g, *b);
 }
 
-int
+double
 Chunk::operator()(double x, double y) const
 {
   auto found = _fast_access_chunk.find(fast_access_chunk_type::key_type(x, y));

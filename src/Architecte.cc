@@ -157,6 +157,28 @@ namespace Architecte
     return res;
   }
   //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
+
+  void borderSmooth(Chunk::chunk_coord_type& coords)
+  {
+      for (int x = 0; x < Chunk::SIZE ; ++x)
+      {
+        for (int y = 0; y < Chunk::SIZE ; ++y)
+        {
+
+            coords(x,y) = (coords(x,y) +
+                           coords(x,0)*(Chunk::SIZE - 1 -x)/(Chunk::SIZE - 1) +
+                           coords(0,y)*(Chunk::SIZE - 1 -y)/(Chunk::SIZE - 1) +
+                           coords(x,Chunk::SIZE - 1)*(x/(Chunk::SIZE - 1)) +
+                           coords(Chunk::SIZE - 1,y)*(y/(Chunk::SIZE - 1)))/2;
+
+  }
+  }
+  }
+}
+
+
+
+
   void smoothGround(Chunk::chunk_coord_type& coords)
   {
     for (int k = 0; k < 20; ++k)
@@ -232,6 +254,8 @@ namespace Architecte
     neighborChunk = chunks.find(std::make_pair(where.first, where.second - 1));
     if (neighborChunk != chunks.end())
       fillCoords(coords, 0, Chunk::SIZE - 1, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE-1,Chunk::SIZE);
+
+    borderSmooth(coords);
   }
 
   void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords)

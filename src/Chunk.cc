@@ -104,13 +104,12 @@ int
 Chunk::absoluteToChunkCoord(double absolute)
 {
   const int sign = absolute < 0 ? -1 : 1;
-  return absolute / Chunk::SIZE + sign * 0.5;
+  return absolute / SIZE + sign * 0.5;
 }
 
 int
 absoluteToTextureCoord(double absolute)
 {
-  // FIXME: bad
   return absolute - Chunk::SIZE / 2;
 }
 
@@ -281,14 +280,6 @@ Chunk::operator()(double x, double y) const
 void
 Chunk::generateChunk(const texture_coord_type& coords)
 {
-  double min = coords.empty() ? 0 : coords(0, 0);
-  double max = coords.empty() ? 0 : coords(0, 0);
-  for (auto it = coords.begin(); it != coords.end(); ++it)
-    if (*it > max)
-      max = *it;
-    else if (*it < min)
-      min = *it;
-
   SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
   SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
   SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
@@ -301,7 +292,7 @@ Chunk::generateChunk(const texture_coord_type& coords)
     for (int y = 0; y < resSurface->h; ++y)
     {
       double coord = coords(y, x);
-      double z = (255.0 * (coord - min)) / (max - min);
+      double z = (255.0 * (coord - MIN_HEIGHT)) / (MAX_HEIGHT - MIN_HEIGHT);
       computeTextureCoeff(coeffs, z);
 
       unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 0;
@@ -320,6 +311,7 @@ Chunk::generateChunk(const texture_coord_type& coords)
       *r = z;
       *g = z;
       *b = z;
+
       *a = 255;
     }
   }

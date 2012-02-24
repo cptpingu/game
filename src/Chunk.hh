@@ -15,6 +15,8 @@ class Chunk
 public:
   static const int SIZE = 65;
   static const int QUALITY = 4;
+  static const int MIN_HEIGHT = -100;
+  static const int MAX_HEIGHT = 100;
 
   static const int TEXTURE_SIZE = QUALITY * (SIZE - 1) + 1;
   static const int RATIO = QUALITY;

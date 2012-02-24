@@ -123,8 +123,8 @@ namespace
                          (y * Chunk::SIZE) - (Chunk::SIZE / 2),
                          0);
     Chunk* chunk = new Chunk(x, y);
-    Architecte::generateRandomGround(*chunk, where);
-    chunk->meshAllCoord();
+    // Architecte::generateRandomGround(*chunk, where);
+    // chunk->meshAllCoord();
     // FIXME generate from file if it exists
 
     return chunk;

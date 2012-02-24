@@ -17,20 +17,15 @@ Game::load()
 
   loadtextures();
 
-#define CHUNK_TMP(X, Y) \
-  { \
-    Chunk* chunk = new Chunk((X), (Y)); \
-    Chunk::chunk_coord_type coords; \
+#define CHUNK_TMP(X, Y)                                                 \
+  {                                                                     \
+    Chunk* chunk = new Chunk((X), (Y));                                 \
+    Chunk::chunk_coord_type coords;                                     \
     Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
-                                      \
-    Chunk::texture_coord_type extracted; \
-    Architecte::extractCoords(extracted, coords); \
-    chunk->generateChunk(extracted); \
+    Chunk::texture_coord_type extracted;                                \
+    Architecte::extractCoords(extracted, coords);                       \
+    chunk->generateChunk(extracted);                                    \
     _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
-                                                                      \
-    Chunk* chunk00 = _map.getChunks().find(std::make_pair((X), (Y)))->second; \
-                           \
-                                                      \
   }
 
   CHUNK_TMP(-1,  1);
@@ -108,7 +103,7 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-     //_map.lazyChunkLoading(_camera.getCurrentPosition());
+    //_map.lazyChunkLoading(_camera.getCurrentPosition());
     _camera.animate(elapsed_time);
 
     drawAxis(2);

@@ -16,67 +16,6 @@ namespace Architecte
     }
   } //namespace
 
-  void generateRandomGround(Chunk& tmp, const Vector3D& where)
-  {
-    std::vector<double> height;
-    int loopSize = Chunk::SIZE * Chunk::SIZE;
-    height.reserve(loopSize);
-    double heightMean=0;
-
-    for (int i = 0; i < loopSize; ++i)
-    {
-      height[i] = rand() % Chunk::SIZE;
-      heightMean = heightMean + height[i];
-    }
-    heightMean = heightMean / loopSize;
-    for (int k = 0; k <= 30; ++k)
-    {
-      for (int i = 0; i < Chunk::SIZE - 1; ++i)
-      {
-        for (int j = 0; j < Chunk::SIZE - 1; ++j)
-        {
-          height[i + j * Chunk::SIZE] = (height[i + 1 + j * Chunk::SIZE] +
-                                         height[i + (j + 1) * Chunk::SIZE] +
-                                         height[i + 1 +( j + 1) * Chunk::SIZE] +
-                                         height[i + j * Chunk::SIZE]) / 4;
-          if (i == Chunk::SIZE - 2)
-            height[i + 1 + j * Chunk::SIZE] = height[i + j * Chunk::SIZE];
-
-          if (j == Chunk::SIZE - 2)
-            height[i + (j + 1) * Chunk::SIZE] = height[i + j * Chunk::SIZE];
-        }
-      }
-    }
-
-    int k = 0;
-    for (int i = 0; i < Chunk::SIZE ; i++)
-    {
-      for(int j = 0; j < Chunk::SIZE ; j++)
-      {
-        if (j != Chunk::SIZE - 1)
-        {
-          tmp.add(i+k + where._x,
-                  k * (Chunk::SIZE - 1- 2*j) + j  + where._y,
-                  height[i+k +Chunk::SIZE * (k * (Chunk::SIZE - 1- 2*j) + j )] + where._z - heightMean);
-          tmp.add(i + (1-k) + where._x,
-                  k * (Chunk::SIZE - 1) + j - 2 * j * k + where._y,
-                  height[i + (1-k) + Chunk::SIZE*(k * (Chunk::SIZE - 1- 2*j) + j )] + where._z - heightMean);
-        }
-        else
-        {
-          k= (k + 1) % 2;
-          tmp.add(i + (1-k) + where._x,
-                  k*(Chunk::SIZE-1) + where._y ,
-                  height[i + (1-k) + Chunk::SIZE*(k*(Chunk::SIZE - 1) )] + where._z- heightMean);
-
-          tmp.add(i+k + where._x,
-                  k * (Chunk::SIZE-1) + where._y,
-                  height[i+k + Chunk::SIZE *(k *(Chunk::SIZE - 1) )] + where._z - heightMean);
-        }
-      }
-    }
-  }
-
   void building(Map::blocks_type& tmp, const Vector3D& where, int longueur, int hauteur, int largeur)
   {
     int L;
@@ -239,7 +178,7 @@ namespace Architecte
       }
 
       //Gére les problémes de frontière de l'algo
-     for (int x = 0; x < Chunk::SIZE ; ++x)
+      for (int x = 0; x < Chunk::SIZE ; ++x)
       {
         coords(x,0) = (coords(x, 0) + coords(x,1)) / 2;
         coords(0,x) = (coords(0, x) + coords(1,x)) / 2;
@@ -262,9 +201,7 @@ namespace Architecte
     {
       int posY = whereY;
       for (int y = fromY; y < toY; ++y, ++posY)
-        {
-        coords(posX,posY) = neighborChunk(x,y);
-        }
+        coords(posX, posY) = neighborChunk(x, y);
     }
   }
 
@@ -272,40 +209,30 @@ namespace Architecte
   {
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        coords(i, j) = Random::rand() % 255;
+        coords(i, j) = Random::rand()% Chunk::MAX_HEIGHT;
 
-    // Left top corner ?
     smoothGround(coords);
+
     // Top
-
-
     auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
     if (neighborChunk != chunks.end())
-      fillCoords(coords,0,Chunk::SIZE-1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
-
-    // Right top corner ?
+      fillCoords(coords, 0, Chunk::SIZE-1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
 
     // Left
     neighborChunk = chunks.find(std::make_pair(where.first - 1, where.second));
     if (neighborChunk != chunks.end())
-      fillCoords(coords,0,0,*neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
+      fillCoords(coords, 0, 0, *neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
 
     // Right
     neighborChunk = chunks.find(std::make_pair(where.first + 1, where.second));
     if (neighborChunk != chunks.end())
       fillCoords(coords, Chunk::SIZE - 1, 0, *neighborChunk->second, 0, 1, 0, Chunk::SIZE);
 
-    // Left bottom corner ?
-
     // Bottom
     neighborChunk = chunks.find(std::make_pair(where.first, where.second - 1));
-    if (neighborChunk != chunks.end())    
+    if (neighborChunk != chunks.end())
       fillCoords(coords, 0, Chunk::SIZE - 1, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE-1,Chunk::SIZE);
-
-    // Right bottom corner ?
   }
-
-
 
   void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords)
   {

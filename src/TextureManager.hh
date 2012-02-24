@@ -6,12 +6,12 @@
 # include <map>
 # include <SDL/SDL.h>
 # include "Opengl.hh"
-# include "Singleton.hh"
+# include "Core/Singleton.hh"
 # include "GLUtils.hh"
 
-class TextureManager : public Singleton<TextureManager>
+class TextureManager : public Core::Singleton<TextureManager>
 {
-  friend class Singleton<TextureManager>;
+  friend class Core::Singleton<TextureManager>;
 public:
   typedef std::map<std::string, GLuint>::const_iterator const_iterator;
   typedef std::map<std::string, GLuint>::iterator iterator;

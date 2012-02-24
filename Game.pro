@@ -19,13 +19,14 @@ SOURCES += \
     src/Architecte.cc \
     src/Chunk.cc \
     src/Random.cc \
-    src/SDL/SavePng.cc
+    src/SDL/SavePng.cc \
+    src/ShadersManager.cc
 
 HEADERS += \
     src/Vector3D.hh \
     src/TextureManager.hh \
-    src/Singleton.hxx \
-    src/Singleton.hh \
+    src/Core/Singleton.hxx \
+    src/Core/Singleton.hh \
     src/GLUtils.hh \
     src/FreeFlyCamera.hh \
     src/Block.hh \
@@ -46,7 +47,8 @@ HEADERS += \
     src/Random.hh \
     src/SDL/SavePng.hh \
     src/Core/NonCopyable.hh \
-    src/Core/Array2D.hh
+    src/Core/Array2D.hh \
+    src/ShadersManager.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

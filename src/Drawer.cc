@@ -3,6 +3,7 @@
 #include "SolTriangle.hh"
 #include "Block.hh"
 #include "TextureManager.hh"
+#include "ShadersManager.hh"
 #include "Opengl.hh"
 
 #include <vector>
@@ -110,6 +111,9 @@ namespace
 
   void draw(const std::pair<int, int>& coord, const Chunk& chunk)
   {
+    ShadersManager& shaders = ShadersManager::getInstance();
+    shaders.enable("texture_invert_color");
+
     glPushMatrix();
     TextureManager& textures = TextureManager::getInstance();
     std::ostringstream buff;
@@ -135,6 +139,8 @@ namespace
     glEnd();
 
     glPopMatrix();
+
+    shaders.disable();
   }
 
   void draw(const Map::chunks_type& chunks)

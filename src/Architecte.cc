@@ -235,7 +235,6 @@ namespace Architecte
                           coords(x - 1, y - 1) +
                           coords(x, y + 1) +
                           coords(x, y - 1)) / 9;
-
         }
       }
 
@@ -263,8 +262,9 @@ namespace Architecte
     {
       int posY = whereY;
       for (int y = fromY; y < toY; ++y, ++posY)
-        {coords(posX, posY) = neighborChunk(x, y);
-      }
+        {
+        coords(posX,posY) = neighborChunk(x,y);
+        }
     }
   }
 
@@ -281,14 +281,14 @@ namespace Architecte
 
     auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
     if (neighborChunk != chunks.end())
-      fillCoords(coords, 0,Chunk::SIZE-1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
+      fillCoords(coords,0,Chunk::SIZE-1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
 
     // Right top corner ?
 
     // Left
     neighborChunk = chunks.find(std::make_pair(where.first - 1, where.second));
     if (neighborChunk != chunks.end())
-      fillCoords(coords, 0, 0, *neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
+      fillCoords(coords,0,0,*neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
 
     // Right
     neighborChunk = chunks.find(std::make_pair(where.first + 1, where.second));

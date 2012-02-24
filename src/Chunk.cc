@@ -104,7 +104,7 @@ int
 Chunk::absoluteToChunkCoord(double absolute)
 {
   const int sign = absolute < 0 ? -1 : 1;
-  return absolute / SIZE + sign * 0.5;
+  return absolute / Chunk::SIZE + sign * 0.5;
 }
 
 int

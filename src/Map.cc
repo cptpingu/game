@@ -131,6 +131,8 @@ namespace
   }
 } // namespace
 
+
+
 void
 Map::lazyChunkLoading(const Vector3D& position)
 {

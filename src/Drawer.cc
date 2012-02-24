@@ -109,7 +109,8 @@ namespace
   }
 
   void draw(const std::pair<int, int>& coord, const Chunk& chunk)
-  {
+  {    
+
     glPushMatrix();
     TextureManager& textures = TextureManager::getInstance();
     std::ostringstream buff;
@@ -128,8 +129,8 @@ namespace
     {
       glTexCoord2f((((*it)->getY()) / Chunk::SIZE),
                    1.0 - ((*it)->getX()) / Chunk::SIZE);
-      glVertex3d((*it)->getX() + coord.first * Chunk::SIZE - (Chunk::SIZE / 2),
-                 (*it)->getY() + coord.second * Chunk::SIZE - (Chunk::SIZE / 2),
+      glVertex3d((*it)->getX() + coord.first * (Chunk::SIZE-1) - (Chunk::SIZE / 2),
+                 (*it)->getY() + coord.second * (Chunk::SIZE -1) - (Chunk::SIZE / 2),
                  (*it)->getZ());
     }
     glEnd();

@@ -1,4 +1,6 @@
 #include "Game.hh"
+#include "ShadersManager.hh"
+
 #include <sstream>
 
 bool
@@ -16,6 +18,7 @@ Game::load()
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   loadtextures();
+  loadShaders();
 
 #define CHUNK_TMP(X, Y)                                                 \
   {                                                                     \
@@ -154,6 +157,15 @@ Game::loadtextures()
   // puit
   textures.load("data/images/brick077.jpg", "brick2");
   textures.load("data/images/test.jpg", "test");
+}
+
+void
+Game::loadShaders()
+{
+  ShadersManager& shaders = ShadersManager::getInstance();
+  shaders.load("identity", "data/shaders/identity.vert.c", "data/shaders/identity.frag.c");
+  shaders.load("texture", "data/shaders/texture.vert.c", "data/shaders/texture.frag.c");
+  shaders.load("texture_invert_color", "data/shaders/texture.vert.c", "data/shaders/texture_invert_color.frag.c");
 }
 
 void

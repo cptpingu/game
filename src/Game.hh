@@ -30,13 +30,14 @@ public:
 
 private:
   void loadtextures();
+  void loadShaders();
   void drawGL();
   void showCoord();
 
 private:
-  FreeFlyCamera _camera;
-  Map           _map;
-  Drawer        _drawer;
+  FreeFlyCamera  _camera;
+  Map            _map;
+  Drawer         _drawer;
 };
 
 #endif /* !GAME_HH_ */

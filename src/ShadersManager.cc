@@ -2,17 +2,19 @@
 
 #include <iostream>
 #include <cassert>
+#include <cstdio>
 
 namespace
 {
   const char* loadSource(const char* filename)
   {
-    FILE* fp=fopen(filename,"rb");
+    FILE* fp = fopen(filename,"rb");
     fseek(fp, 0, SEEK_END);
     long len = ftell(fp);
     fseek(fp, 0, SEEK_SET);
-    char* buff = new char[len];
+    char* buff = new char[len + 1];
     fread(buff, len, 1, fp);
+    buff[len] = 0;
     fclose(fp);
 
     return buff;
@@ -43,8 +45,6 @@ namespace
       glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logsize);
 
       char* log = new char[logsize + 1];
-      //memset(log, '\0', logsize + 1);
-
       glGetShaderInfoLog(shader, logsize, &logsize, log);
       std::cerr << "Unable to compile shader '" << filename << "' :\n" << log;
 

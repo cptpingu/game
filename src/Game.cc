@@ -1,6 +1,7 @@
 #include "Game.hh"
 #include "ShadersManager.hh"
 
+
 #include <sstream>
 
 bool
@@ -17,6 +18,7 @@ Game::load()
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 
   loadtextures();
   loadShaders();
@@ -263,6 +265,7 @@ Game::drawGL()
   // glDisable(GL_BLEND);
 
   showCoord();
+
 
   glFlush();
 

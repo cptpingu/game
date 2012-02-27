@@ -16,81 +16,6 @@ namespace Architecte
     }
   } //namespace
 
-  void building(Map::blocks_type& tmp, const Vector3D& where, int longueur, int hauteur, int largeur)
-  {
-    int L;
-    int l;
-    int H;
-    l = largeur + rand()%(largeur+1);
-    L = longueur + rand()%(longueur+1);
-    H = hauteur+hauteur*rand()%4;
-
-
-    for (int j=0;j<=H;++j)
-    {
-      for (int i=0;i<=L;++i)
-      {
-        tmp.add(new Block(where._x, where._y+i, where._z+j));
-        tmp.add(new Block(where._x+1, where._y+i, where._z+j));
-      }
-    }
-    for (int j=1;j<l;++j)
-    {
-      for (int i=0;i<=H;++i)
-      {
-        tmp.add(new Block(where._x+j, where._y, where._z+i));
-        tmp.add(new Block(where._x+j, where._y+L, where._z+i));
-      }
-
-    }
-  }
-
-  void mountain(Chunk& tmp, const Vector3D& where, double peak, int size)
-  {
-    std::vector<double> height;
-    int loopSize = size * size;
-    height.reserve(loopSize);
-
-    for (int k = 0; k <= 20; ++k)
-      for (int i = 0; i < size; ++i)
-        for (int j = 0; j < size; ++j)
-          height[i + j * size] = peak * exp(-((i - size / 2) * (i - size / 2) + (j - size / 2) * (j - size / 2)));
-
-    for (int k = 0; k <= 5; ++k)
-      for (int i = 0; i < size - 1; ++i)
-        for (int j = 0; j < size - 1; ++j)
-          height[i + j * size] = (height[i + 1 + j * size] + height[i + (j + 1) * size] + height[i + 1 + (j + 1)  *size] + height[i + j * size]) / 4;
-
-    int k = 0;
-    for (int i = 0; i < size; i++)
-      for (int j = 0; j < size; j++)
-      {
-        if ( j != size - 1)
-        {
-          tmp.add(i+k + where._x,
-                  k*(size-1-2*j)+j + where._y,
-                  height[i+k+size*(k*(size-1)+j -2*j*k)]+where._z);
-
-          tmp.add(i + (1-k) + where._x,
-                  k*(size-1-2*j)+j + where._y,
-                  height[i+(1-k)+size*(k*(size-1)+j -2*j*k)] + where._z);
-        }
-        else
-        {
-          k = (k + 1) % 2;
-
-          tmp.add(i + (1-k) + where._x,
-                  k*(size-1) + where._y ,
-                  height[i + (1-k) + size*(k*(size - 1) )] + where._z);
-
-          tmp.add(i+ k + where._x,
-                  k * (size-1) + where._y,
-                  height[i+k + size *(k *(size - 1) )] + where._z );
-
-
-        }
-      }
-  }
 
   void mergeGround(Chunk& ground, const Chunk& deformation)
   {
@@ -160,28 +85,27 @@ namespace Architecte
 
   void borderSmooth(Chunk::chunk_coord_type& coords)
   {
-      for (int x = 0; x < Chunk::SIZE ; ++x)
+      for (int x = 1; x < Chunk::SIZE-1 ; ++x)
       {
-        for (int y = 0; y < Chunk::SIZE ; ++y)
+        for (int y = 1; y < Chunk::SIZE-1 ; ++y)
         {
 
             coords(x,y) = (coords(x,y) +
-                           coords(x,0)*(Chunk::SIZE - 1 -x)/(Chunk::SIZE - 1) +
-                           coords(0,y)*(Chunk::SIZE - 1 -y)/(Chunk::SIZE - 1) +
-                           coords(x,Chunk::SIZE - 1)*(x/(Chunk::SIZE - 1)) +
-                           coords(Chunk::SIZE - 1,y)*(y/(Chunk::SIZE - 1)))/2;
+                           coords(x,0)*(Chunk::SIZE - 1 -y)/(Chunk::SIZE - 1) +
+                           coords(0,y)*(Chunk::SIZE - 1 -x)/(Chunk::SIZE - 1) +
+                           coords(x,Chunk::SIZE - 1)*(y/(Chunk::SIZE - 1)) +
+                           coords(Chunk::SIZE - 1,y)*(x/(Chunk::SIZE - 1)))/3;
+
 
   }
   }
   }
-}
-
 
 
 
   void smoothGround(Chunk::chunk_coord_type& coords)
   {
-    for (int k = 0; k < 20; ++k)
+    for (int k = 0; k < 10; ++k)
     {
       for (int x = 1; x < Chunk::SIZE - 1; ++x)
       {
@@ -195,7 +119,7 @@ namespace Architecte
                           coords(x - 1, y + 1) +
                           coords(x - 1, y - 1) +
                           coords(x, y + 1) +
-                          coords(x, y - 1)) / 9;
+                          coords(x, y - 1) ) / 9;
         }
       }
 
@@ -229,9 +153,18 @@ namespace Architecte
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
   {
+    int sign = 0;
+    int diff = 0;
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        coords(i, j) = Random::rand()% Chunk::MAX_HEIGHT;
+        {//coords(i, j) = Random::rand()% Chunk::MAX_HEIGHT;
+          sign = Random::rand()%2;
+          diff = Random::rand()% Chunk::MAX_HEIGHT;
+          coords(i, j) = (sign)*(diff)
+                  - (1 - sign)*(diff);
+
+        }
+
 
     smoothGround(coords);
 

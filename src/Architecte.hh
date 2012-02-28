@@ -13,6 +13,11 @@ namespace Architecte
   void borderSmooth(Chunk::chunk_coord_type& coords);
   void smoothGround(Chunk::chunk_coord_type& coords);
 
+  double Norm(double x,double y,double z,int type);
+
+  double Norm(Vector3D where,int type);
+
+   void Initground(Chunk::chunk_coord_type& coords,int Quality);
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks); 
   void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords);
 }

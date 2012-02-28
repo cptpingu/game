@@ -55,7 +55,31 @@ namespace Architecte
 
   //  return y1 * v1 + y2 * v2;
   //}
+  int interpolation(const Chunk::chunk_coord_type& coords, int i, int j, float step)
+  {
+    const int q = i / step;
+    const int bound1x = (q * step);
+    const int bound2x = (q + 1) * step;
+    //const int tex2x = bound2x < Chunk::TEXTURE_SIZE ? bound2x : Chunk::TEXTURE_SIZE - 1;
+    const int tex2x = bound2x;
 
+    const int q2 = j / step;
+    const int bound1y = (q2 * step);
+    const int bound2y = (q2 + 1) * step;
+    //const int tex2y = bound2y < Chunk::TEXTURE_SIZE ? bound2y : Chunk::TEXTURE_SIZE - 1;
+    const int tex2y = bound2y;
+
+    const int b00 = coords(bound1x, bound1y);
+    const int b01 = coords(bound1x, tex2y);
+    const int b10 = coords(tex2x, bound1y);
+    const int b11 = coords(tex2x, tex2y);
+
+    const int v1 = interpolate(b00, b01, bound2y - bound1y, j - bound1y);
+    const int v2 = interpolate(b10, b11, bound2y - bound1y, j - bound1y);
+    const int res = interpolate(v1, v2, bound2x - bound1x, i - bound1x);
+
+    return res;
+  }
   int interpolation(const Chunk::texture_coord_type& coords, int i, int j, float step)
   {
     const int q = i / step;
@@ -101,6 +125,76 @@ namespace Architecte
   }
   }
 
+
+
+  double Norm(Vector3D where,int type)
+  {
+      double norm;
+      if (type==2)
+      {
+      norm = where._x*where._x + where._y*where._y + where._z*where._z;
+      }
+
+      if (type==1)
+      {
+      norm  = fabs(where._x) + fabs(where._y) + fabs(where._z);
+      }
+
+      /*if (type==0)
+      {
+      norm  = Max(Max(fabs(where._x),fabs(where._y)),fabs(where._z));
+      }*/
+      if (type != 1 && type != 0 && type != 2)
+      {
+          std::cout << "Incorrect call of Norm , zero value will be return as Norm" << std::endl;
+          return 0;
+      }
+
+  return norm;
+  }
+
+
+
+  double Norm(double x,double y,double z,int type)
+  {
+      double norm;
+      if (type==2)
+      {
+      norm = x*x + y*y + z*z;
+      }
+
+      if (type==1)
+      {
+      norm  = fabs(x) + fabs(y) + fabs(z);
+      }
+
+      /*if (type==0)
+      {
+      norm  = max(max(fabs(x),fabs(y)),fabs(z));
+      }*/
+      if (type != 1 && type != 0 && type != 2)
+      {
+          std::cout << "Incorrect call of Norm , zero value will be return as Norm" << std::endl;
+          return 0;
+      }
+
+  return norm;
+  }
+
+
+
+  void Initground(Chunk::chunk_coord_type& coords,int Quality)
+  {
+      int subg = Chunk::SIZE/Quality;
+    for (int i = 0; i < Quality; ++i)
+      for (int j = 0; j < Quality; ++j)
+          coords(i * subg, j * subg) = Random::rand()%Chunk::MAX_HEIGHT;
+
+    for (int i = 0; i < Chunk::SIZE-1; ++i)
+      for (int j = 0; j < Chunk::SIZE-1; ++j)
+        if (i % subg != 0 || j % subg != 0)
+          coords(i,j) = interpolation(coords, i, j, subg);
+  }
 
 
   void smoothGround(Chunk::chunk_coord_type& coords)
@@ -153,7 +247,7 @@ namespace Architecte
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
   {
-    int sign = 0;
+    /*int sign = 0;
     int diff = 0;
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
@@ -164,9 +258,9 @@ namespace Architecte
                   - (1 - sign)*(diff);
 
         }
-
-
-    smoothGround(coords);
+*/
+    Initground(coords,4);
+    //smoothGround(coords);
 
     // Top
     auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
@@ -202,4 +296,14 @@ namespace Architecte
         if (i % Chunk::RATIO != 0 || j % Chunk::RATIO != 0)
           extracted(i, j) = interpolation(extracted, i, j, Chunk::RATIO);
   }
+
+
+
+
+
+
+
+
+
+
 } // Architecte

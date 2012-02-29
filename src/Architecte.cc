@@ -119,9 +119,9 @@ namespace Architecte
       //double size = Chunk::SIZE -1;
         int C1=0;
         int C2=0;
-      for (int x = 1; x < Chunk::SIZE-1 ; ++x)
+      for (int x = 1; x < Chunk::SIZE-2 ; ++x)
       {
-        for (int y = 1; y < Chunk::SIZE-1 ; ++y)
+        for (int y = 1; y < Chunk::SIZE-2 ; ++y)
         {
             if (fabs(coords(x+1,y)-coords(x,y))>C1)
                 {
@@ -137,7 +137,7 @@ namespace Architecte
       std::cout << C1 << std::endl;
       std::cout << C2 << std::endl;
 
-      for (int k=0;k<10;++k)
+      for (int k=0;k<50;++k)
       {
       for (int x = 1; x < Chunk::SIZE-1 ; ++x)
       {
@@ -145,16 +145,29 @@ namespace Architecte
         {
 
       coords(x,y) = (coords(x,y) +
-                     coords(x+1,y)*(fabs(coords(x,y)-coords(x+1,y)) > C1)+
-                     coords(x,y+1)*(fabs(coords(x,y)-coords(x,y+1)) > C2)+
-                     coords(x-1,y)*(fabs(coords(x,y)-coords(x-1,y)) > C1)+
-                     coords(x,y-1)*(fabs(coords(x,y)-coords(x,y-1)) > C2))/
-                     ( (fabs(coords(x,y)-coords(x+1,y)) > C1)+
-                        (fabs(coords(x,y)-coords(x,y+1)) > C2)+
-                        (fabs(coords(x,y)-coords(x-1,y)) > C1)+
-                        (fabs(coords(x,y)-coords(x,y-1)) > C2)+
+                     2*coords(x+1,y)*(fabs(coords(x,y)-coords(x+1,y)) > C1)+
+                     2*coords(x,y+1)*(fabs(coords(x,y)-coords(x,y+1)) > C2)+
+                     2*coords(x-1,y)*(fabs(coords(x,y)-coords(x-1,y)) > C1)+
+                     2*coords(x,y-1)*(fabs(coords(x,y)-coords(x,y-1)) > C2))/
+                     ( 2*(fabs(coords(x,y)-coords(x+1,y)) > C1)+
+                        2*(fabs(coords(x,y)-coords(x,y+1)) > C2)+
+                        2*(fabs(coords(x,y)-coords(x-1,y)) > C1)+
+                        2*(fabs(coords(x,y)-coords(x,y-1)) > C2)+
                          1
                         );
+      /*coords(y,x) = (coords(y,x) +
+                     coords(y+1,x)*(fabs(coords(y,x)-coords(y+1,x)) > C1)+
+                     coords(y,x+1)*(fabs(coords(y,x)-coords(y,x+1)) > C2)+
+                     coords(y-1,x)*(fabs(coords(y,x)-coords(y-1,x)) > C1)+
+                     coords(y,x-1)*(fabs(coords(y,x)-coords(y,x-1)) > C2))/
+                     ( (fabs(coords(y,x)-coords(y+1,x)) > C1)+
+                        (fabs(coords(y,x)-coords(y,x+1)) > C2)+
+                        (fabs(coords(y,x)-coords(y-1,x)) > C1)+
+                        (fabs(coords(y,x)-coords(y,x-1)) > C2)+
+                         1
+                        );*/
+
+
 
 
 

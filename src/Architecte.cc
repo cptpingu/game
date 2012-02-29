@@ -41,20 +41,21 @@ namespace Architecte
     return y1;
   }
 
-  //int interpolate(int y1, int y2, int n, int delta)
-  //{
-  //  if (n == 0)
-  //    return y1;
+  /*int interpolate(int y1, int y2, int n, int delta)
+  {
+    if (n == 0)
+      return y1;
 
-  //  if (n == 1)
-  //    return y2;
+    if (n == 1)
+      return y2;
 
-  //  float a = static_cast<float>(delta) / n;
-  //  float v1 = 3 * pow(1 - a, 2) - 2 * pow(1 - a,3);
-  //  float v2 = 3 * pow(a, 2) - 2 * pow(a, 3);
+    float a = static_cast<float>(delta) / n;
+    float v1 = 3 * pow(1 - a, 2) - 2 * pow(1 - a,3);
+    float v2 = 3 * pow(a, 2) - 2 * pow(a, 3);
 
-  //  return y1 * v1 + y2 * v2;
-  //}
+    return y1 * v1 + y2 * v2;
+  }
+*/
   int interpolation(const Chunk::chunk_coord_type& coords, int i, int j, float step)
   {
     const int q = i / step;
@@ -109,23 +110,59 @@ namespace Architecte
 
   void borderSmooth(Chunk::chunk_coord_type& coords)
   {
+
+      //C1 = C1 + fabs(coords(x+1,y)-coords(x,y));
+      //C2 = C2 + fabs(coords(x,y+1)-coords(x,y));
+      //C1/Chunk::SIZE*size;
+      //C2/Chunk::SIZE*size;
+
+      //double size = Chunk::SIZE -1;
+        int C1=0;
+        int C2=0;
+      for (int x = 1; x < Chunk::SIZE-1 ; ++x)
+      {
+        for (int y = 1; y < Chunk::SIZE-1 ; ++y)
+        {
+            if (fabs(coords(x+1,y)-coords(x,y))>C1)
+                {
+                C1 = fabs(coords(x+1,y)-coords(x,y));
+                }
+
+            if (fabs(coords(x,y+1)-coords(x,y))>C2)
+                {
+                C2 = fabs(coords(x,y+1)-coords(x,y));
+                }
+        }
+      }
+      std::cout << C1 << std::endl;
+      std::cout << C2 << std::endl;
+
+      for (int k=0;k<10;++k)
+      {
       for (int x = 1; x < Chunk::SIZE-1 ; ++x)
       {
         for (int y = 1; y < Chunk::SIZE-1 ; ++y)
         {
 
-            coords(x,y) = (coords(x,y) +
-                           coords(x,0)*(Chunk::SIZE - 1 -y)/(Chunk::SIZE - 1) +
-                           coords(0,y)*(Chunk::SIZE - 1 -x)/(Chunk::SIZE - 1) +
-                           coords(x,Chunk::SIZE - 1)*(y/(Chunk::SIZE - 1)) +
-                           coords(Chunk::SIZE - 1,y)*(x/(Chunk::SIZE - 1)))/3;
+      coords(x,y) = (coords(x,y) +
+                     coords(x+1,y)*(fabs(coords(x,y)-coords(x+1,y)) > C1)+
+                     coords(x,y+1)*(fabs(coords(x,y)-coords(x,y+1)) > C2)+
+                     coords(x-1,y)*(fabs(coords(x,y)-coords(x-1,y)) > C1)+
+                     coords(x,y-1)*(fabs(coords(x,y)-coords(x,y-1)) > C2))/
+                     ( (fabs(coords(x,y)-coords(x+1,y)) > C1)+
+                        (fabs(coords(x,y)-coords(x,y+1)) > C2)+
+                        (fabs(coords(x,y)-coords(x-1,y)) > C1)+
+                        (fabs(coords(x,y)-coords(x,y-1)) > C2)+
+                         1
+                        );
+
 
 
   }
   }
-  }
+}
 
-
+}
 
   double Norm(Vector3D where,int type)
   {
@@ -160,7 +197,7 @@ namespace Architecte
       double norm;
       if (type==2)
       {
-      norm = x*x + y*y + z*z;
+      norm = sqrt(x*x + y*y + z*z);
       }
 
       if (type==1)
@@ -185,13 +222,13 @@ namespace Architecte
 
   void Initground(Chunk::chunk_coord_type& coords,int Quality)
   {
-      int subg = Chunk::SIZE/Quality;
+     int subg = (Chunk::SIZE-1)/Quality;
     for (int i = 0; i < Quality; ++i)
       for (int j = 0; j < Quality; ++j)
           coords(i * subg, j * subg) = Random::rand()%Chunk::MAX_HEIGHT;
 
-    for (int i = 0; i < Chunk::SIZE-1; ++i)
-      for (int j = 0; j < Chunk::SIZE-1; ++j)
+    for (int i = 0; i < Chunk::SIZE; ++i)
+      for (int j = 0; j < Chunk::SIZE; ++j)
         if (i % subg != 0 || j % subg != 0)
           coords(i,j) = interpolation(coords, i, j, subg);
   }
@@ -201,9 +238,9 @@ namespace Architecte
   {
     for (int k = 0; k < 10; ++k)
     {
-      for (int x = 1; x < Chunk::SIZE - 1; ++x)
+      for (int x = 1; x < Chunk::SIZE-1 ; ++x)
       {
-        for (int y = 1; y < Chunk::SIZE - 1; ++y)
+        for (int y = 1; y < Chunk::SIZE-1 ; ++y)
         {
           coords(x, y) = (coords(x, y) +
                           coords(x + 1, y) +
@@ -247,20 +284,19 @@ namespace Architecte
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
   {
-    /*int sign = 0;
-    int diff = 0;
+  int a = Random::rand()%100;
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        {//coords(i, j) = Random::rand()% Chunk::MAX_HEIGHT;
-          sign = Random::rand()%2;
-          diff = Random::rand()% Chunk::MAX_HEIGHT;
-          coords(i, j) = (sign)*(diff)
-                  - (1 - sign)*(diff);
+        {
+          //coords(i, j) = log(1+Random::rand()% Chunk::SIZE);
+          //coords(i, j) = a;
+          coords(i, j) = Random::rand()% Chunk::MAX_HEIGHT;
+
 
         }
-*/
-    Initground(coords,4);
-    //smoothGround(coords);
+
+    //Initground(coords,4);
+    smoothGround(coords);
 
     // Top
     auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));

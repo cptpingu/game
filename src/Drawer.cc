@@ -205,6 +205,10 @@ namespace
       draw(it->first, *it->second);
   }
 
+
+
+
+
 } // namespace
 
 Drawer::Drawer()
@@ -217,5 +221,18 @@ void Drawer::drawMap(const Map& map) const
   //draw(map.getTriangles());
   draw(map.getChunks());
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

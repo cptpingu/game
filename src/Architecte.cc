@@ -6,6 +6,10 @@
 #include "Map.hh"
 #include "Random.hh"
 
+
+#include "TextureManager.hh"
+#include "Opengl.hh"
+
 namespace Architecte
 {
   namespace
@@ -117,8 +121,10 @@ namespace Architecte
       //C2/Chunk::SIZE*size;
 
       //double size = Chunk::SIZE -1;
-        int C1=0;
-        int C2=0;
+      double C1 = 0;
+      double C2 = 0;
+      double C3 = 0;
+
       for (int x = 1; x < Chunk::SIZE-2 ; ++x)
       {
         for (int y = 1; y < Chunk::SIZE-2 ; ++y)
@@ -132,12 +138,19 @@ namespace Architecte
                 {
                 C2 = fabs(coords(x,y+1)-coords(x,y));
                 }
+            if (fabs(coords(x+1,y+1)-coords(x,y))>C3)
+                {
+                C3 = fabs(coords(x,y+1)-coords(x,y));
+                }
+
+
         }
       }
-      std::cout << C1 << std::endl;
+      /*std::cout << C1 << std::endl;
       std::cout << C2 << std::endl;
+      std::cout << C3 << std::endl;*/
 
-      for (int k=0;k<50;++k)
+      for (int k=0;k<100;++k)
       {
       for (int x = 1; x < Chunk::SIZE-1 ; ++x)
       {
@@ -145,14 +158,23 @@ namespace Architecte
         {
 
       coords(x,y) = (coords(x,y) +
-                     2*coords(x+1,y)*(fabs(coords(x,y)-coords(x+1,y)) > C1)+
-                     2*coords(x,y+1)*(fabs(coords(x,y)-coords(x,y+1)) > C2)+
-                     2*coords(x-1,y)*(fabs(coords(x,y)-coords(x-1,y)) > C1)+
-                     2*coords(x,y-1)*(fabs(coords(x,y)-coords(x,y-1)) > C2))/
-                     ( 2*(fabs(coords(x,y)-coords(x+1,y)) > C1)+
-                        2*(fabs(coords(x,y)-coords(x,y+1)) > C2)+
-                        2*(fabs(coords(x,y)-coords(x-1,y)) > C1)+
-                        2*(fabs(coords(x,y)-coords(x,y-1)) > C2)+
+
+                     coords(x+1,y+1)*(fabs(coords(x,y)-coords(x+1,y+1)) > C3)+
+                     coords(x-1,y+1)*(fabs(coords(x,y)-coords(x-1,y+1)) > C3)+
+                     coords(x-1,y-1)*(fabs(coords(x,y)-coords(x-1,y-1)) > C3)+
+                     coords(x+1,y-1)*(fabs(coords(x,y)-coords(x+1,y-1)) > C3)+
+                     coords(x+1,y)*(fabs(coords(x,y)-coords(x+1,y)) > C1)+
+                     coords(x,y+1)*(fabs(coords(x,y)-coords(x,y+1)) > C2)+
+                     coords(x-1,y)*(fabs(coords(x,y)-coords(x-1,y)) > C1)+
+                     coords(x,y-1)*(fabs(coords(x,y)-coords(x,y-1)) > C2))/
+                     ( (fabs(coords(x,y)-coords(x+1,y)) > C1)+
+                        (fabs(coords(x,y)-coords(x,y+1)) > C2)+
+                        (fabs(coords(x,y)-coords(x-1,y)) > C1)+
+                        (fabs(coords(x,y)-coords(x,y-1)) > C2)+
+                       (fabs(coords(x,y)-coords(x+1,y+1)) > C3)+
+                       (fabs(coords(x,y)-coords(x-1,y+1)) > C3)+
+                       (fabs(coords(x,y)-coords(x-1,y-1)) > C3)+
+                       (fabs(coords(x,y)-coords(x+1,y-1)) > C3)+
                          1
                         );
       /*coords(y,x) = (coords(y,x) +
@@ -173,6 +195,8 @@ namespace Architecte
 
   }
   }
+
+
 }
 
 }
@@ -297,7 +321,7 @@ namespace Architecte
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
   {
-  int a = Random::rand()%100;
+  //int a = Random::rand()%100;
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
         {
@@ -345,14 +369,87 @@ namespace Architecte
         if (i % Chunk::RATIO != 0 || j % Chunk::RATIO != 0)
           extracted(i, j) = interpolation(extracted, i, j, Chunk::RATIO);
   }
+//Construction d'une branche...
+  Chunk::Model_Point Branche(const int& size,const int& diffusionX,const int& diffusionY,Chunk::Model_Point where)
+  {
+      Chunk::Model_Point New(where._x + diffusionX + Random::rand()%diffusionX - diffusionX/2,
+             where._y + diffusionY + Random::rand()%diffusionY - diffusionY/2,
+             where._z + size + Random::rand()%size);
+
+      /*(where._x + diffusionX + Random::rand()%diffusionX - diffusionX/2,where._y + diffusionY + Random::rand()%diffusionY-diffusionY/2,where._z + size + Random::rand()%size);*/
+    return New;
+  }
+//Processus de branchage....
+  void TreeProcess(Chunk::Model & Tree,int size,int Density,Chunk::Model where)
+  {
+      if(size > 1)
+      {
+    Chunk::Model New;
+
+    auto end1 = where.end();
+
+    for (auto it = where.begin(); it != end1; ++it)
+        {
+      int Nodes = Random::rand()%Density + 1;
+
+      for (int i=0;i<Nodes;++i)
+         New.push_back (Branche(size,size/2,size/2,(*it)));
+
+
+      auto end2 = New.end();
+      for (auto it = New.begin(); it != end2; ++it)
+      Tree.push_back (*it);
+        }
+
+        TreeProcess(Tree, size/2 ,Density*2,New);
+
+       }
+
+}
+  void drawTree(Chunk::Model & Tree)
+  {
+      TextureManager& textures = TextureManager::getInstance();
+      glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
+
+      glPushMatrix();
+      glBegin(GL_LINE_STRIP);
+      auto end = Tree.end();
+      for (auto it = Tree.begin(); it != end; ++it)
+      {
+
+        {
+          glTexCoord2f(0,0);
+          glVertex3f((*it)._x,
+                     (*it)._y,
+                     (*it)._z);
+        }
+        glEnd();
+       glPopMatrix();
 
 
 
 
 
+  }
+
+/*
+//Prends une liste de coordonnées et fait des arbres à ces coordonnées...
+void Forest(Chunk::chunk_coord_type TreeList,int size,int Density)
+
+    {
+          auto end = TreeList.cend();
+          for (auto it = TreeList.cbegin(); it != end; ++it)
+          TreeProcess(Chunk::chunk_coord_type TreeList,Chunk::chunk_coord_type New,size,Density,TreeList)
+
+      }
+
+
+    }
+
+*/
 
 
 
 
-
-} // Architecte
+}
+  }// Architecte

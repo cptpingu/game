@@ -1,5 +1,6 @@
 #include "Game.hh"
 #include "ShadersManager.hh"
+#include "Architecte.hh"
 
 
 #include <sstream>
@@ -113,6 +114,7 @@ Game::play()
     _camera.animate(elapsed_time);
 
     drawAxis(2);
+
     drawGL();
 
     stop_time = SDL_GetTicks();
@@ -266,6 +268,7 @@ Game::drawGL()
   // glDisable(GL_BLEND);
 
   showCoord();
+
 
 
   glFlush();

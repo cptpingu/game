@@ -370,7 +370,7 @@ namespace Architecte
           extracted(i, j) = interpolation(extracted, i, j, Chunk::RATIO);
   }
 //Construction d'une branche...
-  Chunk::Model_Point Branche(const int& size,const int& diffusionX,const int& diffusionY,Chunk::Model_Point where)
+  Chunk::Model_Point Branche(int size, int diffusionX,int diffusionY,const Chunk::Model_Point& where)
   {
       Chunk::Model_Point New(where._x + diffusionX + Random::rand()%diffusionX - diffusionX/2,
              where._y + diffusionY + Random::rand()%diffusionY - diffusionY/2,
@@ -380,10 +380,11 @@ namespace Architecte
     return New;
   }
 //Processus de branchage....
-  void TreeProcess(Chunk::Model & Tree,int size,int Density,Chunk::Model where)
+  void TreeProcess(Chunk::Model & Tree,int size,int Density,const Chunk::Model& where)
   {
-      if(size > 1)
-      {
+      if (size <= 1)
+        return;
+
     Chunk::Model New;
 
     auto end1 = where.end();
@@ -401,11 +402,12 @@ namespace Architecte
       Tree.push_back (*it);
         }
 
-        TreeProcess(Tree, size/2 ,Density*2,New);
+        TreeProcess(Tree, size/2 ,Density+1,New);
 
-       }
 
-}
+
+    }
+
   void drawTree(Chunk::Model & Tree)
   {
       TextureManager& textures = TextureManager::getInstance();
@@ -418,7 +420,7 @@ namespace Architecte
       {
 
         {
-          glTexCoord2f(0,0);
+          glColor3f(1,1,1);
           glVertex3f((*it)._x,
                      (*it)._y,
                      (*it)._z);

@@ -48,6 +48,17 @@ Game::load()
   CHUNK_TMP( 1, -1);
 
 #undef CHUNK_TMP
+Chunk::Model arbre;
+arbre.push_back(Chunk::Model_Point(0,0,0));
+Architecte::TreeProcess(arbre,20,2,arbre);
+std::cout << arbre.size() << std::endl;
+Architecte::drawTree(arbre);
+
+
+
+
+
+
 
   return true;
 }
@@ -238,7 +249,7 @@ Game::drawGL()
   // glVertex3d(0, 60,-2);
 
   // glTexCoord2f(2,2);
-  // glVertex3d(60,60,-2);
+  //glVertex3d(60,60,-2);
 
   // glTexCoord2f(0,2);
   // glVertex3d(60,0,-2);
@@ -268,8 +279,6 @@ Game::drawGL()
   // glDisable(GL_BLEND);
 
   showCoord();
-
-
 
   glFlush();
 

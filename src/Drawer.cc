@@ -16,6 +16,8 @@ namespace
 {
   void draw(const Map::blocks_type& blocks)
   {
+
+
     TextureManager& textures = TextureManager::getInstance();
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
@@ -112,6 +114,7 @@ namespace
 
   void draw(const std::pair<int, int>& coord, const Chunk& chunk)
   {
+
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);

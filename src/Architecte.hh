@@ -14,8 +14,8 @@ namespace Architecte
   void smoothGround(Chunk::chunk_coord_type& coords);
 
 
-  void TreeProcess(Chunk::Model & Tree,int size,int Density,Chunk::Model where);
-  Chunk::Model_Point Branche(const int& size,const int& diffusionX,const int& diffusionY,Chunk::Model_Point where);
+  void TreeProcess(Chunk::Model & Tree,int size,int Density,const Chunk::Model &where);
+  Chunk::Model_Point Branche(int size,int diffusionX,int diffusionY,const Chunk::Model_Point &where);
   void drawTree(Chunk::Model & Tree);
 
   double Norm(double x,double y,double z,int type);

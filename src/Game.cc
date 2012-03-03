@@ -17,8 +17,13 @@ Game::load()
   glLoadIdentity();
   gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);
 
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glShadeModel(GL_SMOOTH);
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClearDepth(1.0f);
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LEQUAL);
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 
   loadtextures();
@@ -181,6 +186,7 @@ Game::loadShaders()
   shaders.load("texture", "data/shaders/texture.vert.c", "data/shaders/texture.frag.c");
   shaders.load("texture_invert_color", "data/shaders/texture.vert.c", "data/shaders/texture_invert_color.frag.c");
   shaders.load("phong_lightning", "data/shaders/phong_lightning.vert.c", "data/shaders/phong_lightning.frag.c");
+  shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");
 }
 
 void

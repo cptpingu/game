@@ -112,76 +112,89 @@ namespace
 
   void draw(const std::pair<int, int>& coord, const Chunk& chunk)
   {
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_NORMALIZE);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+//    glEnable(GL_NORMALIZE);
 
-    GLfloat lmKa[] = {0.0, 0.0, 0.0, 0.0};
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmKa);
-    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0);
-    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 0.0);
+//    GLfloat lmKa[] = {0.0, 0.0, 0.0, 0.0};
+//    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmKa);
+//    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0);
+//    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 0.0);
 
-    GLfloat spot_direction[] = {1.0, -1.0, -1.0};
-    GLint spot_exponent = 30;
-    GLint spot_cutoff = 180;
+//    GLfloat spot_direction[] = {1.0, -1.0, -1.0};
+//    GLint spot_exponent = 30;
+//    GLint spot_cutoff = 180;
 
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
-    glLighti(GL_LIGHT0, GL_SPOT_EXPONENT, spot_exponent);
-    glLighti(GL_LIGHT0, GL_SPOT_CUTOFF, spot_cutoff);
+//    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+//    glLighti(GL_LIGHT0, GL_SPOT_EXPONENT, spot_exponent);
+//    glLighti(GL_LIGHT0, GL_SPOT_CUTOFF, spot_cutoff);
 
-    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0);
+//    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
+//    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0);
+//    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0);
 
-    // -------------------------------------------
-    // Lighting parameters:
+//    // -------------------------------------------
+//    // Lighting parameters:
 
-    GLfloat light_pos[] = {0.0f, 5.0f, 5.0f, 1.0f};
-    GLfloat light_Ka[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_Kd[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat light_Ks[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+//    GLfloat light_pos[] = {0.0f, 5.0f, 5.0f, 1.0f};
+//    GLfloat light_Ka[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+//    GLfloat light_Kd[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+//    GLfloat light_Ks[]  = {1.0f, 1.0f, 1.0f, 1.0f};
 
-    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light_Ka);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_Kd);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_Ks);
+//    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+//    glLightfv(GL_LIGHT0, GL_AMBIENT, light_Ka);
+//    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_Kd);
+//    glLightfv(GL_LIGHT0, GL_SPECULAR, light_Ks);
 
-    // -------------------------------------------
-    // Material parameters:
+//    // -------------------------------------------
+//    // Material parameters:
 
-    GLfloat material_Ka[] = {0.5f, 0.5f, 0.5f, 1.0f};
-    GLfloat material_Kd[] = {0.5f, 0.5f, 0.5f, 1.0f};
-    GLfloat material_Ks[] = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat material_Ke[] = {0.1f, 0.0f, 0.0f, 0.0f};
-    GLfloat material_Se = 20.0f;
+//    GLfloat material_Ka[] = {0.5f, 0.5f, 0.5f, 1.0f};
+//    GLfloat material_Kd[] = {0.5f, 0.5f, 0.5f, 1.0f};
+//    GLfloat material_Ks[] = {0.8f, 0.8f, 0.8f, 1.0f};
+//    GLfloat material_Ke[] = {0.1f, 0.0f, 0.0f, 0.0f};
+//    GLfloat material_Se = 20.0f;
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material_Ka);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material_Kd);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material_Ks);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, material_Ke);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material_Se);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material_Ka);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material_Kd);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material_Ks);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, material_Ke);
+//    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material_Se);
+
+    TextureManager& textures = TextureManager::getInstance();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures["veg1"]);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
 
     ShadersManager& shaders = ShadersManager::getInstance();
-    shaders.enable("phong_lightning");
+    shaders.enable("terrain");
+
+    glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex0"), 0);
+    glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex1"), 1);
+    glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex2"), 2);
 
     glPushMatrix();
-    TextureManager& textures = TextureManager::getInstance();
-    std::ostringstream buff;
-    buff << "chunk_" << coord.first << "_" << coord.second;
-    const std::string textureName = buff.str();
-    auto tex = textures.find(textureName);
-    if (tex == textures.end())
-      tex = textures.find("brick1");
-
-    glBindTexture(GL_TEXTURE_2D, tex->second);
-    glEnable(GL_TEXTURE_2D);
 
     glBegin(GL_TRIANGLE_STRIP);
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      glTexCoord2f((((*it)->getY()) / Chunk::SIZE),
-                   1.0 - ((*it)->getX()) / Chunk::SIZE);
+      glMultiTexCoord2fARB(GL_TEXTURE0, (((*it)->getY()) / Chunk::SIZE),
+                           1.0 - ((*it)->getX()) / Chunk::SIZE);
+      glMultiTexCoord2fARB(GL_TEXTURE1, (((*it)->getY()) / Chunk::SIZE),
+                           1.0 - ((*it)->getX()) / Chunk::SIZE);
       glVertex3f((*it)->getX() + coord.first * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
                  (*it)->getY() + coord.second * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
                  (*it)->getZ());
@@ -192,9 +205,9 @@ namespace
 
     shaders.disable();
 
-    glDisable(GL_LIGHTING);
-    glDisable(GL_LIGHT0);
-    glDisable(GL_NORMALIZE);
+//    glDisable(GL_LIGHTING);
+//    glDisable(GL_LIGHT0);
+//    glDisable(GL_NORMALIZE);
 
   }
 

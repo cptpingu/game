@@ -100,6 +100,14 @@ ShadersManager::disable() const
   glUseProgram(0);
 }
 
+GLuint
+ShadersManager::get(const std::string& name) const
+{
+  auto found = _programs.find(name);
+  assert(found != _programs.cend() && "Shaders not found !");
+  return found->second;
+}
+
 void
 ShadersManager::clear()
 {

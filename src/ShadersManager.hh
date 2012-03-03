@@ -23,6 +23,7 @@ public:
 
   void enable(const std::string& name) const;
   void disable() const;
+  GLuint get(const std::string& name) const;
   void clear();
 
 private:

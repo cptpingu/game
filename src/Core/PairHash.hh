@@ -8,12 +8,8 @@
 namespace Core
 {
   template <typename A, typename B>
-  struct PairHash
+  class PairHash
   {
-  private:
-    const std::hash<A> ah;
-    const std::hash<B> bh;
-
   public:
     PairHash()
       : ah(), bh()
@@ -25,6 +21,10 @@ namespace Core
       size_t seed = ah(p.first);
       return bh(p.second) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
+
+  private:
+    const std::hash<A> ah;
+    const std::hash<B> bh;
   };
 } // Core
 

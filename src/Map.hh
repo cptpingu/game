@@ -7,41 +7,20 @@
 
 # include "Core/ListContainer3D.hh"
 # include "Core/PairHash.hh"
+# include "Core/NumericalContainerHash.hh"
 
-# include <vector>
-# include <iostream>
 # include <utility>
 # include <unordered_map>
 
+/*!
+** @class Map
+**
+** This class hold the terrain and all that can be put on it (like the blocks).
+*/
 class Map
 {
 public:
-  struct Container3DIntHash : public std::unary_function<Core::Container3D<int>, size_t>
-  {
-  public:
-    size_t operator()(const Core::Container3D<int>& p) const
-    {
-      size_t m(1000003), x(0x345678), y(hash(p._x));
-      x = (x ^ y) * m;
-      m += 82524;
-      y = hash(p._y);
-      x = (x ^ y) * m;
-      m += 82522;
-      y = hash(p._z);
-      x = (x ^ y) * m;
-      return x + 97531;
-    }
-  private:
-    size_t hash(int i) const
-    {
-      static std::hash<size_t> _hash;
-      return _hash(i);
-    }
-  };
-  typedef std::unordered_map<Core::Container3D<int>, Block*, Container3DIntHash> temp_map_type;
-public:
-  //typedef Core::ListContainer3D<SolTriangle*> triangles_type;
-
+  typedef std::unordered_map<Core::Container3D<int>, Block*, Core::NumericalContainerHash<int> > temp_map_type;
   typedef std::unordered_map<std::pair<int, int>, Chunk*, Core::PairHash<int, int> > chunks_type;
   typedef Core::ListContainer3D<Block*> blocks_type;
   typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
@@ -50,7 +29,18 @@ public:
   Map();
   ~Map();
 
+  /*!
+  ** Load blocks from file.
+  **
+  ** @param filename The file name.
+  **
+  ** @return If load succeed.
+  */
   bool loadBlocks(const std::string& filename);
+
+  /*!
+  ** Delete all objects the map own.
+  */
   void clear();
 
   /*!
@@ -59,13 +49,36 @@ public:
   ** Inexistant chunk is dynamically generated.
   **
   ** @param position The current position of the camera.
+  ** @param chunks All the world chunks.
   */
   void chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks);
 
+  /*!
+  ** Return an instance on the list of all blocks.
+  **
+  ** @return Instance on all blocks.
+  */
   blocks_type& getBlocks();
+
+  /*!
+  ** Return an instance on the list of all chunks.
+  **
+  ** @return Instance on all chunks.
+  */
   chunks_type& getChunks();
 
+  /*!
+  ** Return an instance on the list of all blocks.
+  **
+  ** @return Instance on all blocks.
+  */
   const blocks_type& getBlocks() const;
+
+  /*!
+  ** Return an instance on the list of all chunks.
+  **
+  ** @return Instance on all chunks.
+  */
   const chunks_type& getChunks() const;
 
 private:

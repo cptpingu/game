@@ -8,6 +8,11 @@
 # include <vector>
 # include <unordered_map>
 
+/*!
+** @class Chunk
+**
+** Store all coords of a part of a dynamically generated terrain.
+*/
 class Chunk
 {
 public:
@@ -20,6 +25,11 @@ public:
   static const int RATIO = QUALITY;
 
 public:
+  /*!
+  ** @class Coord
+  **
+  ** Store point coordinate and automatically handle collapsing.
+  */
   class Coord : private Core::Container3D<double>
   {
   public:
@@ -53,38 +63,107 @@ public:
     Coord* _link;
   };
 
+public:
   typedef Core::Array2D<double, Chunk::SIZE> chunk_coord_type;
   typedef Core::Array2D<Coord*, Chunk::SIZE, 0> chunk_mesh_type;
-  typedef Core::Array2D<double, Chunk::TEXTURE_SIZE> texture_coord_type;
 
-  typedef std::unordered_map<std::pair<double, double>, double,
-  Core::PairHash<double, double> > fast_access_chunk_type;
+  typedef std::pair<double, double> pair;
+  typedef Core::PairHash<double, double> hash;
+  typedef std::unordered_map<pair, double, hash> fast_access_chunk_type;
   typedef chunk_mesh_type::iterator iterator;
   typedef chunk_mesh_type::const_iterator const_iterator;
 
-
+  // To clean
   typedef Core::Container3D<double> Model_Point;
   typedef std::vector<Model_Point> Model;
+  // !To clean
 
 public:
   Chunk(int x, int y);
   ~Chunk();
 
+  /*!
+  ** Add a new points into the chunk system.
+  **
+  ** @param x Horizontal coordinate.
+  ** @param y Vertical coordinate.
+  ** @param z Depth coordinate.
+  */
   void add(double x, double y, double z);
+
+  /*!
+  ** Detect all collapsing points, and link them.
+  */
   void meshAllCoord();
+
+  /*!
+  ** Delete all points.
+  */
   void clear();
+
+  /*!
+  ** Get the number of points contained in the chunks
+  ** (Even collapsed points is counted).
+  **
+  ** @return Size of the chunk.
+  */
   size_t size() const;
+
+  /*!
+  ** Get an iterator on the first point in the chunk.
+  **
+  ** @return An iterator on the first point of the chunk.
+  */
   iterator begin();
+
+  /*!
+  ** Get an iterator after the last point in the chunk.
+  **
+  ** @return An iterator after the last point of the chunk.
+  */
   iterator end();
+
+  /*!
+  ** Get an iterator on the first point in the chunk.
+  **
+  ** @return A const iterator on the first point of the chunk.
+  */
   const_iterator cbegin() const;
+
+  /*!
+  ** Get an iterator after the last point in the chunk.
+  **
+  ** @return A const iterator after the last point of the chunk.
+  */
   const_iterator cend() const;
 
+  /*!
+  ** Convert world coord to chunk coord.
+  **
+  ** @param absolute Absolute coordinate.
+  **
+  ** @return Coordinate converted in chunk coordinate.
+  */
   static int absoluteToChunkCoord(double absolute);
 
+  /*!
+  ** Given a (x,y) coord, gets the height.
+  **
+  ** @param x X coord.
+  ** @param y Y coord.
+  **
+  ** @return Height at the coord (x,y).
+  */
   double operator()(double x, double y) const;
-  void createRealCoord(const chunk_coord_type& coords);
-private:
 
+  /*!
+  ** Create all points from a grid of points.
+  ** Points need to be inserted in a specific order to be draw correctly,
+  ** this function guaranty this constraint.
+  **
+  ** @param coords Absolute coords on a grid.
+  */
+  void createRealCoord(const chunk_coord_type& coords);
 
 private:
   int _x;

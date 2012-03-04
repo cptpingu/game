@@ -14,6 +14,9 @@
 # include <GL/glu.h>
 # include <GL/glext.h>
 
+/*!
+** Intialize all OpenGL extensions.
+*/
 bool initExtensions();
 
 # ifndef GL_GLEXT_PROTOTYPES

@@ -3,6 +3,13 @@
 
 # include "Core/Container3D.hh"
 
+/*!
+** @class Block
+**
+** Class used to put block model into the game.
+** Blocks are optimized when there are too closed
+** (Only draw needed facet).
+*/
 class Block : public Core::Container3D<int>
 {
   typedef Core::Container3D<int> super;

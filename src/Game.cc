@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "TextureManager.hh"
 #include "ShadersManager.hh"
 #include "Architecte.hh"
 
@@ -169,7 +170,6 @@ Game::drawGL()
 
   _camera.look();
 
-  glEnable(GL_DEPTH_TEST);
   // glEnable(GL_LIGHTING);
   // glEnable(GL_LIGHT0);
 
@@ -211,7 +211,7 @@ Game::drawGL()
   // glFogf(GL_FOG_END, 20.0) ;
 
 
-  glFrustum( 5,   5,   5,   5,   2,  10);
+  //glFrustum( 5,   5,   5,   5,   2,  10);
 
 
   // glColor3f(1.0f,1.0f,1.0f);
@@ -257,7 +257,6 @@ Game::drawGL()
   showCoord();
 
   glFlush();
-
   SDL_GL_SwapBuffers();
 }
 
@@ -287,11 +286,4 @@ Game::showCoord()
     if (!line.empty())
       textures.glPrint(0, WINDOW_HEIGHT - (16 * row), line.c_str(), 0);
   }
-
-  // textures.glPrint(0, 480 - (16 * 1), " !\"#$%&'()*+,-./", 0);
-  // textures.glPrint(0, 480 - (16 * 2), "0123456789:;<=>?", 0);
-  // textures.glPrint(0, 480 - (16 * 3), "@ABCDEFGHIJKLMNO", 0);
-  // textures.glPrint(0, 480 - (16 * 4), "PQRSTUVWXYZ[\\]^_", 0);
-  // textures.glPrint(0, 480 - (16 * 5), "`abcdefghijklmno", 0);
-  // textures.glPrint(0, 480 - (16 * 6), "pqrstuvwxyz{|}~ ", 0);
 }

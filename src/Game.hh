@@ -11,6 +11,11 @@
 # include <SDL/SDL.h>
 # include <iostream>
 
+/*!
+** @class Game
+**
+** This class contains a complete instance of all the game.
+*/
 class Game
 {
 public:
@@ -19,7 +24,15 @@ public:
   static const unsigned int WINDOW_HEIGHT = 480;
 
 public:
+  /*!
+  ** Load all resources needed for the game, and initialize options.
+  */
   bool load();
+
+  /*!
+  ** Play the game.
+  ** This function is executed at every frame of the game.
+  */
   void play();
 
 private:

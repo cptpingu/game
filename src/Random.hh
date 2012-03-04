@@ -12,7 +12,13 @@ namespace Random
 # else
   typedef std::mt19937 mersenne_twister;
 # endif
+
+  /*!
+  ** Get a random number using a mersenne twister algorithm.
+  **
+  ** @return A randum number.
+  */
   unsigned int rand();
-}
+} // Random
 
 #endif /* !RANDOM_HH */

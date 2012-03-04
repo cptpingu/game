@@ -15,8 +15,6 @@ namespace
 {
   void draw(const Map::blocks_type& blocks)
   {
-
-
     TextureManager& textures = TextureManager::getInstance();
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
@@ -237,18 +235,3 @@ void Drawer::drawMap(const Map& map) const
   //draw(map.getTriangles());
   draw(map.getChunks());
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

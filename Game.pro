@@ -11,7 +11,6 @@ SOURCES += \
     src/GLUtils.cc \
     src/FreeFlyCamera.cc \
     src/Map.cc \
-    src/MapWriter.cc \
     src/Drawer.cc \
     src/ImageFile.cc \
     src/Opengl.cc \
@@ -31,8 +30,6 @@ HEADERS += \
     src/FreeFlyCamera.hh \
     src/Block.hh \
     src/Map.hh \
-    src/MapWriter.hh \
-    src/SolTriangle.hh \
     src/Drawer.hh \
     src/ImageFile.hh \
     src/Core/Container3D.hh \
@@ -48,7 +45,8 @@ HEADERS += \
     src/SDL/SavePng.hh \
     src/Core/NonCopyable.hh \
     src/Core/Array2D.hh \
-    src/ShadersManager.hh
+    src/ShadersManager.hh \
+    src/Core/NumericalContainerHash.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

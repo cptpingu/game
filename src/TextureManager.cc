@@ -1,14 +1,8 @@
 #include <cassert>
 #include "TextureManager.hh"
+#include "ShadersManager.hh"
 
-static bool
-isReadable(const char* file)
-{
-  std::ifstream fichier (file);
-  return fichier;
-}
-
-GLvoid
+void
 TextureManager::BuildFont()
 {
   static const double FONT_WIDTH = 0.0625;
@@ -36,14 +30,19 @@ TextureManager::BuildFont()
   }
 }
 
-GLvoid
+void
 TextureManager::glPrint(GLint x, GLint y, const std::string& s, int set)
 {
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, _texture["font"]);
+  ShadersManager& shaders = ShadersManager::getInstance();
+  shaders.enable("texture");
+  glUniform1i(glGetUniformLocation(shaders.get("texture"), "tex"), 0);
+
   if (set > 1)
     set = 1;
 
   glEnable(GL_BLEND);
-  glBindTexture(GL_TEXTURE_2D, _texture["font"]);
   glDisable(GL_DEPTH_TEST);
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
@@ -61,6 +60,8 @@ TextureManager::glPrint(GLint x, GLint y, const std::string& s, int set)
   glPopMatrix();
   glEnable(GL_DEPTH_TEST);
   glDisable(GL_BLEND);
+
+  shaders.disable();
 }
 
 void
@@ -70,13 +71,15 @@ TextureManager::destroy()
   _texture.clear();
 }
 
-void
+bool
 TextureManager::load(const std::string& path, const std::string& name)
 {
-  if (!isReadable (path.c_str ()))
-    std::cerr << "Unable to open " << path << std::endl;
-  else
-    _texture[name] = loadTexture(path.c_str ());
+  GLuint res = loadTexture(path.c_str ());
+  if (!res)
+    return false;
+
+  _texture[name] = res;
+  return true;
 }
 
 GLuint

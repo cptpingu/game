@@ -1,6 +1,5 @@
 #include "Map.hh"
 #include "Drawer.hh"
-#include "SolTriangle.hh"
 #include "Block.hh"
 #include "TextureManager.hh"
 #include "ShadersManager.hh"
@@ -17,8 +16,6 @@ namespace
 {
   void draw(const Map::blocks_type& blocks)
   {
-
-
     TextureManager& textures = TextureManager::getInstance();
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
@@ -258,18 +255,3 @@ void Drawer::drawMap(const Map& map) const
   draw(map.getChunks());
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

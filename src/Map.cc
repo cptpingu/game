@@ -117,24 +117,22 @@ Map::loadBlocks(const std::string& filename)
 
 namespace
 {
-  Chunk* loadChunk(int x, int y)
+  Chunk* loadChunk(int x, int y, const Map::chunks_type& chunks)
   {
-    const Vector3D where((x * Chunk::SIZE) - (Chunk::SIZE / 2),
-                         (y * Chunk::SIZE) - (Chunk::SIZE / 2),
-                         0);
     Chunk* chunk = new Chunk(x, y);
-    // Architecte::generateRandomGround(*chunk, where);
-    // chunk->meshAllCoord();
-    // FIXME generate from file if it exists
+    Chunk::chunk_coord_type coords;
 
+    // FIXME generate from file if it exists
+    // else
+    Architecte::initChunk(coords, std::make_pair(x, y), chunks);
+    chunk->createRealCoord(coords);
+    // !
     return chunk;
   }
 } // namespace
 
-
-
 void
-Map::lazyChunkLoading(const Vector3D& position)
+Map::chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks)
 {
   const int x = Chunk::absoluteToChunkCoord(position._x);
   const int y = Chunk::absoluteToChunkCoord(position._y);
@@ -145,7 +143,7 @@ Map::lazyChunkLoading(const Vector3D& position)
     std::pair<int, int> current(x + (X), y + (Y));                      \
     tmpChunkList.push_back(current);                                    \
     if (_chunks.find(current) == _chunks.end())                         \
-      _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second))); \
+      _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second, chunks))); \
   }
 
   LAZY_LOAD(0, 0);

@@ -5,9 +5,38 @@
 
 #include <cstring>
 #include <cstdlib>
-#include <iostream>
 
-SDL_Surface* flipSurface(SDL_Surface* surface);
+namespace
+{
+  SDL_Surface* flipSurface(SDL_Surface * surface)
+  {
+    int current_line,pitch;
+    SDL_Surface* fliped_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                                                       surface->w,surface->h,
+                                                       surface->format->BitsPerPixel,
+                                                       surface->format->Rmask,
+                                                       surface->format->Gmask,
+                                                       surface->format->Bmask,
+                                                       surface->format->Amask);
+
+
+
+    SDL_LockSurface(surface);
+    SDL_LockSurface(fliped_surface);
+
+    pitch = surface->pitch;
+    for (current_line = 0; current_line < surface->h; current_line ++)
+    {
+      memcpy(&((unsigned char* )fliped_surface->pixels)[current_line*pitch],
+             &((unsigned char* )surface->pixels)[(surface->h - 1 - current_line)*pitch],
+             pitch);
+    }
+
+    SDL_UnlockSurface(fliped_surface);
+    SDL_UnlockSurface(surface);
+    return fliped_surface;
+  }
+} // namespace
 
 GLuint loadTexture(const char* filename, bool useMipMap)
 {
@@ -19,10 +48,7 @@ GLuint loadTexture(const char* filename, bool useMipMap)
 
   picture_surface = IMG_Load(filename);
   if (picture_surface == NULL)
-  {
-    std::cerr << "Error loading " << filename << std::endl;
     return 0;
-  }
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
   rmask = 0xff000000;
@@ -30,7 +56,6 @@ GLuint loadTexture(const char* filename, bool useMipMap)
   bmask = 0x0000ff00;
   amask = 0x000000ff;
 #else
-
   rmask = 0x000000ff;
   gmask = 0x0000ff00;
   bmask = 0x00ff0000;
@@ -80,7 +105,7 @@ GLuint loadTexture(const char* filename, bool useMipMap)
   return glID;
 }
 
-int takeScreenshot(const char * filename)
+bool takeScreenshot(const char * filename)
 {
   GLint viewport[4];
   Uint32 rmask, gmask, bmask, amask;
@@ -112,42 +137,12 @@ int takeScreenshot(const char * filename)
   finalpicture = flipSurface(picture);
 
   if (SDL_SaveBMP(finalpicture, filename))
-    return -1;
+    return false;
 
   SDL_FreeSurface(finalpicture);
   SDL_FreeSurface(picture);
 
-  return 0;
-}
-
-SDL_Surface* flipSurface(SDL_Surface * surface)
-{
-  int current_line,pitch;
-  SDL_Surface* fliped_surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                                     surface->w,surface->h,
-                                                     surface->format->BitsPerPixel,
-                                                     surface->format->Rmask,
-                                                     surface->format->Gmask,
-                                                     surface->format->Bmask,
-                                                     surface->format->Amask);
-
-
-
-  SDL_LockSurface(surface);
-  SDL_LockSurface(fliped_surface);
-
-  pitch = surface->pitch;
-  for (current_line = 0; current_line < surface->h; current_line ++)
-  {
-    memcpy(&((unsigned char* )fliped_surface->pixels)[current_line*pitch],
-           &((unsigned char* )surface->pixels)[(surface->h - 1  -
-                                                current_line)*pitch],
-           pitch);
-  }
-
-  SDL_UnlockSurface(fliped_surface);
-  SDL_UnlockSurface(surface);
-  return fliped_surface;
+  return true;
 }
 
 void drawAxis(double scale)
@@ -162,27 +157,27 @@ void drawAxis(double scale)
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glScaled(scale,scale,scale);
   glBegin(GL_LINES);
-  glColor3ub(255,0,0);
-  glVertex3i(0,0,0);
-  glVertex3i(1,0,0);
-  glColor3ub(0,255,0);
-  glVertex3i(0,0,0);
-  glVertex3i(0,1,0);
-  glColor3ub(0,0,255);
-  glVertex3i(0,0,0);
-  glVertex3i(0,0,1);
+  glColor3ub(255, 0, 0);
+  glVertex3i(0, 0, 0);
+  glVertex3i(1, 0, 0);
+  glColor3ub(0, 255, 0);
+  glVertex3i(0, 0, 0);
+  glVertex3i(0, 1, 0);
+  glColor3ub(0, 0, 255);
+  glVertex3i(0, 0, 0);
+  glVertex3i(0, 0, 1);
   glEnd();
   glPopMatrix();
   glPopAttrib();
 }
 
-int initFullScreen(unsigned int * width,unsigned int * height)
+bool initFullScreen(unsigned int* width,unsigned int* height)
 {
-  SDL_Rect ** modes;
+  SDL_Rect** modes;
 
   modes = SDL_ListModes(NULL,SDL_FULLSCREEN|SDL_OPENGL);
   if ((modes == (SDL_Rect **)0)||(modes == (SDL_Rect **)-1))
-    return 0;
+    return true;
 
   if (width != NULL)
     *width = modes[0]->w;
@@ -192,11 +187,9 @@ int initFullScreen(unsigned int * width,unsigned int * height)
                        modes[0]->h,
                        SDL_GetVideoInfo()->vfmt->BitsPerPixel,
                        SDL_FULLSCREEN|SDL_OPENGL) == NULL)
-    return -1;
-  else
-  {
-    return 0;
-  }
+    return false;
+
+  return true;
 }
 
 int XPMFromImage(const char * imagefile, const char * XPMfile)
@@ -333,27 +326,8 @@ SDL_Cursor * cursorFromXPM(const char * xpm[])
 
 SDL_Surface* createSurface(int width, int height, const SDL_Surface* display)
 {
-  int flags = 0;//SDL_HWSURFACE;
+  int flags = 0;
   const SDL_PixelFormat& fmt = *(display->format);
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  const Uint32 rmask = 0xff000000;
-  const Uint32 gmask = 0x00ff0000;
-  const Uint32 bmask = 0x0000ff00;
-  const Uint32 amask = 0x000000ff;
-#else
-  const Uint32 rmask = 0x000000ff;
-  const Uint32 gmask = 0x0000ff00;
-  const Uint32 bmask = 0x00ff0000;
-  const Uint32 amask = 0xff000000;
-#endif
-
-
-  std::cout << " " << "DBG " << " " << width << " " << height << " " << (int)fmt.BitsPerPixel << std::endl
-            << (int)fmt.Rmask << " " << rmask << std::endl
-            << (int)fmt.Gmask << " " << gmask << std::endl
-            << (int)fmt.Bmask << " " << bmask << std::endl
-            << (int)fmt.Amask << " " << amask << std::endl;
 
   return SDL_CreateRGBSurface(flags, width, height, fmt.BitsPerPixel,
                               fmt.Rmask, fmt.Gmask, fmt.Bmask, fmt.Amask);

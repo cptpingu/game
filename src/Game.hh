@@ -1,22 +1,21 @@
 #ifndef GAME_HH_
 # define GAME_HH_
 
-#include "Opengl.hh"
-#include <SDL/SDL.h>
+# include "Opengl.hh"
+# include "Map.hh"
+# include "GLUtils.hh"
+# include "FreeFlyCamera.hh"
+# include "Drawer.hh"
+# include "ImageFile.hh"
 
-#include <cstdlib>
-#include <iostream>
-#include "Map.hh"
-#include "MapWriter.hh"
-#include "TextureManager.hh"
-#include "Architecte.hh"
+# include <SDL/SDL.h>
+# include <iostream>
 
-#include <time.h>
-#include "GLUtils.hh"
-#include "FreeFlyCamera.hh"
-#include "Drawer.hh"
-#include "ImageFile.hh"
-
+/*!
+** @class Game
+**
+** This class contains a complete instance of all the game.
+*/
 class Game
 {
 public:
@@ -25,7 +24,15 @@ public:
   static const unsigned int WINDOW_HEIGHT = 480;
 
 public:
+  /*!
+  ** Load all resources needed for the game, and initialize options.
+  */
   bool load();
+
+  /*!
+  ** Play the game.
+  ** This function is executed at every frame of the game.
+  */
   void play();
 
 private:

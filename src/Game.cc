@@ -1,8 +1,9 @@
 #include "Game.hh"
+#include "TextureManager.hh"
 #include "ShadersManager.hh"
 #include "Architecte.hh"
 
-
+#include <ctime>
 #include <sstream>
 
 bool
@@ -29,43 +30,7 @@ Game::load()
   loadtextures();
   loadShaders();
 
-#define CHUNK_TMP(X, Y)                                                 \
-  {                                                                     \
-    Chunk* chunk = new Chunk((X), (Y));                                 \
-    Chunk::chunk_coord_type coords;                                     \
-    Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
-    Chunk::texture_coord_type extracted;                                \
-    Architecte::extractCoords(extracted, coords);                       \
-    chunk->generateChunk(extracted);                                    \
-    _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
-  }
-
-  CHUNK_TMP(-1,  1);
-  CHUNK_TMP( 0,  1);
-  CHUNK_TMP( 1,  1);
-
-  CHUNK_TMP(-1,  0);
-  CHUNK_TMP( 0,  0);
-  CHUNK_TMP( 1,  0);
-
-  CHUNK_TMP(-1, -1);
-  CHUNK_TMP( 0, -1);
-  CHUNK_TMP( 1, -1);
-
-#undef CHUNK_TMP
-
- Architecte::Model arbre;
- arbre.push_back(Architecte::Model_Point(0,0,0));
- Architecte::TreeProcess(arbre,20,1,arbre);
- std::cout << (int) arbre.size() << std::endl;
- std::cout << (int) arbre[1]._z << std::endl;
- std::cout << (int) arbre[2]._z << std::endl;
- std::cout << (int) arbre[3]._z << std::endl;
- std::cout << (int) arbre[4]._z << std::endl;
- //std::cout << (int) arbre.size() << std::endl;
- //std::cout << (int) arbre.size() << std::endl;
-
- return true;
+  return true;
 }
 
 void
@@ -126,12 +91,10 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    //_map.lazyChunkLoading(_camera.getCurrentPosition());
+    _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
     _camera.animate(elapsed_time);
 
-    drawAxis(2);
-
-
+    drawAxis(100);
 
     drawGL();
 
@@ -201,7 +164,6 @@ Game::drawGL()
 
   _camera.look();
 
-  glEnable(GL_DEPTH_TEST);
   // glEnable(GL_LIGHTING);
   // glEnable(GL_LIGHT0);
 
@@ -243,7 +205,7 @@ Game::drawGL()
   // glFogf(GL_FOG_END, 20.0) ;
 
 
-  glFrustum( 5,   5,   5,   5,   2,  10);
+  //glFrustum( 5,   5,   5,   5,   2,  10);
 
 
   // glColor3f(1.0f,1.0f,1.0f);
@@ -290,7 +252,6 @@ Game::drawGL()
 
 
   glFlush();
-
   SDL_GL_SwapBuffers();
 }
 
@@ -320,11 +281,4 @@ Game::showCoord()
     if (!line.empty())
       textures.glPrint(0, WINDOW_HEIGHT - (16 * row), line.c_str(), 0);
   }
-
-  // textures.glPrint(0, 480 - (16 * 1), " !\"#$%&'()*+,-./", 0);
-  // textures.glPrint(0, 480 - (16 * 2), "0123456789:;<=>?", 0);
-  // textures.glPrint(0, 480 - (16 * 3), "@ABCDEFGHIJKLMNO", 0);
-  // textures.glPrint(0, 480 - (16 * 4), "PQRSTUVWXYZ[\\]^_", 0);
-  // textures.glPrint(0, 480 - (16 * 5), "`abcdefghijklmno", 0);
-  // textures.glPrint(0, 480 - (16 * 6), "pqrstuvwxyz{|}~ ", 0);
 }

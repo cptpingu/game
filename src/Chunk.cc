@@ -1,17 +1,5 @@
 #include "Chunk.hh"
-#include "Core/PairHash.hh"
-#include "GLUtils.hh"
-#include "Architecte.hh"
-#include "TextureManager.hh"
-#include "SDL/SavePng.hh"
-
-#include <unordered_map>
 #include <tuple>
-#include <SDL/SDL_image.h>
-
-#include <array>
-#include <iostream>
-#include <sstream>
 
 Chunk::Chunk(int x, int y)
     : _x(x), _y(y)
@@ -113,160 +101,6 @@ absoluteToTextureCoord(double absolute)
   return absolute - Chunk::SIZE / 2;
 }
 
-void
-Chunk::generateTexture(const std::string& filename) const
-{
-  // FIXME Possible memory leak ! (Temporary)
-  // FIXME Check error ! This code doesn't check anything !!!
-
-  SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
-  SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
-  SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
-  SDL_Surface* resSurface = createSurface(TEXTURE_SIZE, TEXTURE_SIZE, vegSurface);
-
-  const int adapterSize = TEXTURE_SIZE / SIZE;
-  const int halfAdapterSize = adapterSize / 2;
-  SDL_LockSurface(resSurface);
-  for (int x = halfAdapterSize; x < resSurface->w; x += adapterSize)
-  {
-    for (int y = halfAdapterSize; y < resSurface->h; y += adapterSize)
-    {
-      auto it = _fast_access_chunk.find(std::make_pair(absoluteToTextureCoord((x - halfAdapterSize) / adapterSize),
-                                                       absoluteToTextureCoord((y - halfAdapterSize) / adapterSize)));
-      const int z = it != _fast_access_chunk.cend() ? it->second : 0;
-
-      SDL_Surface* surface1 = 0;
-      SDL_Surface* surface2 = 0;
-      int coeff1 = 0;
-      int coeff2 = 0;
-
-      if (z <= 0)
-      {
-        coeff1 = 100;
-        surface1 = vegSurface;
-        surface2 = vegSurface;
-      }
-      else if (z <= 4)
-      {
-        coeff1 = ((4 - z) * 100) / 4;
-        coeff2 = 100 - coeff1;
-        surface1 = vegSurface;
-        surface2 = brickSurface;
-      }
-      else if (z <= 8)
-      {
-        coeff1 = ((8 - z) * 100) / 8;
-        coeff2 = 100 - coeff1;
-        surface1 = brickSurface;
-        surface2 = woodSurface;
-      }
-      else
-      {
-        coeff2 = 100;
-        surface1 = woodSurface;
-        surface2 = woodSurface;
-      }
-
-      const int xFrom = x - halfAdapterSize > 0 ? x - halfAdapterSize : 0;
-      const int xTo = x + halfAdapterSize < resSurface->w ? x + halfAdapterSize : resSurface->w;
-      const int yFrom = y - halfAdapterSize > 0 ? y - halfAdapterSize : 0;
-      const int yTo = y + halfAdapterSize < resSurface->h ? y + halfAdapterSize : resSurface->h;
-      for (int xAdapt = xFrom; xAdapt < xTo; ++xAdapt)
-      {
-        for (int yAdapt = yFrom; yAdapt < yTo; ++yAdapt)
-        {
-          unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + xAdapt * 3 * resSurface->w + yAdapt * 3 + 0;
-          unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + xAdapt * 3 * resSurface->w + yAdapt * 3 + 1;
-          unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + xAdapt * 3 * resSurface->w + yAdapt * 3 + 2;
-
-          int localX = xAdapt % surface1->w;
-          int localY = yAdapt % surface1->h;
-          const unsigned char* localR = (static_cast<unsigned char*>(surface1->pixels)) +
-            localX * 3 * surface1->w + localY * 3 + 0;
-          const unsigned char* localG = (static_cast<unsigned char*>(surface1->pixels)) +
-            localX * 3 * surface1->w + localY * 3 + 1;
-          const unsigned char* localB = (static_cast<unsigned char*>(surface1->pixels)) +
-            localX * 3 * surface1->w + localY * 3 + 2;
-
-          int local2X = xAdapt % surface2->w;
-          int local2Y = yAdapt % surface2->h;
-          const unsigned char* localR2 = (static_cast<unsigned char*>(surface2->pixels)) +
-            local2X * 3 * surface2->w + local2Y * 3 + 0;
-          const unsigned char* localG2 = (static_cast<unsigned char*>(surface2->pixels)) +
-            local2X * 3 * surface2->w + local2Y * 3 + 1;
-          const unsigned char* localB2 = (static_cast<unsigned char*>(surface2->pixels)) +
-            local2X * 3 * surface2->w + local2Y * 3 + 2;
-
-          *r = (*localR * coeff1 + *localR2 * coeff2) / 200;
-          *g = (*localG * coeff1 + *localG2 * coeff2) / 200;
-          *b = (*localB * coeff1 + *localB2 * coeff2) / 200;
-
-          *r = z;
-          *g = z;
-          *b = z;
-        }
-      }
-
-    }
-  }
-
-  SDL_UnlockSurface(resSurface);
-  SDL_SaveBMP(resSurface, filename.c_str());
-
-  SDL_FreeSurface(resSurface);
-  SDL_FreeSurface(brickSurface);
-  SDL_FreeSurface(woodSurface);
-  SDL_FreeSurface(vegSurface);
-}
-
-void computeTextureCoeff(std::array<double, 3>& coeffs, unsigned char z)
-{
-  if (z < 60)
-  {
-    coeffs[0] = 1.0;
-    coeffs[1] = 0.0;
-    coeffs[2] = 0.0;
-  }
-  else if (z < 130)
-  {
-    coeffs[0] = 1.0 - (z - 60.0) / 70.0;
-    coeffs[1] = (z - 60.0) / 70.0;
-    coeffs[2] = 0.0;
-  }
-  else if (z < 180)
-  {
-    coeffs[0] = 0.0;
-    coeffs[1] = 1.0;
-    coeffs[2] = 0.0;
-  }
-  else if (z < 220)
-  {
-    coeffs[0] = 0.0;
-    coeffs[1] = 1.0 - (z - 180.0) / 40.0;
-    coeffs[2] = (z - 180.0) / 40.0;
-  }
-  else
-  {
-    coeffs[0] = 0.0;
-    coeffs[1] = 0.0;
-    coeffs[2] = 1.0;
-  }
-}
-
-const Core::Container3D<int> getTexturePixelColor(const SDL_Surface* surface, int x, int y)
-{
-  const int localX = x % surface->w;
-  const int localY = y % surface->h;
-  const unsigned char* r = (static_cast<unsigned char*>(surface->pixels)) +
-    localX * 3 * surface->w + localY * 3 + 0;
-  const unsigned char* g = (static_cast<unsigned char*>(surface->pixels)) +
-    localX * 3 * surface->w + localY * 3 + 1;
-  const unsigned char* b = (static_cast<unsigned char*>(surface->pixels)) +
-    localX * 3 * surface->w + localY * 3 + 2;
-
-  return Core::Container3D<int>(*r, *g, *b);
-}
-
 double
 Chunk::operator()(double x, double y) const
 {
@@ -278,63 +112,7 @@ Chunk::operator()(double x, double y) const
 }
 
 void
-Chunk::generateChunk(const texture_coord_type& coords)
-{
-  SDL_Surface* vegSurface = IMG_Load("data/images/veg008.jpg");
-  SDL_Surface* brickSurface = IMG_Load("data/images/brick077.jpg");
-  SDL_Surface* woodSurface = IMG_Load("data/images/wood002.jpg");
-  SDL_Surface* resSurface = createDefaultSurface(TEXTURE_SIZE - 1, TEXTURE_SIZE - 1);
-  std::array<double, 3> coeffs;
-
-  SDL_LockSurface(resSurface);
-  for (int x = 0; x < resSurface->w; ++x)
-  {
-    for (int y = 0; y < resSurface->h; ++y)
-    {
-      double coord = coords(y, x);
-      double z = (255.0 * (coord - MIN_HEIGHT)) / (MAX_HEIGHT - MIN_HEIGHT);
-      computeTextureCoeff(coeffs, z);
-
-      unsigned char* r = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 0;
-      unsigned char* g = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 1;
-      unsigned char* b = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 2;
-      unsigned char* a = (static_cast<unsigned char*>(resSurface->pixels)) + x * 4 * resSurface->w + y * 4 + 3;
-
-      const Core::Container3D<int> vegColor = getTexturePixelColor(vegSurface, x, y);
-      const Core::Container3D<int> brickColor = getTexturePixelColor(brickSurface, x, y);
-      const Core::Container3D<int> woodColor = getTexturePixelColor(woodSurface, x, y);
-
-      *r = coeffs[0] * vegColor._x + coeffs[1] * brickColor._x + coeffs[2] * woodColor._x;
-      *g = coeffs[0] * vegColor._y + coeffs[1] * brickColor._y + coeffs[2] * woodColor._y;
-      *b = coeffs[0] * vegColor._z + coeffs[1] * brickColor._z + coeffs[2] * woodColor._z;
-
-      //*r = z;
-      //*g = z;
-      //*b = z;
-
-      *a = 255;
-    }
-  }
-
-  SDL_UnlockSurface(resSurface);
-  std::ostringstream buff;
-  buff << "chunk_" << _x << "_" << _y;
-  const std::string textureName = buff.str();
-  const std::string textureFilename = buff.str() + ".png";
-  SDL::savePng(resSurface, textureFilename.c_str());
-  TextureManager& textures = TextureManager::getInstance();
-  textures.load(textureFilename, textureName);
-
-  SDL_FreeSurface(resSurface);
-  SDL_FreeSurface(brickSurface);
-  SDL_FreeSurface(woodSurface);
-  SDL_FreeSurface(vegSurface);
-
-  createRealCoord(coords);
-}
-
-void
-Chunk::createRealCoord(const texture_coord_type& coords)
+Chunk::createRealCoord(const chunk_coord_type& coords)
 {
   int k = 0;
   for (int i = 0; i < SIZE - 1; ++i)
@@ -343,16 +121,14 @@ Chunk::createRealCoord(const texture_coord_type& coords)
     {
       const int x1 = i + k;
       const int y1 = k * (SIZE - 1 - 2 * j) + j;
-      add(x1, y1, coords(x1 * RATIO, y1 * RATIO));
+      add(x1, y1, coords(x1, y1));
 
       const int x2 = i + 1 - k;
       const int y2 = k * (SIZE - 1) + j - (2 * j * k);
-      add(x2, y2, coords(x2 * RATIO, y2 * RATIO));
+      add(x2, y2, coords(x2, y2));
     }
     k = (k + 1) % 2;
   }
 
   meshAllCoord();
-
-#undef ADD
 }

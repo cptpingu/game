@@ -65,8 +65,7 @@ public:
   typedef chunk_mesh_type::const_iterator const_iterator;
 
 
-  typedef Core::Container3D<double> Model_Point;
-  typedef std::vector<Model_Point> Model;
+
 
 public:
   Chunk(int x, int y);

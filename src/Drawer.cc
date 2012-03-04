@@ -5,6 +5,7 @@
 #include "TextureManager.hh"
 #include "ShadersManager.hh"
 #include "Opengl.hh"
+#include "Architecte.hh"
 
 
 #include <vector>
@@ -222,8 +223,26 @@ namespace
       draw(it->first, *it->second);
   }
 
+  void drawTree(Architecte::Model & Tree)
+{
+        TextureManager& textures = TextureManager::getInstance();
+        glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
 
-
+        glPushMatrix();
+        glBegin(GL_LINE_STRIP);
+        auto end = Tree.end();
+        for (auto it = Tree.begin(); it != end; ++it)
+          {
+          {
+            glColor3f(1,1,1);
+            glVertex3f((*it)._x,
+                       (*it)._y,
+                       (*it)._z);
+          }
+         glEnd();
+         glPopMatrix();
+    }
+}
 
 
 } // namespace
@@ -237,6 +256,7 @@ void Drawer::drawMap(const Map& map) const
   draw(map.getBlocks());
   //draw(map.getTriangles());
   draw(map.getChunks());
+
 }
 
 

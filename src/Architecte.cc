@@ -370,9 +370,9 @@ namespace Architecte
           extracted(i, j) = interpolation(extracted, i, j, Chunk::RATIO);
   }
 //Construction d'une branche...
-  Chunk::Model_Point Branche(int size, int diffusionX,int diffusionY,const Chunk::Model_Point& where)
+  Model_Point Branche(int size, int diffusionX,int diffusionY,const Model_Point& where)
   {
-      Chunk::Model_Point New(where._x + diffusionX + Random::rand()%diffusionX - diffusionX/2,
+      Model_Point New(where._x + diffusionX + Random::rand()%diffusionX - diffusionX/2,
              where._y + diffusionY + Random::rand()%diffusionY - diffusionY/2,
              where._z + size + Random::rand()%size);
 
@@ -380,12 +380,12 @@ namespace Architecte
     return New;
   }
 //Processus de branchage....
-  void TreeProcess(Chunk::Model & Tree,int size,int Density,const Chunk::Model& where)
+  void TreeProcess(Model & Tree,int size,int Density,const Model& where)
   {
       if (size <= 1)
         return;
 
-    Chunk::Model New;
+    Model New;
 
     auto end1 = where.end();
 
@@ -403,37 +403,7 @@ namespace Architecte
         }
 
         TreeProcess(Tree, size/2 ,Density+1,New);
-
-
-
     }
-
-  void drawTree(Chunk::Model & Tree)
-  {
-      TextureManager& textures = TextureManager::getInstance();
-      glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
-
-      glPushMatrix();
-      glBegin(GL_LINE_STRIP);
-      auto end = Tree.end();
-      for (auto it = Tree.begin(); it != end; ++it)
-      {
-
-        {
-          glColor3f(1,1,1);
-          glVertex3f((*it)._x,
-                     (*it)._y,
-                     (*it)._z);
-        }
-        glEnd();
-       glPopMatrix();
-
-
-
-
-
-  }
-
 /*
 //Prends une liste de coordonnées et fait des arbres à ces coordonnées...
 void Forest(Chunk::chunk_coord_type TreeList,int size,int Density)
@@ -454,4 +424,5 @@ void Forest(Chunk::chunk_coord_type TreeList,int size,int Density)
 
 
 }
-  }// Architecte
+
+// Architecte

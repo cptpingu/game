@@ -53,19 +53,19 @@ Game::load()
   CHUNK_TMP( 1, -1);
 
 #undef CHUNK_TMP
-Chunk::Model arbre;
-arbre.push_back(Chunk::Model_Point(0,0,0));
-Architecte::TreeProcess(arbre,20,2,arbre);
-std::cout << arbre.size() << std::endl;
-Architecte::drawTree(arbre);
 
+ Architecte::Model arbre;
+ arbre.push_back(Architecte::Model_Point(0,0,0));
+ Architecte::TreeProcess(arbre,20,1,arbre);
+ std::cout << (int) arbre.size() << std::endl;
+ std::cout << (int) arbre[1]._z << std::endl;
+ std::cout << (int) arbre[2]._z << std::endl;
+ std::cout << (int) arbre[3]._z << std::endl;
+ std::cout << (int) arbre[4]._z << std::endl;
+ //std::cout << (int) arbre.size() << std::endl;
+ //std::cout << (int) arbre.size() << std::endl;
 
-
-
-
-
-
-  return true;
+ return true;
 }
 
 void
@@ -130,6 +130,8 @@ Game::play()
     _camera.animate(elapsed_time);
 
     drawAxis(2);
+
+
 
     drawGL();
 
@@ -285,6 +287,7 @@ Game::drawGL()
   // glDisable(GL_BLEND);
 
   showCoord();
+
 
   glFlush();
 

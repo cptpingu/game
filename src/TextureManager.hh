@@ -45,7 +45,6 @@ public:
   **
   ** @param path File name of the image to load.
   ** @param name The identifiant of the texture.
-  **
   ** @return If load succeed.
   */
   bool load(const std::string& path, const std::string& name);
@@ -54,7 +53,6 @@ public:
   ** Get the OpenGL identifiant of a texture, given its name.
   **
   ** @param name The identifiant of the texture.
-  **
   ** @return The OpenGL identifiant.
   */
   GLuint operator[](const std::string& name);
@@ -63,7 +61,6 @@ public:
   ** Try to find a texture, given its identifiant.
   **
   ** @param name The identifiant of the texture.
-  **
   ** @return An iterator on the OpenGL identifiant, or an "end" iterator if not found.
   */
   iterator find(const std::string& name);

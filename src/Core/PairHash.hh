@@ -7,6 +7,11 @@
 
 namespace Core
 {
+  /*!
+  ** @class PairHash
+  **
+  ** Hash class for std::unorderd_map used with a std::pair.
+  */
   template <typename A, typename B>
   class PairHash
   {

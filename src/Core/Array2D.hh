@@ -8,6 +8,11 @@
 
 namespace Core
 {
+  /*!
+  ** @struct Array2D
+  **
+  ** This class is used to emulate a fixed 2D array.
+  */
   template <typename T, unsigned int LENGTH, unsigned int CAPACITY = LENGTH * LENGTH>
   struct Array2D : private Core::NonCopyable<std::vector<T> >,
                    public std::vector<T>

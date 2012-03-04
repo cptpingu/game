@@ -3,23 +3,17 @@
 
 namespace Core
 {
+  /*!
+  ** @struct NonCopyable
+  **
+  ** This structure is used to ensure that an object can't be copied.
+  */
   template <typename T>
   struct NonCopyable
   {
     NonCopyable() = default;
     NonCopyable(const NonCopyable&) = delete;
     T& operator= (const T&) = delete;
-//  protected:
-//     NonCopyable()
-//     {
-//     }
-//    ~NonCopyable ()
-//    {
-//    }
-
-//  private:
-//    NonCopyable(const NonCopyable&);
-//    T& operator=(const T&);
   };
 } // Core
 

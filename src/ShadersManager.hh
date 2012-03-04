@@ -52,7 +52,6 @@ public:
   ** exists, halt the program.
   **
   ** @param name The identifiant of the shader.
-  **
   ** @return The OpenGL identifiant.
   */
   GLuint get(const std::string& name) const;

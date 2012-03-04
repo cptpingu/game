@@ -155,7 +155,7 @@ void drawAxis(double scale)
   glEnable(GL_LINE_SMOOTH);
   glLineWidth(2);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  glScaled(scale,scale,scale);
+  glScaled(scale, scale, scale);
   glBegin(GL_LINES);
   glColor3ub(255, 0, 0);
   glVertex3i(0, 0, 0);
@@ -171,31 +171,23 @@ void drawAxis(double scale)
   glPopAttrib();
 }
 
-bool initFullScreen(unsigned int* width,unsigned int* height)
+bool initFullScreen(unsigned int& width,unsigned int& height)
 {
-  SDL_Rect** modes;
-
-  modes = SDL_ListModes(NULL,SDL_FULLSCREEN|SDL_OPENGL);
-  if ((modes == (SDL_Rect **)0)||(modes == (SDL_Rect **)-1))
+  SDL_Rect** modes = SDL_ListModes(0, SDL_FULLSCREEN | SDL_OPENGL);
+  if (modes <= 0)
     return true;
 
-  if (width != NULL)
-    *width = modes[0]->w;
-  if (height != NULL)
-    *height = modes[0]->h;
-  if (SDL_SetVideoMode(modes[0]->w,
-                       modes[0]->h,
-                       SDL_GetVideoInfo()->vfmt->BitsPerPixel,
-                       SDL_FULLSCREEN|SDL_OPENGL) == NULL)
-    return false;
-
-  return true;
+  width = modes[0]->w;
+  height = modes[0]->h;
+  return SDL_SetVideoMode(width, height,
+                          SDL_GetVideoInfo()->vfmt->BitsPerPixel,
+                          SDL_FULLSCREEN|SDL_OPENGL) != 0;
 }
 
-int XPMFromImage(const char * imagefile, const char * XPMfile)
+bool XPMFromImage(const char * imagefile, const char * XPMfile)
 {
-  SDL_Surface * image,*image32bits;
-  FILE * xpm;
+  SDL_Surface* image, *image32bits;
+  FILE* xpm;
   Uint32 pixel;
   Uint8 r,g,b,a;
   unsigned int w;
@@ -203,8 +195,8 @@ int XPMFromImage(const char * imagefile, const char * XPMfile)
   Uint32 rmask, gmask, bmask, amask;
 
   image = IMG_Load(imagefile);
-  if (image == NULL)
-    return -1;
+  if (image == 0)
+    return false;
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 
@@ -272,7 +264,7 @@ int XPMFromImage(const char * imagefile, const char * XPMfile)
   SDL_FreeSurface(image32bits);
   fprintf(xpm,"\t\t\"0,0\"\n");
   fprintf(xpm,"\t};\n");
-  return 0;
+  return true;
 }
 
 SDL_Cursor * cursorFromXPM(const char * xpm[])

@@ -4,8 +4,6 @@
 namespace Core
 {
   /*!
-  ** @brief this template is an helper to make a singleton.
-  **
   ** This template is an helper to make a singleton.
   ** How to use it:
   ** @code
@@ -19,7 +17,9 @@ namespace Core
   class Singleton
   {
   public:
-    /** Retrives the instance. */
+    /*!
+    ** Retrives the instance.
+    */
     static T& getInstance();
   };
 } // Core

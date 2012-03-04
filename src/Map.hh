@@ -33,7 +33,6 @@ public:
   ** Load blocks from file.
   **
   ** @param filename The file name.
-  **
   ** @return If load succeed.
   */
   bool loadBlocks(const std::string& filename);

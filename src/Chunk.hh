@@ -136,7 +136,6 @@ public:
   ** Convert world coord to chunk coord.
   **
   ** @param absolute Absolute coordinate.
-  **
   ** @return Coordinate converted in chunk coordinate.
   */
   static int absoluteToChunkCoord(double absolute);
@@ -146,7 +145,6 @@ public:
   **
   ** @param x X coord.
   ** @param y Y coord.
-  **
   ** @return Height at the coord (x,y).
   */
   double operator()(double x, double y) const;

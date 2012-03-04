@@ -3,6 +3,11 @@
 
 namespace Core
 {
+  /*!
+  ** @class NumericalContainerHash
+  **
+  ** Hash class for std::unorderd_map used with Container3D.
+  */
   template <typename T>
   class NumericalContainerHash : public std::unary_function<Core::Container3D<T>, size_t>
   {

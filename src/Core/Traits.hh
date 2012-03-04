@@ -4,8 +4,8 @@
 namespace Core
 {
   /*!
-** This namespace contains a lot of useful traits
-*/
+  ** This namespace contains a lot of useful traits
+  */
 
   template <typename T>
   struct isPointer

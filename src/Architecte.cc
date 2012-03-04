@@ -20,7 +20,6 @@ namespace Architecte
     }
   } //namespace
 
-
   void mergeGround(Chunk& ground, const Chunk& deformation)
   {
     auto end1 = ground.end();
@@ -37,79 +36,6 @@ namespace Architecte
     }
   }
 
-  int interpolate(int y1, int y2, int n, int delta)
-  {
-    if (n != 0)
-      return y1 + delta * (y2 - y1) / n;
-
-    return y1;
-  }
-
-  /*int interpolate(int y1, int y2, int n, int delta)
-  {
-    if (n == 0)
-      return y1;
-
-    if (n == 1)
-      return y2;
-
-    float a = static_cast<float>(delta) / n;
-    float v1 = 3 * pow(1 - a, 2) - 2 * pow(1 - a,3);
-    float v2 = 3 * pow(a, 2) - 2 * pow(a, 3);
-
-    return y1 * v1 + y2 * v2;
-  }
-*/
-  int interpolation(const Chunk::chunk_coord_type& coords, int i, int j, float step)
-  {
-    const int q = i / step;
-    const int bound1x = (q * step);
-    const int bound2x = (q + 1) * step;
-    //const int tex2x = bound2x < Chunk::TEXTURE_SIZE ? bound2x : Chunk::TEXTURE_SIZE - 1;
-    const int tex2x = bound2x;
-
-    const int q2 = j / step;
-    const int bound1y = (q2 * step);
-    const int bound2y = (q2 + 1) * step;
-    //const int tex2y = bound2y < Chunk::TEXTURE_SIZE ? bound2y : Chunk::TEXTURE_SIZE - 1;
-    const int tex2y = bound2y;
-
-    const int b00 = coords(bound1x, bound1y);
-    const int b01 = coords(bound1x, tex2y);
-    const int b10 = coords(tex2x, bound1y);
-    const int b11 = coords(tex2x, tex2y);
-
-    const int v1 = interpolate(b00, b01, bound2y - bound1y, j - bound1y);
-    const int v2 = interpolate(b10, b11, bound2y - bound1y, j - bound1y);
-    const int res = interpolate(v1, v2, bound2x - bound1x, i - bound1x);
-
-    return res;
-  }
-  int interpolation(const Chunk::texture_coord_type& coords, int i, int j, float step)
-  {
-    const int q = i / step;
-    const int bound1x = (q * step);
-    const int bound2x = (q + 1) * step;
-    //const int tex2x = bound2x < Chunk::TEXTURE_SIZE ? bound2x : Chunk::TEXTURE_SIZE - 1;
-    const int tex2x = bound2x;
-
-    const int q2 = j / step;
-    const int bound1y = (q2 * step);
-    const int bound2y = (q2 + 1) * step;
-    //const int tex2y = bound2y < Chunk::TEXTURE_SIZE ? bound2y : Chunk::TEXTURE_SIZE - 1;
-    const int tex2y = bound2y;
-
-    const int b00 = coords(bound1x, bound1y);
-    const int b01 = coords(bound1x, tex2y);
-    const int b10 = coords(tex2x, bound1y);
-    const int b11 = coords(tex2x, tex2y);
-
-    const int v1 = interpolate(b00, b01, bound2y - bound1y, j - bound1y);
-    const int v2 = interpolate(b10, b11, bound2y - bound1y, j - bound1y);
-    const int res = interpolate(v1, v2, bound2x - bound1x, i - bound1x);
-
-    return res;
-  }
   //Lisse le sol sur un chunk ou autre chose, pensée pour les chunks faire gaffe si utilisé pour autre chose
 
   void borderSmooth(Chunk::chunk_coord_type& coords)
@@ -255,22 +181,6 @@ namespace Architecte
   return norm;
   }
 
-
-
-  void Initground(Chunk::chunk_coord_type& coords,int Quality)
-  {
-     int subg = (Chunk::SIZE-1)/Quality;
-    for (int i = 0; i < Quality; ++i)
-      for (int j = 0; j < Quality; ++j)
-          coords(i * subg, j * subg) = Random::rand()%Chunk::MAX_HEIGHT;
-
-    for (int i = 0; i < Chunk::SIZE; ++i)
-      for (int j = 0; j < Chunk::SIZE; ++j)
-        if (i % subg != 0 || j % subg != 0)
-          coords(i,j) = interpolation(coords, i, j, subg);
-  }
-
-
   void smoothGround(Chunk::chunk_coord_type& coords)
   {
     for (int k = 0; k < 10; ++k)
@@ -358,17 +268,6 @@ namespace Architecte
     borderSmooth(coords);
   }
 
-  void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords)
-  {
-    for (int i = 0; i < Chunk::SIZE; ++i)
-      for (int j = 0; j < Chunk::SIZE; ++j)
-        extracted(i * Chunk::RATIO, j * Chunk::RATIO) = coords(i, j);
-
-    for (int i = 0; i < Chunk::TEXTURE_SIZE - 1; ++i)
-      for (int j = 0; j < Chunk::TEXTURE_SIZE - 1; ++j)
-        if (i % Chunk::RATIO != 0 || j % Chunk::RATIO != 0)
-          extracted(i, j) = interpolation(extracted, i, j, Chunk::RATIO);
-  }
 //Construction d'une branche...
   Chunk::Model_Point Branche(int size, int diffusionX,int diffusionY,const Chunk::Model_Point& where)
   {

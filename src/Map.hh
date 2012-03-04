@@ -2,7 +2,6 @@
 # define MAP_HH_
 
 # include "Block.hh"
-# include "SolTriangle.hh"
 # include "Vector3D.hh"
 # include "Chunk.hh"
 
@@ -61,7 +60,7 @@ public:
   **
   ** @param position The current position of the camera.
   */
-  void lazyChunkLoading(const Vector3D& position);
+  void chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks);
 
   blocks_type& getBlocks();
   chunks_type& getChunks();

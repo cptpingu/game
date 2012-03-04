@@ -3,3 +3,5 @@ game
 *.o
 Makefile.rules
 src/Makefile.deps
+Game.pro.user
+

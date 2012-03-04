@@ -2,7 +2,7 @@
 #include "ShadersManager.hh"
 #include "Architecte.hh"
 
-
+#include <ctime>
 #include <sstream>
 
 bool
@@ -29,41 +29,11 @@ Game::load()
   loadtextures();
   loadShaders();
 
-#define CHUNK_TMP(X, Y)                                                 \
-  {                                                                     \
-    Chunk* chunk = new Chunk((X), (Y));                                 \
-    Chunk::chunk_coord_type coords;                                     \
-    Architecte::initChunk(coords, std::make_pair(X, Y), _map.getChunks()); \
-    Chunk::texture_coord_type extracted;                                \
-    Architecte::extractCoords(extracted, coords);                       \
-    chunk->generateChunk(extracted);                                    \
-    _map.getChunks().insert(Map::chunks_type::value_type(std::make_pair(X, Y), chunk)); \
-  }
-
-  CHUNK_TMP(-1,  1);
-  CHUNK_TMP( 0,  1);
-  CHUNK_TMP( 1,  1);
-
-  CHUNK_TMP(-1,  0);
-  CHUNK_TMP( 0,  0);
-  CHUNK_TMP( 1,  0);
-
-  CHUNK_TMP(-1, -1);
-  CHUNK_TMP( 0, -1);
-  CHUNK_TMP( 1, -1);
-
-#undef CHUNK_TMP
-Chunk::Model arbre;
-arbre.push_back(Chunk::Model_Point(0,0,0));
-Architecte::TreeProcess(arbre,20,2,arbre);
-std::cout << arbre.size() << std::endl;
-Architecte::drawTree(arbre);
-
-
-
-
-
-
+  Chunk::Model arbre;
+  arbre.push_back(Chunk::Model_Point(0,0,0));
+  Architecte::TreeProcess(arbre,20,2,arbre);
+  std::cout << arbre.size() << std::endl;
+  Architecte::drawTree(arbre);
 
   return true;
 }
@@ -126,7 +96,7 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    //_map.lazyChunkLoading(_camera.getCurrentPosition());
+    _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
     _camera.animate(elapsed_time);
 
     drawAxis(2);

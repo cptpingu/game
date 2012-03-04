@@ -6,8 +6,6 @@
 # include "Core/Array2D.hh"
 
 # include <vector>
-# include <cstddef>
-# include <string>
 # include <unordered_map>
 
 class Chunk
@@ -60,7 +58,7 @@ public:
   typedef Core::Array2D<double, Chunk::TEXTURE_SIZE> texture_coord_type;
 
   typedef std::unordered_map<std::pair<double, double>, double,
-          Core::PairHash<double, double> > fast_access_chunk_type;
+  Core::PairHash<double, double> > fast_access_chunk_type;
   typedef chunk_mesh_type::iterator iterator;
   typedef chunk_mesh_type::const_iterator const_iterator;
 
@@ -83,12 +81,10 @@ public:
 
   static int absoluteToChunkCoord(double absolute);
 
-  void generateTexture(const std::string& filename) const;
-
-  void generateChunk(const texture_coord_type& coords);
   double operator()(double x, double y) const;
+  void createRealCoord(const chunk_coord_type& coords);
 private:
-  void createRealCoord(const texture_coord_type& coords);
+
 
 private:
   int _x;

@@ -11,7 +11,6 @@ SOURCES += \
     src/GLUtils.cc \
     src/FreeFlyCamera.cc \
     src/Map.cc \
-    src/MapWriter.cc \
     src/Drawer.cc \
     src/ImageFile.cc \
     src/Opengl.cc \
@@ -31,8 +30,6 @@ HEADERS += \
     src/FreeFlyCamera.hh \
     src/Block.hh \
     src/Map.hh \
-    src/MapWriter.hh \
-    src/SolTriangle.hh \
     src/Drawer.hh \
     src/ImageFile.hh \
     src/Core/Container3D.hh \

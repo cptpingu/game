@@ -1,6 +1,5 @@
 #include "Map.hh"
 #include "Drawer.hh"
-#include "SolTriangle.hh"
 #include "Block.hh"
 #include "TextureManager.hh"
 #include "ShadersManager.hh"

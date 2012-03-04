@@ -22,9 +22,7 @@ namespace Architecte
 
   double Norm(Vector3D where,int type);
 
-   void Initground(Chunk::chunk_coord_type& coords,int Quality);
-  void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks); 
-  void extractCoords(Chunk::texture_coord_type& extracted, const Chunk::chunk_coord_type& coords);
+  void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks);
 }
 
 #endif /* !ARCHITECTE_HH_ */

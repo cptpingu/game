@@ -1,13 +1,12 @@
 #ifndef DRAWER_HH
 #define DRAWER_HH
 
-#include "SolTriangle.hh"
-#include "Block.hh"
-#include <vector>
-#include "TextureManager.hh"
+# include "Block.hh"
+# include <vector>
+# include "TextureManager.hh"
 # include "Opengl.hh"
-#include "Vector3D.hh"
-#include "Map.hh"
+# include "Vector3D.hh"
+# include "Map.hh"
 
 class Drawer
 {

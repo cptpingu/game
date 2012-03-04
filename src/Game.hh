@@ -1,21 +1,15 @@
 #ifndef GAME_HH_
 # define GAME_HH_
 
-#include "Opengl.hh"
-#include <SDL/SDL.h>
+# include "Opengl.hh"
+# include "Map.hh"
+# include "GLUtils.hh"
+# include "FreeFlyCamera.hh"
+# include "Drawer.hh"
+# include "ImageFile.hh"
 
-#include <cstdlib>
-#include <iostream>
-#include "Map.hh"
-#include "MapWriter.hh"
-#include "TextureManager.hh"
-#include "Architecte.hh"
-
-#include <time.h>
-#include "GLUtils.hh"
-#include "FreeFlyCamera.hh"
-#include "Drawer.hh"
-#include "ImageFile.hh"
+# include <SDL/SDL.h>
+# include <iostream>
 
 class Game
 {

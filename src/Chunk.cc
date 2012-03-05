@@ -112,6 +112,17 @@ Chunk::operator()(double x, double y) const
   return found->second;
 }
 
+Chunk::Coord*
+Chunk::getCoord(double x, double y, double z) const
+{
+  auto end = _chunk.cend();
+  for (auto it = _chunk.cbegin(); it != end; ++it)
+    if ((*it)->getX() == x && (*it)->getY() == y && (*it)->getZ() == z)
+      return *it;
+
+  return 0;
+}
+
 void
 Chunk::createRealCoord(const chunk_coord_type& coords)
 {
@@ -133,23 +144,3 @@ Chunk::createRealCoord(const chunk_coord_type& coords)
 
   meshAllCoord();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

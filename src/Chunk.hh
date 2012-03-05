@@ -150,6 +150,16 @@ public:
   double operator()(double x, double y) const;
 
   /*!
+  ** Given x,y,z coords, get the coords pointer.
+  **
+  ** @param x X coord.
+  ** @param y Y coord.
+  ** @param z Z coord.
+  ** @return A pointer on coord, or 0 if not found.
+  */
+  Coord* getCoord(double x, double y, double z) const;
+
+  /*!
   ** Create all points from a grid of points.
   ** Points need to be inserted in a specific order to be draw correctly,
   ** this function guaranty this constraint.

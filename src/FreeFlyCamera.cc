@@ -165,9 +165,5 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
     int y = Chunk::absoluteToChunkCoord(_target._y);
     auto chunk = chunks.find(std::make_pair(x, y));
     assert(chunk != chunks.cend() && "Can't found corresponding chunk!");
-
-    //if ((**chunk)(x, y) == _target._z)
-      return 0;
-
-    return 0;
+    return new Chunk::Coord(5,5,8);// chunk->second->getCoord(x, y, _target._z);
 }

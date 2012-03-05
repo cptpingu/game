@@ -2,6 +2,7 @@
 #include "iostream"
 #include <cmath>
 #include "Opengl.hh"
+#include "Chunk.hh"
 
 #ifndef M_PI
 # define M_PI 3.14159265
@@ -147,6 +148,22 @@ void FreeFlyCamera::look()
 Vector3D FreeFlyCamera::getCurrentPosition() const
 
 { return _position; }
+
+void FreeFlyCamera::terraforming(Chunk::chunk_coord_type & coords , const SDL_MouseButtonEvent& event,const Vector3D & position)
+{
+    int x = Chunk::absoluteToChunkCoord(position._x);
+    int y = Chunk::absoluteToChunkCoord(position._y);
+
+if(event.button == SDL_BUTTON_LEFT)
+    {
+    coords(x,y) = coords(x,y) + 1;
+    }
+if(event.button.button == SDL_BUTTON_RIGHT)
+    {
+    coords(x,y) = coords(x,y) - 1;
+    }
+
+}
 
 
 

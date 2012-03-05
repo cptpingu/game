@@ -83,6 +83,7 @@ Game::play()
         case SDL_MOUSEBUTTONUP:
         case SDL_MOUSEBUTTONDOWN:
           _camera.OnMouseButton(event.button);
+          _camera.terraforming(coords,event.button, position);
           break;
       }
     }

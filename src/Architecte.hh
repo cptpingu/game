@@ -21,6 +21,7 @@ namespace Architecte
   void Initground(Chunk::chunk_coord_type& coords,int Quality);
   void Mountain(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where,int PeakX,int PeakY,double PeakZ,double R_ext);
   void TreeProcess(Model & Tree,int size,int Density,const Model &where);
+  void DigGround(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where,int X,int Y,double Z,double longueur,double largeur);
   Model_Point Branche(int size,int diffusionX,int diffusionY,const Model_Point &where);
   //void drawTree(Chunk::Model & Tree);
 

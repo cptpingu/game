@@ -4,6 +4,7 @@
 #include "Architecte.hh"
 
 #include <fstream>
+#include <sstream>
 #include <algorithm>
 
 namespace
@@ -117,16 +118,49 @@ Map::loadBlocks(const std::string& filename)
 
 namespace
 {
+  // FIXME not working yet. Need to be inside chunk !
+  bool loadFromFile(const std::string& filename, Chunk::chunk_coord_type& coords)
+  {
+    std::ifstream is(filename.c_str());
+    if (!is)
+      return false;
+
+    is.seekg(0, std::ios_base::end);
+    std::size_t size = is.tellg();
+    is.seekg(0, std::ios_base::beg);
+
+    std::vector<double> v(size / sizeof(double));
+    is.read(reinterpret_cast<char*>(&v[0]), size);
+
+    assert(size % 3 == 0 && "Number of point is incorrect");
+
+    for (size_t i = 0; i < size - 3; i += 3)
+      coords(v[i + 0], v[i + 1]) = v[i + 2];
+
+    return true;
+  }
+
+  bool saveToFile(const std::string&, const Chunk::chunk_coord_type&)
+  {
+    return true;
+  }
+
   Chunk* loadChunk(int x, int y, const Map::chunks_type& chunks)
   {
-    Chunk* chunk = new Chunk(x, y);
     Chunk::chunk_coord_type coords;
+    std::ostringstream buff;
+    Chunk* chunk = new Chunk(x, y);
+    buff << "data/chunk_" << x << "_" << y << ".map";
+    const std::string filename = buff.str();
 
-    // FIXME generate from file if it exists
-    // else
-    Architecte::initChunk(coords, std::make_pair(x, y), chunks);
-    chunk->createRealCoord(coords);
-    // !
+    if (!loadFromFile(filename, coords))
+    {
+      Architecte::initChunk(coords, std::make_pair(x, y), chunks);
+      chunk->createRealCoord(coords);
+      const bool res = saveToFile(filename, coords);
+      assert(res && "Unable to save file!");
+      _UNUSED(res);
+    }
     return chunk;
   }
 } // namespace

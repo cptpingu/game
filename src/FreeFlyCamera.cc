@@ -39,17 +39,19 @@ FreeFlyCamera::~FreeFlyCamera()
   SDL_ShowCursor(SDL_ENABLE);
 }
 
-void FreeFlyCamera::OnMouseMotion(const SDL_MouseMotionEvent& event)
+void
+FreeFlyCamera::OnMouseMotion(const SDL_MouseMotionEvent& event)
 {
   _theta -= event.xrel; //* _sensivity;
   _phi -= event.yrel; //* _sensivity;
   VectorsFromAngles();
 }
 
-void FreeFlyCamera::OnMouseButton(const SDL_MouseButtonEvent& event)
+void
+FreeFlyCamera::OnMouseButton(const SDL_MouseButtonEvent& event)
 {
   //coup de molette vers le haut
-  if ((event.button == SDL_BUTTON_WHEELUP)&&(event.type == SDL_MOUSEBUTTONDOWN))
+  if (event.button == SDL_BUTTON_WHEELUP && event.type == SDL_MOUSEBUTTONDOWN)
   {
     _verticalMotionActive = true;
     _timeBeforeStoppingVerticalMotion = 250;
@@ -57,7 +59,7 @@ void FreeFlyCamera::OnMouseButton(const SDL_MouseButtonEvent& event)
 
   }
   //coup de molette vers le bas
-  else if ((event.button == SDL_BUTTON_WHEELDOWN)&&(event.type == SDL_MOUSEBUTTONDOWN))
+  else if (event.button == SDL_BUTTON_WHEELDOWN && event.type == SDL_MOUSEBUTTONDOWN)
   {
     _verticalMotionActive = true;
     _timeBeforeStoppingVerticalMotion = 250;
@@ -65,7 +67,8 @@ void FreeFlyCamera::OnMouseButton(const SDL_MouseButtonEvent& event)
   }
 }
 
-void FreeFlyCamera::OnKeyboard(const SDL_KeyboardEvent& event)
+void
+FreeFlyCamera::OnKeyboard(const SDL_KeyboardEvent& event)
 {
   for (KeyStates::iterator it = _keystates.begin(); it != _keystates.end(); ++it)
   {
@@ -77,7 +80,8 @@ void FreeFlyCamera::OnKeyboard(const SDL_KeyboardEvent& event)
   }
 }
 
-void FreeFlyCamera::animate(Uint32 timestep)
+void
+FreeFlyCamera::animate(Uint32 timestep)
 {
   double realspeed = _keystates[_keyconf["boost"]] ? 10 * _speed : _speed;
   if (_keystates[_keyconf["forward"]])
@@ -100,23 +104,27 @@ void FreeFlyCamera::animate(Uint32 timestep)
 
 }
 
-void FreeFlyCamera::setSpeed(double speed)
+void
+FreeFlyCamera::setSpeed(double speed)
 {
   _speed = speed;
 }
 
-void FreeFlyCamera::setSensivity(double sensivity)
+void
+FreeFlyCamera::setSensivity(double sensivity)
 {
   _sensivity = sensivity;
 }
 
-void FreeFlyCamera::setPosition(const Vector3D & position)
+void
+FreeFlyCamera::setPosition(const Vector3D & position)
 {
   _position = position;
   _target = _position + _forward;
 }
 
-void FreeFlyCamera::VectorsFromAngles()
+void
+FreeFlyCamera::VectorsFromAngles()
 {
   static const Vector3D up(0, 0, 1);
   if (_phi > 89)
@@ -134,35 +142,28 @@ void FreeFlyCamera::VectorsFromAngles()
   _left.normalize();
 
   _target = _position + _forward;
-
-
 }
 
-void FreeFlyCamera::look()
+void
+FreeFlyCamera::look()
 {
   gluLookAt(_position._x, _position._y, _position._z,
         _target._x, _target._y, _target._z,
         0, 0, 1);
 }
 
-Vector3D FreeFlyCamera::getCurrentPosition() const
-
-{ return _position; }
-
-void FreeFlyCamera::terraforming(Chunk::chunk_coord_type & coords , const SDL_MouseButtonEvent& event,const Vector3D & position)
+Vector3D
+FreeFlyCamera::getCurrentPosition() const
 {
-    int x = Chunk::absoluteToChunkCoord(position._x);
-    int y = Chunk::absoluteToChunkCoord(position._y);
+    return _position;
+}
 
-if(event.button == SDL_BUTTON_LEFT)
-    {
-    coords(x,y) = coords(x,y) + 1;
-    }
-if(event.button == SDL_BUTTON_RIGHT)
-    {
-    coords(x,y) = coords(x,y) - 1;
-    }
 
+void
+FreeFlyCamera::picking(const Chunk::chunk_coord_type& coords) const
+{
+    int x = Chunk::absoluteToChunkCoord(_position._x);
+    int y = Chunk::absoluteToChunkCoord(_position._y);
 }
 
 

@@ -295,10 +295,7 @@ namespace Architecte
     if (neighborChunk != chunks.end())
       fillCoords(coords, 0, 0, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE-1,Chunk::SIZE);
 
-
-
     borderSmooth(coords);
-    DigGround(coords,where,10,10,0,30,30);
   }
 
 //Construction d'une branche...

@@ -18,8 +18,8 @@ namespace Architecte
   void mergeGround(Chunk& generateRandomGround, const Chunk& deformation);
   void borderSmooth(Chunk::chunk_coord_type& coords);
   void smoothGround(Chunk::chunk_coord_type& coords);
- void Initground(Chunk::chunk_coord_type& coords,int Quality);
-
+  void Initground(Chunk::chunk_coord_type& coords,int Quality);
+  void Mountain(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where,int PeakX,int PeakY,double PeakZ,double R_ext);
   void TreeProcess(Model & Tree,int size,int Density,const Model &where);
   Model_Point Branche(int size,int diffusionX,int diffusionY,const Model_Point &where);
   //void drawTree(Chunk::Model & Tree);

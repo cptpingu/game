@@ -160,6 +160,20 @@ public:
   Coord* getCoord(double x, double y, double z) const;
 
   /*!
+  ** Get coords list.
+  **
+  ** @return A list of coords.
+  */
+  const chunk_mesh_type& getCoords() const;
+
+  /*!
+  ** Get coords list.
+  **
+  ** @return A list of coords.
+  */
+  chunk_mesh_type& getCoords();
+
+  /*!
   ** Create all points from a grid of points.
   ** Points need to be inserted in a specific order to be draw correctly,
   ** this function guaranty this constraint.

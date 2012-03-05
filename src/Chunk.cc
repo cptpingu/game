@@ -123,6 +123,18 @@ Chunk::getCoord(double x, double y, double z) const
   return 0;
 }
 
+const Chunk::chunk_mesh_type&
+Chunk::getCoords() const
+{
+  return _chunk;
+}
+
+Chunk::chunk_mesh_type&
+Chunk::getCoords()
+{
+  return _chunk;
+}
+
 void
 Chunk::createRealCoord(const chunk_coord_type& coords)
 {

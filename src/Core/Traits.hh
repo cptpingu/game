@@ -1,7 +1,7 @@
 #ifndef TRAITS_HH_
 # define TRAITS_HH_
 
-# define _UNUSED(X) ((void)X)
+# define _UNUSED(X) ((void)sizeof(X))
 
 namespace Core
 {

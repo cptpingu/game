@@ -9,6 +9,7 @@
 # include "Core/PairHash.hh"
 # include "Core/NumericalContainerHash.hh"
 
+# include <string>
 # include <utility>
 # include <unordered_map>
 

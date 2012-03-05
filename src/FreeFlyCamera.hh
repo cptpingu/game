@@ -15,7 +15,7 @@ public:
     virtual void OnMouseMotion(const SDL_MouseMotionEvent & event);
     virtual void OnMouseButton(const SDL_MouseButtonEvent & event);
     virtual void OnKeyboard(const SDL_KeyboardEvent & event);
-    virtual void FreeFlyCamera::terraforming(Chunk::chunk_coord_type & coords , const SDL_MouseButtonEvent& event,const Vector3D & position);
+    virtual void terraforming(Chunk::chunk_coord_type & coords , const SDL_MouseButtonEvent& event,const Vector3D & position);
     virtual void animate(Uint32 timestep);
     virtual void setSpeed(double speed);
     virtual void setSensivity(double sensivity);

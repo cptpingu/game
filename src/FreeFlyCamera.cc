@@ -158,7 +158,7 @@ if(event.button == SDL_BUTTON_LEFT)
     {
     coords(x,y) = coords(x,y) + 1;
     }
-if(event.button.button == SDL_BUTTON_RIGHT)
+if(event.button == SDL_BUTTON_RIGHT)
     {
     coords(x,y) = coords(x,y) - 1;
     }

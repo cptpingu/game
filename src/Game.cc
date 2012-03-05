@@ -262,15 +262,12 @@ Game::showCoord()
   std::stringstream buff;
 
   Chunk::Coord* coord = _camera.picking(_map.getChunks());
+  Vector3D look = _camera.getCurrentLook();
   const int x = Chunk::absoluteToChunkCoord(pos._x);
   const int y = Chunk::absoluteToChunkCoord(pos._y);
-  buff << "Coord\n"
-       << "X: " << pos._x << "\n"
-       << "Y: " << pos._y << "\n"
-       << "Z: " << pos._z << "\n\n"
-       << "Chunk coord\n"
-       << "X: " << x << "\n"
-       << "Y: " << y << "\n";
+  buff << "World coord: " << pos._x << " " << pos._y << " " << pos._z << "\n"
+       << "Chunk coord: " << x << " " << y << "\n"
+       << "Look: " << look._x << " " << look._y << " " << look._z << "\n";
   if (coord)
     buff << "Pick: " << coord->getX() << " "
          << coord->getY() << " "

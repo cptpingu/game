@@ -148,14 +148,20 @@ void
 FreeFlyCamera::look()
 {
   gluLookAt(_position._x, _position._y, _position._z,
-        _target._x, _target._y, _target._z,
-        0, 0, 1);
+            _target._x, _target._y, _target._z,
+            0, 0, 1);
 }
 
 Vector3D
 FreeFlyCamera::getCurrentPosition() const
 {
-    return _position;
+  return _position;
+}
+
+Vector3D
+FreeFlyCamera::getCurrentLook() const
+{
+  return _target;
 }
 
 
@@ -164,9 +170,11 @@ FreeFlyCamera::getCurrentPosition() const
 Chunk::Coord*
 FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 {
-    int x = Chunk::absoluteToChunkCoord(_target._x);
-    int y = Chunk::absoluteToChunkCoord(_target._y);
-    auto chunk = chunks.find(std::make_pair(x, y));
-    assert(chunk != chunks.cend() && "Can't found corresponding chunk!");
-    return chunk->second->getCoord(x, y, _target._z);
+
+  int x = Chunk::absoluteToChunkCoord(_target._x);
+  int y = Chunk::absoluteToChunkCoord(_target._y);
+  auto chunk = chunks.find(std::make_pair(x, y));
+  assert(chunk != chunks.cend() && "Can't found corresponding chunk!");
+  return chunk->second->getCoord(x, y, _target._z);
+
 }

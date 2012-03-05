@@ -47,11 +47,11 @@ namespace Architecte
       //C2/Chunk::SIZE*size;
 
       //double size = Chunk::SIZE -1;
-      double C1 = 0;
-      double C2 = 0;
-      double C3 = 0;
+      double C1 = 1;
+      double C2 = 1;
+      double C3 = 1;
 
-      for (int x = 1; x < Chunk::SIZE-2 ; ++x)
+      /*for (int x = 1; x < Chunk::SIZE-2 ; ++x)
       {
         for (int y = 1; y < Chunk::SIZE-2 ; ++y)
         {
@@ -71,12 +71,12 @@ namespace Architecte
 
 
         }
-      }
+      }*/
       /*std::cout << C1 << std::endl;
       std::cout << C2 << std::endl;
       std::cout << C3 << std::endl;*/
 
-      for (int k=0;k<100;++k)
+      for (int k=0;k<50;++k)
       {
       for (int x = 1; x < Chunk::SIZE-1 ; ++x)
       {
@@ -223,11 +223,30 @@ namespace Architecte
     int posX = whereX;
     for (int x = fromX; x < toX; ++x, ++posX)
     {
+
       int posY = whereY;
       for (int y = fromY; y < toY; ++y, ++posY)
         coords(posX, posY) = neighborChunk(x, y);
+
+
+
     }
   }
+
+  void Initground(Chunk::chunk_coord_type& coords,int Quality)
+    {
+       /*int subg = (Chunk::SIZE-1)/Quality;
+      for (int i = 0; i < Quality; ++i)
+        for (int j = 0; j < Quality; ++j)
+            coords(i * subg, j * subg) = Random::rand()%Chunk::MAX_HEIGHT;
+
+      for (int i = 0; i < Chunk::SIZE; ++i)
+        for (int j = 0; j < Chunk::SIZE; ++j)
+          if (i % subg != 0 || j % subg != 0)
+            coords(i,j) = interpolation(coords, i, j, subg);*/
+    }
+
+
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
   {
@@ -245,25 +264,36 @@ namespace Architecte
     //Initground(coords,4);
     smoothGround(coords);
 
+
+
+
+
+
     // Top
     auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
     if (neighborChunk != chunks.end())
       fillCoords(coords, 0, Chunk::SIZE-1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
+
 
     // Left
     neighborChunk = chunks.find(std::make_pair(where.first - 1, where.second));
     if (neighborChunk != chunks.end())
       fillCoords(coords, 0, 0, *neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
 
+
     // Right
     neighborChunk = chunks.find(std::make_pair(where.first + 1, where.second));
     if (neighborChunk != chunks.end())
       fillCoords(coords, Chunk::SIZE - 1, 0, *neighborChunk->second, 0, 1, 0, Chunk::SIZE);
 
+
+
     // Bottom
     neighborChunk = chunks.find(std::make_pair(where.first, where.second - 1));
     if (neighborChunk != chunks.end())
-      fillCoords(coords, 0, Chunk::SIZE - 1, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE-1,Chunk::SIZE);
+      fillCoords(coords, 0, 0, *neighborChunk->second, 0, Chunk::SIZE, Chunk::SIZE-1,Chunk::SIZE);
+
+
 
     borderSmooth(coords);
   }

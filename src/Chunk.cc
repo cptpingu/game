@@ -91,8 +91,9 @@ Chunk::cend() const
 int
 Chunk::absoluteToChunkCoord(double absolute)
 {
-  const int sign = absolute < 0 ? -1 : 1;
-  return absolute / SIZE + sign * 0.5;
+  //const int sign = absolute < 0 ? -1 : 1;
+
+  return absolute / (Chunk::SIZE-1);// + sign * 0.5;
 }
 
 int

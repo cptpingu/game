@@ -18,7 +18,7 @@ namespace Architecte
   void mergeGround(Chunk& generateRandomGround, const Chunk& deformation);
   void borderSmooth(Chunk::chunk_coord_type& coords);
   void smoothGround(Chunk::chunk_coord_type& coords);
-
+ void Initground(Chunk::chunk_coord_type& coords,int Quality);
 
   void TreeProcess(Model & Tree,int size,int Density,const Model &where);
   Model_Point Branche(int size,int diffusionX,int diffusionY,const Model_Point &where);

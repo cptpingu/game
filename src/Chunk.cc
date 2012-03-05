@@ -117,7 +117,7 @@ Chunk::getCoord(double x, double y, double z) const
 {
   auto end = _chunk.cend();
   for (auto it = _chunk.cbegin(); it != end; ++it)
-    if ((*it)->getX() == x && (*it)->getY() == y && (*it)->getZ() == z)
+    if ((*it)->getX() == x && (*it)->getY() == y)// && (*it)->getZ() == z)
       return *it;
 
   return 0;

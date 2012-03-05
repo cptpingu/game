@@ -159,12 +159,22 @@ FreeFlyCamera::getCurrentPosition() const
 }
 
 
-void
-FreeFlyCamera::picking(const Chunk::chunk_coord_type& coords) const
+
+
+Chunk::Coord*
+FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 {
-    int x = Chunk::absoluteToChunkCoord(_position._x);
-    int y = Chunk::absoluteToChunkCoord(_position._y);
+    int x = Chunk::absoluteToChunkCoord(_target._x);
+    int y = Chunk::absoluteToChunkCoord(_target._y);
+    auto chunk = chunks.find(std::make_pair(x, y));
+    assert(chunk != chunks.cend() && "Can't found corresponding chunk!");
+
+
+    Coord* coord = chunks.getCoord(x, y, z);
+      return 0;
+
+
+      return 0;
+
+
 }
-
-
-

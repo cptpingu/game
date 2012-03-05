@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include "Chunk.hh"
+#include "Map.hh"
 
 class FreeFlyCamera
 {
@@ -16,7 +17,7 @@ public:
     virtual void OnMouseButton(const SDL_MouseButtonEvent & event);
     virtual void OnKeyboard(const SDL_KeyboardEvent & event);
 
-    virtual void picking(const Chunk::chunk_coord_type& coords) const;
+    virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
 
     virtual void animate(Uint32 timestep);
     virtual void setSpeed(double speed);

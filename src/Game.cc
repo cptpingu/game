@@ -261,6 +261,7 @@ Game::showCoord()
   auto pos = _camera.getCurrentPosition();
   std::stringstream buff;
 
+  Chunk::Coord* coord = _camera.picking(_map.getChunks());
   const int x = Chunk::absoluteToChunkCoord(pos._x);
   const int y = Chunk::absoluteToChunkCoord(pos._y);
   buff << "Coord\n"
@@ -270,6 +271,10 @@ Game::showCoord()
        << "Chunk coord\n"
        << "X: " << x << "\n"
        << "Y: " << y << "\n";
+  if (coord)
+    buff << "Pick: " << coord->getX() << " "
+         << coord->getY() << " "
+         << coord->getZ() << "\n";
 
   TextureManager& textures = TextureManager::getInstance();
 

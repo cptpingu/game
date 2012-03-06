@@ -176,5 +176,24 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
   auto chunk = chunks.find(std::make_pair(x, y));
   assert(chunk != chunks.cend() && "Can't found corresponding chunk!");
   return chunk->second->getCoord(x, y, _target._z);
+}
+
+
+/*
+  Arrow =( _position._x - _target._x,_position._y - _target._y,_position._z - _target._z);
+
+  for (int i = 0,i < MaxPick,++i)
+  for (int j = 0,j < MaxPick,++j)
+  {
+      (chunks(x + i,y + j ).getX() - alpha*_target._x)*(chunks(x + i,y + j ).getX() - alpha*_target._x)+
+      (chunks(x + i,y + j ).getY() - alpha*_target._y)*(chunks(x + i,y + j ).getY() - alpha*_target._y)+
+      (chunks(x + i,y + j ).getZ() - alpha*_target._z)*(chunks(x + i,y + j ).getZ() - alpha*_target._z);
+  }
+
+
+
+
+
 
 }
+*/

@@ -264,7 +264,7 @@ namespace Architecte
     //Initground(coords,4);
     smoothGround(coords);
     Mountain(coords,where,0,0,200,2000);
-    Mountain(coords,where,2,0,-50,2000);
+    Mountain(coords,where,2,0,150,2000);
 
 
 
@@ -351,8 +351,8 @@ void Forest(Chunk::chunk_coord_type TreeList,int size,int Density)
 
   void Mountain(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where,int PeakX,int PeakY,double PeakZ,double R_ext)
   {
-      double alpha = 1;
-      double beta = 1;
+      double alpha = 0.001;
+      double beta = 0.001;
 
       double Distance = sqrt(( where.first - PeakX )*( where.first - PeakX ) +  ( where.second - PeakY )*( where.second - PeakY ));
 

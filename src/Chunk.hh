@@ -5,6 +5,7 @@
 # include "Core/PairHash.hh"
 # include "Core/Array2D.hh"
 
+# include <string>
 # include <vector>
 # include <unordered_map>
 
@@ -182,9 +183,25 @@ public:
   */
   void createRealCoord(const chunk_coord_type& coords);
 
+  /*!
+  ** Save all points to a file.
+  **
+  ** @param coords The array containing the points to save.
+  ** @return If writing to the file succeed.
+  */
+  bool saveToFile(const chunk_coord_type& coords) const;
+
+  /*!
+  ** Load all points from a file.
+  **
+  ** @return If loading points succeed.
+  */
+  bool loadFromFile();
+
 private:
   int _x;
   int _y;
+  std::string _filename;
   chunk_mesh_type _chunk;
   fast_access_chunk_type _fast_access_chunk;
 };

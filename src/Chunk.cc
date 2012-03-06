@@ -1,9 +1,15 @@
 #include "Chunk.hh"
+
 #include <tuple>
+#include <fstream>
+#include <sstream>
 
 Chunk::Chunk(int x, int y)
     : _x(x), _y(y)
 {
+  std::ostringstream buff;
+  buff << "data/map/chunk_" << x << "_" << y << ".map";
+  _filename = buff.str();
 }
 
 Chunk::~Chunk()
@@ -156,3 +162,47 @@ Chunk::createRealCoord(const chunk_coord_type& coords)
 
   meshAllCoord();
 }
+
+bool
+Chunk::saveToFile(const chunk_coord_type& coords) const
+{
+  assert(coords.size() == SIZE * SIZE && "Number of points is incorrect!");
+  std::ofstream file(_filename.c_str(), std::ios::binary);
+  if (!file)
+    return false;
+
+  int i = 0;
+  double* v = new double[SIZE * SIZE];
+  for (int x = 0; x < SIZE; ++x)
+    for (int y = 0; y < SIZE; ++y)
+      v[i++] = coords(x, y);
+
+  file.write(reinterpret_cast<const char*>(v), SIZE * SIZE * sizeof(double));
+  delete[] v;
+
+  return true;
+}
+
+bool
+Chunk::loadFromFile()
+{
+  std::ifstream file(_filename.c_str(), std::ios::binary);
+  if (!file)
+    return false;
+
+  double* v = new double[SIZE * SIZE];
+  file.read(reinterpret_cast<char*>(v), SIZE * SIZE * sizeof(double));
+
+  int i = 0;
+  chunk_coord_type coords;
+  for (int x = 0; x < SIZE; ++x)
+    for (int y = 0; y < SIZE; ++y)
+      coords(x, y) = v[i++];
+  delete[] v;
+
+  createRealCoord(coords);
+
+  return true;
+}
+
+

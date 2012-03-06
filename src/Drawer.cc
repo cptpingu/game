@@ -168,16 +168,29 @@ namespace
     glBindTexture(GL_TEXTURE_2D, textures["veg1"]);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
     glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
     glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
 
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
     glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 
     ShadersManager& shaders = ShadersManager::getInstance();
@@ -193,10 +206,12 @@ namespace
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      glMultiTexCoord2fARB(GL_TEXTURE0, (((*it)->getY()) / Chunk::SIZE),
-                           1.0 - ((*it)->getX()) / Chunk::SIZE);
-      glMultiTexCoord2fARB(GL_TEXTURE1, (((*it)->getY()) / Chunk::SIZE),
-                           1.0 - ((*it)->getX()) / Chunk::SIZE);
+      const double xTex = ((*it)->getY() / Chunk::SIZE) * 10;
+      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 10;
+      glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
+      glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
+      glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);
+
       glVertex3f((*it)->getX() + coord.first * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
                  (*it)->getY() + coord.second * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
                  (*it)->getZ());

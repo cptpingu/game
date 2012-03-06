@@ -23,7 +23,7 @@ public:
     virtual void setSpeed(double speed);
     virtual void setSensivity(double sensivity);
 
-    virtual void setPosition(const Vector3D & position);
+    virtual void setPosition(const Vector3D& position);
 
     virtual void look();
 

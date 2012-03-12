@@ -158,7 +158,7 @@ public:
   ** @param z Z coord.
   ** @return A pointer on coord, or 0 if not found.
   */
-  Coord* getCoord(double x, double y, double z) const;
+  Coord* getCoord(int x, int y) const;
 
   /*!
   ** Get coords list.

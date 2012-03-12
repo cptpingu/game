@@ -97,9 +97,9 @@ Chunk::cend() const
 int
 Chunk::absoluteToChunkCoord(double absolute)
 {
-  //const int sign = absolute < 0 ? -1 : 1;
+  const int sign = absolute < 0 ? -1 : 1;
 
-  return absolute / (Chunk::SIZE-1);// + sign * 0.5;
+  return absolute / (Chunk::SIZE-1) + sign * 0.5;
 }
 
 int
@@ -119,7 +119,7 @@ Chunk::operator()(double x, double y) const
 }
 
 Chunk::Coord*
-Chunk::getCoord(double x, double y, double z) const
+Chunk::getCoord(int x, int y) const
 {
   auto end = _chunk.cend();
   for (auto it = _chunk.cbegin(); it != end; ++it)

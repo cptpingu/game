@@ -11,14 +11,27 @@
 class Drawer
 {
 public:
-    Drawer();
+  /*!
+  ** Draw the chunks.
+  **
+  ** @param chunks The chunks to draw.
+  ** @param selectedCoord The selected coord (or 0 if nothing is selected).
+  */
+  void drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedCoord) const;
 
-    /*!
-    ** Draw the map.
-    **
-    ** @param map The map to draw.
-    */
-    void drawMap(const Map &map) const;
+  /*!
+  ** Draw the blocks.
+  **
+  ** @param blocks The blocks to draw.
+  */
+  void drawBlocks(const Map::blocks_type& blocks) const;
+
+  /*!
+  ** Draw the trees.
+  **
+  ** @param trees The trees to draw.
+  */
+  // void drawTrees(const Architecte::Model& trees) const;
 };
 
 #endif /* !DRAWER_HH_ */

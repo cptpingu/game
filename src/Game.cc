@@ -93,10 +93,11 @@ Game::play()
 
     _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
     _camera.animate(elapsed_time);
+    Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
 
     drawAxis(100);
 
-    drawGL();
+    drawGL(pickedCoord);
 
     stop_time = SDL_GetTicks();
     if ((stop_time - last_time) < time_per_frame)
@@ -155,7 +156,7 @@ Game::loadShaders()
 }
 
 void
-Game::drawGL()
+Game::drawGL(const Chunk::Coord* selectedCoord)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -163,6 +164,10 @@ Game::drawGL()
   glLoadIdentity();
 
   _camera.look();
+
+  _drawer.drawBlocks(_map.getBlocks());
+  _drawer.drawChunks(_map.getChunks(), selectedCoord);
+  showCoord(selectedCoord);
 
   // glEnable(GL_LIGHTING);
   // glEnable(GL_LIGHT0);
@@ -194,7 +199,7 @@ Game::drawGL()
   // float Light1Dir[3] = {0.0f, 0.0f, -1.0f};
   // glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
 
-  _drawer.drawMap(_map);
+
   // glEnable(GL_FOG) ;
   // GLfloat fogcolor[4] = {0.5, 0.5, 0.5, 1} ;
   // GLint fogmode = GL_LINEAR;//GL_EXP ;
@@ -204,9 +209,7 @@ Game::drawGL()
   // glFogf(GL_FOG_START, 10.0) ;
   // glFogf(GL_FOG_END, 20.0) ;
 
-
   //glFrustum( 5,   5,   5,   5,   2,  10);
-
 
   // glColor3f(1.0f,1.0f,1.0f);
   // TextureManager& textures = Singleton<TextureManager>::getInstance();
@@ -230,7 +233,6 @@ Game::drawGL()
   // glEnable(GL_BLEND);
   // glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 
-
   // glBindTexture(GL_TEXTURE_2D, textures["eau"]);
   // glBegin(GL_QUADS);
   // glTexCoord2f(0,0);
@@ -248,33 +250,28 @@ Game::drawGL()
   // // désactive transparence
   // glDisable(GL_BLEND);
 
-  showCoord();
-
-
   glFlush();
   SDL_GL_SwapBuffers();
 }
 
 void
-Game::showCoord()
+Game::showCoord(const Chunk::Coord* selectedCoord)
 {
   auto pos = _camera.getCurrentPosition();
   std::stringstream buff;
 
-  Chunk::Coord* coord = _camera.picking(_map.getChunks());
   Vector3D look = _camera.getCurrentLook();
   const int x = Chunk::absoluteToChunkCoord(pos._x);
   const int y = Chunk::absoluteToChunkCoord(pos._y);
   buff << "World coord: " << pos._x << " " << pos._y << " " << pos._z << "\n"
        << "Chunk coord: " << x << " " << y << "\n"
        << "Look: " << look._x << " " << look._y << " " << look._z << "\n";
-  if (coord)
-    buff << "Pick: " << coord->getX() << " "
-         << coord->getY() << " "
-         << coord->getZ() << "\n";
+  if (selectedCoord)
+    buff << "Pick: " << selectedCoord->getX() << " "
+         << selectedCoord->getY() << " "
+         << selectedCoord->getZ() << "\n";
 
   TextureManager& textures = TextureManager::getInstance();
-
   std::string line;
   int row = 0;
   while (std::getline(buff, line))

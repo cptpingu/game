@@ -39,7 +39,7 @@ fi
 
 OS=`uname -s`
 echo "OS=$OS" > Makefile.rules
-CXX=/usr/bin/g++
+CXX=g++
 
 SRC=`cat Game.pro | grep -E "src/.*\.cc" | sed 's/src\///'`
 HEADER=`cat Game.pro | grep -E "src/.*\.h(h|xx)" | sed 's/src\///'`

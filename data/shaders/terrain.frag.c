@@ -4,6 +4,8 @@ uniform sampler2D tex0;
 uniform sampler2D tex1;
 uniform sampler2D tex2;
 
+uniform vec3 selectedCoord;
+
 varying vec4 pos;
 varying vec4 rawPos;
 varying vec3 normal;

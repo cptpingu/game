@@ -38,8 +38,8 @@ public:
 private:
   void loadtextures();
   void loadShaders();
-  void drawGL();
-  void showCoord();
+  void drawGL(const Chunk::Coord* selectedCoord);
+  void showCoord(const Chunk::Coord* selectedCoord);
 
 private:
   FreeFlyCamera  _camera;

@@ -104,29 +104,40 @@ namespace
     glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex0"), 0);
     glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex1"), 1);
     glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex2"), 2);
+    GLuint attrib = glGetAttribLocation(shaders.get("terrain"), "selected");
 
     /*if (selectedCoord)
       glUniform3f(glGetUniformLocation(shaders.get("terrain"), "selectedCoord"),
                   selectedCoord->getX(), selectedCoord->getY(), selectedCoord->getZ());
 */
-    glPushMatrix();
+    int selectX = 0;
+    int selectY = 0;
+    if (selectedCoord)
+    {
+      selectX = selectedCoord->getX();
+      selectY = selectedCoord->getY();
+    }
 
+    glPushMatrix();
     glBegin(GL_TRIANGLE_STRIP);
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      const double xTex = ((*it)->getY() / Chunk::SIZE) * 10;
-      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 10;
+      const double xTex = ((*it)->getY() / Chunk::SIZE) * 2;
+      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 2;
       glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);
 
-      glVertex3f((*it)->getX() + coord.first * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
-                 (*it)->getY() + coord.second * (Chunk::SIZE - 1) - (Chunk::SIZE / 2),
-                 (*it)->getZ());
+      const double realX = (*it)->getX() + coord.first * (Chunk::SIZE - 1) - (Chunk::SIZE / 2);
+      const double realY = (*it)->getY() + coord.second * (Chunk::SIZE - 1) - (Chunk::SIZE / 2);
+      const double realZ = (*it)->getZ();
+      glVertexAttrib1f(attrib, /*selectedCoord &&*/
+                       realX - 2 < selectX && selectX < realX + 2 &&
+                       realY - 2 < selectY && selectY < realY + 2);
+      glVertex3f(realX, realY, realZ);
     }
     glEnd();
-
     glPopMatrix();
 
     shaders.disable();

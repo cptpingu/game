@@ -1,8 +1,12 @@
 #version 120
 
+attribute float selected;
+
 varying vec4 pos;
 varying vec4 rawPos;
 varying vec3 normal;
+
+varying float select;
 
 void main()
 {
@@ -15,4 +19,6 @@ void main()
     gl_TexCoord[0] = gl_MultiTexCoord0;
     gl_TexCoord[1] = gl_MultiTexCoord1;
     gl_TexCoord[2] = gl_MultiTexCoord2;
+
+    select = selected;
 }

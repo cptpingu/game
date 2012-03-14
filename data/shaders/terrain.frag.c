@@ -4,11 +4,11 @@ uniform sampler2D tex0;
 uniform sampler2D tex1;
 uniform sampler2D tex2;
 
-uniform vec3 selectedCoord;
-
 varying vec4 pos;
 varying vec4 rawPos;
 varying vec3 normal;
+
+varying float select;
 
 float[3] computeTextureCoeff(float height)
 {
@@ -58,6 +58,10 @@ void main()
   gl_FragColor.x = color0.x * coeffs[0] + color1.x * coeffs[1] + color2.x * coeffs[2];
   gl_FragColor.y = color0.y * coeffs[0] + color1.y * coeffs[1] + color2.y * coeffs[2];
   gl_FragColor.z = color0.z * coeffs[0] + color1.z * coeffs[1] + color2.z * coeffs[2];
+
+  gl_FragColor.x += select / 5;
+  gl_FragColor.y += select / 5;
+  gl_FragColor.z += select / 5;
 
   gl_FragColor.w = 1.0;
 }

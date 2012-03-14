@@ -174,8 +174,6 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
   auto chunk = chunks.find(std::make_pair(Chunk::absoluteToChunkCoord(_position._x),Chunk::absoluteToChunkCoord(_position._y)));
   /*assert(chunk != chunks.cend() && "Can't found corresponding chunk!");*/
 
-
-
   int MaxPick = 20;
 
   int newX =-1;
@@ -213,7 +211,7 @@ std::cout << Nbx << " " <<  Nby << std::endl;
     Distance = sqrt((_position._x - x*signeX)*(_position._x - x*signeX) +
                     (_position._y - y*signeY)*(_position._y - y*signeY));
 
-   //LocalZ = Distance*(_forward._z*MaxPick)/sqrt(_forward._x*MaxPick*_forward._x*MaxPick+_forward._y*MaxPick*_forward._y*MaxPick) + _position._z;
+
    LocalZ = Distance*(_forward._z*MaxPick)/sqrt((_position._x - Nbx)*(_position._x - Nbx) + (_position._y - Nby)*(_position._y - Nby)) + _position._z;
 
    std::cout << LocalZ << " " << _position._z << std::endl;

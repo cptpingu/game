@@ -105,10 +105,10 @@ namespace
     glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex1"), 1);
     glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex2"), 2);
 
-    if (selectedCoord)
+    /*if (selectedCoord)
       glUniform3f(glGetUniformLocation(shaders.get("terrain"), "selectedCoord"),
                   selectedCoord->getX(), selectedCoord->getY(), selectedCoord->getZ());
-
+*/
     glPushMatrix();
 
     glBegin(GL_TRIANGLE_STRIP);

@@ -17,7 +17,7 @@
 class Chunk
 {
 public:
-  static const int SIZE = 65;
+  static const int SIZE = 129;
   static const int QUALITY = 4;
   static const int MIN_HEIGHT = -100;
   static const int MAX_HEIGHT = 100;
@@ -82,8 +82,8 @@ public:
   ** Add a new points into the chunk system.
   **
   ** @param x Horizontal coordinate.
-  ** @param y Vertical coordinate.
-  ** @param z Depth coordinate.
+  ** @param y Depth coordinate.
+  ** @param z Vertical coordinate.
   */
   void add(double x, double y, double z);
 

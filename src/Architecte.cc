@@ -115,10 +115,6 @@ namespace Architecte
                          1
                         );*/
 
-
-
-
-
   }
   }
 
@@ -219,23 +215,18 @@ namespace Architecte
     assert(whereX + (toX - fromX) <= Chunk::SIZE && "X out of bound");
     assert(whereY + (toY - fromY) <= Chunk::SIZE && "Y out of bound");
 
-
     int posX = whereX;
     for (int x = fromX; x < toX; ++x, ++posX)
     {
-
       int posY = whereY;
       for (int y = fromY; y < toY; ++y, ++posY)
         coords(posX, posY) = neighborChunk(x, y);
-
-
-
     }
   }
 
   void Initground(Chunk::chunk_coord_type& coords,int Quality)
     {
-       /*int subg = (Chunk::SIZE-1)/Quality;
+     /*  int subg = (Chunk::SIZE-1)/Quality;
       for (int i = 0; i < Quality; ++i)
         for (int j = 0; j < Quality; ++j)
             coords(i * subg, j * subg) = Random::rand()%Chunk::MAX_HEIGHT;
@@ -250,45 +241,30 @@ namespace Architecte
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks)
   {
-  //int a = Random::rand()%100;
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        {
-          //coords(i, j) = log(1+Random::rand()% Chunk::SIZE);
-          //coords(i, j) = a;
-          coords(i, j) = Random::rand()% Chunk::MAX_HEIGHT;
+        {coords(i,j) = Random::rand()% Chunk::MAX_HEIGHT;}
 
-
-        }
-
-    //Initground(coords,4);
     smoothGround(coords);
-    Mountain(coords,where,0,0,200,2000);
+
+   /* Mountain(coords,where,0,0,200,2000);
     Mountain(coords,where,2,0,150,2000);
-
-
-
-
-
+   */
 
     // Top
     auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));
     if (neighborChunk != chunks.end())
       fillCoords(coords, 0, Chunk::SIZE-1, *neighborChunk->second, 0, Chunk::SIZE, 0, 1);
 
-
     // Left
     neighborChunk = chunks.find(std::make_pair(where.first - 1, where.second));
     if (neighborChunk != chunks.end())
       fillCoords(coords, 0, 0, *neighborChunk->second, Chunk::SIZE - 1, Chunk::SIZE, 0, Chunk::SIZE);
 
-
     // Right
     neighborChunk = chunks.find(std::make_pair(where.first + 1, where.second));
     if (neighborChunk != chunks.end())
       fillCoords(coords, Chunk::SIZE - 1, 0, *neighborChunk->second, 0, 1, 0, Chunk::SIZE);
-
-
 
     // Bottom
     neighborChunk = chunks.find(std::make_pair(where.first, where.second - 1));

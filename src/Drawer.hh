@@ -26,6 +26,8 @@ public:
   */
   void drawBlocks(const Map::blocks_type& blocks) const;
 
+
+
   /*!
   ** Draw the trees.
   **

@@ -17,7 +17,7 @@ public:
     virtual void OnMouseButton(const SDL_MouseButtonEvent & event);
     virtual void OnKeyboard(const SDL_KeyboardEvent & event);
 
-    virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
+   virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
 
     virtual void animate(Uint32 timestep);
     virtual void setSpeed(double speed);
@@ -54,6 +54,8 @@ protected:
     double _phi;
 
     void VectorsFromAngles();
+    std::pair<int, int> innerCoordChunktoAbsolute(const std::pair<int, int>& coord,
+                         const std::pair<int, int>& selectedCoord);
     //void Init();
 };
 

@@ -5,7 +5,7 @@
 #include "ShadersManager.hh"
 #include "Opengl.hh"
 #include "Architecte.hh"
-
+#include "iostream"
 
 #include <vector>
 #include <sstream>
@@ -14,8 +14,21 @@
 //Il n'est pas censé échanger quoi que ce soit avec le reste , c'est le côté open GL du programme.
 namespace
 {
+
+/*std::pair<int, int>
+AbsolutetoinnerCoordChunk(int x,int y,
+                     const std::pair<int, int>& coord)
+{
+    std::pair<int, int> Abs;
+      Abs.first = x%(Chunk::SIZE-1) + (2*(x < (Chunk::SIZE-1)/2)-1)*(Chunk::SIZE-1)/2;
+      Abs.second = y%(Chunk::SIZE-1) + (2*(y < (Chunk::SIZE-1)/2)-1)*(Chunk::SIZE-1)/2;
+}*/
+
+
+
   void drawChunk(const std::pair<int, int>& coord, const Chunk& chunk,
                  const Chunk::Coord* selectedCoord)
+
   {
 
     //    glEnable(GL_LIGHTING);
@@ -114,8 +127,17 @@ namespace
     int selectY = 0;
     if (selectedCoord)
     {
+
       selectX = selectedCoord->getX();
       selectY = selectedCoord->getY();
+      /*
+    selectX = selectCoord.first;
+    selectY = selectCoord.second;
+
+
+    */
+
+
     }
 
     glPushMatrix();
@@ -123,18 +145,42 @@ namespace
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      const double xTex = ((*it)->getY() / Chunk::SIZE) * 2;
-      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 2;
+      const double xTex = ((*it)->getY() / Chunk::SIZE) * 15;
+      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 15;
       glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);
 
-      const double realX = (*it)->getX() + coord.first * (Chunk::SIZE - 1) - (Chunk::SIZE / 2);
-      const double realY = (*it)->getY() + coord.second * (Chunk::SIZE - 1) - (Chunk::SIZE / 2);
+      /*double realX=0;
+      double realY=0;*/
+
+
+
+
+      /*if(coord.first == 0)
+        realX = (*it)->getX() - (Chunk::SIZE-1)/2;
+
+      if(coord.second == 0)
+       realY = (*it)->getY() - (Chunk::SIZE-1)/2;
+
+      if(coord.first > 0)
+        realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() - (Chunk::SIZE-1)/2;
+
+      else
+        realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() + (Chunk::SIZE-1)/2;
+
+      if(coord.second > 0)
+        realY = coord.second*(Chunk::SIZE-1) + (*it)->getY() - (Chunk::SIZE-1)/2 ;
+
+      else
+        realY = coord.second*(Chunk::SIZE-1) + (*it)->getY() + (Chunk::SIZE-1)/2;*/
+
+      const double realX = (*it)->getX();
+      const double realY = (*it)->getY();
       const double realZ = (*it)->getZ();
       glVertexAttrib1f(attrib, /*selectedCoord &&*/
-                       realX - 2 < selectX && selectX < realX + 2 &&
-                       realY - 2 < selectY && selectY < realY + 2);
+                       realX - 15 < selectX   && selectX  < realX + 15 &&
+                       realY - 15 < selectY  && selectY  < realY + 15);
       glVertex3f(realX, realY, realZ);
     }
     glEnd();
@@ -147,6 +193,17 @@ namespace
     //    glDisable(GL_NORMALIZE);
 
   }
+
+
+
+
+
+
+
+
+
+
+
 } // namespace
 
 void

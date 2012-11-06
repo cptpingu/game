@@ -108,7 +108,7 @@ Chunk::absoluteToChunkCoord(double absolute)
 int
 absoluteToTextureCoord(double absolute)
 {
-  return absolute - Chunk::SIZE / 2;
+  return absolute - (Chunk::SIZE-1) / 2;
 }
 
 double

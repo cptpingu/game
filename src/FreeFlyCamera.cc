@@ -47,8 +47,8 @@ FreeFlyCamera::FreeFlyCamera()
   _keystates[_keyconf["strafe_right"]] = false;
   _keystates[_keyconf["boost"]] = false;
 
-  // SDL_WM_GrabInput(SDL_GRAB_ON);
-  // SDL_ShowCursor(SDL_DISABLE);
+   SDL_WM_GrabInput(SDL_GRAB_ON);
+   SDL_ShowCursor(SDL_DISABLE);
 }
 
 FreeFlyCamera::~FreeFlyCamera()
@@ -190,113 +190,123 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 {
 
   auto chunk = chunks.find(std::make_pair(Chunk::absoluteToChunkCoord(_position._x),Chunk::absoluteToChunkCoord(_position._y)));
-  /*assert(chunk != chunks.cend() && "Can't found corresponding chunk!");*/
 
-  int MaxPick = 20;
 
-  int newX =-1;
-  int newY =-1;
+
+  int MaxPick = 50;
+  int Nbx = fabs(MaxPick*_forward._x)+1;
+  int Nby = fabs(MaxPick*_forward._y)+1;
+
+  int newX = 0;
+  int newY = 0;
+
 
 
   int x0 = static_cast<int>(_position._x)%(Chunk::SIZE-1);
   int y0 = static_cast<int>(_position._y)%(Chunk::SIZE-1);
 
+  x0 = (Chunk::SIZE-1)/2*(x0 <0) + x0 + ((Chunk::SIZE-1)/2)*(1-((x0 / (Chunk::SIZE-1)/2)) )*(x0>=0) + ((Chunk::SIZE-1)/2)*(-(x0 / (Chunk::SIZE-1)/2) )*(x0<0);
 
+  y0 = (Chunk::SIZE-1)/2*(y0 <0) + y0   + ((Chunk::SIZE-1)/2)*(1-((y0 / (Chunk::SIZE-1)/2)) )*(y0>=0) + ((Chunk::SIZE-1)/2)*(-(y0 / (Chunk::SIZE-1)/2) )*(y0<0);
 
+   std::cout << _position._x << std::endl;
+   std::cout << _position._y << std::endl;
+   std::cout << _position._z << std::endl;
 
-  if ( x0 >0)
-  {
-  if( x0 < (Chunk::SIZE-1)/2)
-  {x0 = x0 + (Chunk::SIZE-1)/2;}
-  else
-  {x0 = x0 - (Chunk::SIZE-1)/2;}
-  }
-  else
-  {
-  if( x0 > -(Chunk::SIZE-1)/2)
-  {
-  x0 = x0 + (Chunk::SIZE-1)/2;
-  }
-  else
-  {
-  x0 = x0 + (Chunk::SIZE-1) +(Chunk::SIZE-1)/2;
-  }
-  }
-
-  if ( y0 >0)
-  {
-  if( y0 < (Chunk::SIZE-1)/2)
-  {y0 = y0 + (Chunk::SIZE-1)/2;}
-  else
-  {y0 = y0 - (Chunk::SIZE-1)/2;}
-  }
-  else
-  {
-  if( y0 > -(Chunk::SIZE-1)/2)
-  {
-  y0 = y0 + (Chunk::SIZE-1)/2;
-  }
-  else
-  {
-  y0 = y0 + (Chunk::SIZE-1) +(Chunk::SIZE-1)/2;
-  }
-  }
-
-  int Nbx = fabs(MaxPick*_forward._x)+1;
-  int Nby = fabs(MaxPick*_forward._y)+1;
 
   int signeX = (_forward._x > 0) - (_forward._x < 0);
   int signeY = (_forward._y > 0) - (_forward._y < 0);
 
-  double LocalZ;
-  double Distance;
-  double LastBest = 2000;//sqrt(_forward._x*MaxPick*_forward._x*MaxPick+_forward._y*MaxPick*_forward._y*MaxPick);
+ int Vx = 0;
+ int Vy = 0;
+ double Vz = 0;
 
- std::cout << "Les bornes sont" << std::endl;
- std::cout << Nbx*signeX << " " <<  Nby*signeY << std::endl;
-
- std::cout << "Point de départ" << std::endl;
- std::cout <<x0 << " " << y0 << std::endl;
-
-  for (int x = 0;x < Nbx;++x)
-  for (int y = 0;y < Nby;++y)
-  {
-
-    Distance = sqrt((_position._x  + x*signeX)*(_position._x  + x*signeX) +
-                    (_position._y  + y*signeY)*(_position._y  + y*signeY));
-
-
-   LocalZ = Distance/sqrt((_position._x  + Nbx*signeX)*(_position._x + Nbx*signeX) + (_position._y + Nby*signeY)*(_position._y + Nby*signeY))*(_forward._z*MaxPick) + _position._z;
-
-   if( (LocalZ < (*chunk->second)(x0 + x*signeX, y0 + y*signeY)) || (LocalZ < (*chunk->second)(x0 + (x+1)*signeX, y0 + y*signeY)) ||  (LocalZ < (*chunk->second)(x0 + x*signeX, y0 + (y+1)*signeY)) || (LocalZ < (*chunk->second)(x0 + (x+1)*signeX, y0 + (y+1)*signeY)))
-
+ if (Nbx>Nby)
+ {
+   for (int x = 0;x < Nbx;++x)
     {
-    if (Distance < LastBest)
-    {
-     LastBest = Distance;
-     newX = x0 + x*signeX;
-     newY = y0 + y*signeY;
-     }
+
+       Vy = static_cast<int>(signeX*x*(_forward._y/ _forward._x));
+       Vz = _forward._z * sqrt( x*x + (Vy*_forward._y/_forward._x)*(Vy*_forward._y/_forward._x));
+
+
+
+       if((x0 + x*signeX) > Chunk::SIZE-1 || (x*signeX + x0) < 0 || (y0 + Vy) < 0 || (y0 + Vy) > Chunk::SIZE-1)
+       {
+       chunk = chunks.find(std::make_pair(Chunk::absoluteToChunkCoord(_position._x + x*signeX),Chunk::absoluteToChunkCoord(_position._y + Vy)));
+
+       int x0 = static_cast<int>(_position._x + x*signeX)%(Chunk::SIZE-1);
+       int y0 = static_cast<int>(_position._y + Vy)%(Chunk::SIZE-1);
+
+       x0 = (Chunk::SIZE-1)/2*(x0 <0) + x0 + ((Chunk::SIZE-1)/2)*(1-((x0 / (Chunk::SIZE-1)/2)) )*(x0>=0) + ((Chunk::SIZE-1)/2)*(-(x0 / (Chunk::SIZE-1)/2) )*(x0<0);
+
+       y0 = (Chunk::SIZE-1)/2*(y0 <0) + y0   + ((Chunk::SIZE-1)/2)*(1-((y0 / (Chunk::SIZE-1)/2)) )*(y0>=0) + ((Chunk::SIZE-1)/2)*(-(y0 / (Chunk::SIZE-1)/2) )*(y0<0);
+
+
+       Vy = 0;
+       Nbx = Nbx - x;
+       x = 0;
+       }
+
+       if( _position._z + Vz <(*chunk->second)(x0 + x*signeX, y0 + Vy))
+       {
+       newX = x0 + x*signeX;
+       newY = y0 + Vy;
+
+       break;
+       }
+       else
+       {
+       newX = x0;
+       newY = y0;
+       }
+    }
+ }
+ else
+ {
+     for (int y = 0;y < Nby;++y)
+     {
+        Vx = static_cast<int>(signeY*y*(_forward._x/ _forward._y));
+        Vz = _forward._z * sqrt( (Vx*_forward._x / _forward._y)*(Vx*_forward._x / _forward._y) + y*y);
+
+
+        if((x0 + Vx) > Chunk::SIZE-1 || (Vx + x0) < 0 || (y0 + y*signeY) < 0 || (y0 + y*signeY) > Chunk::SIZE-1)
+        {
+        chunk = chunks.find(std::make_pair(Chunk::absoluteToChunkCoord(_position._x + Vx),Chunk::absoluteToChunkCoord(_position._y + y*signeY)));
+
+        int x0 = static_cast<int>(_position._x + Vx)%(Chunk::SIZE-1);
+        int y0 = static_cast<int>(_position._y + y*signeY)%(Chunk::SIZE-1);
+
+        x0 = (Chunk::SIZE-1)/2*(x0 <0) + x0 + ((Chunk::SIZE-1)/2)*(1-((x0 / (Chunk::SIZE-1)/2)) )*(x0>=0) + ((Chunk::SIZE-1)/2)*(-(x0 / (Chunk::SIZE-1)/2) )*(x0<0);
+
+        y0 = (Chunk::SIZE-1)/2*(y0 <0) + y0   + ((Chunk::SIZE-1)/2)*(1-((y0 / (Chunk::SIZE-1)/2)) )*(y0>=0) + ((Chunk::SIZE-1)/2)*(-(y0 / (Chunk::SIZE-1)/2) )*(y0<0);
+
+        Vx = 0;
+
+        Nby = Nby - y;
+        y = 0;
+        }
+
+
+
+      if( _position._z + Vz <(*chunk->second)(x0 + Vx, y0 + y*signeY))
+      {
+       newX = x0 + Vx;
+       newY = y0 + y*signeY;
+
+       break;
+      }
+      else
+      {
+       newX = x0;
+       newY = y0;
+      }
+
      }
 }
+ std::cout << "Coord" << std::endl;
+ std::cout <<newX << " " << newY << std::endl;
+return((*chunk->second).getCoord(newX,newY));
 
-
-  if(newX == -1 && newY == -1)
-  {return 0;}
-
-    return((*chunk->second).getCoord(newX,newY));
-    /*
-   SelectedCoord  = std::make_pair(newX,newY);
-
-return(innerCoordChunktoAbsolute(std::make_pair(Chunk::absoluteToChunkCoord(_position._x),Chunk::absoluteToChunkCoord(_position._y),
-     selectedCoord));*/
-
-
-
-  /*auto chunk = chunks.find(std::make_pair(x, y));
-  assert(chunk != chunks.cend() && "Can't found corresponding chunk!");
-  return chunk->second->getCoord(x, y, _target._z);
-
-*/
 
 }

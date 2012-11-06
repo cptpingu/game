@@ -175,12 +175,12 @@ AbsolutetoinnerCoordChunk(int x,int y,
       else
         realY = coord.second*(Chunk::SIZE-1) + (*it)->getY() + (Chunk::SIZE-1)/2;*/
 
-      const double realX = (*it)->getX();
-      const double realY = (*it)->getY();
-      const double realZ = (*it)->getZ();
+      const double realX = (*it)->getX() -Chunk::SIZE/2;
+      const double realY = (*it)->getY() -Chunk::SIZE/2;
+      const double realZ = (*it)->getZ() ;//-Chunk::SIZE/2;
       glVertexAttrib1f(attrib, /*selectedCoord &&*/
-                       realX - 15 < selectX   && selectX  < realX + 15 &&
-                       realY - 15 < selectY  && selectY  < realY + 15);
+                       realX - 5 < selectX -Chunk::SIZE/2  && selectX -Chunk::SIZE/2 < realX + 5 &&
+                       realY - 5 < selectY -Chunk::SIZE/2 && selectY -Chunk::SIZE/2  < realY + 5);
       glVertex3f(realX, realY, realZ);
     }
     glEnd();

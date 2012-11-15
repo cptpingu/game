@@ -209,9 +209,9 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 
   y0 = (Chunk::SIZE-1)/2*(y0 <0) + y0   + ((Chunk::SIZE-1)/2)*(1-((y0 / (Chunk::SIZE-1)/2)) )*(y0>=0) + ((Chunk::SIZE-1)/2)*(-(y0 / (Chunk::SIZE-1)/2) )*(y0<0);
 
-   std::cout << _position._x << std::endl;
+   /*std::cout << _position._x << std::endl;
    std::cout << _position._y << std::endl;
-   std::cout << _position._z << std::endl;
+   std::cout << _position._z << std::endl;*/
 
 
   int signeX = (_forward._x > 0) - (_forward._x < 0);
@@ -221,7 +221,12 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
  int Vy = 0;
  double Vz = 0;
 
- if (Nbx>Nby)
+
+ std::cout << _forward._y << std::endl;
+ std::cout << _forward._x << std::endl;
+
+ if (fabs(_forward._x) >fabs(_forward._y))
+ //if (Nbx>Nby)
  {
    for (int x = 0;x < Nbx;++x)
     {
@@ -233,6 +238,7 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 
        if((x0 + x*signeX) > Chunk::SIZE-1 || (x*signeX + x0) < 0 || (y0 + Vy) < 0 || (y0 + Vy) > Chunk::SIZE-1)
        {
+       std::cout << "out" << std::endl;
        chunk = chunks.find(std::make_pair(Chunk::absoluteToChunkCoord(_position._x + x*signeX),Chunk::absoluteToChunkCoord(_position._y + Vy)));
 
        int x0 = static_cast<int>(_position._x + x*signeX)%(Chunk::SIZE-1);
@@ -272,6 +278,7 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 
         if((x0 + Vx) > Chunk::SIZE-1 || (Vx + x0) < 0 || (y0 + y*signeY) < 0 || (y0 + y*signeY) > Chunk::SIZE-1)
         {
+        std::cout << "out" << std::endl;
         chunk = chunks.find(std::make_pair(Chunk::absoluteToChunkCoord(_position._x + Vx),Chunk::absoluteToChunkCoord(_position._y + y*signeY)));
 
         int x0 = static_cast<int>(_position._x + Vx)%(Chunk::SIZE-1);
@@ -304,8 +311,8 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 
      }
 }
- std::cout << "Coord" << std::endl;
- std::cout <<newX << " " << newY << std::endl;
+/* std::cout << "Coord" << std::endl;
+ std::cout <<newX << " " << newY << std::endl;*/
 return((*chunk->second).getCoord(newX,newY));
 
 

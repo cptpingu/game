@@ -179,8 +179,8 @@ AbsolutetoinnerCoordChunk(int x,int y,
       const double realY = (*it)->getY() -Chunk::SIZE/2;
       const double realZ = (*it)->getZ() ;//-Chunk::SIZE/2;
       glVertexAttrib1f(attrib, /*selectedCoord &&*/
-                       realX - 5 < selectX -Chunk::SIZE/2  && selectX -Chunk::SIZE/2 < realX + 5 &&
-                       realY - 5 < selectY -Chunk::SIZE/2 && selectY -Chunk::SIZE/2  < realY + 5);
+                       realX - 10 < selectX -Chunk::SIZE/2  && selectX -Chunk::SIZE/2 < realX + 10 &&
+                       realY - 10 < selectY -Chunk::SIZE/2 && selectY -Chunk::SIZE/2  < realY + 10);
       glVertex3f(realX, realY, realZ);
     }
     glEnd();

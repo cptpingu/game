@@ -145,8 +145,8 @@ AbsolutetoinnerCoordChunk(int x,int y,
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      const double xTex = ((*it)->getY() / Chunk::SIZE) * 15;
-      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 15;
+      const double xTex = ((*it)->getY() / Chunk::SIZE) * 2;
+      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 2;
       glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);

@@ -243,13 +243,13 @@ namespace Architecte
   {
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        {coords(i,j) = Random::rand()% Chunk::MAX_HEIGHT;}
+        {coords(i,j) = Random::rand()% 20;}
 
     smoothGround(coords);
 
-   /* Mountain(coords,where,0,0,200,2000);
+    Mountain(coords,where,0,0,200,2000);
     Mountain(coords,where,2,0,150,2000);
-   */
+
 
     // Top
     auto neighborChunk = chunks.find(std::make_pair(where.first, where.second + 1));

@@ -44,6 +44,22 @@ Game::play()
   last_time = SDL_GetTicks();
   for (;;)
   {
+      current_time = SDL_GetTicks();
+      elapsed_time = current_time - last_time;
+      last_time = current_time;
+
+      _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
+      _camera.animate(elapsed_time);
+      Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
+
+      drawAxis(100);
+
+      drawGL(pickedCoord);
+
+      stop_time = SDL_GetTicks();
+      if ((stop_time - last_time) < time_per_frame)
+        SDL_Delay(time_per_frame - (stop_time - last_time));
+
     while (SDL_PollEvent(&event))
     {
       switch (event.type)
@@ -61,6 +77,15 @@ Game::play()
                 takeScreenshot(buff.str().c_str());
                 break;
               }
+            case SDLK_f:
+              std::cout<< pickedCoord->getZ() << std::endl;
+              std::cout<< pickedCoord->getX() << std::endl;
+              std::cout<< pickedCoord->getY() << std::endl;
+
+              pickedCoord->setZ(pickedCoord->getZ()-5);
+
+
+              break;
             case SDLK_w:
               glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
               break;
@@ -86,22 +111,6 @@ Game::play()
           break;
       }
     }
-
-    current_time = SDL_GetTicks();
-    elapsed_time = current_time - last_time;
-    last_time = current_time;
-
-    _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
-    _camera.animate(elapsed_time);
-    Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
-
-    drawAxis(100);
-
-    drawGL(pickedCoord);
-
-    stop_time = SDL_GetTicks();
-    if ((stop_time - last_time) < time_per_frame)
-      SDL_Delay(time_per_frame - (stop_time - last_time));
   }
 }
 

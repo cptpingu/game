@@ -15,22 +15,9 @@
 namespace
 {
 
-/*std::pair<int, int>
-AbsolutetoinnerCoordChunk(int x,int y,
-                     const std::pair<int, int>& coord)
-{
-    std::pair<int, int> Abs;
-      Abs.first = x%(Chunk::SIZE-1) + (2*(x < (Chunk::SIZE-1)/2)-1)*(Chunk::SIZE-1)/2;
-      Abs.second = y%(Chunk::SIZE-1) + (2*(y < (Chunk::SIZE-1)/2)-1)*(Chunk::SIZE-1)/2;
-}*/
-
-
-
   void drawChunk(const std::pair<int, int>& coord, const Chunk& chunk,
                  const Chunk::Coord* selectedCoord)
-
   {
-
     //    glEnable(GL_LIGHTING);
     //    glEnable(GL_LIGHT0);
     //    glEnable(GL_NORMALIZE);
@@ -100,7 +87,6 @@ AbsolutetoinnerCoordChunk(int x,int y,
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
@@ -109,7 +95,6 @@ AbsolutetoinnerCoordChunk(int x,int y,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable("terrain");
@@ -125,19 +110,11 @@ AbsolutetoinnerCoordChunk(int x,int y,
 */
     int selectX = 0;
     int selectY = 0;
+
     if (selectedCoord)
     {
-
       selectX = selectedCoord->getX();
       selectY = selectedCoord->getY();
-      /*
-    selectX = selectCoord.first;
-    selectY = selectCoord.second;
-
-
-    */
-
-
     }
 
     glPushMatrix();
@@ -145,46 +122,26 @@ AbsolutetoinnerCoordChunk(int x,int y,
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      const double xTex = ((*it)->getY() / Chunk::SIZE) * 2;
-      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 2;
+      const double xTex = ((*it)->getY() / Chunk::SIZE) * 15;
+      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 15;
       glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
       glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);
 
-      /*double realX=0;
-      double realY=0;*/
+      const double realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() -Chunk::SIZE/2;
+      const double realY = coord.second*(Chunk::SIZE-1) + (*it)->getY()-Chunk::SIZE/2;
+      const double realZ = (*it)->getZ();
 
 
-
-
-      /*if(coord.first == 0)
-        realX = (*it)->getX() - (Chunk::SIZE-1)/2;
-
-      if(coord.second == 0)
-       realY = (*it)->getY() - (Chunk::SIZE-1)/2;
-
-      if(coord.first > 0)
-        realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() - (Chunk::SIZE-1)/2;
-
-      else
-        realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() + (Chunk::SIZE-1)/2;
-
-      if(coord.second > 0)
-        realY = coord.second*(Chunk::SIZE-1) + (*it)->getY() - (Chunk::SIZE-1)/2 ;
-
-      else
-        realY = coord.second*(Chunk::SIZE-1) + (*it)->getY() + (Chunk::SIZE-1)/2;*/
-
-      const double realX = (*it)->getX() -Chunk::SIZE/2;
-      const double realY = (*it)->getY() -Chunk::SIZE/2;
-      const double realZ = (*it)->getZ() ;//-Chunk::SIZE/2;
       glVertexAttrib1f(attrib, /*selectedCoord &&*/
-                       realX - 10 < selectX -Chunk::SIZE/2  && selectX -Chunk::SIZE/2 < realX + 10 &&
-                       realY - 10 < selectY -Chunk::SIZE/2 && selectY -Chunk::SIZE/2  < realY + 10);
+                       realX - 4 < selectX - Chunk::SIZE/2  && selectX - Chunk::SIZE/2 < realX + 4 &&
+                       realY - 4 < selectY - Chunk::SIZE/2 && selectY - Chunk::SIZE/2  < realY + 4);
       glVertex3f(realX, realY, realZ);
     }
     glEnd();
     glPopMatrix();
+
+
 
     shaders.disable();
 
@@ -193,16 +150,6 @@ AbsolutetoinnerCoordChunk(int x,int y,
     //    glDisable(GL_NORMALIZE);
 
   }
-
-
-
-
-
-
-
-
-
-
 
 } // namespace
 

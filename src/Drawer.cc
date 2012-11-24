@@ -165,7 +165,7 @@ void
 Drawer::drawBlocks(const Map::blocks_type& blocks) const
 {
   ShadersManager& shaders = ShadersManager::getInstance();
-  shaders.enable("terrain");
+  shaders.enable("texture");
 
   TextureManager& textures = TextureManager::getInstance();
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
@@ -258,9 +258,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     glEnd();
 
     glPopMatrix();
-
-    shaders.disable();
   }
+  shaders.disable();
 }
 
 // void

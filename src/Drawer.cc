@@ -164,6 +164,9 @@ Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedC
 void
 Drawer::drawBlocks(const Map::blocks_type& blocks) const
 {
+  ShadersManager& shaders = ShadersManager::getInstance();
+  shaders.enable("terrain");
+
   TextureManager& textures = TextureManager::getInstance();
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
@@ -255,6 +258,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     glEnd();
 
     glPopMatrix();
+
+    shaders.disable();
   }
 }
 

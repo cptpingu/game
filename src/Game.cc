@@ -26,7 +26,7 @@ Game::load()
   glDepthFunc(GL_LEQUAL);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-
+  _map.loadBlocks("data/map/block.txt");
   loadtextures();
   loadShaders();
 
@@ -48,9 +48,9 @@ Game::play()
       elapsed_time = current_time - last_time;
       last_time = current_time;
 
-      _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
+      //_map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
       _camera.animate(elapsed_time);
-      Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
+      Chunk::Coord* pickedCoord = new Chunk::Coord(0,0,0);//_camera.picking(_map.getChunks());
 
       drawAxis(100);
 
@@ -169,7 +169,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord)
   _camera.look();
 
   _drawer.drawBlocks(_map.getBlocks());
-  _drawer.drawChunks(_map.getChunks(), selectedCoord);
+  //_drawer.drawChunks(_map.getChunks(), selectedCoord);
   showCoord(selectedCoord);
 
   // glEnable(GL_LIGHTING);

@@ -151,7 +151,7 @@ Map::chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks)
   }
 
   LAZY_LOAD(0, 0);
-  /*LAZY_LOAD(1, 0);
+  LAZY_LOAD(1, 0);
   LAZY_LOAD(0, 1);
   LAZY_LOAD(-1, 0);
   LAZY_LOAD(0, -1);
@@ -159,7 +159,7 @@ Map::chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks)
 
   LAZY_LOAD(-1, -1);
   LAZY_LOAD(1, -1);
-  LAZY_LOAD(1, 1);*/
+  LAZY_LOAD(1, 1);
 
 
 
@@ -212,8 +212,6 @@ Map::getChunks() const
 {
   return _chunks;
 }
-
-
 
 
 

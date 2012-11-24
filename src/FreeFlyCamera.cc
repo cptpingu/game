@@ -185,12 +185,14 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
   int newX = 0;
   int newY = 0;
 
-  int x0 = static_cast<int>(_position._x)%(Chunk::SIZE-1);
-  int y0 = static_cast<int>(_position._y)%(Chunk::SIZE-1);
+  int x0 = static_cast<int>(_position._x)%(Chunk::SIZE-1) + (Chunk::SIZE-1)/2;
+  int y0 = static_cast<int>(_position._y)%(Chunk::SIZE-1) + (Chunk::SIZE-1)/2;
 
-  x0 = (Chunk::SIZE-1)/2*(x0 <0) + x0 + ((Chunk::SIZE-1)/2)*(1-((x0 / (Chunk::SIZE-1)/2)) )*(x0>=0) + ((Chunk::SIZE-1)/2)*(-(x0 / (Chunk::SIZE-1)/2) )*(x0<0);
+ // x0 = (Chunk::SIZE-1)/2*(x0 <0) + x0 + ((Chunk::SIZE-1)/2)*(1-((x0 / (Chunk::SIZE-1)/2)) )*(x0>=0) + ((Chunk::SIZE-1)/2)*(-(x0 / (Chunk::SIZE-1)/2) )*(x0<0);
 
-  y0 = (Chunk::SIZE-1)/2*(y0 <0) + y0   + ((Chunk::SIZE-1)/2)*(1-((y0 / (Chunk::SIZE-1)/2)) )*(y0>=0) + ((Chunk::SIZE-1)/2)*(-(y0 / (Chunk::SIZE-1)/2) )*(y0<0);
+  //y0 = (Chunk::SIZE-1)/2*(y0 <0) + y0   + ((Chunk::SIZE-1)/2)*(1-((y0 / (Chunk::SIZE-1)/2)) )*(y0>=0) + ((Chunk::SIZE-1)/2)*(-(y0 / (Chunk::SIZE-1)/2) )*(y0<0);
+//x0 = x0 + (x0>=0)*(Chunk::SIZE-1)/2 + (x0<0)*(Chunk::SIZE-1);
+
 
   int signeX = (_forward._x > 0) - (_forward._x < 0);
   int signeY = (_forward._y > 0) - (_forward._y < 0);
@@ -217,12 +219,13 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
             {
             newX = (x0 + x*signeX)%(Chunk::SIZE-1) + (x0 + x*signeX < 0)*(Chunk::SIZE-1) + Chunk::absoluteToChunkCoord(_position._x + x*signeX)*(Chunk::SIZE-1);
             newY = (y0 + Vy)%(Chunk::SIZE-1) + (y0 + Vy < 0)*(Chunk::SIZE-1) + Chunk::absoluteToChunkCoord(_position._y + Vy)*(Chunk::SIZE-1);
-            break;
+
+           break;
             }
        else
             {
-            newX = x0 +Chunk::absoluteToChunkCoord(_position._x)*(Chunk::SIZE-1);
-            newY = y0 +Chunk::absoluteToChunkCoord(_position._y)*(Chunk::SIZE-1);
+            newX = static_cast<int>(_position._x) + (Chunk::SIZE-1)/2 + Chunk::absoluteToChunkCoord(_position._x)*(Chunk::SIZE-1);
+            newY = static_cast<int>(_position._y) + (Chunk::SIZE-1)/2 + Chunk::absoluteToChunkCoord(_position._y)*(Chunk::SIZE-1);
             }
     }
  }
@@ -242,6 +245,7 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
       {
        newX = (x0 + Vx)%(Chunk::SIZE-1)+ (x0 + Vx < 0)*(Chunk::SIZE-1) + Chunk::absoluteToChunkCoord(_position._x + Vx)*(Chunk::SIZE-1) ;
        newY = (y0 + y*signeY)%(Chunk::SIZE-1) +(y0 + y*signeY < 0)*(Chunk::SIZE-1) + Chunk::absoluteToChunkCoord(_position._y + y*signeY)*(Chunk::SIZE-1);
+
        break;
       }
       else
@@ -252,7 +256,10 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 
      }
 }
-return((*chunk->second).getCoord(newX,newY));
+ std::cout << newX << "_" << newY << std::endl;
+
+//return((*chunk->second).getCoord(newX,newY));
+ return(new Chunk::Coord(newX,newY,0));
 }
 
 

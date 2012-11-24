@@ -78,12 +78,6 @@ Game::play()
                 break;
               }
             case SDLK_f:
-              std::cout<< pickedCoord->getZ() << std::endl;
-              std::cout<< pickedCoord->getX() << std::endl;
-              std::cout<< pickedCoord->getY() << std::endl;
-
-              pickedCoord->setZ(pickedCoord->getZ()-5);
-
 
               break;
             case SDLK_w:

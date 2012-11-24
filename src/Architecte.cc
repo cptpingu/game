@@ -247,8 +247,8 @@ namespace Architecte
 
     smoothGround(coords);
 
-    Mountain(coords,where,0,0,200,2000);
-    Mountain(coords,where,2,0,150,2000);
+   // Mountain(coords,where,0,0,200,2000);
+   // Mountain(coords,where,2,0,150,2000);
 
 
     // Top

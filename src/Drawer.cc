@@ -171,8 +171,9 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
   auto end = blocks.end();
-  for (auto it = blocks.begin(); it != end; ++it)
+  for (auto block = blocks.begin(); block != end; ++block)
   {
+    auto it = &block->second;
     glPushMatrix();
     glTranslatef((*it)->_x * Block::SIZE, (*it)->_y * Block::SIZE, (*it)->_z * Block::SIZE);
     glBegin(GL_QUADS);

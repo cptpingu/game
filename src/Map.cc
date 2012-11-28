@@ -61,6 +61,25 @@ namespace
     return LoadFromFileHelper<T, Core::isPointer<typename T::item_type>::value>::func(filename, collection);
   }
 
+  bool loadFromFile(const std::string& filename, Map::blocks_type& blocks)
+  {
+      std::ifstream file(filename.c_str());
+      int x;
+      int y;
+      int z;
+
+      if (!file)
+        return false;
+
+      while (file)
+      {
+        file >> x >> y >> z;
+        blocks.insert(Map::blocks_type::value_type(Core::Container3D<int>(x, y, z), new Block(x, y, z)));
+      }
+
+    return true;
+  }
+
   void checkAndLinks(const Map::temp_map_type& map, Block* block)
   {
 #define LINK(X,Y,Z,ASSIGN)                                              \
@@ -79,24 +98,11 @@ namespace
 
 #undef LINK
   }
-  Block::Block*
-  Map::findBlock(Core::Container3D<int> where)
-    {
-        auto end = _blocks.end();
-        for (auto it = _blocks.begin(); it != end; ++it)
-        {
-          if( _blocks->it._x == where._x && _blocks->it._y == where._y && _blocks->it._z == where._z);
-          return (it*);
-          else
-          return (0);
-        }
-
-
-    }
 
 
 
-  void linkBlocks(Map::blocks_type& blocks)
+
+  /*void linkBlocks(Map::blocks_type& blocks)
   {
     Map::temp_map_type map;
     auto end = blocks.end();
@@ -110,9 +116,17 @@ namespace
     auto mapEnd = map.end();
     for (auto it = map.begin(); it != mapEnd; ++it)
       checkAndLinks(map, it->second);
-  }
+  }*/
 } //namespace
 
+Block::Block*
+Map::find(const Core::Container3D<int>& where) const
+  {
+    auto found = _blocks.find(where);
+    if(found == _blocks.end())
+        return(0);
+    return(found->second);
+  }
 
 
 
@@ -131,7 +145,7 @@ Map::loadBlocks(const std::string& filename)
   if (!loadFromFile(filename, _blocks))
     return false;
 
-  linkBlocks(_blocks);
+  //linkBlocks(_blocks);
   return true;
 }
 

@@ -12,6 +12,9 @@
 */
 class Block : public Core::Container3D<int>
 {
+
+
+
   typedef Core::Container3D<int> super;
 public:
     static const int SIZE = 2;
@@ -24,6 +27,9 @@ public:
   {
   }
 
+  /*!
+  ** Each neighbour block is "pointed"
+  */
 public:
   Block* _up;
   Block* _down;
@@ -32,5 +38,24 @@ public:
   Block* _front;
   Block* _back;
 };
+
+
+
+
+
+
+/*!
+** Given x,y,z coords, get the block pointer.
+**
+** @param x X coord.
+** @param y Y coord.
+** @param z Z coord.
+** @return A pointer on coord, or 0 if not found.
+*/
+
+
+
+
+
 
 #endif /* !BLOCK_HH_ */

@@ -20,11 +20,13 @@
 */
 class Map
 {
-public:
+public:  
+
   typedef std::unordered_map<Core::Container3D<int>, Block*, Core::NumericalContainerHash<int> > temp_map_type;
   typedef std::unordered_map<std::pair<int, int>, Chunk*, Core::PairHash<int, int> > chunks_type;
-  typedef Core::ListContainer3D<Block*> blocks_type;
+  typedef std::unordered_map<Core::Container3D<int>, Block*> blocks_type;
   typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
+
 
 public:
   Map();

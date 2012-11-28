@@ -1,5 +1,6 @@
 #include "Vector3D.hh"
 #include <cmath>
+#include <stdlib.h>
 
 Vector3D::Vector3D()
   : super(0, 0, 0)
@@ -145,4 +146,25 @@ Vector3D::distance(double x, double y, double z) const
 Vector3D operator*(const double a,const Vector3D& v)
 {
   return Vector3D(v._x * a, v._y * a, v._z * a);
+}
+double
+Vector3D::Norm(const Vector3D& v,int type)
+{
+    double norm = -1;
+    if(type == 1)
+       norm = fabs(v._x)+fabs(v._x) + fabs(v._y);
+    if(type == 2)
+        norm = v._x*v._x+v._y*v._y+v._z*v._z;
+    if (type == 0)
+    {
+        if(fabs(v._x)>fabs(v._y))
+            norm = fabs(v._x);
+        else
+            norm = fabs(v._y);
+        if(fabs(v._z) >norm)
+            norm = fabs(v._z);
+
+    }
+
+    return(norm);
 }

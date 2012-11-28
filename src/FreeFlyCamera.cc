@@ -3,6 +3,8 @@
 #include <cmath>
 #include "Opengl.hh"
 #include "Chunk.hh"
+#include "Map.hh"
+
 
 #ifndef M_PI
 # define M_PI 3.14159265
@@ -265,6 +267,30 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 
 
 
+Block::Block*
+FreeFlyCamera::picking(const Map::blocks_type& blocks) const
+{
+int Reach = 50;
+
+/*int x = static_cast<int>(_position._x);
+int y = static_cast<int>(_position._y);
+int z = static_cast<int>(_position._z);*/
+
+Block::Block* block;
+
+for (int k=0;k<Reach;++k)
+    {
+    Core::Container3D<int>  Where(static_cast<int>(_position._x),static_cast<int>(_position._y),static_cast<int>(_position._z));
+    //Where(static_cast<int>(_position._x + k*_forward._x),static_cast<int>(_position._y +k*_forward._y),static_cast<int>(_position._z +k*_forward._z));
+    /*y = static_cast<int>(_position._y +k*_forward._y);
+    z = static_cast<int>(_position._z +k*_forward._z);*/
+
+    block = blocks.findBlock(Where);
+    if(block != 0)
+        return(block);
+    }
+return(block);
+}
 
 
 

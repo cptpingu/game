@@ -7,6 +7,8 @@
 #include <string>
 #include "Chunk.hh"
 #include "Map.hh"
+#include "Block.hh"
+
 
 class FreeFlyCamera
 {
@@ -17,7 +19,8 @@ public:
     virtual void OnMouseButton(const SDL_MouseButtonEvent & event);
     virtual void OnKeyboard(const SDL_KeyboardEvent & event);
 
-   virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
+    virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
+    virtual Block::Block* picking(const Map::blocks_type& blocks) const;
 
     virtual void animate(Uint32 timestep);
     virtual void setSpeed(double speed);
@@ -31,6 +34,10 @@ public:
 
     Vector3D getCurrentPosition() const;
     Vector3D getCurrentLook() const;
+
+
+
+
 
 protected:
     double _speed;

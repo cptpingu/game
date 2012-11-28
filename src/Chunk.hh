@@ -85,7 +85,7 @@ public:
   ** @param y Depth coordinate.
   ** @param z Vertical coordinate.
   */
-  void add(double x, double y, double z);
+  void add(int x, int y, int z);
 
   /*!
   ** Detect all collapsing points, and link them.

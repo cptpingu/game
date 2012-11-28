@@ -22,10 +22,13 @@ public:
   Vector3D& operator/=(const double a);
   Vector3D operator/(const double a) const;
 
+
   Vector3D crossProduct(const Vector3D& v) const;
   double length() const;
   Vector3D& normalize();
 
+
+  double Norm(const Vector3D& v,int type);
   double distance(double x, double y, double z) const;
   double distance(const Vector3D& v) const;
   Vector3D mStar(const Vector3D& v) const;

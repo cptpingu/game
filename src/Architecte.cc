@@ -243,7 +243,7 @@ namespace Architecte
   {
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        {coords(i,j) = Random::rand()% 20;}
+        {coords(i,j) = Random::rand()% 2;}
 
     smoothGround(coords);
 

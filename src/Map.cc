@@ -79,6 +79,22 @@ namespace
 
 #undef LINK
   }
+  Block::Block*
+  Map::findBlock(Core::Container3D<int> where)
+    {
+        auto end = _blocks.end();
+        for (auto it = _blocks.begin(); it != end; ++it)
+        {
+          if( _blocks->it._x == where._x && _blocks->it._y == where._y && _blocks->it._z == where._z);
+          return (it*);
+          else
+          return (0);
+        }
+
+
+    }
+
+
 
   void linkBlocks(Map::blocks_type& blocks)
   {
@@ -96,6 +112,9 @@ namespace
       checkAndLinks(map, it->second);
   }
 } //namespace
+
+
+
 
 Map::Map()
 {
@@ -212,6 +231,7 @@ Map::getChunks() const
 {
   return _chunks;
 }
+
 
 
 

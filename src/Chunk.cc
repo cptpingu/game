@@ -18,7 +18,7 @@ Chunk::~Chunk()
 }
 
 void
-Chunk::add(double x, double y, double z)
+Chunk::add(int x, int y, int z)
 {
   _chunk.push_back(new Coord(x, y, z));
   _fast_access_chunk.insert(fast_access_chunk_type::value_type(std::make_pair(x, y), z));

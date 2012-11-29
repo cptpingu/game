@@ -159,6 +159,7 @@ Game::loadShaders()
   ShadersManager& shaders = ShadersManager::getInstance();
   shaders.load("identity", "data/shaders/identity.vert.c", "data/shaders/identity.frag.c");
   shaders.load("texture", "data/shaders/texture.vert.c", "data/shaders/texture.frag.c");
+  shaders.load("cube", "data/shaders/cube.vert.c", "data/shaders/cube.frag.c");
   shaders.load("texture_invert_color", "data/shaders/texture.vert.c", "data/shaders/texture_invert_color.frag.c");
   shaders.load("phong_lightning", "data/shaders/phong_lightning.vert.c", "data/shaders/phong_lightning.frag.c");
   shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");

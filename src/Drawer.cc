@@ -215,8 +215,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
 
     //face droite
     glTexCoord2d(0, 0);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
     CHECK_HIGHLIGHT(Block::right);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
     glTexCoord2d(Block::SIZE, 0);
     CHECK_HIGHLIGHT(Block::right);
     glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);

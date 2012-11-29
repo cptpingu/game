@@ -81,7 +81,7 @@ Game::play()
                 break;
               }
           case SDLK_g:
-              _map.insertBlock(pickedBlock.first, pickedBlock.second);
+              _map.insertBlockfromBlock(pickedBlock.first, pickedBlock.second);
               break;
             case SDLK_f:
               _map.eraseBlock(pickedBlock.first);

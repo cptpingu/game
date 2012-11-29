@@ -119,8 +119,18 @@ namespace
   }*/
 } //namespace
 
+
 void
-Map::insertBlock(const Block::Block* who, const Block::FaceType where)
+Map::createBlock(const Core::Container3D<int>& where)
+{
+
+  if (_blocks.find(where) == _blocks.end())
+   _blocks.insert(blocks_type::value_type(where, new Block(where._x , where._y, where._z)));
+
+}
+
+void
+Map::insertBlockfromBlock(const Block::Block* who, const Block::FaceType where)
 {
     if (!who)
       return;

@@ -120,7 +120,7 @@ namespace
 } //namespace
 
 void
-Map::insertBlock(const Block::Block* who, const Block::FaceType where)
+Map::insertBlock(const Block* who, const Block::FaceType where)
 {
     if (!who)
       return;
@@ -158,7 +158,7 @@ Map::insertBlock(const Block::Block* who, const Block::FaceType where)
 
 
 void
-Map::eraseBlock(const Block::Block* who)
+Map::eraseBlock(const Block* who)
 {
     if (who)
     {
@@ -168,7 +168,7 @@ Map::eraseBlock(const Block::Block* who)
     }
 }
 
-Block::Block*
+Block*
 Map::findBlock(const Core::Container3D<int>& where) const
   {
     auto found = _blocks.find(where);

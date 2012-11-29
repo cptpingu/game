@@ -51,7 +51,7 @@ Game::play()
       _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
       _camera.animate(elapsed_time);
       Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
-      std::pair<Block::Block*, Block::FaceType> pickedBlock = _camera.picking(_map);
+      std::pair<Block*, Block::FaceType> pickedBlock = _camera.picking(_map);
       if (pickedBlock.first)
         //pickedBlock.first->highlight(Block::up, true);
         pickedBlock.first->highlight(pickedBlock.second, true);

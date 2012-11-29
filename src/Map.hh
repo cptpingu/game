@@ -28,9 +28,9 @@ public:
   typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
 
 
-    void insertBlock(const Block::Block* who, const Block::FaceType where);
-    Block::Block* findBlock(const Core::Container3D<int>& where) const;
-    void eraseBlock(const Block::Block* who);
+    void insertBlock(const Block* who, const Block::FaceType where);
+    Block* findBlock(const Core::Container3D<int>& where) const;
+    void eraseBlock(const Block* who);
 
 
 public:

@@ -20,7 +20,7 @@ public:
     virtual void OnKeyboard(const SDL_KeyboardEvent & event);
 
     virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
-    virtual std::pair<Block::Block*, Block::FaceType> picking(const Map& blocks) const;
+    virtual std::pair<Block*, Block::FaceType> picking(const Map& blocks) const;
 
     virtual void animate(Uint32 timestep);
     virtual void setSpeed(double speed);

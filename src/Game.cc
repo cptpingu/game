@@ -51,7 +51,7 @@ Game::play()
       _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
       _camera.animate(elapsed_time);
       Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
-      std::pair<Block::Block*, Block::FaceType> pickedBlock = _camera.picking(_map);
+      std::pair<Block*, Block::FaceType> pickedBlock = _camera.picking(_map);
       if (pickedBlock.first)
         //pickedBlock.first->highlight(Block::up, true);
         pickedBlock.first->highlight(pickedBlock.second, true);
@@ -159,6 +159,7 @@ Game::loadShaders()
   ShadersManager& shaders = ShadersManager::getInstance();
   shaders.load("identity", "data/shaders/identity.vert.c", "data/shaders/identity.frag.c");
   shaders.load("texture", "data/shaders/texture.vert.c", "data/shaders/texture.frag.c");
+  shaders.load("cube", "data/shaders/cube.vert.c", "data/shaders/cube.frag.c");
   shaders.load("texture_invert_color", "data/shaders/texture.vert.c", "data/shaders/texture_invert_color.frag.c");
   shaders.load("phong_lightning", "data/shaders/phong_lightning.vert.c", "data/shaders/phong_lightning.frag.c");
   shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");

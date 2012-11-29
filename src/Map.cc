@@ -130,7 +130,9 @@ Map::createBlock(const Core::Container3D<int>& where)
 }
 
 void
-Map::insertBlockfromBlock(const Block::Block* who, const Block::FaceType where)
+
+Map::insertBlockfromBlock(const Block* who, const Block::FaceType where)
+
 {
     if (!who)
       return;
@@ -168,7 +170,7 @@ Map::insertBlockfromBlock(const Block::Block* who, const Block::FaceType where)
 
 
 void
-Map::eraseBlock(const Block::Block* who)
+Map::eraseBlock(const Block* who)
 {
     if (who)
     {
@@ -178,7 +180,7 @@ Map::eraseBlock(const Block::Block* who)
     }
 }
 
-Block::Block*
+Block*
 Map::findBlock(const Core::Container3D<int>& where) const
   {
     auto found = _blocks.find(where);

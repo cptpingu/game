@@ -174,9 +174,10 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
 
 
   ShadersManager& shaders = ShadersManager::getInstance();
-  shaders.enable("texture");
+  shaders.enable("cube");
 
   TextureManager& textures = TextureManager::getInstance();
+  glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
   auto end = blocks.end();
@@ -192,18 +193,22 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
         (*it)->isHighlighted(Block::front) ||
         (*it)->isHighlighted(Block::back))
     {
-        shaders.disable();
-        (*it)->highlight(Block::up, false);
-        (*it)->highlight(Block::down, false);
-        (*it)->highlight(Block::left, false);
-        (*it)->highlight(Block::right, false);
-        (*it)->highlight(Block::front, false);
-        (*it)->highlight(Block::back, false);
+      shaders.disable();
+      //glUniform1i(glGetUniformLocation(shaders.get("texture"), "selected"), 1);
+      (*it)->highlight(Block::up, false);
+      (*it)->highlight(Block::down, false);
+      (*it)->highlight(Block::left, false);
+      (*it)->highlight(Block::right, false);
+      (*it)->highlight(Block::front, false);
+      (*it)->highlight(Block::back, false);
     }
     else
-        shaders.enable("texture");
+      shaders.enable("texture");
+      //glUniform1i(glGetUniformLocation(shaders.get("texture"), "selected"), 0);
 
     glBegin(GL_QUADS);
+
+    glUniform1i(glGetUniformLocation(shaders.get("cube"), "selected"), 1);
 
     //par terre
     if (!(*it)->_down)

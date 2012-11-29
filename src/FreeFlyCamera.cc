@@ -32,8 +32,8 @@ FreeFlyCamera::FreeFlyCamera()
   _keystates[_keyconf["strafe_right"]] = false;
   _keystates[_keyconf["boost"]] = false;
 
-   SDL_WM_GrabInput(SDL_GRAB_ON);
-   SDL_ShowCursor(SDL_DISABLE);
+  SDL_WM_GrabInput(SDL_GRAB_ON);
+  SDL_ShowCursor(SDL_DISABLE);
 }
 
 FreeFlyCamera::~FreeFlyCamera()
@@ -272,12 +272,12 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
   */
 
 
-std::pair<Block::Block*, Block::FaceType>
+std::pair<Block*, Block::FaceType>
 FreeFlyCamera::picking(const Map& map) const
 {
 int Reach = 100;
 
-Block::Block* block = 0;
+Block* block = 0;
 
 for (int k=1;k<Reach;++k)
     {

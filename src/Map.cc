@@ -135,22 +135,23 @@ Map::insertBlock(const Block::Block* who, const Block::FaceType where)
         container = Core::Container3D<int>(who->_x , who->_y+1, who->_z);
         break;
       case Block::left:
-        container = Core::Container3D<int>(who->_x-1 , who->_y, who->_z );
-        break;
-      case Block::right:
         container = Core::Container3D<int>(who->_x+1 , who->_y, who->_z );
         break;
+      case Block::right:
+        container = Core::Container3D<int>(who->_x-1 , who->_y, who->_z );
+        break;
       case Block::up:
-        container = Core::Container3D<int>(who->_x , who->_y, who->_z + 1);
+        container = Core::Container3D<int>(who->_x , who->_y, who->_z+1);
         break;
       case Block::down:
-        container = Core::Container3D<int>(who->_x + 1, who->_y, who->_z -1);
+        container = Core::Container3D<int>(who->_x, who->_y, who->_z-1);
+        break;
       default:
         assert(false && "Bad face");
     }
 
     if (_blocks.find(container) == _blocks.end())
-      _blocks.insert(blocks_type::value_type(container, new Block(who->_x + 1, who->_y, who->_z)));
+      _blocks.insert(blocks_type::value_type(container, new Block(container._x , container._y, container._z)));
 }
 
 

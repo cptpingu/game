@@ -27,8 +27,14 @@ public:
   typedef std::unordered_map<Core::Container3D<int>, Block*, Core::NumericalContainerHash<int> > blocks_type;
   typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
 
-    Block::Block* find(const Core::Container3D<int>& where) const;
+
+    void insertBlock(const Block::Block* who, const Block::FaceType where);
+    Block::Block* findBlock(const Core::Container3D<int>& where) const;
+    void eraseBlock(const Block::Block* who);
+
+
 public:
+
   Map();
   ~Map();
 

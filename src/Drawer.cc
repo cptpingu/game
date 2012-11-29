@@ -164,6 +164,15 @@ Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedC
 void
 Drawer::drawBlocks(const Map::blocks_type& blocks) const
 {
+#define CHECK_HIGHLIGHT(X) if ((*it)->isHighlighted(X)) \
+            {\
+                shaders.disable();\
+                (*it)->highlight(X, false);\
+            } \
+            else \
+                shaders.enable("texture");
+
+
   ShadersManager& shaders = ShadersManager::getInstance();
   shaders.enable("texture");
 
@@ -176,11 +185,31 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     auto it = &block->second;
     glPushMatrix();
     glTranslatef((*it)->_x * Block::SIZE, (*it)->_y * Block::SIZE, (*it)->_z * Block::SIZE);
+    if ((*it)->isHighlighted(Block::up) ||
+        (*it)->isHighlighted(Block::down) ||
+        (*it)->isHighlighted(Block::left) ||
+        (*it)->isHighlighted(Block::right) ||
+        (*it)->isHighlighted(Block::front) ||
+        (*it)->isHighlighted(Block::back))
+    {
+        shaders.disable();
+        (*it)->highlight(Block::up, false);
+        (*it)->highlight(Block::down, false);
+        (*it)->highlight(Block::left, false);
+        (*it)->highlight(Block::right, false);
+        (*it)->highlight(Block::front, false);
+        (*it)->highlight(Block::back, false);
+    }
+    else
+        shaders.enable("texture");
+
     glBegin(GL_QUADS);
 
     //par terre
     if (!(*it)->_down)
     {
+      //CHECK_HIGHLIGHT(Block::down);
+
       glTexCoord2d(0, 0);
       glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
       glTexCoord2d(Block::SIZE, 0);
@@ -194,6 +223,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     //face droite
     if (!(*it)->_right)
     {
+      //CHECK_HIGHLIGHT(Block::right);
+
       glTexCoord2d(0, 0);
       glVertex3d(-Block::SIZE / 2,-Block::SIZE / 2, Block::SIZE);
       glTexCoord2d(Block::SIZE, 0);
@@ -207,6 +238,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     //face gauche
     if (!(*it)->_left)
     {
+      //CHECK_HIGHLIGHT(Block::left);
+
       glTexCoord2d(0, 0);
       glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
       glTexCoord2d(Block::SIZE, 0);
@@ -220,6 +253,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     //face face
     if (!(*it)->_front)
     {
+      //CHECK_HIGHLIGHT(Block::front);
+
       glTexCoord2d(0, 0);
       glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
       glTexCoord2d(Block::SIZE, 0);
@@ -233,6 +268,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     //face derriere
     if (!(*it)->_back)
     {
+      //CHECK_HIGHLIGHT(Block::back);
+
       glTexCoord2d(0, 0);
       glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
       glTexCoord2d(Block::SIZE, 0);
@@ -246,6 +283,8 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
     //face au ciel
     if (!(*it)->_up)
     {
+      //CHECK_HIGHLIGHT(Block::up);
+
       glTexCoord2d(0, 0);
       glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
       glTexCoord2d(Block::SIZE, 0);
@@ -255,6 +294,7 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
       glTexCoord2d(0, Block::SIZE);
       glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
     }
+#undef CHECK_HIGHLIGHT
 
     glEnd();
 

@@ -258,38 +258,60 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
 
      }
 }
- std::cout << newX << "_" << newY << std::endl;
+ //std::cout << newX << "_" << newY << std::endl;
 
 //return((*chunk->second).getCoord(newX,newY));
  return(new Chunk::Coord(newX,newY,0));
 }
 
 
+/*
+
+  return std::make_pair(new Block(0,0,0), Block::up);
+
+  */
 
 
-Block::Block*
+std::pair<Block::Block*, Block::FaceType>
 FreeFlyCamera::picking(const Map& map) const
 {
-int Reach = 50;
-
-/*int x = static_cast<int>(_position._x);
-int y = static_cast<int>(_position._y);
-int z = static_cast<int>(_position._z);*/
+int Reach = 100;
 
 Block::Block* block = 0;
 
-for (int k=0;k<Reach;++k)
+for (int k=1;k<Reach;++k)
     {
-    Core::Container3D<int> where(_position._x,_position._y,_position._z);
+    Core::Container3D<int> where(static_cast<int>(_position._x)/Block::SIZE,static_cast<int>(_position._y)/Block::SIZE,static_cast<int>(_position._z)/Block::SIZE);
+    where._x = static_cast<int>(_position._x + k*_forward._x)/Block::SIZE;
+    where._y = static_cast<int>(_position._y + k*_forward._y)/Block::SIZE;
+    where._z = static_cast<int>(_position._z + k*_forward._z)/Block::SIZE;
+
     //Where(static_cast<int>(_position._x + k*_forward._x),static_cast<int>(_position._y +k*_forward._y),static_cast<int>(_position._z +k*_forward._z));
     /*y = static_cast<int>(_position._y +k*_forward._y);
     z = static_cast<int>(_position._z +k*_forward._z);*/
 
-    block = map.find(where);
+    block = map.findBlock(where);
     if (block != 0)
-        return(block);
-    }
-return(block);
+    {
+        if( where._x - static_cast<int>(_position._x + (k-1)*_forward._x)/Block::SIZE > 0)
+            return std::make_pair(block, Block::right);
+        if( where._x - static_cast<int>(_position._x + (k-1)*_forward._x)/Block::SIZE < 0)
+            return std::make_pair(block,Block::left);
+
+        if( where._y - static_cast<int>(_position._y + (k-1)*_forward._y)/Block::SIZE > 0)
+            return std::make_pair(block,Block::back);
+
+        if( where._y - static_cast<int>(_position._y + (k-1)*_forward._y)/Block::SIZE < 0)
+            return std::make_pair(block,Block::front);
+
+        if( where._z - static_cast<int>(_position._z + (k-1)*_forward._z)/Block::SIZE > 0)
+            return std::make_pair(block,Block::down);
+
+        if( where._z - static_cast<int>(_position._z + (k-1)*_forward._z)/Block::SIZE < 0)
+            return std::make_pair(block,Block::up);
+      }
+}
+return std::make_pair(block,Block::up);
 }
 
 

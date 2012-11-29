@@ -119,16 +119,62 @@ namespace
   }*/
 } //namespace
 
+void
+Map::insertBlock(const Block::Block* who, const Block::FaceType where)
+{
+    if (!who)
+      return;
+
+    Core::Container3D<int> container;
+    switch (where)
+    {
+       case Block::back:
+        container = Core::Container3D<int>(who->_x , who->_y-1, who->_z);
+        break;
+      case Block::front:
+        container = Core::Container3D<int>(who->_x , who->_y+1, who->_z);
+        break;
+      case Block::left:
+        container = Core::Container3D<int>(who->_x-1 , who->_y, who->_z );
+        break;
+      case Block::right:
+        container = Core::Container3D<int>(who->_x+1 , who->_y, who->_z );
+        break;
+      case Block::up:
+        container = Core::Container3D<int>(who->_x , who->_y, who->_z + 1);
+        break;
+      case Block::down:
+        container = Core::Container3D<int>(who->_x + 1, who->_y, who->_z -1);
+      default:
+        assert(false && "Bad face");
+    }
+
+    if (_blocks.find(container) == _blocks.end())
+      _blocks.insert(blocks_type::value_type(container, new Block(who->_x + 1, who->_y, who->_z)));
+}
+
+
+
+
+void
+Map::eraseBlock(const Block::Block* who)
+{
+    if (who)
+    {
+        auto container = Core::Container3D<int>(who->_x, who->_y, who->_z);
+        delete _blocks[container];
+        _blocks.erase(container);
+    }
+}
+
 Block::Block*
-Map::find(const Core::Container3D<int>& where) const
+Map::findBlock(const Core::Container3D<int>& where) const
   {
     auto found = _blocks.find(where);
     if(found == _blocks.end())
         return(0);
     return(found->second);
   }
-
-
 
 Map::Map()
 {

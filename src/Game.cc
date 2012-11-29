@@ -51,7 +51,10 @@ Game::play()
       _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
       _camera.animate(elapsed_time);
       Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
-      //Block::Block* pickedBlock = _camera.picking(_map.getBlocks());
+      std::pair<Block::Block*, Block::FaceType> pickedBlock = _camera.picking(_map);
+      if (pickedBlock.first)
+        //pickedBlock.first->highlight(Block::up, true);
+        pickedBlock.first->highlight(pickedBlock.second, true);
       drawAxis(100);
 
       drawGL(pickedCoord);
@@ -77,8 +80,11 @@ Game::play()
                 takeScreenshot(buff.str().c_str());
                 break;
               }
+          case SDLK_g:
+              _map.insertBlock(pickedBlock.first, pickedBlock.second);
+              break;
             case SDLK_f:
-
+              _map.eraseBlock(pickedBlock.first);
               break;
             case SDLK_w:
               glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

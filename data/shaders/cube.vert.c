@@ -1,6 +1,6 @@
 #version 120
 
-attribute float selected;
+uniform float selected;
 
 varying float select;
 

@@ -193,6 +193,7 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
         (*it)->isHighlighted(Block::front) ||
         (*it)->isHighlighted(Block::back))
     {
+      shaders.disable();
       //glUniform1i(glGetUniformLocation(shaders.get("texture"), "selected"), 1);
       (*it)->highlight(Block::up, false);
       (*it)->highlight(Block::down, false);
@@ -202,7 +203,7 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
       (*it)->highlight(Block::back, false);
     }
     else
-      ;
+      shaders.enable("texture");
       //glUniform1i(glGetUniformLocation(shaders.get("texture"), "selected"), 0);
 
     glBegin(GL_QUADS);

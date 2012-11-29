@@ -2,7 +2,7 @@
 
 uniform sampler2D tex;
 
-varying int select;
+varying float select;
 
 void main()
 {

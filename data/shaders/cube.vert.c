@@ -1,8 +1,8 @@
 #version 120
 
-attribute int selected;
+attribute float selected;
 
-varying int select;
+varying float select;
 
 void main()
 {

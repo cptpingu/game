@@ -164,11 +164,11 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
 {
 #define CHECK_HIGHLIGHT(X) if ((*it)->isHighlighted(X)) \
             {\
-                shaders.disable();\
+                glVertexAttrib1f(attrib, 0.3);\
                 (*it)->highlight(X, false);\
             } \
             else \
-                shaders.enable("texture");
+                glVertexAttrib1f(attrib, 0.0);
 
 
   ShadersManager& shaders = ShadersManager::getInstance();
@@ -177,6 +177,7 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
   TextureManager& textures = TextureManager::getInstance();
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+  GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
 
   auto end = blocks.end();
   for (auto block = blocks.begin(); block != end; ++block)
@@ -191,108 +192,98 @@ Drawer::drawBlocks(const Map::blocks_type& blocks) const
         (*it)->isHighlighted(Block::front) ||
         (*it)->isHighlighted(Block::back))
     {
-      glUniform1f(glGetUniformLocation(shaders.get("cube"), "selected"), 1.0);
-      (*it)->highlight(Block::up, false);
-      (*it)->highlight(Block::down, false);
-      (*it)->highlight(Block::left, false);
-      (*it)->highlight(Block::right, false);
-      (*it)->highlight(Block::front, false);
-      (*it)->highlight(Block::back, false);
+      glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), 0.2);
     }
     else
-      glUniform1f(glGetUniformLocation(shaders.get("cube"), "selected"), 0.0);
+      glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), 0.0);
 
     glBegin(GL_QUADS);
 
     //par terre
-    if (!(*it)->_down)
-    {
-      //CHECK_HIGHLIGHT(Block::down);
-
-      glTexCoord2d(0, 0);
-      glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-      glTexCoord2d(Block::SIZE, 0);
-      glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-      glTexCoord2d(Block::SIZE, Block::SIZE);
-      glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
-      glTexCoord2d(0, Block::SIZE);
-      glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-    }
+    glTexCoord2d(0, 0);
+    CHECK_HIGHLIGHT(Block::down);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+    glTexCoord2d(Block::SIZE, 0);
+    CHECK_HIGHLIGHT(Block::down);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::down);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+    glTexCoord2d(0, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::down);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
 
     //face droite
-    if (!(*it)->_right)
-    {
-      //CHECK_HIGHLIGHT(Block::right);
-
-      glTexCoord2d(0, 0);
-      glVertex3d(-Block::SIZE / 2,-Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, 0);
-      glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, Block::SIZE);
-      glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, 0);
-      glTexCoord2d(0, Block::SIZE);
-      glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, 0);
-    }
+    glTexCoord2d(0, 0);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::right);
+    glTexCoord2d(Block::SIZE, 0);
+    CHECK_HIGHLIGHT(Block::right);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::right);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, 0);
+    glTexCoord2d(0, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::right);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, 0);
 
     //face gauche
-    if (!(*it)->_left)
-    {
-      //CHECK_HIGHLIGHT(Block::left);
-
-      glTexCoord2d(0, 0);
-      glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, 0);
-      glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, Block::SIZE);
-      glVertex3d(Block::SIZE / 2, Block::SIZE / 2, 0);
-      glTexCoord2d(0, Block::SIZE);
-      glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
-    }
+    glTexCoord2d(0, 0);
+    CHECK_HIGHLIGHT(Block::left);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::left);
+    glTexCoord2d(Block::SIZE, 0);
+    CHECK_HIGHLIGHT(Block::left);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::left);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, 0);
+    glTexCoord2d(0, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::left);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
 
     //face face
-    if (!(*it)->_front)
-    {
-      //CHECK_HIGHLIGHT(Block::front);
-
-      glTexCoord2d(0, 0);
-      glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, 0);
-      glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, Block::SIZE);
-      glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
-      glTexCoord2d(0, Block::SIZE);
-      glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-    }
+    glTexCoord2d(0, 0);
+    CHECK_HIGHLIGHT(Block::front);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, 0);
+    CHECK_HIGHLIGHT(Block::front);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::front);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+    glTexCoord2d(0, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::front);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
 
     //face derriere
-    if (!(*it)->_back)
-    {
-      //CHECK_HIGHLIGHT(Block::back);
-
-      glTexCoord2d(0, 0);
-      glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, 0);
-      glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, Block::SIZE);
-      glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
-      glTexCoord2d(0, Block::SIZE);
-      glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-    }
+    glTexCoord2d(0, 0);
+    CHECK_HIGHLIGHT(Block::back);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, 0);
+    CHECK_HIGHLIGHT(Block::back);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::back);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
+    glTexCoord2d(0, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::back);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
 
     //face au ciel
-    if (!(*it)->_up)
-    {
-      //CHECK_HIGHLIGHT(Block::up);
+    glTexCoord2d(0, 0);
+    CHECK_HIGHLIGHT(Block::up);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, 0);
+    CHECK_HIGHLIGHT(Block::up);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::up);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
+    glTexCoord2d(0, Block::SIZE);
+    CHECK_HIGHLIGHT(Block::up);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
 
-      glTexCoord2d(0, 0);
-      glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, 0);
-      glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(Block::SIZE, Block::SIZE);
-      glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-      glTexCoord2d(0, Block::SIZE);
-      glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-    }
 #undef CHECK_HIGHLIGHT
 
     glEnd();

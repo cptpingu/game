@@ -7,188 +7,6 @@
 #include <sstream>
 #include <algorithm>
 
-namespace
-{
-  template <typename T, bool is_pointer>
-  struct LoadFromFileHelper
-  {
-    static bool func(const std::string& filename, T& collection)
-    {
-      std::ifstream file(filename.c_str());
-      typename T::raw_item_type::type x;
-      typename T::raw_item_type::type y;
-      typename T::raw_item_type::type z;
-
-      if (!file)
-        return false;
-
-      while (file)
-      {
-        file >> x >> y >> z;
-        collection.add(new typename T::raw_item_type(x, y, z));
-      }
-
-      return true;
-    }
-  };
-
-  template <typename T>
-  struct LoadFromFileHelper<T, false>
-  {
-    static bool func(const std::string& filename, T& collection)
-    {
-      std::ifstream file(filename.c_str());
-      typename T::type::raw_type x;
-      typename T::type::raw_type y;
-      typename T::type::raw_type z;
-
-      if (!file)
-        return false;
-
-      while (file)
-      {
-        file >> x >> y >> z;
-        collection.add(typename T::raw_item_type(x, y, z));
-      }
-
-      return true;
-    }
-  };
-
-  template <typename T>
-  bool loadFromFile(const std::string& filename, T& collection)
-  {
-    return LoadFromFileHelper<T, Core::isPointer<typename T::item_type>::value>::func(filename, collection);
-  }
-
-  bool loadFromFile(const std::string& filename, Map::blocks_type& blocks)
-  {
-      std::ifstream file(filename.c_str());
-      int x;
-      int y;
-      int z;
-
-      if (!file)
-        return false;
-
-      while (file)
-      {
-        file >> x >> y >> z;
-        blocks.insert(Map::blocks_type::value_type(Core::Container3D<int>(x, y, z), new Block(x, y, z)));
-      }
-
-    return true;
-  }
-
-  void checkAndLinks(const Map::temp_map_type& map, Block* block)
-  {
-#define LINK(X,Y,Z,ASSIGN)                                              \
-    {                                                                   \
-      auto found = map.find(Core::Container3D<int>(block->_x + X, block->_y + Y, block->_z + Z)); \
-      if (found != map.end())                                           \
-        block->ASSIGN = found->second;                                  \
-    }
-
-    LINK(1,0,0, _left);
-    LINK(-1,0,0, _right);
-    LINK(0,1,0, _front);
-    LINK(0,-1,0, _back);
-    LINK(0,0,1, _up);
-    LINK(0,0,-1, _down);
-
-#undef LINK
-  }
-
-
-
-
-  /*void linkBlocks(Map::blocks_type& blocks)
-  {
-    Map::temp_map_type map;
-    auto end = blocks.end();
-    for (auto it = blocks.begin(); it != end; ++it)
-    {
-      Core::Container3D<int> cont((*it)->_x, (*it)->_y, (*it)->_z);
-      Block* block = *it;
-      map.insert(Map::temp_map_type::value_type(cont, block));
-    }
-
-    auto mapEnd = map.end();
-    for (auto it = map.begin(); it != mapEnd; ++it)
-      checkAndLinks(map, it->second);
-  }*/
-} //namespace
-
-
-void
-Map::createBlock(const Core::Container3D<int>& where)
-{
-
-  if (_blocks.find(where) == _blocks.end())
-   _blocks.insert(blocks_type::value_type(where, new Block(where._x , where._y, where._z)));
-
-}
-
-void
-
-Map::insertBlockfromBlock(const Block* who, const Block::FaceType where)
-
-{
-    if (!who)
-      return;
-
-    Core::Container3D<int> container;
-    switch (where)
-    {
-       case Block::back:
-        container = Core::Container3D<int>(who->_x , who->_y-1, who->_z);
-        break;
-      case Block::front:
-        container = Core::Container3D<int>(who->_x , who->_y+1, who->_z);
-        break;
-      case Block::left:
-        container = Core::Container3D<int>(who->_x+1 , who->_y, who->_z );
-        break;
-      case Block::right:
-        container = Core::Container3D<int>(who->_x-1 , who->_y, who->_z );
-        break;
-      case Block::up:
-        container = Core::Container3D<int>(who->_x , who->_y, who->_z+1);
-        break;
-      case Block::down:
-        container = Core::Container3D<int>(who->_x, who->_y, who->_z-1);
-        break;
-      default:
-        assert(false && "Bad face");
-    }
-
-    if (_blocks.find(container) == _blocks.end())
-      _blocks.insert(blocks_type::value_type(container, new Block(container._x , container._y, container._z)));
-}
-
-
-
-
-void
-Map::eraseBlock(const Block* who)
-{
-    if (who)
-    {
-        auto container = Core::Container3D<int>(who->_x, who->_y, who->_z);
-        delete _blocks[container];
-        _blocks.erase(container);
-    }
-}
-
-Block*
-Map::findBlock(const Core::Container3D<int>& where) const
-  {
-    auto found = _blocks.find(where);
-    if(found == _blocks.end())
-        return(0);
-    return(found->second);
-  }
-
 Map::Map()
 {
 }
@@ -198,13 +16,86 @@ Map::~Map()
   clear();
 }
 
+void
+Map::createBlock(const Core::Container3D<int>& where)
+{
+  if (_blocks.find(where) == _blocks.end())
+    _blocks.insert(blocks_type::value_type(where, new Block(where._x , where._y, where._z)));
+
+}
+
+void
+Map::insertBlockNearBlock(const Block* who, const Block::FaceType where)
+
+{
+  if (!who)
+    return;
+
+  Core::Container3D<int> container;
+  switch (where)
+  {
+    case Block::back:
+      container = Core::Container3D<int>(who->_x , who->_y-1, who->_z);
+      break;
+    case Block::front:
+      container = Core::Container3D<int>(who->_x , who->_y+1, who->_z);
+      break;
+    case Block::left:
+      container = Core::Container3D<int>(who->_x+1 , who->_y, who->_z );
+      break;
+    case Block::right:
+      container = Core::Container3D<int>(who->_x-1 , who->_y, who->_z );
+      break;
+    case Block::up:
+      container = Core::Container3D<int>(who->_x , who->_y, who->_z+1);
+      break;
+    case Block::down:
+      container = Core::Container3D<int>(who->_x, who->_y, who->_z-1);
+      break;
+    default:
+      assert(false && "Bad face");
+  }
+
+  createBlock(container);
+}
+
+void
+Map::eraseBlock(const Block* who)
+{
+  if (who)
+  {
+    auto container = Core::Container3D<int>(who->_x, who->_y, who->_z);
+    delete _blocks[container];
+    _blocks.erase(container);
+  }
+}
+
+Block*
+Map::findBlock(const Core::Container3D<int>& where) const
+{
+  auto found = _blocks.find(where);
+  if(found == _blocks.end())
+    return(0);
+  return(found->second);
+}
+
 bool
 Map::loadBlocks(const std::string& filename)
 {
-  if (!loadFromFile(filename, _blocks))
+  std::ifstream file(filename.c_str());
+  int x;
+  int y;
+  int z;
+
+  if (!file)
     return false;
 
-  //linkBlocks(_blocks);
+  while (file)
+  {
+    file >> x >> y >> z;
+    _blocks.insert(Map::blocks_type::value_type(Core::Container3D<int>(x, y, z), new Block(x, y, z)));
+  }
+
   return true;
 }
 
@@ -270,7 +161,7 @@ Map::chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks)
     _chunks.erase(*it);
   }
 
- //std::cout << "Taille map: " << _chunks.size() << std::endl;
+  //std::cout << "Taille map: " << _chunks.size() << std::endl;
 
 }
 

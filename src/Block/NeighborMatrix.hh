@@ -5,13 +5,13 @@
 
 namespace Block
 {
-  class NeighborMatrix : public Core::Array3D<int, 3>
+  class NeighbourMatrix : public Core::Array3D<int, 3>
   {
   private:
     typedef Core::Array3D<int, 3> super;
 
   public:
-    NeighborMatrix()
+    NeighbourMatrix()
       : super()
     {
     }

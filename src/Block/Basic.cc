@@ -43,11 +43,11 @@ namespace Block
   }
 
   void
-  Basic::draw(const NeighborMatrix& neighbors) const
+  Basic::draw(const NeighbourMatrix& neighbours) const
   {
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable(getShaderName());
-    specificDraw(neighbors);
+    specificDraw(neighbours);
     shaders.disable();
   }
 } // Block

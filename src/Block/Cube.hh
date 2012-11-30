@@ -18,7 +18,7 @@ namespace Block
     virtual std::string getShaderName() const;
 
   private:
-    virtual void specificDraw(const NeighborMatrix& neighbors) const;
+    virtual void specificDraw(const NeighbourMatrix& neighbors) const;
   };
 } // Block
 

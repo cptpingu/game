@@ -20,7 +20,7 @@ namespace Block
   }
 
   void
-  Triangle::specificDraw(const NeighborMatrix& neighbors) const
+  Triangle::specificDraw(const NeighbourMatrix& neighbours) const
   {
     TextureManager& textures = TextureManager::getInstance();
     ShadersManager& shaders = ShadersManager::getInstance();

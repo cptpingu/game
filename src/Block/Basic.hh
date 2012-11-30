@@ -40,12 +40,12 @@ namespace Block
     bool isHighlighted(FaceType face) const;
     void resetHighlight();
 
-    void draw(const NeighborMatrix& neighbors) const;
+    void draw(const NeighbourMatrix& neighbours) const;
 
     virtual std::string getShaderName() const;
 
   private:
-    virtual void specificDraw(const NeighborMatrix& neighbors) const = 0;
+    virtual void specificDraw(const NeighbourMatrix& neighbours) const = 0;
 
   private:
     std::array<bool, FaceType::back + 1> _highlights;

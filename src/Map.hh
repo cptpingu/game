@@ -20,27 +20,50 @@
 */
 class Map
 {
-public:  
-
-  typedef std::unordered_map<Core::Container3D<int>, Block*, Core::NumericalContainerHash<int> > temp_map_type;
+public:
   typedef std::unordered_map<std::pair<int, int>, Chunk*, Core::PairHash<int, int> > chunks_type;
   typedef std::unordered_map<Core::Container3D<int>, Block*, Core::NumericalContainerHash<int> > blocks_type;
-  typedef Core::ListContainer3D<Core::Container3D<double> > objects_type;
+
+public:
+  Map();
+  ~Map();
 
 
 
-    void insertBlockfromBlock(const Block* who, const Block::FaceType where);
-    Block::Block* findBlock(const Core::Container3D<int>& where) const;
-    void eraseBlock(const Block::Block* who);
-    void createBlock(const Core::Container3D<int> & where);
     void InitGroundBlocks(int SIZE);
 
 
+  /*!
+  ** Create a block at a given position.
+  **
+  ** @param where The position.
+  */
+  void createBlock(const Core::Container3D<int> & where);
 
-public:
 
-  Map();
-  ~Map();
+  /*!
+  ** Create a block near another block.
+  **
+  ** @param who The coordinate of the block which is alread there.
+  ** @param where The face of the block where to create a new block.
+  */
+  void insertBlockNearBlock(const Block* who, const Block::FaceType where);
+
+  /*!
+  ** Given its coordinate, find a block.
+  **
+  ** @param where The position.
+  **
+  ** @return The block or 0 if not found.
+  */
+  Block* findBlock(const Core::Container3D<int>& where) const;
+
+  /*!
+  ** Delete a block from the world.
+  **
+  ** @param who The block to delete.
+  */
+  void eraseBlock(const Block* who);
 
   /*!
   ** Load blocks from file.

@@ -30,6 +30,7 @@ namespace Architecte
   double Norm(Vector3D where,int type);
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks);
+
 }
 
 #endif /* !ARCHITECTE_HH_ */

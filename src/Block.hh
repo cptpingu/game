@@ -36,6 +36,9 @@ public:
       _left(0), _right(0),
       _front(0), _back(0),
       _highlights()
+
+
+
   {
   }
 

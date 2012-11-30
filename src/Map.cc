@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <cmath>
+#include "Random.hh"
 
 namespace
 {
@@ -129,10 +131,28 @@ Map::createBlock(const Core::Container3D<int>& where)
 
 }
 
+void Map::InitGroundBlocks(int SIZE)
+{
+    Core::Container3D<int> where;
+
+      for (int i = 0; i < SIZE; ++i)
+        for (int j = 0; j < SIZE; ++j)
+     {where._x= i;
+      where._y= j;
+      where._z= 100*cos(fabs(i+j-50)*2*3.1467) + 100*sin(fabs(i+j-50)*2*3.1467);
+      //where._z = 100*exp(- (sqrt((i-25)^2+(j-25)^2))/100);
+      //where._z= where._z + Random::rand()%3 - 1;
+      //where._z = 100/(sqrt((i-SIZE/2)*(i-SIZE/2) + (j-SIZE/2)*(j-SIZE/2)));
+      createBlock(where);
+}
+
+
+}
+
+
+
 void
-
 Map::insertBlockfromBlock(const Block* who, const Block::FaceType where)
-
 {
     if (!who)
       return;
@@ -161,7 +181,6 @@ Map::insertBlockfromBlock(const Block* who, const Block::FaceType where)
       default:
         assert(false && "Bad face");
     }
-
     if (_blocks.find(container) == _blocks.end())
       _blocks.insert(blocks_type::value_type(container, new Block(container._x , container._y, container._z)));
 }

@@ -295,6 +295,7 @@ for (int k=1;k<Reach;++k)
     {
         if( where._x - static_cast<int>(_position._x + (k-1)*_forward._x)/Block::SIZE > 0)
             return std::make_pair(block, Block::right);
+
         if( where._x - static_cast<int>(_position._x + (k-1)*_forward._x)/Block::SIZE < 0)
             return std::make_pair(block,Block::left);
 

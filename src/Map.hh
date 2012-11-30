@@ -33,6 +33,7 @@ public:
     Block::Block* findBlock(const Core::Container3D<int>& where) const;
     void eraseBlock(const Block::Block* who);
     void createBlock(const Core::Container3D<int> & where);
+    void InitGroundBlocks(int SIZE);
 
 
 

@@ -27,6 +27,7 @@ Game::load()
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
   _map.loadBlocks("data/map/block.txt");
+  _map.InitGroundBlocks(50);
   loadtextures();
   loadShaders();
 
@@ -55,6 +56,10 @@ Game::play()
       if (pickedBlock.first)
         //pickedBlock.first->highlight(Block::up, true);
         pickedBlock.first->highlight(pickedBlock.second, true);
+
+
+       //Architecte::InitGroundBlocks(_map);
+
       drawAxis(100);
 
       drawGL(pickedCoord);

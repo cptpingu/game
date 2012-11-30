@@ -159,6 +159,7 @@ Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedC
     drawChunk(it->first, *it->second, selectedCoord);
 }
 
+
 void
 Drawer::drawBlocks(const Map::blocks_type& blocks) const
 {

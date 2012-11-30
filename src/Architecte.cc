@@ -243,7 +243,7 @@ namespace Architecte
   {
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        {coords(i,j) = Random::rand()% 2;}
+        {coords(i,j) = Random::rand()% 40;}
 
     smoothGround(coords);
 
@@ -341,16 +341,6 @@ void Forest(Chunk::chunk_coord_type TreeList,int size,int Density)
   }
 
 
-
-  /*void InitGroundBlocks(Map::_blocks blocks)
-  {
-      for (int i = 0; i < 100; ++i)
-        for (int j = 0; j < 100; ++j)
-            for(int k = 0; k <100;++k)
-
-
-  }
-*/
 
 
 }

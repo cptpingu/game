@@ -2,6 +2,7 @@
 # define BLOCK_BASIC_HH_
 
 # include "../Core/Container3D.hh"
+# include "../Block/NeighborMatrix.hh"
 
 # include <array>
 # include <string>
@@ -39,12 +40,12 @@ namespace Block
     bool isHighlighted(FaceType face) const;
     void resetHighlight();
 
-    void draw() const;
+    void draw(const NeighborMatrix& neighbors) const;
 
     virtual std::string getShaderName() const;
 
   private:
-    virtual void specificDraw() const = 0;
+    virtual void specificDraw(const NeighborMatrix& neighbors) const = 0;
 
   private:
     std::array<bool, FaceType::back + 1> _highlights;

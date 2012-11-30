@@ -163,10 +163,11 @@ Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedC
 void
 Drawer::drawBlocks(const Map::blocks_type& blocks) const
 {
+  Block::NeighborMatrix neighbors;
   auto end = blocks.end();
   for (auto block = blocks.begin(); block != end; ++block)
   {
-    block->second->draw();
+    block->second->draw(neighbors);
     block->second->resetHighlight();
   }
 }

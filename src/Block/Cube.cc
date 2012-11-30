@@ -20,7 +20,7 @@ namespace Block
   }
 
   void
-  Cube::specificDraw() const
+  Cube::specificDraw(const NeighborMatrix& neighbors) const
   {
 #define CHECK_HIGHLIGHT(X) if (isHighlighted(X)) \
               glVertexAttrib1f(attrib, 0.3);\

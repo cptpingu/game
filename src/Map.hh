@@ -20,7 +20,7 @@
 */
 class Map
 {
-public:  
+public:
 
   typedef std::unordered_map<Core::Container3D<int>, Block*, Core::NumericalContainerHash<int> > temp_map_type;
   typedef std::unordered_map<std::pair<int, int>, Chunk*, Core::PairHash<int, int> > chunks_type;
@@ -30,8 +30,8 @@ public:
 
 
     void insertBlockfromBlock(const Block* who, const Block::FaceType where);
-    Block::Block* findBlock(const Core::Container3D<int>& where) const;
-    void eraseBlock(const Block::Block* who);
+    Block* findBlock(const Core::Container3D<int>& where) const;
+    void eraseBlock(const Block* who);
     void createBlock(const Core::Container3D<int> & where);
 
 

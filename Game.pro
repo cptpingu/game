@@ -19,7 +19,10 @@ SOURCES += \
     src/Chunk.cc \
     src/Random.cc \
     src/SDL/SavePng.cc \
-    src/ShadersManager.cc
+    src/ShadersManager.cc \
+    src/Block/Basic.cc \
+    src/Block/Cube.cc \
+    src/Block/Triangle.cc
 
 HEADERS += \
     src/Vector3D.hh \
@@ -28,7 +31,6 @@ HEADERS += \
     src/Core/Singleton.hh \
     src/GLUtils.hh \
     src/FreeFlyCamera.hh \
-    src/Block.hh \
     src/Map.hh \
     src/Drawer.hh \
     src/ImageFile.hh \
@@ -46,7 +48,10 @@ HEADERS += \
     src/Core/NonCopyable.hh \
     src/Core/Array2D.hh \
     src/ShadersManager.hh \
-    src/Core/NumericalContainerHash.hh
+    src/Core/NumericalContainerHash.hh \
+    src/Block/Basic.hh \
+    src/Block/Cube.hh \
+    src/Block/Triangle.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

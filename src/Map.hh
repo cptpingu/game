@@ -1,7 +1,7 @@
 #ifndef MAP_HH_
 # define MAP_HH_
 
-# include "Block.hh"
+# include "Block/Basic.hh"
 # include "Vector3D.hh"
 # include "Chunk.hh"
 
@@ -22,7 +22,7 @@ class Map
 {
 public:
   typedef std::unordered_map<std::pair<int, int>, Chunk*, Core::PairHash<int, int> > chunks_type;
-  typedef std::unordered_map<Core::Container3D<int>, Block*, Core::NumericalContainerHash<int> > blocks_type;
+  typedef std::unordered_map<Core::Container3D<int>, Block::Basic*, Core::NumericalContainerHash<int> > blocks_type;
 
 public:
   Map();
@@ -47,7 +47,7 @@ public:
   ** @param who The coordinate of the block which is alread there.
   ** @param where The face of the block where to create a new block.
   */
-  void insertBlockNearBlock(const Block* who, const Block::FaceType where);
+  void insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where);
 
   /*!
   ** Given its coordinate, find a block.
@@ -56,14 +56,14 @@ public:
   **
   ** @return The block or 0 if not found.
   */
-  Block* findBlock(const Core::Container3D<int>& where) const;
+  Block::Basic* findBlock(const Core::Container3D<int>& where) const;
 
   /*!
   ** Delete a block from the world.
   **
   ** @param who The block to delete.
   */
-  void eraseBlock(const Block* who);
+  void eraseBlock(const Block::Basic* who);
 
   /*!
   ** Load blocks from file.

@@ -2,12 +2,15 @@
 
 #include "Core/Traits.hh"
 #include "Architecte.hh"
+#include "Random.hh"
+#include "Block/Cube.hh"
+#include "Block/Triangle.hh"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <cmath>
-#include "Random.hh"
 
 Map::Map()
 {
@@ -22,10 +25,15 @@ void
 Map::createBlock(const Core::Container3D<int>& where)
 {
   if (_blocks.find(where) == _blocks.end())
-    _blocks.insert(blocks_type::value_type(where, new Block(where._x , where._y, where._z)));
-
+  {
+    Block::Basic* block = 0;
+    if (Random::rand() % 2 == 0)
+      block = new Block::Cube(where._x , where._y, where._z);
+    else
+      block = new Block::Triangle(where._x , where._y, where._z);
+    _blocks.insert(blocks_type::value_type(where, block));
+  }
 }
-
 
 void Map::InitGroundBlocks(int SIZE)
 {
@@ -44,7 +52,7 @@ void Map::InitGroundBlocks(int SIZE)
 }
 
 
-void Map::insertBlockNearBlock(const Block* who, const Block::FaceType where)
+void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
 
 {
   if (!who)
@@ -80,7 +88,7 @@ void Map::insertBlockNearBlock(const Block* who, const Block::FaceType where)
 
 
 void
-Map::eraseBlock(const Block* who)
+Map::eraseBlock(const Block::Basic* who)
 {
   if (who)
   {
@@ -90,7 +98,7 @@ Map::eraseBlock(const Block* who)
   }
 }
 
-Block*
+Block::Basic*
 Map::findBlock(const Core::Container3D<int>& where) const
 {
   auto found = _blocks.find(where);
@@ -113,7 +121,7 @@ Map::loadBlocks(const std::string& filename)
   while (file)
   {
     file >> x >> y >> z;
-    _blocks.insert(Map::blocks_type::value_type(Core::Container3D<int>(x, y, z), new Block(x, y, z)));
+    createBlock(Core::Container3D<int>(x, y, z));
   }
 
   return true;

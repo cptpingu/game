@@ -1,6 +1,6 @@
 #include "Map.hh"
 #include "Drawer.hh"
-#include "Block.hh"
+#include "Block/Basic.hh"
 #include "TextureManager.hh"
 #include "ShadersManager.hh"
 #include "Opengl.hh"
@@ -163,151 +163,10 @@ Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedC
 void
 Drawer::drawBlocks(const Map::blocks_type& blocks) const
 {
-#define CHECK_HIGHLIGHT(X) if ((*it)->isHighlighted(X)) \
-            {\
-                glVertexAttrib1f(attrib, 0.3);\
-                (*it)->highlight(X, false);\
-            } \
-            else \
-                glVertexAttrib1f(attrib, 0.0);
-
-
-  ShadersManager& shaders = ShadersManager::getInstance();
-  shaders.enable("cube");
-
-  TextureManager& textures = TextureManager::getInstance();
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
-  GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
-
   auto end = blocks.end();
   for (auto block = blocks.begin(); block != end; ++block)
   {
-    auto it = &block->second;
-    glPushMatrix();
-    glTranslatef((*it)->_x * Block::SIZE, (*it)->_y * Block::SIZE, (*it)->_z * Block::SIZE);
-    if ((*it)->isHighlighted(Block::up) ||
-        (*it)->isHighlighted(Block::down) ||
-        (*it)->isHighlighted(Block::left) ||
-        (*it)->isHighlighted(Block::right) ||
-        (*it)->isHighlighted(Block::front) ||
-        (*it)->isHighlighted(Block::back))
-    {
-      glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), 0.2);
-    }
-    else
-      glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), 0.0);
-
-    glBegin(GL_QUADS);
-
-    //par terre
-    glTexCoord2d(0, 0);
-    CHECK_HIGHLIGHT(Block::down);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-    glTexCoord2d(Block::SIZE, 0);
-    CHECK_HIGHLIGHT(Block::down);
-    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::down);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
-    glTexCoord2d(0, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::down);
-    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-
-    //face droite
-    glTexCoord2d(0, 0);
-    CHECK_HIGHLIGHT(Block::right);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, 0);
-    CHECK_HIGHLIGHT(Block::right);
-    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::right);
-    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, 0);
-    glTexCoord2d(0, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::right);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, 0);
-
-    //face gauche
-    glTexCoord2d(0, 0);
-    CHECK_HIGHLIGHT(Block::left);
-    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::left);
-    glTexCoord2d(Block::SIZE, 0);
-    CHECK_HIGHLIGHT(Block::left);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::left);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, 0);
-    glTexCoord2d(0, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::left);
-    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
-
-    //face face
-    glTexCoord2d(0, 0);
-    CHECK_HIGHLIGHT(Block::front);
-    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, 0);
-    CHECK_HIGHLIGHT(Block::front);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::front);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
-    glTexCoord2d(0, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::front);
-    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-
-    //face derriere
-    glTexCoord2d(0, 0);
-    CHECK_HIGHLIGHT(Block::back);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, 0);
-    CHECK_HIGHLIGHT(Block::back);
-    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::back);
-    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, 0);
-    glTexCoord2d(0, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::back);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-
-    //face au ciel
-    glTexCoord2d(0, 0);
-    CHECK_HIGHLIGHT(Block::up);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, 0);
-    CHECK_HIGHLIGHT(Block::up);
-    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::up);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-    glTexCoord2d(0, Block::SIZE);
-    CHECK_HIGHLIGHT(Block::up);
-    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
-
-#undef CHECK_HIGHLIGHT
-
-    glEnd();
-
-    glPopMatrix();
+    block->second->draw();
+    block->second->resetHighlight();
   }
-  shaders.disable();
 }
-
-// void
-// Drawer::drawTrees(const Architecte::Model& trees) const
-// {
-//   TextureManager& textures = TextureManager::getInstance();
-//   glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
-
-//   glPushMatrix();
-//   glBegin(GL_LINE_STRIP);
-//   auto end = trees.end();
-//   for (auto it = trees.begin(); it != end; ++it)
-//   {
-//     glColor3f(1, 1, 1);
-//     glVertex3f((*it)._x, (*it)._y, (*it)._z);
-//     glEnd();
-//     glPopMatrix();
-//   }
-// }

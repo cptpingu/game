@@ -272,12 +272,12 @@ FreeFlyCamera::picking(const Map::chunks_type& chunks) const
   */
 
 
-std::pair<Block*, Block::FaceType>
+std::pair<Block::Basic*, Block::FaceType>
 FreeFlyCamera::picking(const Map& map) const
 {
 int Reach = 100;
 
-Block* block = 0;
+Block::Basic* block = 0;
 
 for (int k=1;k<Reach;++k)
     {

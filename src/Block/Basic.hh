@@ -3,6 +3,7 @@
 
 # include "../Core/Container3D.hh"
 # include "../Block/NeighborMatrix.hh"
+# include "../Opengl.hh"
 
 # include <array>
 # include <string>
@@ -37,6 +38,9 @@ namespace Block
     virtual ~Basic();
 
   public:
+    void registerBlock();
+    void unregisterBlock();
+
     void highlight(FaceType face, bool highlight);
     bool isHighlighted(FaceType face) const;
     bool isHighlight() const;
@@ -46,11 +50,14 @@ namespace Block
 
   public:
     virtual std::string getShaderName() const;
+    virtual void drawPickingBox() const;
 
   private:
     virtual void specificDraw(const NeighbourMatrix& neighbours) const = 0;
 
   private:
+  public:
+    GLuint _id;
     std::array<bool, FaceType::back + 1> _highlights;
   };
 } // Block

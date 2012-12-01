@@ -37,18 +37,33 @@ Map::createBlock(const Core::Container3D<int>& where)
 
 void Map::InitGroundBlocks(int SIZE)
 {
-    Core::Container3D<int> where;
+  Core::Container3D<int> where;
 
-      for (int i = 0; i < SIZE; ++i)
-        for (int j = 0; j < SIZE; ++j)
-     {where._x= i;
+  for (int i = 0; i < 1; ++i)
+  {
+    for (int j = 0; j < 1; ++j)
+    {
+      where._x = i;
+      where._y = j;
+      where._z = 0;
+      createBlock(where);
+    }
+  }
+  return;
+
+  for (int i = 0; i < SIZE; ++i)
+  {
+    for (int j = 0; j < SIZE; ++j)
+    {
+      where._x= i;
       where._y= j;
       where._z= 100*cos(fabs(i+j-50)*2*3.1467) + 100*sin(fabs(i+j-50)*2*3.1467);
       //where._z = 100*exp(- (sqrt((i-25)^2+(j-25)^2))/100);
       //where._z= where._z + Random::rand()%3 - 1;
       //where._z = 100/(sqrt((i-SIZE/2)*(i-SIZE/2) + (j-SIZE/2)*(j-SIZE/2)));
       createBlock(where);
-}
+    }
+  }
 }
 
 

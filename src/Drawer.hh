@@ -19,6 +19,8 @@ public:
   */
   void drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedCoord) const;
 
+  void drawPickingBox(const Map& map) const;
+
   /*!
   ** Draw the blocks.
   **

@@ -52,12 +52,13 @@ Game::play()
       _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
       _camera.animate(elapsed_time);
       Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
-      std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking(_map);
+      //std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking(_map);
+      std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking2(_map, _drawer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
       if (pickedBlock.first)
+      {
+        std::cout << "highlight " << pickedBlock.first->_id << std::endl;
         pickedBlock.first->highlight(pickedBlock.second, true);
-
-
-       //Architecte::InitGroundBlocks(_map);
+      }
 
       drawAxis(100);
 

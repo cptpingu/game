@@ -1,6 +1,10 @@
 #include "Basic.hh"
 #include "../TextureManager.hh"
 #include "../ShadersManager.hh"
+#include "../IdManager.hh"
+#include "../Random.hh"
+
+#include <iostream>
 
 namespace Block
 {
@@ -8,16 +12,32 @@ namespace Block
     : super(x, y, z),
       _highlights()
   {
+    registerBlock();
   }
 
   Basic::~Basic()
   {
+    unregisterBlock();
   }
 
   std::string
   Basic::getShaderName() const
   {
     return "textures";
+  }
+
+  void
+  Basic::registerBlock()
+  {
+    IdManager& ids = IdManager::getInstance();
+    _id = ids.getNewIdForBlock(this);
+  }
+
+  void
+  Basic::unregisterBlock()
+  {
+    IdManager& ids = IdManager::getInstance();
+    ids.deleteId(_id);
   }
 
   void
@@ -56,10 +76,75 @@ namespace Block
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable(getShaderName());
     assert(neighbours(0, 0, 0) == this && "Neighbours (0,0,0) must be the block itself!");
-    specificDraw(neighbours);
+    //specificDraw(neighbours);
     shaders.disable();
+    drawPickingBox();
     if (isHighlight())
       selectionDraw();
+  }
+
+  void
+  Basic::drawPickingBox() const
+  {
+#define DRAW_FACE(X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3, X4, Y4, Z4, SIDE)           \
+    {                                                                             \
+      glPushName(_id + SIDE);                                                     \
+      glPushMatrix();                                                             \
+      glTranslatef(_x * Block::SIZE, _y * Block::SIZE, _z * Block::SIZE);         \
+      glColor3f(SIDE / 10.0, SIDE / 10.0, SIDE/10.0);                             \
+      glBegin(GL_QUADS);                                                          \
+      glVertex3d(X1 * Block::HALF_SIZE, Y1 * Block::HALF_SIZE, Z1 * Block::SIZE); \
+      glVertex3d(X2 * Block::HALF_SIZE, Y2 * Block::HALF_SIZE, Z2 * Block::SIZE); \
+      glVertex3d(X3 * Block::HALF_SIZE, Y3 * Block::HALF_SIZE, Z3 * Block::SIZE); \
+      glVertex3d(X4 * Block::HALF_SIZE, Y4 * Block::HALF_SIZE, Z4 * Block::SIZE); \
+      glEnd();                                                                    \
+      glPopMatrix();                                                              \
+      glPopName();                                                                \
+    }
+
+    //par terre
+    DRAW_FACE(-1, -1, 0,
+              +1, -1, 0,
+              +1, +1, 0,
+              -1, +1, 0,
+              Block::down);
+
+    //face droite
+    DRAW_FACE(-1, -1, 1,
+              -1, +1, 1,
+              -1, +1, 0,
+              -1, -1, 0,
+              Block::right);
+
+    //face gauche
+    DRAW_FACE(+1, -1, 1,
+              +1, +1, 1,
+              +1, +1, 0,
+              +1, -1, 0,
+              Block::left);
+
+    //face face
+    DRAW_FACE(-1, +1, 1,
+              +1, +1, 1,
+              +1, +1, 0,
+              -1, +1, 0,
+              Block::front);
+
+    //face derriere
+    DRAW_FACE(-1, -1, 1,
+              +1, -1, 1,
+              +1, -1, 0,
+              -1, -1, 0,
+              Block::back);
+
+    //face au ciel
+    DRAW_FACE(-1, -1, 1,
+              +1, -1, 1,
+              +1, +1, 1,
+              -1, +1, 1,
+              Block::up);
+#undef DRAW_FACE
+
   }
 
   void

@@ -1,13 +1,15 @@
 #ifndef FREEFLYCAMERA_HH_
 # define FREEFLYCAMERA_HH_
 
-#include "Vector3D.hh"
-#include <SDL/SDL.h>
-#include <map>
-#include <string>
-#include "Chunk.hh"
-#include "Map.hh"
-#include "Block/Basic.hh"
+# include "Vector3D.hh"
+# include "Chunk.hh"
+# include "Map.hh"
+# include "Drawer.hh"
+# include "Block/Basic.hh"
+
+# include <SDL/SDL.h>
+# include <map>
+# include <string>
 
 
 class FreeFlyCamera
@@ -21,6 +23,7 @@ public:
 
     virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
     virtual std::pair<Block::Basic*, Block::FaceType> picking(const Map& blocks) const;
+    virtual std::pair<Block::Basic*, Block::FaceType> picking2(const Map& map, const Drawer& drawer, int x, int y) const;
 
     virtual void animate(Uint32 timestep);
     virtual void setSpeed(double speed);

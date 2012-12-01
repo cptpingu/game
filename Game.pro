@@ -22,7 +22,8 @@ SOURCES += \
     src/ShadersManager.cc \
     src/Block/Basic.cc \
     src/Block/Cube.cc \
-    src/Block/Triangle.cc
+    src/Block/Triangle.cc \
+    src/IdManager.cc
 
 HEADERS += \
     src/Vector3D.hh \
@@ -53,7 +54,8 @@ HEADERS += \
     src/Block/Basic.hh \
     src/Block/Cube.hh \
     src/Block/Triangle.hh \
-    src/Block/NeighborMatrix.hh
+    src/Block/NeighborMatrix.hh \
+    src/IdManager.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

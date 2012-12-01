@@ -160,6 +160,15 @@ Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedC
 }
 
 void
+Drawer::drawPickingBox(const Map& map) const
+{
+  const Map::blocks_type& blocks = map.getBlocks();
+  auto end = blocks.end();
+  for (auto block = blocks.begin(); block != end; ++block)
+    block->second->drawPickingBox();
+}
+
+void
 Drawer::drawBlocks(const Map& map) const
 {
   const Map::blocks_type& blocks = map.getBlocks();

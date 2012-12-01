@@ -3,11 +3,18 @@
 
 # include "../Core/Array3D.hh"
 
-
 namespace Block
 {
+  /*!
+  ** Forward declaration for the "Basic" class.
+  */
   class Basic;
 
+  /*!
+  ** @class NeighbourMatrix
+  **
+  ** Cube of 3x3x3 with coord from -1 to 1.
+  */
   class NeighbourMatrix : public Core::Array3D<Basic*, 3>
   {
   private:

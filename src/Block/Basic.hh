@@ -15,6 +15,7 @@
 namespace Block
 {
   static const int SIZE = 2;
+  static const double HALF_SIZE = SIZE / 2;
 
   enum FaceType
   {
@@ -38,6 +39,7 @@ namespace Block
   public:
     void highlight(FaceType face, bool highlight);
     bool isHighlighted(FaceType face) const;
+    bool isHighlight() const;
     void resetHighlight();
 
     void draw(const NeighbourMatrix& neighbours) const;

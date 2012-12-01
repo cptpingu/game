@@ -34,6 +34,14 @@ namespace Block
     return _highlights[face];
   }
 
+  bool
+  Basic::isHighlight() const
+  {
+    return isHighlighted(Block::up) || isHighlighted(Block::down) ||
+        isHighlighted(Block::left) || isHighlighted(Block::right) ||
+        isHighlighted(Block::front) || isHighlighted(Block::back);
+  }
+
   void
   Basic::resetHighlight()
   {
@@ -47,6 +55,7 @@ namespace Block
   {
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable(getShaderName());
+    assert(neighbours(0, 0, 0) == this && "Neighbours (0,0,0) must be the block itself!");
     specificDraw(neighbours);
     shaders.disable();
   }

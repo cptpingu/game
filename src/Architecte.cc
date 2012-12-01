@@ -224,7 +224,7 @@ namespace Architecte
     }
   }
 
-  void Initground(Chunk::chunk_coord_type& coords,int Quality)
+  void Initground(Chunk::chunk_coord_type&,int)
     {
      /*  int subg = (Chunk::SIZE-1)/Quality;
       for (int i = 0; i < Quality; ++i)

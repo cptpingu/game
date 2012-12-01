@@ -74,8 +74,6 @@ FreeFlyCamera::OnMouseButton(const SDL_MouseButtonEvent& event)
   else if(event.button == SDL_BUTTON_LEFT && event.type == SDL_MOUSEBUTTONDOWN )
   {
   std::cout << "KICK OUT" << std::endl;
-
-
   }
 }
 

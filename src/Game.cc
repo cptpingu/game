@@ -28,7 +28,10 @@ Game::load()
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
   _map.loadBlocks("data/map/block.txt");
-  _map.InitGroundBlocks(50);
+  _map.InitGroundBlocks(20);
+
+
+
   loadtextures();
   loadShaders();
 
@@ -185,7 +188,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord,
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
 
   showCoord(selectedCoord);
-  drawAxis(10000);
+  //drawAxis(10000);
   drawFPS(fpsFromSDL);
   drawHUD();
 

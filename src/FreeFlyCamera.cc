@@ -321,69 +321,33 @@ std::pair<Block::Basic*, Block::FaceType>
 FreeFlyCamera::picking2(const Map& map, const Drawer& drawer,
                         int mouseX, int mouseY) const
 {
-  GLuint buff[512] = {0};
-  GLint view[4] = {0};
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_FOG);
+  glDisable(GL_LIGHTING);
+  glDisable(GL_DITHER);
 
-  glSelectBuffer(64, buff);
-  glRenderMode(GL_SELECT);
-  glEnable(GL_DEPTH_TEST);
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-
-  glGetIntegerv(GL_VIEWPORT, view);
-  gluPickMatrix(mouseX, mouseY, 1.0, 1.0, view);
-  gluPerspective(60, (float)view[2]/(float)view[3], 0.0001, 1000.0);
-
-//  gluPickMatrix (mouseX, view[3] - mouseY, 2, 2, view);
-//  gluPerspective (60.0, (double)view[2] / (double)view[3], 1.0, 1000.0);
-
-  glMatrixMode(GL_MODELVIEW);
-  glInitNames();
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   drawer.drawPickingBox(map);
 
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glMatrixMode(GL_MODELVIEW);
-  glFlush();
+  unsigned char pixel[3];
+  GLint viewport[4];
+  glGetIntegerv(GL_VIEWPORT, viewport);
+  glReadPixels(mouseX, viewport[3] - mouseY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
 
-  GLint hits = glRenderMode(GL_RENDER);
-  GLuint id = 0;
-  unsigned int minZ = std::numeric_limits<unsigned int>::max();
-  for (int i = 0; i < hits; ++i)
-  { 		printf(	"Number: %u, "
-                "Min Z: %u, "
-                "Max Z: %u, "
-                "Name on stack: %u\n",
-                buff[i * 4],
-                buff[i * 4 + 1],
-                buff[i * 4 + 2],
-                buff[i * 4 + 3]);
-    if (buff[i * 4] < minZ)
-    {
-      minZ = buff[i * 4];
-      id = buff[i * 4 + 3];
-    }
-  }
-
-  auto face = Block::FaceType(id % 1000);
-  std::string name = "";
-  switch (face)
-  {
-    case Block::none: name = "none"; break;
-    case Block::up: name = "up"; break;
-    case Block::down: name = "down"; break;
-    case Block::left: name = "left"; break;
-    case Block::right: name = "right"; break;
-    case Block::front: name = "front"; break;
-    case Block::back: name = "back"; break;
-  }
-  std::cout << "final id is: " << id
-            << ", face is " << name << " (" << face << ")"
+  const Block::id_type id(pixel[0], pixel[1], pixel[2]);
+  std::cout << ", r: " << id._x
+            << ", g: " << id._y
+            << ", b: " << id._z
             << std::endl;
-
   Block::Basic* block = IdManager::getInstance().getBlockFromId(id);
-  return std::make_pair(block, Block::FaceType(id % 1000));
-  //return std::make_pair(block, Block::FaceType(0));
+  if (block)
+    std::cout << "coord: "
+              << block->_x << ","
+              << block->_y << ","
+              << block->_z << ","
+              << std::endl;
+
+  return std::make_pair(block, !block ?Block::none : Block::FaceType(id._z));
 }

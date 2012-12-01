@@ -10,63 +10,11 @@
 #include <vector>
 #include <sstream>
 
-//Le fonctionnement idéal du drawer => il recoit des listes d'objets typés et dessine les objets OPEN_GL correspondants
-//Il n'est pas censé échanger quoi que ce soit avec le reste , c'est le côté open GL du programme.
 namespace
 {
-
   void drawChunk(const std::pair<int, int>& coord, const Chunk& chunk,
                  const Chunk::Coord* selectedCoord)
   {
-    //    glEnable(GL_LIGHTING);
-    //    glEnable(GL_LIGHT0);
-    //    glEnable(GL_NORMALIZE);
-
-    //    GLfloat lmKa[] = {0.0, 0.0, 0.0, 0.0};
-    //    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmKa);
-    //    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0);
-    //    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 0.0);
-
-    //    GLfloat spot_direction[] = {1.0, -1.0, -1.0};
-    //    GLint spot_exponent = 30;
-    //    GLint spot_cutoff = 180;
-
-    //    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
-    //    glLighti(GL_LIGHT0, GL_SPOT_EXPONENT, spot_exponent);
-    //    glLighti(GL_LIGHT0, GL_SPOT_CUTOFF, spot_cutoff);
-
-    //    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
-    //    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0);
-    //    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0);
-
-    //    // -------------------------------------------
-    //    // Lighting parameters:
-
-    //    GLfloat light_pos[] = {0.0f, 5.0f, 5.0f, 1.0f};
-    //    GLfloat light_Ka[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-    //    GLfloat light_Kd[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-    //    GLfloat light_Ks[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-
-    //    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-    //    glLightfv(GL_LIGHT0, GL_AMBIENT, light_Ka);
-    //    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_Kd);
-    //    glLightfv(GL_LIGHT0, GL_SPECULAR, light_Ks);
-
-    //    // -------------------------------------------
-    //    // Material parameters:
-
-    //    GLfloat material_Ka[] = {0.5f, 0.5f, 0.5f, 1.0f};
-    //    GLfloat material_Kd[] = {0.5f, 0.5f, 0.5f, 1.0f};
-    //    GLfloat material_Ks[] = {0.8f, 0.8f, 0.8f, 1.0f};
-    //    GLfloat material_Ke[] = {0.1f, 0.0f, 0.0f, 0.0f};
-    //    GLfloat material_Se = 20.0f;
-
-    //    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material_Ka);
-    //    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material_Kd);
-    //    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material_Ks);
-    //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, material_Ke);
-    //    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material_Se);
-
     TextureManager& textures = TextureManager::getInstance();
 
     glActiveTexture(GL_TEXTURE0);
@@ -142,11 +90,6 @@ namespace
     glPopMatrix();
 
     shaders.disable();
-
-    //    glDisable(GL_LIGHTING);
-    //    glDisable(GL_LIGHT0);
-    //    glDisable(GL_NORMALIZE);
-
   }
 
 } // namespace

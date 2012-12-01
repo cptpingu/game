@@ -1,28 +1,33 @@
 #ifndef IDMANAGER_HH_
 # define IDMANAGER_HH_
 
+# include "Core/NumericalContainerHash.hh"
+
 # include "Core/Singleton.hh"
+# include "Core/Container3D.hh"
+# include "Block/Basic.hh"
 # include "Random.hh"
 # include "Opengl.hh"
-# include "Block/Basic.hh"
 
 # include <unordered_map>
+# include <map>
 
 class IdManager : public Core::Singleton<IdManager>
 {
   friend class Core::Singleton<IdManager>;
 
 private:
-  typedef std::unordered_map<GLuint, Block::Basic*> ids_type;
+  typedef std::unordered_map<Block::id_type, Block::Basic*, Core::NumericalContainerHash<GLuint> > ids_type;
 
 private:
   IdManager();
 
 public:
   ~IdManager();
-  GLuint getNewIdForBlock(Block::Basic* block);
-  void deleteId(GLuint id);
-  Block::Basic* getBlockFromId(GLuint id) const;
+
+  Block::id_type getNewIdForBlock(Block::Basic* block);
+  void deleteId(const Block::id_type& id);
+  Block::Basic* getBlockFromId(const Block::id_type& id) const;
 
 private:
   ids_type _ids;

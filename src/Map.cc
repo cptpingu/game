@@ -39,9 +39,9 @@ void Map::InitGroundBlocks(int SIZE)
 {
   Core::Container3D<int> where;
 
-  for (int i = 0; i < 1; ++i)
+  for (int i = 0; i < 4; ++i)
   {
-    for (int j = 0; j < 1; ++j)
+    for (int j = 0; j < 4; ++j)
     {
       where._x = i;
       where._y = j;
@@ -49,7 +49,7 @@ void Map::InitGroundBlocks(int SIZE)
       createBlock(where);
     }
   }
-  return;
+return;
 
   for (int i = 0; i < SIZE; ++i)
   {

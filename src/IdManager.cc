@@ -9,31 +9,33 @@ IdManager::~IdManager()
 {
 }
 
-GLuint
+Block::id_type
 IdManager::getNewIdForBlock(Block::Basic* block)
 {
   while (true)
   {
-    GLuint id = Random::rand() / 1000;
+    const Block::id_type id(Random::rand() % 256, Random::rand() % 256, 0);
     if (_ids.find(id) == _ids.end())
     {
       _ids.insert(ids_type::value_type(id, block));
-      return id * 1000;
+      return id;
     }
   }
-  return 0;
+  return Block::id_type();
 }
 
 void
-IdManager::deleteId(GLuint id)
+IdManager::deleteId(const Block::id_type& id)
 {
-  _ids.erase(id / 1000);
+  const Block::id_type convertedId(id._x, id._y, 0);
+  _ids.erase(convertedId);
 }
 
 Block::Basic*
-IdManager::getBlockFromId(GLuint id) const
+IdManager::getBlockFromId(const Block::id_type& id) const
 {
-  auto found = _ids.find(id / 1000);
+  const Block::id_type convertedId(id._x, id._y, 0);
+  auto found = _ids.find(convertedId);
   if (found != _ids.cend())
     return found->second;
   return 0;

@@ -15,6 +15,7 @@
 */
 namespace Block
 {
+  typedef Core::Container3D<GLuint> id_type;
   static const int SIZE = 2;
   static const double HALF_SIZE = SIZE / 2;
 
@@ -57,7 +58,7 @@ namespace Block
 
   private:
   public:
-    GLuint _id;
+    id_type _id;
     std::array<bool, FaceType::back + 1> _highlights;
   };
 } // Block

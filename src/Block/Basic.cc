@@ -29,15 +29,13 @@ namespace Block
   void
   Basic::registerBlock()
   {
-    IdManager& ids = IdManager::getInstance();
-    _id = ids.getNewIdForBlock(this);
+    _id = IdManager::getInstance().getNewIdForBlock(this);
   }
 
   void
   Basic::unregisterBlock()
   {
-    IdManager& ids = IdManager::getInstance();
-    ids.deleteId(_id);
+    IdManager::getInstance().deleteId(_id);
   }
 
   void
@@ -76,9 +74,9 @@ namespace Block
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable(getShaderName());
     assert(neighbours(0, 0, 0) == this && "Neighbours (0,0,0) must be the block itself!");
-    //specificDraw(neighbours);
+    specificDraw(neighbours);
     shaders.disable();
-    drawPickingBox();
+    //drawPickingBox();
     if (isHighlight())
       selectionDraw();
   }
@@ -86,21 +84,22 @@ namespace Block
   void
   Basic::drawPickingBox() const
   {
-#define DRAW_FACE(X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3, X4, Y4, Z4, SIDE)           \
+#define DRAW_FACE(X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3, X4, Y4, Z4, FACE)           \
     {                                                                             \
-      glPushName(_id + SIDE);                                                     \
-      glPushMatrix();                                                             \
-      glTranslatef(_x * Block::SIZE, _y * Block::SIZE, _z * Block::SIZE);         \
-      glColor3f(SIDE / 10.0, SIDE / 10.0, SIDE/10.0);                             \
-      glBegin(GL_QUADS);                                                          \
+      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
       glVertex3d(X1 * Block::HALF_SIZE, Y1 * Block::HALF_SIZE, Z1 * Block::SIZE); \
+      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
       glVertex3d(X2 * Block::HALF_SIZE, Y2 * Block::HALF_SIZE, Z2 * Block::SIZE); \
+      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
       glVertex3d(X3 * Block::HALF_SIZE, Y3 * Block::HALF_SIZE, Z3 * Block::SIZE); \
+      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
       glVertex3d(X4 * Block::HALF_SIZE, Y4 * Block::HALF_SIZE, Z4 * Block::SIZE); \
-      glEnd();                                                                    \
-      glPopMatrix();                                                              \
-      glPopName();                                                                \
     }
+
+    glPushMatrix();
+    glTranslatef(_x * Block::SIZE, _y * Block::SIZE, _z * Block::SIZE);
+
+    glBegin(GL_QUADS);
 
     //par terre
     DRAW_FACE(-1, -1, 0,
@@ -145,6 +144,9 @@ namespace Block
               Block::up);
 #undef DRAW_FACE
 
+    glEnd();
+
+    glPopMatrix();
   }
 
   void

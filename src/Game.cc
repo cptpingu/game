@@ -45,28 +45,25 @@ Game::play()
   last_time = SDL_GetTicks();
   for (;;)
   {
-      current_time = SDL_GetTicks();
-      elapsed_time = current_time - last_time;
-      last_time = current_time;
+    current_time = SDL_GetTicks();
+    elapsed_time = current_time - last_time;
+    last_time = current_time;
 
-      _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
-      _camera.animate(elapsed_time);
-      Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
-      //std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking(_map);
-      std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking2(_map, _drawer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-      if (pickedBlock.first)
-      {
-        std::cout << "highlight " << pickedBlock.first->_id << std::endl;
-        pickedBlock.first->highlight(pickedBlock.second, true);
-      }
+    _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
+    _camera.animate(elapsed_time);
+    Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
+    //std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking(_map);
+    std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking2(_map, _drawer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    if (pickedBlock.first)
+      pickedBlock.first->highlight(pickedBlock.second, true);
 
-      drawAxis(100);
+    drawAxis(100);
 
-      drawGL(pickedCoord);
+    drawGL(pickedCoord);
 
-      stop_time = SDL_GetTicks();
-      if ((stop_time - last_time) < time_per_frame)
-        SDL_Delay(time_per_frame - (stop_time - last_time));
+    stop_time = SDL_GetTicks();
+    if ((stop_time - last_time) < time_per_frame)
+      SDL_Delay(time_per_frame - (stop_time - last_time));
 
     while (SDL_PollEvent(&event))
     {
@@ -79,13 +76,13 @@ Game::play()
           switch (event.key.keysym.sym)
           {
             case SDLK_p:
-              {
-                std::ostringstream buff;
-                buff << "screenshot-" << time(0) << ".bmp";
-                takeScreenshot(buff.str().c_str());
-                break;
-              }
-          case SDLK_g:
+            {
+              std::ostringstream buff;
+              buff << "screenshot-" << time(0) << ".bmp";
+              takeScreenshot(buff.str().c_str());
+              break;
+            }
+            case SDLK_g:
               _map.insertBlockNearBlock(pickedBlock.first, pickedBlock.second);
               break;
             case SDLK_f:
@@ -173,6 +170,10 @@ Game::loadShaders()
 void
 Game::drawGL(const Chunk::Coord* selectedCoord)
 {
+  //glEnable(GL_TEXTURE_2D);
+  //glEnable(GL_FOG);
+  //glEnable(GL_LIGHTING);
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glMatrixMode(GL_MODELVIEW);
@@ -184,87 +185,6 @@ Game::drawGL(const Chunk::Coord* selectedCoord)
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
   showCoord(selectedCoord);
   drawHUD();
-
-  // glEnable(GL_LIGHTING);
-  // glEnable(GL_LIGHT0);
-
-  // double a=0;
-  // int LightPos[4] = {10,10,30,1};
-  // int MatSpec [4] = {1,1,1,1};
-
-
-  // glMaterialiv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
-  // glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,100);
-
-
-  // glRotated(a,0,1,0);
-  // glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
-  // a=+1;
-  //float Light1Pos[4] = {15.0f, 15.0f, 20.0f, 1.0f};
-  // float Light1Dif[4] = {1.0f, 0.2f, 0.2f, 1.0f};
-  // float Light1Spec[4] = {1.0f, 0.2f, 0.2f, 1.0f};
-  // float Light1Amb[4] = {0.5f, 0.5f, 0.5f, 1.0f};
-  //float Spot1Dir[3] = {0.0f, 0.0f, -1.0f};
-
-  // glLightfv(GL_LIGHT1, GL_DIFFUSE, Light1Dif); 	//Et ceux de la lumière
-  // glLightfv(GL_LIGHT1, GL_SPECULAR, Light1Spec);
-  // glLightfv(GL_LIGHT1, GL_AMBIENT, Light1Amb);
-  // glEnable(GL_LIGHTING); 	//Et on allume la lumière
-  // glEnable(GL_LIGHT1);
-  // glLighti(GL_LIGHT1, GL_SPOT_CUTOFF, 30);
-  // float Light1Dir[3] = {0.0f, 0.0f, -1.0f};
-  // glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
-
-
-  // glEnable(GL_FOG) ;
-  // GLfloat fogcolor[4] = {0.5, 0.5, 0.5, 1} ;
-  // GLint fogmode = GL_LINEAR;//GL_EXP ;
-  // glFogi (GL_FOG_MODE, fogmode) ;
-  // glFogfv(GL_FOG_COLOR, fogcolor) ;
-  // glFogf(GL_FOG_DENSITY, 0.1) ;
-  // glFogf(GL_FOG_START, 10.0) ;
-  // glFogf(GL_FOG_END, 20.0) ;
-
-  //glFrustum( 5,   5,   5,   5,   2,  10);
-
-  // glColor3f(1.0f,1.0f,1.0f);
-  // TextureManager& textures = Singleton<TextureManager>::getInstance();
-  // glBindTexture(GL_TEXTURE_2D, textures["eau"]);
-  // glBegin(GL_QUADS);
-  // glTexCoord2f(0,0);
-  // glVertex3d(0,0,-2);
-
-  // glTexCoord2f(2,0);
-  // glVertex3d(0, 60,-2);
-
-  // glTexCoord2f(2,2);
-  //glVertex3d(60,60,-2);
-
-  // glTexCoord2f(0,2);
-  // glVertex3d(60,0,-2);
-  // glEnd();
-
-  // glColor4f(1.0f,1.0f,1.0f,0.55f);  // alpha 55%
-  // // on active la transparence
-  // glEnable(GL_BLEND);
-  // glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-
-  // glBindTexture(GL_TEXTURE_2D, textures["eau"]);
-  // glBegin(GL_QUADS);
-  // glTexCoord2f(0,0);
-  // glVertex3d(0,0,-2);
-
-  // glTexCoord2f(2,0);
-  // glVertex3d(0, 60,-2);
-
-  // glTexCoord2f(2,2);
-  // glVertex3d(60,60,-2);
-
-  // glTexCoord2f(0,2);
-  // glVertex3d(60,0,-2);
-  // glEnd();
-  // // désactive transparence
-  // glDisable(GL_BLEND);
 
   glFlush();
   SDL_GL_SwapBuffers();
@@ -304,8 +224,8 @@ Game::drawHUD()
   static const double cursorSize = 20.0;
 
   viewOrtho(WINDOW_WIDTH, WINDOW_HEIGHT);
-  glColor3d(1, 0, 0);
 
+  glColor3d(1, 0, 0);
   glBegin(GL_LINES);
   glVertex2f((WINDOW_WIDTH / 2) - (cursorSize / 2), WINDOW_HEIGHT / 2);
   glVertex2f((WINDOW_WIDTH / 2) + (cursorSize / 2), WINDOW_HEIGHT / 2);

@@ -1,6 +1,9 @@
 #ifndef NUMERICALCONTAINERHASH_HH_
 # define NUMERICALCONTAINERHASH_HH_
 
+# include <functional>
+# include "Container3D.hh"
+
 namespace Core
 {
   /*!

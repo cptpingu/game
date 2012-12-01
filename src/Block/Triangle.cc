@@ -43,18 +43,21 @@ namespace Block
 
     glBegin(GL_TRIANGLE_STRIP);
     //glBegin(GL_TRIANGLE_FAN);
-
-
+    //par terre
     glTexCoord2d(0, 0);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
     glTexCoord2d(Block::SIZE, 0);
-    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
     glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-    glVertex3d(0,0,Block::SIZE);
+    glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    glVertex3d(0, 0,Block::SIZE);
     glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+
+
+
 
 
 

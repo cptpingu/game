@@ -342,3 +342,22 @@ SDL_Surface* createDefaultSurface(int width, int height)
   return SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32,
                               rmask, gmask, bmask, amask);
 }
+
+void viewOrtho(int x, int y)
+{
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0, x , y , 0, -1, 1);
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+}
+
+void viewPerspective()
+{
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+}

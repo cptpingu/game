@@ -77,4 +77,17 @@ SDL_Surface* createSurface(int width, int height, const SDL_Surface* display);
 */
 SDL_Surface* createDefaultSurface(int width, int height);
 
+/*!
+** Set the view to 2D (useful for HUD drawing).
+**
+** @param x X positioning.
+** @param y Y positioning.
+*/
+void viewOrtho(int x, int y);
+
+/*!
+** Set the view to 3D (ie, normal mode).
+*/
+void viewPerspective();
+
 #endif /* !SDLGLUTILS_HH_ */

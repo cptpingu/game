@@ -182,6 +182,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord)
   _drawer.drawBlocks(_map);
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
   showCoord(selectedCoord);
+  drawHUD();
 
   // glEnable(GL_LIGHTING);
   // glEnable(GL_LIGHT0);
@@ -294,4 +295,23 @@ Game::showCoord(const Chunk::Coord* selectedCoord)
     if (!line.empty())
       textures.glPrint(0, WINDOW_HEIGHT - (16 * row), line.c_str(), 0);
   }
+}
+
+void
+Game::drawHUD()
+{
+  static const double cursorSize = 20.0;
+
+  viewOrtho(WINDOW_WIDTH, WINDOW_HEIGHT);
+  glColor3d(1, 0, 0);
+
+  glBegin(GL_LINES);
+  glVertex2f((WINDOW_WIDTH / 2) - (cursorSize / 2), WINDOW_HEIGHT / 2);
+  glVertex2f((WINDOW_WIDTH / 2) + (cursorSize / 2), WINDOW_HEIGHT / 2);
+
+  glVertex2f(WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 2) - (cursorSize / 2));
+  glVertex2f(WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 2) + (cursorSize / 2));
+  glEnd();
+
+  viewPerspective();
 }

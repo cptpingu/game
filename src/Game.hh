@@ -40,6 +40,7 @@ private:
   void loadShaders();
   void drawGL(const Chunk::Coord* selectedCoord);
   void showCoord(const Chunk::Coord* selectedCoord);
+  void drawHUD();
 
 private:
   FreeFlyCamera  _camera;

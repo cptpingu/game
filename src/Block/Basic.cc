@@ -72,6 +72,7 @@ namespace Block
 
     glPushMatrix();
     glTranslatef(_x * Block::SIZE, _y * Block::SIZE, _z * Block::SIZE);
+    glColor3d(1, 1, 1);
 
     glBegin(GL_LINES);
 

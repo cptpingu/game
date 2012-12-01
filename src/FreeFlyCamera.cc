@@ -337,17 +337,6 @@ FreeFlyCamera::picking2(const Map& map, const Drawer& drawer,
   glReadPixels(mouseX, viewport[3] - mouseY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
 
   const Block::id_type id(pixel[0], pixel[1], pixel[2]);
-  std::cout << ", r: " << id._x
-            << ", g: " << id._y
-            << ", b: " << id._z
-            << std::endl;
   Block::Basic* block = IdManager::getInstance().getBlockFromId(id);
-  if (block)
-    std::cout << "coord: "
-              << block->_x << ","
-              << block->_y << ","
-              << block->_z << ","
-              << std::endl;
-
-  return std::make_pair(block, !block ?Block::none : Block::FaceType(id._z));
+  return std::make_pair(block, !block ? Block::none : Block::FaceType(id._z));
 }

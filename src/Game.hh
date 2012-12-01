@@ -38,8 +38,9 @@ public:
 private:
   void loadtextures();
   void loadShaders();
-  void drawGL(const Chunk::Coord* selectedCoord);
+  void drawGL(const Chunk::Coord* selectedCoord, int fpsFromSDL);
   void showCoord(const Chunk::Coord* selectedCoord);
+  void drawFPS(int fpsFromSDL);
   void drawHUD();
 
 private:

@@ -5,6 +5,7 @@
 
 #include <ctime>
 #include <sstream>
+#include <chrono>
 
 bool
 Game::load()
@@ -57,11 +58,9 @@ Game::play()
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);
 
-    drawAxis(100);
-
-    drawGL(pickedCoord);
-
+    //float fps = ( numFrames/(float)(SDL_GetTicks() - startTime) )*1000;
     stop_time = SDL_GetTicks();
+    drawGL(pickedCoord, elapsed_time);
     if ((stop_time - last_time) < time_per_frame)
       SDL_Delay(time_per_frame - (stop_time - last_time));
 
@@ -168,7 +167,8 @@ Game::loadShaders()
 }
 
 void
-Game::drawGL(const Chunk::Coord* selectedCoord)
+Game::drawGL(const Chunk::Coord* selectedCoord,
+             int fpsFromSDL)
 {
   //glEnable(GL_TEXTURE_2D);
   //glEnable(GL_FOG);
@@ -183,7 +183,10 @@ Game::drawGL(const Chunk::Coord* selectedCoord)
 
   _drawer.drawBlocks(_map);
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
+
   showCoord(selectedCoord);
+  drawAxis(10000);
+  drawFPS(fpsFromSDL);
   drawHUD();
 
   glFlush();
@@ -216,6 +219,31 @@ Game::showCoord(const Chunk::Coord* selectedCoord)
     if (!line.empty())
       textures.glPrint(0, WINDOW_HEIGHT - (16 * row), line.c_str(), 0);
   }
+}
+
+void
+Game::drawFPS(int fpsFromSDL)
+{
+  typedef std::chrono::time_point<std::chrono::high_resolution_clock> chrono;
+
+  static unsigned int frames = 0;
+  static chrono lastTime;
+  static char strFrameRate[50] = {0};
+
+  const chrono currentTime =  std::chrono::high_resolution_clock::now();
+  ++frames;
+  const int elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>
+      (currentTime - lastTime).count();
+
+  if (elapsedTime > 1000)
+  {
+    lastTime = currentTime;
+    sprintf(strFrameRate, "FPS: %d %d", frames, fpsFromSDL);
+    frames = 0;
+  }
+
+  TextureManager& textures = TextureManager::getInstance();
+  textures.glPrint(0, WINDOW_HEIGHT - (16 * 10), strFrameRate, 0);
 }
 
 void

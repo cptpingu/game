@@ -49,7 +49,6 @@ void Map::InitGroundBlocks(int SIZE)
       createBlock(where);
     }
   }
-return;
 
   for (int i = 0; i < SIZE; ++i)
   {

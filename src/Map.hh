@@ -59,6 +59,17 @@ public:
   Block::Basic* findBlock(const Core::Container3D<int>& where) const;
 
   /*!
+  ** Given its coordinate, find a block.
+  **
+  ** @param x The X coord.
+  ** @param y The Y coord.
+  ** @param z The Z coord.
+  **
+  ** @return The block or 0 if not found.
+  */
+  Block::Basic* findBlock(int x, int y, int z) const;
+
+  /*!
   ** Delete a block from the world.
   **
   ** @param who The block to delete.

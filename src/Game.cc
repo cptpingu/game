@@ -179,7 +179,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord)
 
   _camera.look();
 
-  _drawer.drawBlocks(_map.getBlocks());
+  _drawer.drawBlocks(_map);
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
   showCoord(selectedCoord);
 

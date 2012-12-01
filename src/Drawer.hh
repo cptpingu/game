@@ -22,9 +22,9 @@ public:
   /*!
   ** Draw the blocks.
   **
-  ** @param blocks The blocks to draw.
+  ** @param map The current map.
   */
-  void drawBlocks(const Map::blocks_type& blocks) const;
+  void drawBlocks(const Map& map) const;
 
 
 

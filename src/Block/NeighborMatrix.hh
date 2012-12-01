@@ -1,14 +1,17 @@
-#ifndef BLOCK_NEIGHBORMATRIX_HH_
-# define BLOCK_NEIGHBORMATRIX_HH_
+#ifndef BLOCK_NEIGHBOURMATRIX_HH_
+# define BLOCK_NEIGHBOURMATRIX_HH_
 
 # include "../Core/Array3D.hh"
 
+
 namespace Block
 {
-  class NeighbourMatrix : public Core::Array3D<int, 3>
+  class Basic;
+
+  class NeighbourMatrix : public Core::Array3D<Basic*, 3>
   {
   private:
-    typedef Core::Array3D<int, 3> super;
+    typedef Core::Array3D<Basic*, 3> super;
 
   public:
     NeighbourMatrix()
@@ -16,16 +19,46 @@ namespace Block
     {
     }
 
-//    int operator()(int x, int y, int z) const
-//    {
-//      return super(x, y, z);
-//    }
+    /*!
+    ** Transform a [0..2] sytem to a [-1..1] system.
+    **
+    ** @param x X coord.
+    ** @param y Y coord.
+    ** @param z Z coord.
+    **
+    ** @return Value at (x, y, z)
+    */
+    Basic* operator()(int x, int y, int z) const
+    {
+      assert(x >= -1 && "x out of bound");
+      assert(x <= 1 && "x out of bound");
+      assert(y >= -1 && "y out of bound");
+      assert(y <= 1 && "y out of bound");
+      assert(z >= -1 && "x out of bound");
+      assert(z <= 1 && "x out of bound");
+      return super::operator ()(x + 1, y + 1, z + 1);
+    }
 
-//    int& operator()(int x, int y, int z)
-//    {
-//      return super(x, y, z);
-//    }
+    /*!
+    ** Transform a [0..2] sytem to a [-1..1] system.
+    **
+    ** @param x X coord.
+    ** @param y Y coord.
+    ** @param z Z coord.
+    **
+    ** @return Value at (x, y, z)
+    */
+    Basic*& operator()(int x, int y, int z)
+    {
+      assert(x >= -1 && "x out of bound");
+      assert(x <= 1 && "x out of bound");
+      assert(y >= -1 && "y out of bound");
+      assert(y <= 1 && "y out of bound");
+      assert(z >= -1 && "x out of bound");
+      assert(z <= 1 && "x out of bound");
+      return super::operator ()(x + 1, y + 1, z + 1);
+    }
   };
 } // Block
 
-#endif /* !BLOCK_NEIGHBORMATRIX_HH_ */
+#endif /* !BLOCK_NEIGHBOURMATRIX_HH_ */

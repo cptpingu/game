@@ -107,6 +107,12 @@ Map::findBlock(const Core::Container3D<int>& where) const
   return(found->second);
 }
 
+Block::Basic*
+Map::findBlock(int x, int y, int z) const
+{
+  return findBlock(Core::Container3D<int>(x, y, z));
+}
+
 bool
 Map::loadBlocks(const std::string& filename)
 {

@@ -159,14 +159,47 @@ Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedC
     drawChunk(it->first, *it->second, selectedCoord);
 }
 
-
 void
-Drawer::drawBlocks(const Map::blocks_type& blocks) const
+Drawer::drawBlocks(const Map& map) const
 {
+  const Map::blocks_type& blocks = map.getBlocks();
   Block::NeighbourMatrix neighbours;
   auto end = blocks.end();
   for (auto block = blocks.begin(); block != end; ++block)
   {
+    int x = block->second->_x;
+    int y = block->second->_y;
+    int z = block->second->_z;
+    neighbours(-1, +1, -1) = map.findBlock(x - 1, y + 1, z - 1);
+    neighbours(+0, +1, -1) = map.findBlock(x + 0, y + 1, z - 1);
+    neighbours(+1, +1, -1) = map.findBlock(x + 1, y + 1, z - 1);
+    neighbours(-1, +0, -1) = map.findBlock(x - 1, y + 0, z - 1);
+    neighbours(+0, +0, -1) = map.findBlock(x + 0, y + 0, z - 1);
+    neighbours(+1, +0, -1) = map.findBlock(x + 1, y + 0, z - 1);
+    neighbours(-1, -1, -1) = map.findBlock(x - 1, y - 1, z - 1);
+    neighbours(+0, -1, -1) = map.findBlock(x + 0, y - 1, z - 1);
+    neighbours(+1, -1, -1) = map.findBlock(x + 1, y - 1, z - 1);
+
+    neighbours(-1, +1, +0) = map.findBlock(x - 1, y + 1, z + 0);
+    neighbours(+0, +1, +0) = map.findBlock(x + 0, y + 1, z + 0);
+    neighbours(+1, +1, +0) = map.findBlock(x + 1, y + 1, z + 0);
+    neighbours(-1, +0, +0) = map.findBlock(x - 1, y + 0, z + 0);
+    neighbours(+0, +0, +0) = block->second;
+    neighbours(+1, +0, +0) = map.findBlock(x + 1, y + 0, z + 0);
+    neighbours(-1, -1, +0) = map.findBlock(x - 1, y - 1, z + 0);
+    neighbours(+0, -1, +0) = map.findBlock(x + 0, y - 1, z + 0);
+    neighbours(+1, -1, +0) = map.findBlock(x + 1, y - 1, z + 0);
+
+    neighbours(-1, +1, +1) = map.findBlock(x - 1, y + 1, z + 1);
+    neighbours(+0, +1, +1) = map.findBlock(x + 0, y + 1, z + 1);
+    neighbours(+1, +1, +1) = map.findBlock(x + 1, y + 1, z + 1);
+    neighbours(-1, +0, +1) = map.findBlock(x - 1, y + 0, z + 1);
+    neighbours(+0, +0, +1) = map.findBlock(x + 0, y + 0, z + 1);
+    neighbours(+1, +0, +1) = map.findBlock(x + 1, y + 0, z + 1);
+    neighbours(-1, -1, +1) = map.findBlock(x - 1, y - 1, z + 1);
+    neighbours(+0, -1, +1) = map.findBlock(x + 0, y - 1, z + 1);
+    neighbours(+1, -1, +1) = map.findBlock(x + 1, y - 1, z + 1);
+
     block->second->draw(neighbours);
     block->second->resetHighlight();
   }

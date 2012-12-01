@@ -27,7 +27,7 @@ namespace Block
     }
 
     /*!
-    ** Transform a [0..2] sytem to a [-1..1] system.
+    ** Transform a [0..2] system to a [-1..1] system.
     **
     ** @param x X coord.
     ** @param y Y coord.
@@ -43,7 +43,7 @@ namespace Block
       assert(y <= 1 && "y out of bound");
       assert(z >= -1 && "x out of bound");
       assert(z <= 1 && "x out of bound");
-      return super::operator ()(x + 1, y + 1, z + 1);
+      return super::operator()(x + 1, y + 1, z + 1);
     }
 
     /*!
@@ -63,7 +63,7 @@ namespace Block
       assert(y <= 1 && "y out of bound");
       assert(z >= -1 && "x out of bound");
       assert(z <= 1 && "x out of bound");
-      return super::operator ()(x + 1, y + 1, z + 1);
+      return super::operator()(x + 1, y + 1, z + 1);
     }
   };
 } // Block

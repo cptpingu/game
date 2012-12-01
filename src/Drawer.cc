@@ -119,9 +119,9 @@ Drawer::drawBlocks(const Map& map) const
   auto end = blocks.end();
   for (auto block = blocks.begin(); block != end; ++block)
   {
-    int x = block->second->_x;
-    int y = block->second->_y;
-    int z = block->second->_z;
+    const int x = block->second->_x;
+    const int y = block->second->_y;
+    const int z = block->second->_z;
     neighbours(-1, +1, -1) = map.findBlock(x - 1, y + 1, z - 1);
     neighbours(+0, +1, -1) = map.findBlock(x + 0, y + 1, z - 1);
     neighbours(+1, +1, -1) = map.findBlock(x + 1, y + 1, z - 1);

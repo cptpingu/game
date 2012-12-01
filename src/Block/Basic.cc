@@ -58,5 +58,70 @@ namespace Block
     assert(neighbours(0, 0, 0) == this && "Neighbours (0,0,0) must be the block itself!");
     specificDraw(neighbours);
     shaders.disable();
+    if (isHighlight())
+      selectionDraw();
+  }
+
+  void
+  Basic::selectionDraw() const
+  {
+#define DRAW_LINE(X, Y, Z) \
+  glVertex3d(X * Block::HALF_SIZE, Y * Block::HALF_SIZE, Z * Block::SIZE)
+
+    glLineWidth(2.0);
+
+    glPushMatrix();
+    glTranslatef(_x * Block::SIZE, _y * Block::SIZE, _z * Block::SIZE);
+
+    glBegin(GL_LINES);
+
+    DRAW_LINE(-1, -1, 0);
+    DRAW_LINE(-1, -1, 0);
+    DRAW_LINE(+1, +1, 0);
+    DRAW_LINE(-1, +1, 0);
+
+    DRAW_LINE(-1, -1, 1);
+    DRAW_LINE(-1, +1, 1);
+    DRAW_LINE(-1, +1, 0);
+    DRAW_LINE(-1, -1, 0);
+
+    DRAW_LINE(+1, -1, 1);
+    DRAW_LINE(+1, +1, 1);
+    DRAW_LINE(+1, +1, 0);
+    DRAW_LINE(+1, -1, 0);
+
+    DRAW_LINE(-1, +1, 1);
+    DRAW_LINE(+1, +1, 1);
+    DRAW_LINE(+1, +1, 0);
+    DRAW_LINE(-1, +1, 0);
+
+    DRAW_LINE(-1, -1, 1);
+    DRAW_LINE(+1, -1, 1);
+    DRAW_LINE(+1, -1, 0);
+    DRAW_LINE(-1, -1, 0);
+
+    DRAW_LINE(-1, -1, 1);
+    DRAW_LINE(+1, -1, 1);
+    DRAW_LINE(+1, +1, 1);
+    DRAW_LINE(-1, +1, 1);
+
+    DRAW_LINE(-1, -1, 0);
+    DRAW_LINE(-1, -1, 1);
+
+    DRAW_LINE(+1, +1, 0);
+    DRAW_LINE(+1, +1, 1);
+
+    DRAW_LINE(-1, +1, 0);
+    DRAW_LINE(-1, +1, 1);
+
+    DRAW_LINE(+1, -1, 0);
+    DRAW_LINE(+1, -1, 1);
+#undef DRAW_FACE
+
+    glEnd();
+
+    glPopMatrix();
+
+    glLineWidth(1.0);
   }
 } // Block

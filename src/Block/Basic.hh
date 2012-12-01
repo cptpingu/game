@@ -41,9 +41,10 @@ namespace Block
     bool isHighlighted(FaceType face) const;
     bool isHighlight() const;
     void resetHighlight();
-
     void draw(const NeighbourMatrix& neighbours) const;
+    void selectionDraw() const;
 
+  public:
     virtual std::string getShaderName() const;
 
   private:

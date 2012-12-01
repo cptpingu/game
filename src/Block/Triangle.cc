@@ -42,7 +42,24 @@ namespace Block
       glUniform1f(glGetUniformLocation(shaders.get(getShaderName()), "cube_color"), 0.0);
 
     glBegin(GL_TRIANGLE_STRIP);
+    //glBegin(GL_TRIANGLE_FAN);
 
+
+    glTexCoord2d(0, 0);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+    glTexCoord2d(Block::SIZE, 0);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+    glVertex3d(0,0,Block::SIZE);
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+    glVertex3d(Block::SIZE / 2, Block::SIZE / 2,0);
+
+
+
+
+/*
     //par terre
     glTexCoord2d(0, 0);
     glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
@@ -66,7 +83,7 @@ namespace Block
     glVertex3d(Block::SIZE / 2, Block::SIZE / 2, Block::SIZE);
     glTexCoord2d(Block::SIZE, Block::SIZE);
     glVertex3d(Block::SIZE / 2, Block::SIZE / 2, 0);
-
+*/
 //    //face face
 //    glTexCoord2d(0, 0);
 //    CHECK_HIGHLIGHT(Block::front);

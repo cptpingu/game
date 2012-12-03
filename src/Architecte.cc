@@ -2,7 +2,7 @@
 #include <cmath>
 
 #include "Architecte.hh"
-#include "Vector3D.hh"
+#include "Core/Vector3D.hh"
 #include "Map.hh"
 #include "Random.hh"
 
@@ -123,7 +123,7 @@ namespace Architecte
 
 }
 
-  double Norm(Vector3D where,int type)
+  double Norm(Core::Vector3D where,int type)
   {
       double norm;
       if (type==2)

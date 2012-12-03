@@ -2,7 +2,7 @@
 # define MAP_HH_
 
 # include "Block/Basic.hh"
-# include "Vector3D.hh"
+# include "Core/Vector3D.hh"
 # include "Chunk.hh"
 
 # include "Core/ListContainer3D.hh"
@@ -97,7 +97,7 @@ public:
   ** @param position The current position of the camera.
   ** @param chunks All the world chunks.
   */
-  void chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks);
+  void chunkLazyLoading(const Core::Vector3D& position, const Map::chunks_type& chunks);
 
   /*!
   ** Return an instance on the list of all blocks.

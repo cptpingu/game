@@ -1,7 +1,7 @@
 #ifndef ARCHITECTE_HH_
 # define ARCHITECTE_HH_
 
-# include "Vector3D.hh"
+# include "Core/Vector3D.hh"
 # include "Map.hh"
 # include "Chunk.hh"
 # include <vector>
@@ -13,8 +13,8 @@ namespace Architecte
   typedef Core::Container3D<double> Model_Point;
   typedef std::vector<Model_Point> Model;
 
-  void building(Map::blocks_type& tmp, const Vector3D& where, int longueur, int hauteur, int largeur);
-  void mountain(Chunk& tmp,const Vector3D& where, double peak, int size);
+  void building(Map::blocks_type& tmp, const Core::Vector3D& where, int longueur, int hauteur, int largeur);
+  void mountain(Chunk& tmp,const Core::Vector3D& where, double peak, int size);
   void mergeGround(Chunk& generateRandomGround, const Chunk& deformation);
   void borderSmooth(Chunk::chunk_coord_type& coords);
   void smoothGround(Chunk::chunk_coord_type& coords);
@@ -27,7 +27,7 @@ namespace Architecte
 
   double Norm(double x,double y,double z,int type);
 
-  double Norm(Vector3D where,int type);
+  double Norm(Core::Vector3D where,int type);
 
   void initChunk(Chunk::chunk_coord_type& coords, const std::pair<int, int>& where, const Map::chunks_type& chunks);
 

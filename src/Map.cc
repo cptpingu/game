@@ -167,7 +167,7 @@ namespace
 } // namespace
 
 void
-Map::chunkLazyLoading(const Vector3D& position, const Map::chunks_type& chunks)
+Map::chunkLazyLoading(const Core::Vector3D& position, const Map::chunks_type& chunks)
 {
   const int x = Chunk::absoluteToChunkCoord(position._x);
   const int y = Chunk::absoluteToChunkCoord(position._y);

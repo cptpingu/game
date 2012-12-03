@@ -202,7 +202,7 @@ Game::showCoord(const Chunk::Coord* selectedCoord)
   auto pos = _camera.getCurrentPosition();
   std::stringstream buff;
 
-  Vector3D look = _camera.getCurrentLook();
+  Core::Vector3D look = _camera.getCurrentLook();
   const int x = Chunk::absoluteToChunkCoord(pos._x);
   const int y = Chunk::absoluteToChunkCoord(pos._y);
   buff << "World coord: " << pos._x << " " << pos._y << " " << pos._z << "\n"

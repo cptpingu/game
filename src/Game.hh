@@ -4,7 +4,7 @@
 # include "Opengl.hh"
 # include "Map.hh"
 # include "GLUtils.hh"
-# include "FreeFlyCamera.hh"
+# include "Camera/FreeFly.hh"
 # include "Drawer.hh"
 # include "ImageFile.hh"
 
@@ -44,9 +44,9 @@ private:
   void drawHUD();
 
 private:
-  FreeFlyCamera  _camera;
-  Map            _map;
-  Drawer         _drawer;
+  Camera::FreeFly _camera;
+  Map             _map;
+  Drawer          _drawer;
 };
 
 #endif /* !GAME_HH_ */

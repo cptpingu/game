@@ -14,7 +14,7 @@ IdManager::getNewIdForBlock(Block::Basic* block)
 {
   while (true)
   {
-    const Block::id_type id(Random::rand() % 256, Random::rand() % 256, 0);
+    const Block::id_type id(Core::Random::rand() % 256, Core::Random::rand() % 256, 0);
     if (_ids.find(id) == _ids.end())
     {
       _ids.insert(ids_type::value_type(id, block));

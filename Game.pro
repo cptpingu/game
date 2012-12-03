@@ -16,7 +16,7 @@ SOURCES += \
     src/Game.cc \
     src/Architecte.cc \
     src/Chunk.cc \
-    src/Random.cc \
+    src/Core/Random.cc \
     src/SDL/SavePng.cc \
     src/ShadersManager.cc \
     src/Block/Basic.cc \
@@ -44,7 +44,7 @@ HEADERS += \
     src/Architecte.hh \
     src/Chunk.hh \
     src/Core/PairHash.hh \
-    src/Random.hh \
+    src/Core/Random.hh \
     src/SDL/SavePng.hh \
     src/Core/NonCopyable.hh \
     src/Core/Array2D.hh \

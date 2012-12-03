@@ -6,7 +6,7 @@
 # include "Core/Singleton.hh"
 # include "Core/Container3D.hh"
 # include "Block/Basic.hh"
-# include "Random.hh"
+# include "Core/Random.hh"
 # include "Opengl.hh"
 
 # include <unordered_map>

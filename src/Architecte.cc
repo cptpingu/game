@@ -4,7 +4,7 @@
 #include "Architecte.hh"
 #include "Core/Vector3D.hh"
 #include "Map.hh"
-#include "Random.hh"
+#include "Core/Random.hh"
 
 
 #include "TextureManager.hh"
@@ -243,7 +243,7 @@ namespace Architecte
   {
     for (int i = 0; i < Chunk::SIZE; ++i)
       for (int j = 0; j < Chunk::SIZE; ++j)
-        {coords(i,j) = Random::rand()% 40;}
+        {coords(i,j) = Core::Random::rand()% 40;}
 
     smoothGround(coords);
 
@@ -277,9 +277,9 @@ namespace Architecte
 //Construction d'une branche...
   Model_Point Branche(int size, int diffusionX,int diffusionY,const Model_Point& where)
   {
-      Model_Point New(where._x + diffusionX + Random::rand()%diffusionX - diffusionX/2,
-             where._y + diffusionY + Random::rand()%diffusionY - diffusionY/2,
-             where._z + size + Random::rand()%size);
+      Model_Point New(where._x + diffusionX + Core::Random::rand()%diffusionX - diffusionX/2,
+             where._y + diffusionY + Core::Random::rand()%diffusionY - diffusionY/2,
+             where._z + size + Core::Random::rand()%size);
 
       /*(where._x + diffusionX + Random::rand()%diffusionX - diffusionX/2,where._y + diffusionY + Random::rand()%diffusionY-diffusionY/2,where._z + size + Random::rand()%size);*/
     return New;
@@ -296,7 +296,7 @@ namespace Architecte
 
     for (auto it = where.begin(); it != end1; ++it)
         {
-      int Nodes = Random::rand()%Density + 1;
+      int Nodes = Core::Random::rand()%Density + 1;
 
       for (int i=0;i<Nodes;++i)
          New.push_back (Branche(size,size/2,size/2,(*it)));

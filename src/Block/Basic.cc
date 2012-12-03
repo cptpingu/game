@@ -2,7 +2,7 @@
 #include "../TextureManager.hh"
 #include "../ShadersManager.hh"
 #include "../IdManager.hh"
-#include "../Random.hh"
+#include "../Core/Random.hh"
 
 #include <iostream>
 

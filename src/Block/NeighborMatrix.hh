@@ -65,6 +65,21 @@ namespace Block
       assert(z <= 1 && "x out of bound");
       return super::operator()(x + 1, y + 1, z + 1);
     }
+
+    /*!
+    ** Convert a 3x3x3 matrix to an integer mask.
+    ** @return A unique value.
+    */
+    int mask() const
+    {
+      int res = 0;
+      int shift = 0;
+      for (int i = -1; i <= 1; ++i)
+        for (int j = -1; j <= 1; ++j)
+          for (int k = -1; k <= 1; ++k)
+            res += (!!operator()(i, j, k) << shift++);
+      return res;
+    }
   };
 } // Block
 

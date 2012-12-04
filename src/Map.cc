@@ -2,7 +2,7 @@
 
 #include "Core/Traits.hh"
 #include "Architecte.hh"
-#include "Random.hh"
+//#include "Random.hh"
 #include "Block/Cube.hh"
 #include "Block/Triangle.hh"
 

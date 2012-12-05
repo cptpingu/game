@@ -56,12 +56,12 @@ HEADERS += \
     src/Block/Basic.hh \
     src/Block/Cube.hh \
     src/Block/Triangle.hh \
-    src/Block/NeighborMatrix.hh \
     src/IdManager.hh \
     src/Camera/BasicCamera.hh \
     src/Camera/FreeFly.hh \
     src/ConfigManager.hh \
-    src/InputManager.hh
+    src/InputManager.hh \
+    src/Block/NeighbourMatrix.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

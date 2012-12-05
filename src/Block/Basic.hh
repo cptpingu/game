@@ -2,7 +2,7 @@
 # define BLOCK_BASIC_HH_
 
 # include "../Core/Container3D.hh"
-# include "../Block/NeighborMatrix.hh"
+# include "../Block/NeighbourMatrix.hh"
 # include "../Opengl.hh"
 
 # include <array>

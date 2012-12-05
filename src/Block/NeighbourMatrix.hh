@@ -3,6 +3,8 @@
 
 # include "../Core/Array3D.hh"
 
+# include <typeinfo>
+
 namespace Block
 {
   /*!
@@ -67,7 +69,24 @@ namespace Block
     }
 
     /*!
+    ** Check that the given neighbour is existing, and has the same type.
+    **
+    ** @return If the neighbour has the same type.
+    */
+    bool same(int x, int y, int z) const
+    {
+      assert(x >= -1 && "x out of bound");
+      assert(x <= 1 && "x out of bound");
+      assert(y >= -1 && "y out of bound");
+      assert(y <= 1 && "y out of bound");
+      assert(z >= -1 && "x out of bound");
+      assert(z <= 1 && "x out of bound");
+      return isSame((*this)(0, 0, 0), (*this)(x, y, z));
+    }
+
+    /*!
     ** Convert a 3x3x3 matrix to an integer mask.
+    **
     ** @return A unique value.
     */
     int mask() const
@@ -79,6 +98,12 @@ namespace Block
           for (int k = -1; k <= 1; ++k)
             res += (!!operator()(i, j, k) << shift++);
       return res;
+    }
+  private:
+    template <typename T>
+    bool isSame(T a, T b) const
+    {
+      return a && b && typeid(*a) == typeid(*b);
     }
   };
 } // Block

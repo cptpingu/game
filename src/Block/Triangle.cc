@@ -46,28 +46,28 @@ namespace Block
     //Median plan Begin
 
    if( (
-        neighbours(1,0,0) ||
-        neighbours(-1,0,0) ||
-        neighbours(0,1,0) ||
-        neighbours(0,-1,0)
+        (neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0))) ||
+        (neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0))) ||
+        (neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0))) ||
+        (neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))
         )
         &&
         (
-        !(neighbours(-1,-1,1) ||
-        neighbours(-1,0,1) ||
-        neighbours(-1,1,1) ||
-        neighbours(0,-1,1) ||
-        neighbours(0,1,1) ||
-        neighbours(1,-1,1) ||
-        neighbours(1,0,1) ||
-        neighbours(1,1,1) )
+        !((neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1))) ||
+        (neighbours(-1,0,1)&& typeid(*this)==typeid(*neighbours(-1,0,1))) ||
+        (neighbours(-1,1,1)&& typeid(*this)==typeid(*neighbours(-1,1,1))) ||
+        (neighbours(0,-1,1)&& typeid(*this)==typeid(*neighbours(0,-1,1))) ||
+        (neighbours(0,1,1)&& typeid(*this)==typeid(*neighbours(0,1,1))) ||
+        (neighbours(1,-1,1)&& typeid(*this)==typeid(*neighbours(1,-1,1))) ||
+        (neighbours(1,0,1)&& typeid(*this)==typeid(*neighbours(1,0,1))) ||
+        (neighbours(1,1,1)&& typeid(*this)==typeid(*neighbours(1,1,1))) )
         )
         )
 
 {
-    if (!neighbours(0,-1,0) &&
-        !neighbours(0,1,0)  &&
-        !neighbours(-1,0,0) &&
+    if (!(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
+        !(neighbours(0,1,0)  && typeid(*this)==typeid(*neighbours(0,1,0)))&&
+        !(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
          neighbours(1,0,0)  &&
          typeid(*this)==typeid(*neighbours(1,0,0)))
     {
@@ -107,9 +107,9 @@ namespace Block
     //glVertex3d(Block::SIZE/2, 0,Block::SIZE);
     }
 
-    else if ( !neighbours(1,0,0) &&
-         !neighbours(0,1,0) &&
-         !neighbours(0,-1,0) &&
+    else if (!(neighbours(1,0,0)  && typeid(*this)==typeid(*neighbours(1,0,0)))&&
+         !(neighbours(0,1,0)  && typeid(*this)==typeid(*neighbours(0,1,0)))&&
+         !(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
          neighbours(-1,0,0) &&
          typeid(*this)==typeid(*neighbours(-1,0,0)))
     {
@@ -149,9 +149,9 @@ namespace Block
         //glVertex3d(Block::SIZE/2, 0,Block::SIZE);
     }
 
-    else if(!neighbours(0,-1,0) &&
-       !neighbours(1,0,0) &&
-       !neighbours(-1,0,0)&&
+    else if(!(neighbours(0,-1,0)&& typeid(*this)==typeid(*neighbours(0,-1,0)))&&
+       !(neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))&&
+       !(neighbours(-1,0,0)&& typeid(*this)==typeid(*neighbours(-1,0,0)))&&
        neighbours(0,1,0) &&
        typeid(*this)==typeid(*neighbours(0,1,0)))
     {
@@ -192,9 +192,9 @@ namespace Block
 
     }
 
-    else if(!neighbours(0,1,0) &&
-       !neighbours(1,0,0) &&
-       !neighbours(-1,0,0) &&
+    else if(!(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
+       !(neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))&&
+       !(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
        neighbours(0,-1,0) &&
        typeid(*this)==typeid(*neighbours(0,-1,0)))
     {
@@ -235,8 +235,8 @@ namespace Block
 
     }
 
-    else if(!neighbours(1,0,0) &&
-       !neighbours(-1,0,0) &&
+    else if(!(neighbours(1,0,0)&& typeid(*this)==typeid(*neighbours(1,0,0)))&&
+       !(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
        neighbours(0,1,0) &&
        neighbours(0,-1,0)&&
        typeid(*this)==typeid(*neighbours(0,-1,0)) &&
@@ -285,8 +285,8 @@ namespace Block
             glVertex3d  (0,Block::SIZE/2 , Block::SIZE);
     }
 
-    else if(!neighbours(0,1,0) &&
-       !neighbours(0,-1,0) &&
+    else if(!(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
+       !(neighbours(0,-1,0)&& typeid(*this)==typeid(*neighbours(0,-1,0)))&&
        neighbours(1,0,0) &&
        neighbours(-1,0,0)&&
        typeid(*this)==typeid(*neighbours(1,0,0)) &&
@@ -336,8 +336,8 @@ namespace Block
     }
 
 
-    else if(!neighbours(1,0,0) &&
-       !neighbours(0,-1,0) &&
+    else if(!(neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))&&
+       !(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
        neighbours(0,1,0) &&
        neighbours(-1,0,0)&&
        typeid(*this)==typeid(*neighbours(0,1,0)) &&
@@ -387,8 +387,8 @@ namespace Block
                  //11
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);}
 
-    else if(!neighbours(-1,0,0) &&
-       !neighbours(0,-1,0) &&
+    else if(!(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
+       !(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
        neighbours(0,1,0) &&
        neighbours(1,0,0)&&
        typeid(*this)==typeid(*neighbours(0,1,0)) &&
@@ -441,8 +441,8 @@ namespace Block
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);
     }
 
-    else if(!neighbours(1,0,0) &&
-       !neighbours(0,1,0) &&
+    else if(!(neighbours(1,0,0)&& typeid(*this)==typeid(*neighbours(1,0,0)))&&
+       !(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
        neighbours(0,-1,0) &&
        neighbours(-1,0,0)&&
        typeid(*this)==typeid(*neighbours(0,-1,0)) &&
@@ -495,8 +495,8 @@ namespace Block
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);
     }
 
-    else if(!neighbours(-1,0,0) &&
-       !neighbours(0,1,0) &&
+    else if(!(neighbours(-1,0,0)&& typeid(*this)==typeid(*neighbours(-1,0,0)))&&
+       !(neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0)))&&
        neighbours(0,-1,0) &&
        neighbours(1,0,0)&&
        typeid(*this)==typeid(*neighbours(0,-1,0)) &&
@@ -549,7 +549,7 @@ namespace Block
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);
     }
 
-    else if(!neighbours(-1,0,0) &&
+    else if(!(neighbours(-1,0,0)&& typeid(*this)==typeid(*neighbours(-1,0,0)))&&
        neighbours(0,1,0) &&
        neighbours(0,-1,0) &&
        neighbours(1,0,0)&&
@@ -616,7 +616,7 @@ namespace Block
 
     }
 
-    else if(!neighbours(1,0,0) &&
+    else if(!(neighbours(1,0,0)&& typeid(*this)==typeid(*neighbours(1,0,0)))&&
        neighbours(0,1,0) &&
        neighbours(0,-1,0) &&
        neighbours(-1,0,0)&&
@@ -683,7 +683,7 @@ namespace Block
 
     }
 
-    else if(!neighbours(0,1,0) &&
+    else if(!(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
        neighbours(1,0,0) &&
        neighbours(0,-1,0) &&
        neighbours(-1,0,0)&&
@@ -750,7 +750,7 @@ namespace Block
 
     }
 
-    else if(!neighbours(0,-1,0) &&
+    else if(!(neighbours(0,-1,0)&& typeid(*this)==typeid(*neighbours(0,-1,0)))&&
        neighbours(1,0,0) &&
        neighbours(0,1,0) &&
        neighbours(-1,0,0)&&
@@ -892,31 +892,32 @@ namespace Block
 
 //Begin superior plan ...
  else if(
-        (neighbours(-1,-1,1) ||
-        neighbours(-1,0,1) ||
-        neighbours(-1,1,1) ||
-        neighbours(0,-1,1) ||
-        neighbours(0,1,1) ||
-        neighbours(1,-1,1) ||
-        neighbours(1,0,1) ||
-        neighbours(1,1,1) ))
+         (neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1))) ||
+                 (neighbours(-1,0,1)&& typeid(*this)==typeid(*neighbours(-1,0,1))) ||
+                 (neighbours(-1,1,1)&& typeid(*this)==typeid(*neighbours(-1,1,1))) ||
+                 (neighbours(0,-1,1)&& typeid(*this)==typeid(*neighbours(0,-1,1))) ||
+                 (neighbours(0,1,1)&& typeid(*this)==typeid(*neighbours(0,1,1))) ||
+                 (neighbours(1,-1,1)&& typeid(*this)==typeid(*neighbours(1,-1,1))) ||
+                 (neighbours(1,0,1)&& typeid(*this)==typeid(*neighbours(1,0,1))) ||
+                 (neighbours(1,1,1)&& typeid(*this)==typeid(*neighbours(1,1,1)))
+
+         )
 
 {
         //  0 1 2
         //  0 1 1
         //  0 0 0
     if(
-        !neighbours(1,0,1) &&
-        !neighbours(0,1,1) &&
-       !neighbours(-1,0,1) &&
-       !neighbours(0,-1,1) &&
-       !neighbours(-1,1,1) &&
-       !neighbours(-1,-1,1) &&
-       !neighbours(1,-1,1) &&
+        !(neighbours(1,0,1) && typeid(*this)==typeid(*neighbours(1,0,1)))&&
+        !(neighbours(0,1,1) && typeid(*this)==typeid(*neighbours(0,1,1)))&&
+       !(neighbours(-1,0,1) && typeid(*this)==typeid(*neighbours(-1,0,1)))&&
+       !(neighbours(0,-1,1) && typeid(*this)==typeid(*neighbours(0,-1,1)))&&
+       !(neighbours(-1,1,1) && typeid(*this)==typeid(*neighbours(-1,1,1)))&&
+       !(neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1)))&&
+       !(neighbours(1,-1,1) && typeid(*this)==typeid(*neighbours(1,-1,1)))&&
         neighbours(1,1,1) && typeid(*this)==typeid(*neighbours(1,1,1)) &&
-        (neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0))||
-        neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0)))
-
+        ((neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))||
+        (neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0))))
         )
         {
         glRotatef(-90,0,0,1);
@@ -961,8 +962,8 @@ namespace Block
        !neighbours(1,1,1) &&
        !neighbours(-1,-1,1) &&
        !neighbours(1,-1,1) &&
-        (neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0))||
-        neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
+        ((neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0)))||
+        (neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0))))&&
         neighbours(-1,1,1) && typeid(*this)==typeid(*neighbours(-1,1,1))
 
             )
@@ -1012,8 +1013,8 @@ namespace Block
        !neighbours(-1,-1,1) &&
        !neighbours(-1,1,1) &&
         neighbours(1,-1,1) && typeid(*this)==typeid(*neighbours(1,-1,1))&&
-        (neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0))||
-        neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))
+        ((neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))||
+        (neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0))))
 
 
             )
@@ -1062,8 +1063,8 @@ namespace Block
        !neighbours(-1,1,1) &&
        !neighbours(1,-1,1) &&
         neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1))&&
-        (neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0))||
-        neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))
+        ((neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))||
+        (neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0))))
          )
         {
         glRotatef(90,0,0,1);

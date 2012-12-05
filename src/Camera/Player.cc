@@ -34,18 +34,28 @@ namespace Camera
     const double speed = config["speed"] / 1000.0;
     const double realspeed = input.isPressed("boost") ? 10 * speed : speed;
     if (input.isPressed("forward"))
-      _position += _forward * (realspeed * timestep);
+      _position += Core::Vector3D(_forward._x, _forward._y, 0) * (realspeed * timestep);
     if (input.isPressed("backward"))
-      _position -= _forward * (realspeed * timestep);
+      _position -= Core::Vector3D(_forward._x, _forward._y, 0) * (realspeed * timestep);
     if (input.isPressed("strafe_left"))
-      _position += _left * (realspeed * timestep);
+      _position += Core::Vector3D(_left._x, _left._y, 0) * (realspeed * timestep);
     if (input.isPressed("strafe_right"))
-      _position -= _left * (realspeed * timestep);
+      _position -= Core::Vector3D(_left._x, _left._y, 0) * (realspeed * timestep);
+
     if ((input.isPressed("jump")))
     {
       _verticalMotionActive = true;
       _verticalMotionDirection = 1;
       _timeBeforeStoppingVerticalMotion = 250;
+    }
+
+    if (_verticalMotionActive)
+    {
+      if (timestep > _timeBeforeStoppingVerticalMotion)
+        _verticalMotionActive = false;
+      else
+        _timeBeforeStoppingVerticalMotion -= timestep;
+      _position += Core::Vector3D(0, 0, _verticalMotionDirection * realspeed * timestep);
     }
 
     if (input.xrel() || input.yrel())
@@ -58,17 +68,6 @@ namespace Camera
     }
     else
       _target = _position + _forward;
-
-    if (_verticalMotionActive)
-    {
-      if (timestep > _timeBeforeStoppingVerticalMotion)
-        _verticalMotionActive = false;
-      else
-        _timeBeforeStoppingVerticalMotion -= timestep;
-      _position += Core::Vector3D(0, 0, _verticalMotionDirection * realspeed * timestep);
-    }
-    else
-      _position._z = 0;
   }
 
   std::pair<Block::Basic*, Block::FaceType>

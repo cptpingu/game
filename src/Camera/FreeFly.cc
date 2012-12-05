@@ -57,6 +57,13 @@ namespace Camera
       _position += Core::Vector3D(0, 0, _verticalMotionDirection * realspeed * timestep);
     }
 
-    _target = _position + _forward;
+    if (input.xrel() || input.yrel())
+    {
+      _theta -= input.xrel(); //* _sensivity;
+      _phi -= input.yrel(); //* _sensivity;
+      VectorsFromAngles();
+    }
+    else
+      _target = _position + _forward;
   }
-} // namespace
+} // Camera

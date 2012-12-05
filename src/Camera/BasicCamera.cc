@@ -35,39 +35,6 @@ namespace Camera
   }
 
   void
-  Basic::move(int xrel, int yrel)
-  {
-    _theta -= xrel; //* _sensivity;
-    _phi -= yrel; //* _sensivity;
-    VectorsFromAngles();
-  }
-
-//  void
-//  Basic::OnMouseButton(const SDL_MouseButtonEvent& event)
-//  {
-//    //coup de molette vers le haut
-//    if (event.button == SDL_BUTTON_WHEELUP && event.type == SDL_MOUSEBUTTONDOWN)
-//    {
-//      _verticalMotionActive = true;
-//      _timeBeforeStoppingVerticalMotion = 250;
-//      _verticalMotionDirection = 1;
-
-//    }
-//    //coup de molette vers le bas
-//    else if (event.button == SDL_BUTTON_WHEELDOWN && event.type == SDL_MOUSEBUTTONDOWN)
-//    {
-//      _verticalMotionActive = true;
-//      _timeBeforeStoppingVerticalMotion = 250;
-//      _verticalMotionDirection = -1;
-//    }
-//  }
-
-  void
-  Basic::animate(Uint32)
-  {
-  }
-
-  void
   Basic::setPosition(const Core::Vector3D & position)
   {
     _position = position;
@@ -279,4 +246,4 @@ namespace Camera
     Block::Basic* block = IdManager::getInstance().getBlockFromId(id);
     return std::make_pair(block, !block ? Block::none : Block::FaceType(id._z));
   }
-} // namespace
+} // Camera

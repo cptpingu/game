@@ -19,13 +19,11 @@ namespace Camera
     Basic();
     virtual ~Basic();
 
-    virtual void move(int xrel, int yrel);
-
     virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
     virtual std::pair<Block::Basic*, Block::FaceType> picking(const Map& blocks) const;
     virtual std::pair<Block::Basic*, Block::FaceType> picking2(const Map& map, const Drawer& drawer, int x, int y) const;
 
-    virtual void animate(Uint32 timestep);
+    virtual void animate(Uint32 timestep) = 0;
 
     virtual void setPosition(const Core::Vector3D& position);
 

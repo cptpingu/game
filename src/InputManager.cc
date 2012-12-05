@@ -56,14 +56,15 @@ bool
 InputManager::handleInput()
 {
   SDL_Event event;
-  bool mouseChange = false;
-//  _motion_info.xrel = 0;
-//  _motion_info.yrel = 0;
+  bool anyChange = false;
+  _motion_info.xrel = 0;
+  _motion_info.yrel = 0;
 
   _mouse_states[SDL_BUTTON_WHEELUP] = false;
   _mouse_states[SDL_BUTTON_WHEELDOWN] = false;
   while (SDL_PollEvent(&event))
   {
+    anyChange = true;
     switch (event.type)
     {
       case SDL_KEYDOWN:
@@ -74,7 +75,6 @@ InputManager::handleInput()
         break;
       case SDL_MOUSEMOTION:
         _motion_info = event.motion;
-        mouseChange = true;
         break;
       case SDL_MOUSEBUTTONUP:
         if (event.button.button != SDL_BUTTON_WHEELUP &&
@@ -87,5 +87,5 @@ InputManager::handleInput()
     }
   }
 
-  return mouseChange;
+  return anyChange;
 }

@@ -68,9 +68,7 @@ Game::play()
       SDL_Delay(time_per_frame - (stop_time - last_time));
 
     InputManager& input = InputManager::getInstance();
-    const bool mouseMove = input.handleInput();
-    if (mouseMove)
-      _camera.move(input.xrel(), input.yrel());
+    input.handleInput();
 
     if (input.key("insert_block"))
       _map.insertBlockNearBlock(pickedBlock.first, pickedBlock.second);

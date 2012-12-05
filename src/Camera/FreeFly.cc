@@ -1,8 +1,11 @@
 #include "FreeFly.hh"
 #include "../IdManager.hh"
+#include "../ConfigManager.hh"
+#include "../InputManager.hh"
 #include "../Opengl.hh"
 #include "../Chunk.hh"
 #include "../Map.hh"
+
 
 #include <cmath>
 #include <limits>
@@ -16,70 +19,35 @@ namespace Camera
 {
   FreeFly::FreeFly()
   {
-    _position = Core::Vector3D(0,0,0);
-    _phi = 0;
-    _theta = 0;
-    VectorsFromAngles();
-
-    _speed = 0.01;
-    _sensivity = 0.02;
-    _verticalMotionActive = false;
-    _keyconf["forward"] = SDLK_UP;
-    _keyconf["backward"] = SDLK_DOWN;
-    _keyconf["strafe_left"] = SDLK_LEFT;
-    _keyconf["strafe_right"] = SDLK_RIGHT;
-    _keyconf["boost"] = SDLK_RSHIFT;
-    _keystates[_keyconf["forward"]] = false;
-    _keystates[_keyconf["backward"]] = false;
-    _keystates[_keyconf["strafe_left"]] = false;
-    _keystates[_keyconf["strafe_right"]] = false;
-    _keystates[_keyconf["boost"]] = false;
-
-    SDL_WM_GrabInput(SDL_GRAB_ON);
-    SDL_ShowCursor(SDL_DISABLE);
   }
 
   FreeFly::~FreeFly()
   {
-    SDL_WM_GrabInput(SDL_GRAB_OFF);
-    SDL_ShowCursor(SDL_ENABLE);
-  }
-
-  void
-  FreeFly::OnMouseButton(const SDL_MouseButtonEvent& event)
-  {
-    super::OnMouseButton(event);
-    if(event.button == SDL_BUTTON_LEFT && event.type == SDL_MOUSEBUTTONDOWN )
-    {
-      std::cout << "KICK OUT" << std::endl;
-    }
-  }
-
-  void
-  FreeFly::OnKeyboard(const SDL_KeyboardEvent& event)
-  {
-    for (KeyStates::iterator it = _keystates.begin(); it != _keystates.end(); ++it)
-    {
-      if (event.keysym.sym == it->first)
-      {
-        it->second = (event.type == SDL_KEYDOWN);
-        break;
-      }
-    }
   }
 
   void
   FreeFly::animate(Uint32 timestep)
   {
-    double realspeed = _keystates[_keyconf["boost"]] ? 10 * _speed : _speed;
-    if (_keystates[_keyconf["forward"]])
+    ConfigManager& config = ConfigManager::getInstance();
+    InputManager& input = InputManager::getInstance();
+
+    const double speed = config["speed"] / 1000.0;
+    const double realspeed = input.key("boost") ? 10 * speed : speed;
+    if (input.key("forward"))
       _position += _forward * (realspeed * timestep);
-    if (_keystates[_keyconf["backward"]])
+    if (input.key("backward"))
       _position -= _forward * (realspeed * timestep);
-    if (_keystates[_keyconf["strafe_left"]])
+    if (input.key("strafe_left"))
       _position += _left * (realspeed * timestep);
-    if (_keystates[_keyconf["strafe_right"]])
+    if (input.key("strafe_right"))
       _position -= _left * (realspeed * timestep);
+    if ((input.mouse("fly_down") || input.mouse("fly_up")) && !_verticalMotionActive)
+    {
+      _verticalMotionActive = true;
+      _verticalMotionDirection = input.key("fly_up") ? 1 : -1;
+      _timeBeforeStoppingVerticalMotion = 250;
+    }
+
     if (_verticalMotionActive)
     {
       if (timestep > _timeBeforeStoppingVerticalMotion)
@@ -88,6 +56,7 @@ namespace Camera
         _timeBeforeStoppingVerticalMotion -= timestep;
       _position += Core::Vector3D(0, 0, _verticalMotionDirection * realspeed * timestep);
     }
+
     _target = _position + _forward;
   }
 } // namespace

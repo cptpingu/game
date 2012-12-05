@@ -24,7 +24,9 @@ SOURCES += \
     src/Block/Triangle.cc \
     src/IdManager.cc \
     src/Camera/BasicCamera.cc \
-    src/Camera/FreeFly.cc
+    src/Camera/FreeFly.cc \
+    src/ConfigManager.cc \
+    src/InputManager.cc
 
 HEADERS += \
     src/Core/Vector3D.hh \
@@ -57,7 +59,9 @@ HEADERS += \
     src/Block/NeighborMatrix.hh \
     src/IdManager.hh \
     src/Camera/BasicCamera.hh \
-    src/Camera/FreeFly.hh
+    src/Camera/FreeFly.hh \
+    src/ConfigManager.hh \
+    src/InputManager.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

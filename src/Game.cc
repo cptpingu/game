@@ -1,6 +1,7 @@
 #include "Game.hh"
 #include "TextureManager.hh"
 #include "ShadersManager.hh"
+#include "InputManager.hh"
 #include "Architecte.hh"
 
 #include <ctime>
@@ -41,7 +42,6 @@ Game::load()
 void
 Game::play()
 {
-  SDL_Event event;
   const Uint32 time_per_frame = 1000 / FPS;
   Uint32 last_time,current_time,elapsed_time; //for time animation
   Uint32 stop_time; //for frame limit
@@ -67,54 +67,31 @@ Game::play()
     if ((stop_time - last_time) < time_per_frame)
       SDL_Delay(time_per_frame - (stop_time - last_time));
 
-    while (SDL_PollEvent(&event))
+    InputManager& input = InputManager::getInstance();
+    const bool mouseMove = input.handleInput();
+    if (mouseMove)
+      _camera.move(input.xrel(), input.yrel());
+
+    if (input.key("insert_block"))
+      _map.insertBlockNearBlock(pickedBlock.first, pickedBlock.second);
+    else if (input.key("remove_block"))
+      _map.eraseBlock(pickedBlock.first);
+    else if (input.key("wireframe_mode"))
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else if (input.key("normal_mode"))
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    else if (input.key("take_screenshot"))
     {
-      switch (event.type)
-      {
-        case SDL_QUIT:
-          exit(0);
-          break;
-        case SDL_KEYDOWN:
-          switch (event.key.keysym.sym)
-          {
-            case SDLK_p:
-            {
-              std::ostringstream buff;
-              buff << "screenshot-" << time(0) << ".bmp";
-              takeScreenshot(buff.str().c_str());
-              break;
-            }
-            case SDLK_g:
-              _map.insertBlockNearBlock(pickedBlock.first, pickedBlock.second);
-              break;
-            case SDLK_f:
-              _map.eraseBlock(pickedBlock.first);
-              break;
-            case SDLK_w:
-              glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-              break;
-            case SDLK_x:
-              glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-              break;
-            case SDLK_ESCAPE:
-              exit(0);
-              break;
-            default:
-              _camera.OnKeyboard(event.key);
-          }
-          break;
-        case SDL_KEYUP:
-          _camera.OnKeyboard(event.key);
-          break;
-        case SDL_MOUSEMOTION:
-          _camera.OnMouseMotion(event.motion);
-          break;
-        case SDL_MOUSEBUTTONUP:
-        case SDL_MOUSEBUTTONDOWN:
-          _camera.OnMouseButton(event.button);
-          break;
-      }
+      std::ostringstream buff;
+      buff << "screenshot-" << time(0) << ".bmp";
+      takeScreenshot(buff.str().c_str());
     }
+    else if (input.key("wireframe_mode"))
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else if (input.key("normal_mode"))
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    else if (input.key("quit"))
+      return;
   }
 }
 
@@ -267,3 +244,4 @@ Game::drawHUD()
 
   viewPerspective();
 }
+

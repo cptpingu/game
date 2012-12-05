@@ -1,5 +1,6 @@
 #include "BasicCamera.hh"
 #include "../IdManager.hh"
+#include "../InputManager.hh"
 #include "../Opengl.hh"
 #include "../Chunk.hh"
 #include "../Map.hh"
@@ -17,23 +18,11 @@ namespace Camera
   Basic::Basic()
   {
     _position = Core::Vector3D(0,0,0);
+    _target = Core::Vector3D(0,0,0);
     _phi = 0;
     _theta = 0;
-    VectorsFromAngles();
-
-    _speed = 0.01;
-    _sensivity = 0.02;
     _verticalMotionActive = false;
-    _keyconf["forward"] = SDLK_UP;
-    _keyconf["backward"] = SDLK_DOWN;
-    _keyconf["strafe_left"] = SDLK_LEFT;
-    _keyconf["strafe_right"] = SDLK_RIGHT;
-    _keyconf["boost"] = SDLK_RSHIFT;
-    _keystates[_keyconf["forward"]] = false;
-    _keystates[_keyconf["backward"]] = false;
-    _keystates[_keyconf["strafe_left"]] = false;
-    _keystates[_keyconf["strafe_right"]] = false;
-    _keystates[_keyconf["boost"]] = false;
+    VectorsFromAngles();
 
     SDL_WM_GrabInput(SDL_GRAB_ON);
     SDL_ShowCursor(SDL_DISABLE);
@@ -46,53 +35,36 @@ namespace Camera
   }
 
   void
-  Basic::OnMouseMotion(const SDL_MouseMotionEvent& event)
+  Basic::move(int xrel, int yrel)
   {
-    _theta -= event.xrel; //* _sensivity;
-    _phi -= event.yrel; //* _sensivity;
+    _theta -= xrel; //* _sensivity;
+    _phi -= yrel; //* _sensivity;
     VectorsFromAngles();
   }
 
-  void
-  Basic::OnMouseButton(const SDL_MouseButtonEvent& event)
-  {
-    //coup de molette vers le haut
-    if (event.button == SDL_BUTTON_WHEELUP && event.type == SDL_MOUSEBUTTONDOWN)
-    {
-      _verticalMotionActive = true;
-      _timeBeforeStoppingVerticalMotion = 250;
-      _verticalMotionDirection = 1;
+//  void
+//  Basic::OnMouseButton(const SDL_MouseButtonEvent& event)
+//  {
+//    //coup de molette vers le haut
+//    if (event.button == SDL_BUTTON_WHEELUP && event.type == SDL_MOUSEBUTTONDOWN)
+//    {
+//      _verticalMotionActive = true;
+//      _timeBeforeStoppingVerticalMotion = 250;
+//      _verticalMotionDirection = 1;
 
-    }
-    //coup de molette vers le bas
-    else if (event.button == SDL_BUTTON_WHEELDOWN && event.type == SDL_MOUSEBUTTONDOWN)
-    {
-      _verticalMotionActive = true;
-      _timeBeforeStoppingVerticalMotion = 250;
-      _verticalMotionDirection = -1;
-    }
-  }
-
-  void
-  Basic::OnKeyboard(const SDL_KeyboardEvent&)
-  {
-  }
+//    }
+//    //coup de molette vers le bas
+//    else if (event.button == SDL_BUTTON_WHEELDOWN && event.type == SDL_MOUSEBUTTONDOWN)
+//    {
+//      _verticalMotionActive = true;
+//      _timeBeforeStoppingVerticalMotion = 250;
+//      _verticalMotionDirection = -1;
+//    }
+//  }
 
   void
   Basic::animate(Uint32)
   {
-  }
-
-  void
-  Basic::setSpeed(double speed)
-  {
-    _speed = speed;
-  }
-
-  void
-  Basic::setSensivity(double sensivity)
-  {
-    _sensivity = sensivity;
   }
 
   void

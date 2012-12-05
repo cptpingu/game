@@ -27,9 +27,9 @@ Map::createBlock(const Core::Container3D<int>& where)
   if (_blocks.find(where) == _blocks.end())
   {
     Block::Basic* block = 0;
-   /* if (Random::rand() % 2 == 0)
+    if (Core::Random::rand() % 2 == 0)
       block = new Block::Cube(where._x , where._y, where._z);
-    else*/
+    else
       block = new Block::Triangle(where._x , where._y, where._z);
     _blocks.insert(blocks_type::value_type(where, block));
   }

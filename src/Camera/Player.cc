@@ -18,11 +18,46 @@
 namespace Camera
 {
   Player::Player()
+    : super(),
+      _heightBeforeJump(0),
+      _isJumping(false)
   {
   }
 
   Player::~Player()
   {
+  }
+
+  void
+  Player::fall(double speed, unsigned int timestep)
+  {
+    if (_position._z <= 0)
+      _position._z = 0;
+    else
+      _position._z -= speed * timestep;
+    _isJumping = false;
+  }
+
+  bool
+  Player::jump(bool jumping, double speed, unsigned int timestep)
+  {
+    if (!jumping)
+      return false;
+
+    if (!_isJumping)
+    {
+      _heightBeforeJump = 0;
+      _isJumping = true;
+      return true;
+    }
+    int nextHeight = _position._z + speed * timestep;
+    if (nextHeight - _heightBeforeJump < 2500)
+    {
+      _position._z = nextHeight;
+      return true;
+    }
+
+    return false;
   }
 
   void
@@ -42,21 +77,9 @@ namespace Camera
     if (input.isPressed("strafe_right"))
       _position -= Core::Vector3D(_left._x, _left._y, 0) * (realspeed * timestep);
 
-    if ((input.isPressed("jump")))
-    {
-      _verticalMotionActive = true;
-      _verticalMotionDirection = 1;
-      _timeBeforeStoppingVerticalMotion = 250;
-    }
+    if (!jump(input.isPressed("jump"), speed, timestep))
+      fall(speed, timestep);
 
-    if (_verticalMotionActive)
-    {
-      if (timestep > _timeBeforeStoppingVerticalMotion)
-        _verticalMotionActive = false;
-      else
-        _timeBeforeStoppingVerticalMotion -= timestep;
-      _position += Core::Vector3D(0, 0, _verticalMotionDirection * realspeed * timestep);
-    }
 
     if (input.xrel() || input.yrel())
     {

@@ -12,7 +12,7 @@
 #include <chrono>
 
 Game::Game()
-  : _camera(new Camera::Player), _map(), _drawer()
+  : _camera(new Camera::FreeFly), _map(), _drawer()
 {
 }
 

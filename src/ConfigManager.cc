@@ -49,6 +49,8 @@ ConfigManager::ConfigManager()
   _bindings["window_width"] = 640;
   _bindings["window_height"] = 480;
   _bindings["fullscreen"] = 0;
+
+    _bindings["height_jump"] = 250;
 }
 
 ConfigManager::~ConfigManager()

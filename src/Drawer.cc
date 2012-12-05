@@ -12,9 +12,9 @@
 
 namespace
 {
-  void drawChunk(const std::pair<int, int>& coord, const Chunk& chunk,
-                 const Chunk::Coord* selectedCoord)
-  {
+void drawChunk(const std::pair<int, int>& coord, const Chunk& chunk,
+               const Chunk::Coord* selectedCoord)
+{
     TextureManager& textures = TextureManager::getInstance();
 
     glActiveTexture(GL_TEXTURE0);
@@ -61,8 +61,8 @@ namespace
 
     if (selectedCoord)
     {
-      selectX = selectedCoord->getX();
-      selectY = selectedCoord->getY();
+        selectX = selectedCoord->getX();
+        selectY = selectedCoord->getY();
     }
 
     glPushMatrix();
@@ -70,89 +70,127 @@ namespace
     auto end = chunk.cend();
     for (auto it = chunk.cbegin(); it != end; ++it)
     {
-      const double xTex = ((*it)->getY() / Chunk::SIZE) * 15;
-      const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 15;
-      glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
-      glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
-      glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);
+        const double xTex = ((*it)->getY() / Chunk::SIZE) * 15;
+        const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 15;
+        glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
+        glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
+        glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);
 
-      const double realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() -Chunk::SIZE/2;
-      const double realY = coord.second*(Chunk::SIZE-1) + (*it)->getY()-Chunk::SIZE/2;
-      const double realZ = (*it)->getZ();
+        const double realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() -Chunk::SIZE/2;
+        const double realY = coord.second*(Chunk::SIZE-1) + (*it)->getY()-Chunk::SIZE/2;
+        const double realZ = (*it)->getZ();
 
 
-      glVertexAttrib1f(attrib, /*selectedCoord &&*/
-                       realX - 4 < selectX - Chunk::SIZE/2  && selectX - Chunk::SIZE/2 < realX + 4 &&
-                       realY - 4 < selectY - Chunk::SIZE/2 && selectY - Chunk::SIZE/2  < realY + 4);
-      glVertex3f(realX, realY, realZ);
+        glVertexAttrib1f(attrib, /*selectedCoord &&*/
+                         realX - 4 < selectX - Chunk::SIZE/2  && selectX - Chunk::SIZE/2 < realX + 4 &&
+                         realY - 4 < selectY - Chunk::SIZE/2 && selectY - Chunk::SIZE/2  < realY + 4);
+        glVertex3f(realX, realY, realZ);
     }
     glEnd();
     glPopMatrix();
 
     shaders.disable();
-  }
+}
 
 } // namespace
 
 void
 Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedCoord) const
 {
-  auto end = chunks.cend();
-  for (auto it = chunks.cbegin(); it != end; ++it)
-    drawChunk(it->first, *it->second, selectedCoord);
+    auto end = chunks.cend();
+    for (auto it = chunks.cbegin(); it != end; ++it)
+        drawChunk(it->first, *it->second, selectedCoord);
 }
 
 void
 Drawer::drawPickingBox(const Map& map) const
 {
-  const Map::blocks_type& blocks = map.getBlocks();
-  auto end = blocks.end();
-  for (auto block = blocks.begin(); block != end; ++block)
-    block->second->drawPickingBox();
+    const Map::blocks_type& blocks = map.getBlocks();
+    auto end = blocks.end();
+    for (auto block = blocks.begin(); block != end; ++block)
+        block->second->drawPickingBox();
 }
 
 void
 Drawer::drawBlocks(const Map& map) const
 {
-  const Map::blocks_type& blocks = map.getBlocks();
-  Block::NeighbourMatrix neighbours;
-  auto end = blocks.end();
-  for (auto block = blocks.begin(); block != end; ++block)
-  {
-    const int x = block->second->_x;
-    const int y = block->second->_y;
-    const int z = block->second->_z;
-    neighbours(-1, +1, -1) = map.findBlock(x - 1, y + 1, z - 1);
-    neighbours(+0, +1, -1) = map.findBlock(x + 0, y + 1, z - 1);
-    neighbours(+1, +1, -1) = map.findBlock(x + 1, y + 1, z - 1);
-    neighbours(-1, +0, -1) = map.findBlock(x - 1, y + 0, z - 1);
-    neighbours(+0, +0, -1) = map.findBlock(x + 0, y + 0, z - 1);
-    neighbours(+1, +0, -1) = map.findBlock(x + 1, y + 0, z - 1);
-    neighbours(-1, -1, -1) = map.findBlock(x - 1, y - 1, z - 1);
-    neighbours(+0, -1, -1) = map.findBlock(x + 0, y - 1, z - 1);
-    neighbours(+1, -1, -1) = map.findBlock(x + 1, y - 1, z - 1);
+    const Map::blocks_type& blocks = map.getBlocks();
+    Block::NeighbourMatrix neighbours;
+    auto end = blocks.end();
+    for (auto block = blocks.begin(); block != end; ++block)
+    {
+        const int x = block->second->_x;
+        const int y = block->second->_y;
+        const int z = block->second->_z;
+        neighbours(-1, +1, -1) = map.findBlock(x - 1, y + 1, z - 1);
+        neighbours(+0, +1, -1) = map.findBlock(x + 0, y + 1, z - 1);
+        neighbours(+1, +1, -1) = map.findBlock(x + 1, y + 1, z - 1);
+        neighbours(-1, +0, -1) = map.findBlock(x - 1, y + 0, z - 1);
+        neighbours(+0, +0, -1) = map.findBlock(x + 0, y + 0, z - 1);
+        neighbours(+1, +0, -1) = map.findBlock(x + 1, y + 0, z - 1);
+        neighbours(-1, -1, -1) = map.findBlock(x - 1, y - 1, z - 1);
+        neighbours(+0, -1, -1) = map.findBlock(x + 0, y - 1, z - 1);
+        neighbours(+1, -1, -1) = map.findBlock(x + 1, y - 1, z - 1);
 
-    neighbours(-1, +1, +0) = map.findBlock(x - 1, y + 1, z + 0);
-    neighbours(+0, +1, +0) = map.findBlock(x + 0, y + 1, z + 0);
-    neighbours(+1, +1, +0) = map.findBlock(x + 1, y + 1, z + 0);
-    neighbours(-1, +0, +0) = map.findBlock(x - 1, y + 0, z + 0);
-    neighbours(+0, +0, +0) = block->second;
-    neighbours(+1, +0, +0) = map.findBlock(x + 1, y + 0, z + 0);
-    neighbours(-1, -1, +0) = map.findBlock(x - 1, y - 1, z + 0);
-    neighbours(+0, -1, +0) = map.findBlock(x + 0, y - 1, z + 0);
-    neighbours(+1, -1, +0) = map.findBlock(x + 1, y - 1, z + 0);
+        neighbours(-1, +1, +0) = map.findBlock(x - 1, y + 1, z + 0);
+        neighbours(+0, +1, +0) = map.findBlock(x + 0, y + 1, z + 0);
+        neighbours(+1, +1, +0) = map.findBlock(x + 1, y + 1, z + 0);
+        neighbours(-1, +0, +0) = map.findBlock(x - 1, y + 0, z + 0);
+        neighbours(+0, +0, +0) = block->second;
+        neighbours(+1, +0, +0) = map.findBlock(x + 1, y + 0, z + 0);
+        neighbours(-1, -1, +0) = map.findBlock(x - 1, y - 1, z + 0);
+        neighbours(+0, -1, +0) = map.findBlock(x + 0, y - 1, z + 0);
+        neighbours(+1, -1, +0) = map.findBlock(x + 1, y - 1, z + 0);
 
-    neighbours(-1, +1, +1) = map.findBlock(x - 1, y + 1, z + 1);
-    neighbours(+0, +1, +1) = map.findBlock(x + 0, y + 1, z + 1);
-    neighbours(+1, +1, +1) = map.findBlock(x + 1, y + 1, z + 1);
-    neighbours(-1, +0, +1) = map.findBlock(x - 1, y + 0, z + 1);
-    neighbours(+0, +0, +1) = map.findBlock(x + 0, y + 0, z + 1);
-    neighbours(+1, +0, +1) = map.findBlock(x + 1, y + 0, z + 1);
-    neighbours(-1, -1, +1) = map.findBlock(x - 1, y - 1, z + 1);
-    neighbours(+0, -1, +1) = map.findBlock(x + 0, y - 1, z + 1);
-    neighbours(+1, -1, +1) = map.findBlock(x + 1, y - 1, z + 1);
+        neighbours(-1, +1, +1) = map.findBlock(x - 1, y + 1, z + 1);
+        neighbours(+0, +1, +1) = map.findBlock(x + 0, y + 1, z + 1);
+        neighbours(+1, +1, +1) = map.findBlock(x + 1, y + 1, z + 1);
+        neighbours(-1, +0, +1) = map.findBlock(x - 1, y + 0, z + 1);
+        neighbours(+0, +0, +1) = map.findBlock(x + 0, y + 0, z + 1);
+        neighbours(+1, +0, +1) = map.findBlock(x + 1, y + 0, z + 1);
+        neighbours(-1, -1, +1) = map.findBlock(x - 1, y - 1, z + 1);
+        neighbours(+0, -1, +1) = map.findBlock(x + 0, y - 1, z + 1);
+        neighbours(+1, -1, +1) = map.findBlock(x + 1, y - 1, z + 1);
 
-    block->second->draw(neighbours);
-    block->second->resetHighlight();
-  }
+        block->second->draw(neighbours);
+        block->second->resetHighlight();
+    }
 }
+void Drawer::light()
+{
+    TextureManager& textures = TextureManager::getInstance();
+    ShadersManager& shaders = ShadersManager::getInstance();
+    shaders.enable("texture_invert_color");
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    GLfloat specular[] = {0.5f, 0.5f, 0.5f , 1.0f};
+    glLightfv(GL_LIGHT0, GL_AMBIENT, specular);
+    glEnable(GL_COLOR_MATERIAL);
+    float specReflection[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+    glMaterialfv(GL_FRONT, GL_SPECULAR, specReflection);
+    float mcolor[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mcolor);
+
+    glPushMatrix();
+
+    glBegin(GL_QUADS);
+
+    glTexCoord2d(0, 0);
+    glVertex3d(-Block::HALF_SIZE,Block::HALF_SIZE, 30* Block::SIZE);
+    glTexCoord2d(Block::SIZE, 0);
+    glVertex3d(Block::HALF_SIZE, Block::HALF_SIZE, 30 * Block::SIZE);
+    glTexCoord2d(Block::SIZE, Block::SIZE);
+    glVertex3d( Block::HALF_SIZE, - Block::HALF_SIZE, 30 * Block::SIZE);
+    glTexCoord2d(0, Block::SIZE);
+    glVertex3d(- Block::HALF_SIZE, - Block::HALF_SIZE, 30 * Block::SIZE);
+
+    glEnd();
+
+    glPopMatrix();
+    shaders.disable();
+}
+

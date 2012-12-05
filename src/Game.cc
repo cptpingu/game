@@ -160,6 +160,8 @@ Game::drawGL(const Chunk::Coord* selectedCoord,
 
   _drawer.drawBlocks(_map);
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
+  _drawer.light();
+
 
   showCoord(selectedCoord);
   //drawAxis(10000);

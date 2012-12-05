@@ -36,6 +36,13 @@ public:
   ** @param trees The trees to draw.
   */
   // void drawTrees(const Architecte::Model& trees) const;
+
+  /*!
+  **Light fixing ....*/
+  void light();
+
+
+
 };
 
 #endif /* !DRAWER_HH_ */

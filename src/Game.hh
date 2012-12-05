@@ -19,11 +19,6 @@
 class Game
 {
 public:
-  static const unsigned int FPS = 50;
-  static const unsigned int WINDOW_WIDTH  = 640;
-  static const unsigned int WINDOW_HEIGHT = 480;
-
-public:
   /*!
   ** Load all resources needed for the game, and initialize options.
   */

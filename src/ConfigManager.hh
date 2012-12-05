@@ -27,6 +27,7 @@ public:
   ~ConfigManager();
 
   int operator[](const std::string& name) const;
+  void set(const std::string& name, int value);
 
 private:
   binding_type _bindings;

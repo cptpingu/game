@@ -1,3 +1,4 @@
+#include "ConfigManager.hh"
 #include "Opengl.hh"
 #include <SDL/SDL.h>
 #include <iostream>
@@ -20,15 +21,21 @@ namespace
 
 MAIN
 {
-  unsigned int width = Game::WINDOW_WIDTH;
-  unsigned int height = Game::WINDOW_HEIGHT;
+  ConfigManager& config = ConfigManager::getInstance();
+  unsigned int width = config["window_width"];
+  unsigned int height = config["window_height"];
 
   SDL_Init(SDL_INIT_VIDEO);
   atexit(stop);
 
   SDL_WM_SetCaption("SDL GL Application", 0);
   SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
-  //initFullScreen(&width, &height);
+  if (config["fullscreen"])
+  {
+    initFullScreen(width, height);
+    config.set("window_width", width);
+    config.set("window_height", height);
+  }
 
   if (!initExtensions())
   {

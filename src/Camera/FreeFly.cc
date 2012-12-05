@@ -32,19 +32,19 @@ namespace Camera
     InputManager& input = InputManager::getInstance();
 
     const double speed = config["speed"] / 1000.0;
-    const double realspeed = input.key("boost") ? 10 * speed : speed;
-    if (input.key("forward"))
+    const double realspeed = input.isPressed("boost") ? 10 * speed : speed;
+    if (input.isPressed("forward"))
       _position += _forward * (realspeed * timestep);
-    if (input.key("backward"))
+    if (input.isPressed("backward"))
       _position -= _forward * (realspeed * timestep);
-    if (input.key("strafe_left"))
+    if (input.isPressed("strafe_left"))
       _position += _left * (realspeed * timestep);
-    if (input.key("strafe_right"))
+    if (input.isPressed("strafe_right"))
       _position -= _left * (realspeed * timestep);
-    if ((input.mouse("fly_down") || input.mouse("fly_up")) && !_verticalMotionActive)
+    if ((input.isPressed("fly_down") || input.isPressed("fly_up")) && !_verticalMotionActive)
     {
       _verticalMotionActive = true;
-      _verticalMotionDirection = input.mouse("fly_up") ? 1 : -1;
+      _verticalMotionDirection = input.isPressed("fly_up") ? 1 : -1;
       _timeBeforeStoppingVerticalMotion = 250;
     }
 
@@ -59,8 +59,10 @@ namespace Camera
 
     if (input.xrel() || input.yrel())
     {
-      _theta -= input.xrel(); //* _sensivity;
-      _phi -= input.yrel(); //* _sensivity;
+      const int sensivity = config["sensivity"] / 10;
+      const int invert = config["invert_mouse"] ? - 1 : 1;
+      _theta -= input.xrel() * sensivity;
+      _phi -= input.yrel() * sensivity * invert;
       VectorsFromAngles();
     }
     else

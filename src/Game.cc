@@ -2,6 +2,7 @@
 #include "TextureManager.hh"
 #include "ShadersManager.hh"
 #include "InputManager.hh"
+#include "ConfigManager.hh"
 #include "Architecte.hh"
 
 #include <ctime>
@@ -11,6 +12,7 @@
 bool
 Game::load()
 {
+  ConfigManager& config = ConfigManager::getInstance();
   std::cout << "SIZE: " << Chunk::SIZE << std::endl
             << "QUALITY: " << Chunk::QUALITY << std::endl
             << "TEXTURE_SIZE: " << Chunk::TEXTURE_SIZE << std::endl
@@ -18,7 +20,8 @@ Game::load()
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(70, (double)WINDOW_WIDTH / WINDOW_HEIGHT, 0.001, 1000);
+  const double ratio = static_cast<double>(config["window_width"]) / config["window_height"];
+  gluPerspective(70, ratio, 0.001, 1000);
 
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glShadeModel(GL_SMOOTH);
@@ -31,8 +34,6 @@ Game::load()
   _map.loadBlocks("data/map/block.txt");
   _map.InitGroundBlocks(20);
 
-
-
   loadtextures();
   loadShaders();
 
@@ -42,7 +43,8 @@ Game::load()
 void
 Game::play()
 {
-  const Uint32 time_per_frame = 1000 / FPS;
+  ConfigManager& config = ConfigManager::getInstance();
+  const Uint32 time_per_frame = 1000 / config["fps"];
   Uint32 last_time,current_time,elapsed_time; //for time animation
   Uint32 stop_time; //for frame limit
 
@@ -57,7 +59,8 @@ Game::play()
     _camera.animate(elapsed_time);
     Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
     //std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking(_map);
-    std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking2(_map, _drawer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking2(_map, _drawer,
+                                                                             config["window_width"] / 2, config["window_height"] / 2);
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);
 
@@ -70,25 +73,21 @@ Game::play()
     InputManager& input = InputManager::getInstance();
     input.handleInput();
 
-    if (input.key("insert_block"))
+    if (input.isPressed("insert_block", true))
       _map.insertBlockNearBlock(pickedBlock.first, pickedBlock.second);
-    else if (input.key("remove_block"))
+    else if (input.isPressed("remove_block", true))
       _map.eraseBlock(pickedBlock.first);
-    else if (input.key("wireframe_mode"))
+    else if (input.isPressed("wireframe_mode", true))
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    else if (input.key("normal_mode"))
+    else if (input.isPressed("normal_mode", true))
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else if (input.key("take_screenshot"))
+    else if (input.isPressed("take_screenshot", true))
     {
       std::ostringstream buff;
       buff << "screenshot-" << time(0) << ".bmp";
       takeScreenshot(buff.str().c_str());
     }
-    else if (input.key("wireframe_mode"))
-      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    else if (input.key("normal_mode"))
-      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else if (input.key("quit"))
+    else if (input.isPressed("quit", true))
       return;
   }
 }
@@ -174,6 +173,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord,
 void
 Game::showCoord(const Chunk::Coord* selectedCoord)
 {
+  ConfigManager& config = ConfigManager::getInstance();
   auto pos = _camera.getCurrentPosition();
   std::stringstream buff;
 
@@ -195,13 +195,14 @@ Game::showCoord(const Chunk::Coord* selectedCoord)
   {
     ++row;
     if (!line.empty())
-      textures.glPrint(0, WINDOW_HEIGHT - (16 * row), line.c_str(), 0);
+      textures.glPrint(0, config["window_height"] - (16 * row), line.c_str(), 0);
   }
 }
 
 void
 Game::drawFPS(int fpsFromSDL)
 {
+  ConfigManager& config = ConfigManager::getInstance();
   typedef std::chrono::time_point<std::chrono::high_resolution_clock> chrono;
 
   static unsigned int frames = 0;
@@ -221,23 +222,25 @@ Game::drawFPS(int fpsFromSDL)
   }
 
   TextureManager& textures = TextureManager::getInstance();
-  textures.glPrint(0, WINDOW_HEIGHT - (16 * 10), strFrameRate, 0);
+  textures.glPrint(0, config["window_height"] - (16 * 10), strFrameRate, 0);
 }
 
 void
 Game::drawHUD()
 {
   static const double cursorSize = 20.0;
-
-  viewOrtho(WINDOW_WIDTH, WINDOW_HEIGHT);
+  ConfigManager& config = ConfigManager::getInstance();
+  const double half_width = config["window_width"] / 2.0;
+  const double half_height = config["window_height"] / 2.0;
+  viewOrtho(config["window_width"], config["window_height"]);
 
   glColor3d(1, 0, 0);
   glBegin(GL_LINES);
-  glVertex2f((WINDOW_WIDTH / 2) - (cursorSize / 2), WINDOW_HEIGHT / 2);
-  glVertex2f((WINDOW_WIDTH / 2) + (cursorSize / 2), WINDOW_HEIGHT / 2);
+  glVertex2f(half_width - (cursorSize / 2), half_height);
+  glVertex2f(half_width + (cursorSize / 2), half_height);
 
-  glVertex2f(WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 2) - (cursorSize / 2));
-  glVertex2f(WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 2) + (cursorSize / 2));
+  glVertex2f(half_width, half_height - (cursorSize / 2));
+  glVertex2f(half_width, half_height + (cursorSize / 2));
   glEnd();
 
   viewPerspective();

@@ -9,21 +9,24 @@ ConfigManager::ConfigManager()
   _bindings["strafe_left"] = SDLK_LEFT;
   _bindings["strafe_right"] = SDLK_RIGHT;
   _bindings["boost"] = SDLK_RSHIFT;
-  _bindings["speed"] = 10;
-  _bindings["sensivity"] = 20;
   _bindings["fly_up"] = SDL_BUTTON_WHEELUP;
   _bindings["fly_down"] = SDL_BUTTON_WHEELDOWN;
-
   _bindings["insert_block"] = SDLK_g;
   _bindings["remove_block"] = SDLK_f;
-
   _bindings["wireframe_mode"] = SDLK_w;
   _bindings["normal_mode"] = SDLK_x;
   _bindings["take_screenshot"] = SDLK_p;
-
   _bindings["quit"] = SDLK_ESCAPE;
 
   _bindings["invert_mouse"] = 1;
+
+
+  _bindings["speed"] = 10;
+  _bindings["sensivity"] = 10;
+  _bindings["fps"] = 50;
+  _bindings["window_width"] = 640;
+  _bindings["window_height"] = 480;
+  _bindings["fullscreen"] = 0;
 }
 
 ConfigManager::~ConfigManager()
@@ -36,4 +39,10 @@ ConfigManager::operator[](const std::string& name) const
   auto found = _bindings.find(name);
   assert(found != _bindings.end());
   return found->second;
+}
+
+void
+ConfigManager::set(const std::string& name, int value)
+{
+  _bindings[name] = value;
 }

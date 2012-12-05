@@ -4,7 +4,7 @@
 # include "Opengl.hh"
 # include "Map.hh"
 # include "GLUtils.hh"
-# include "Camera/FreeFly.hh"
+# include "Camera/BasicCamera.hh"
 # include "Drawer.hh"
 # include "ImageFile.hh"
 
@@ -19,6 +19,9 @@
 class Game
 {
 public:
+  Game();
+  ~Game();
+
   /*!
   ** Load all resources needed for the game, and initialize options.
   */
@@ -39,9 +42,9 @@ private:
   void drawHUD();
 
 private:
-  Camera::FreeFly _camera;
-  Map             _map;
-  Drawer          _drawer;
+  Camera::Basic* _camera;
+  Map            _map;
+  Drawer         _drawer;
 };
 
 #endif /* !GAME_HH_ */

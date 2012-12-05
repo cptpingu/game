@@ -224,8 +224,8 @@ namespace Camera
   }
 
   std::pair<Block::Basic*, Block::FaceType>
-  Basic::picking2(const Map& map, const Drawer& drawer,
-                          int mouseX, int mouseY) const
+  Basic::picking(const Map& map, const Drawer& drawer,
+                 int mouseX, int mouseY) const
   {
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_FOG);

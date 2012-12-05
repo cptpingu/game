@@ -19,15 +19,20 @@ namespace Camera
     Basic();
     virtual ~Basic();
 
+    // FIXME
     virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
     virtual std::pair<Block::Basic*, Block::FaceType> picking(const Map& blocks) const;
-    virtual std::pair<Block::Basic*, Block::FaceType> picking2(const Map& map, const Drawer& drawer, int x, int y) const;
+    // !
+
+    virtual std::pair<Block::Basic*, Block::FaceType>
+    picking(const Map& map, const Drawer& drawer, int mouseX, int mouseY) const;
+    virtual void setPosition(const Core::Vector3D& position);
+    virtual void look();
 
     virtual void animate(Uint32 timestep) = 0;
+    virtual std::pair<Block::Basic*, Block::FaceType>
+    picking(const Map& map, const Drawer& drawer) const = 0;
 
-    virtual void setPosition(const Core::Vector3D& position);
-
-    virtual void look();
 
     Core::Vector3D getCurrentPosition() const;
     Core::Vector3D getCurrentLook() const;

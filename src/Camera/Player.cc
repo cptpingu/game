@@ -1,4 +1,4 @@
-#include "FreeFly.hh"
+#include "Player.hh"
 #include "../IdManager.hh"
 #include "../ConfigManager.hh"
 #include "../InputManager.hh"
@@ -17,22 +17,24 @@
 
 namespace Camera
 {
-  FreeFly::FreeFly()
+  Player::Player()
   {
   }
 
-  FreeFly::~FreeFly()
+  Player::~Player()
   {
   }
 
   void
-  FreeFly::animate(Uint32 timestep)
+  Player::animate(Uint32 timestep)
   {
     ConfigManager& config = ConfigManager::getInstance();
     InputManager& input = InputManager::getInstance();
 
     const double speed = config["speed"] / 1000.0;
     const double realspeed = input.isPressed("boost") ? 10 * speed : speed;
+    _forward._z = 0;
+    _left._z = 0;
     if (input.isPressed("forward"))
       _position += _forward * (realspeed * timestep);
     if (input.isPressed("backward"))
@@ -41,7 +43,7 @@ namespace Camera
       _position += _left * (realspeed * timestep);
     if (input.isPressed("strafe_right"))
       _position -= _left * (realspeed * timestep);
-    if ((input.isPressed("fly_down") || input.isPressed("fly_up")) && !_verticalMotionActive)
+    if ((input.isPressed("jump")))
     {
       _verticalMotionActive = true;
       _verticalMotionDirection = input.isPressed("fly_up") ? 1 : -1;
@@ -70,7 +72,7 @@ namespace Camera
   }
 
   std::pair<Block::Basic*, Block::FaceType>
-  FreeFly::picking(const Map& map, const Drawer& drawer) const
+  Player::picking(const Map& map, const Drawer& drawer) const
   {
     ConfigManager& config = ConfigManager::getInstance();
     return super::picking(map, drawer, config["window_width"] / 2, config["window_height"] / 2);

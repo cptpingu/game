@@ -4,10 +4,22 @@
 #include "InputManager.hh"
 #include "ConfigManager.hh"
 #include "Architecte.hh"
+#include "Camera/FreeFly.hh"
+#include "Camera/Player.hh"
 
 #include <ctime>
 #include <sstream>
 #include <chrono>
+
+Game::Game()
+  : _camera(new Camera::FreeFly), _map(), _drawer()
+{
+}
+
+Game::~Game()
+{
+  delete _camera;
+}
 
 bool
 Game::load()
@@ -55,12 +67,11 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    _map.chunkLazyLoading(_camera.getCurrentPosition(), _map.getChunks());
-    _camera.animate(elapsed_time);
-    Chunk::Coord* pickedCoord = _camera.picking(_map.getChunks());
-    //std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking(_map);
-    std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera.picking2(_map, _drawer,
-                                                                             config["window_width"] / 2, config["window_height"] / 2);
+    _map.chunkLazyLoading(_camera->getCurrentPosition(), _map.getChunks());
+    _camera->animate(elapsed_time);
+    Chunk::Coord* pickedCoord = _camera->picking(_map.getChunks());
+    //std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera->picking(_map);
+    std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera->picking(_map, _drawer);
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);
 
@@ -156,7 +167,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord,
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  _camera.look();
+  _camera->look();
 
   _drawer.drawBlocks(_map);
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
@@ -176,10 +187,10 @@ void
 Game::showCoord(const Chunk::Coord* selectedCoord)
 {
   ConfigManager& config = ConfigManager::getInstance();
-  auto pos = _camera.getCurrentPosition();
+  auto pos = _camera->getCurrentPosition();
   std::stringstream buff;
 
-  Core::Vector3D look = _camera.getCurrentLook();
+  Core::Vector3D look = _camera->getCurrentLook();
   const int x = Chunk::absoluteToChunkCoord(pos._x);
   const int y = Chunk::absoluteToChunkCoord(pos._y);
   buff << "World coord: " << pos._x << " " << pos._y << " " << pos._z << "\n"

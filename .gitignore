@@ -5,3 +5,4 @@ Makefile.rules
 src/Makefile.deps
 Game.pro.user
 data/map/chunk_*
+data/conf.txt

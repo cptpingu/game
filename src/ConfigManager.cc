@@ -5,8 +5,6 @@
 #include <sstream>
 #include <string>
 
-#include <iostream>
-
 namespace
 {
   std::string trim(const std::string& s)
@@ -29,11 +27,15 @@ ConfigManager::ConfigManager()
   _bindings["backward"] = SDLK_DOWN;
   _bindings["strafe_left"] = SDLK_LEFT;
   _bindings["strafe_right"] = SDLK_RIGHT;
+  _bindings["jump"] = SDLK_j;
+
   _bindings["boost"] = SDLK_RSHIFT;
   _bindings["fly_up"] = SDL_BUTTON_WHEELUP;
   _bindings["fly_down"] = SDL_BUTTON_WHEELDOWN;
   _bindings["insert_block"] = SDLK_g;
   _bindings["remove_block"] = SDLK_f;
+
+
   _bindings["wireframe_mode"] = SDLK_w;
   _bindings["normal_mode"] = SDLK_x;
   _bindings["take_screenshot"] = SDLK_p;
@@ -73,7 +75,6 @@ ConfigManager::load(const std::string& filename)
       res[i++] = word;
 
     _bindings[trim(res[0])] = atoi(res[1].c_str());
-    std::cout << "found <" << res[0] << "> = " << res[1] << std::endl;
     change = true;
   }
 

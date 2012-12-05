@@ -1,4 +1,4 @@
-#include "FreeFly.hh"
+#include "Player.hh"
 #include "../IdManager.hh"
 #include "../ConfigManager.hh"
 #include "../InputManager.hh"
@@ -17,16 +17,16 @@
 
 namespace Camera
 {
-  FreeFly::FreeFly()
+  Player::Player()
   {
   }
 
-  FreeFly::~FreeFly()
+  Player::~Player()
   {
   }
 
   void
-  FreeFly::animate(Uint32 timestep)
+  Player::animate(Uint32 timestep)
   {
     ConfigManager& config = ConfigManager::getInstance();
     InputManager& input = InputManager::getInstance();
@@ -41,20 +41,11 @@ namespace Camera
       _position += _left * (realspeed * timestep);
     if (input.isPressed("strafe_right"))
       _position -= _left * (realspeed * timestep);
-    if ((input.isPressed("fly_down") || input.isPressed("fly_up")) && !_verticalMotionActive)
+    if ((input.isPressed("jump")))
     {
       _verticalMotionActive = true;
-      _verticalMotionDirection = input.isPressed("fly_up") ? 1 : -1;
+      _verticalMotionDirection = 1;
       _timeBeforeStoppingVerticalMotion = 250;
-    }
-
-    if (_verticalMotionActive)
-    {
-      if (timestep > _timeBeforeStoppingVerticalMotion)
-        _verticalMotionActive = false;
-      else
-        _timeBeforeStoppingVerticalMotion -= timestep;
-      _position += Core::Vector3D(0, 0, _verticalMotionDirection * realspeed * timestep);
     }
 
     if (input.xrel() || input.yrel())
@@ -67,10 +58,21 @@ namespace Camera
     }
     else
       _target = _position + _forward;
+
+    if (_verticalMotionActive)
+    {
+      if (timestep > _timeBeforeStoppingVerticalMotion)
+        _verticalMotionActive = false;
+      else
+        _timeBeforeStoppingVerticalMotion -= timestep;
+      _position += Core::Vector3D(0, 0, _verticalMotionDirection * realspeed * timestep);
+    }
+    else
+      _position._z = 0;
   }
 
   std::pair<Block::Basic*, Block::FaceType>
-  FreeFly::picking(const Map& map, const Drawer& drawer) const
+  Player::picking(const Map& map, const Drawer& drawer) const
   {
     ConfigManager& config = ConfigManager::getInstance();
     return super::picking(map, drawer, config["window_width"] / 2, config["window_height"] / 2);

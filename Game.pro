@@ -25,6 +25,7 @@ SOURCES += \
     src/IdManager.cc \
     src/Camera/BasicCamera.cc \
     src/Camera/FreeFly.cc \
+    src/Camera/Player.cc \
     src/ConfigManager.cc \
     src/InputManager.cc
 
@@ -59,6 +60,7 @@ HEADERS += \
     src/IdManager.hh \
     src/Camera/BasicCamera.hh \
     src/Camera/FreeFly.hh \
+    src/Camera/Player.hh \
     src/ConfigManager.hh \
     src/InputManager.hh \
     src/Block/NeighbourMatrix.hh

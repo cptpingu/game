@@ -1,16 +1,16 @@
-#ifndef CAMERA_FREEFLY_HH_
-# define CAMERA_FREEFLY_HH_
+#ifndef CAMERA_PLAYER_HH_
+# define CAMERA_PLAYER_HH_
 
 # include "BasicCamera.hh"
 
 namespace Camera
 {
-  class FreeFly : public Basic
+  class Player : public Basic
   {
     typedef Basic super;
   public:
-    FreeFly();
-    virtual ~FreeFly();
+    Player();
+    virtual ~Player();
 
     virtual void animate(Uint32 timestep);
     virtual std::pair<Block::Basic*, Block::FaceType>
@@ -18,4 +18,4 @@ namespace Camera
   };
 } // Camera
 
-#endif /* !CAMERA_FREEFLY_HH_ */
+#endif /* !CAMERA_PLAYER_HH_ */

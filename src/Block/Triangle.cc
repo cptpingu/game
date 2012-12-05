@@ -45,7 +45,7 @@ namespace Block
 
     //Median plan Begin
 
-    if( (
+   if( (
         neighbours(1,0,0) ||
         neighbours(-1,0,0) ||
         neighbours(0,1,0) ||
@@ -886,12 +886,12 @@ namespace Block
          }
 
     //End Median influence
-
-
 }
 
+
+
 //Begin superior plan ...
-  else if(
+ else if(
         (neighbours(-1,-1,1) ||
         neighbours(-1,0,1) ||
         neighbours(-1,1,1) ||
@@ -919,37 +919,36 @@ namespace Block
 
         )
         {
-
+        glRotatef(-90,0,0,1);
         glBegin(GL_TRIANGLE_STRIP);
-            glTexCoord2d(0, 0);
-            //1
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
-            //2
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
-            //3
-            glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            //4
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,Block::SIZE);
-            glTexCoord2d(0, 0);
-            //5
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-            //6
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-            //8
-            glTexCoord2d(Block::SIZE,Block::SIZE);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            ///9
-            glTexCoord2d(0, 0);
-
-
-            glVertex3d(0, 0,Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
+        glTexCoord2d(0, 0);
+        //1
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, 0);
+        //2
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE,Block::SIZE);
+        //3
+        glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+        glTexCoord2d(0, 0);
+        //4
+        glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+        glTexCoord2d(Block::SIZE,0);
+        //5
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        //6
+        glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+        glTexCoord2d(0,0);
+        ///7
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, 0);
+        ///8
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        //9
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(0, 0);
     }
     //  2 1 0
     //  1 1 0
@@ -968,41 +967,42 @@ namespace Block
 
             )
         {
-         glRotatef(90,0,0,1);
+        //glRotatef(90,0,0,1);
         glBegin(GL_TRIANGLE_STRIP);
-            glTexCoord2d(0, 0);
-            //1
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
-            //2
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
-            //3
-            glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            //4
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,Block::SIZE);
-            glTexCoord2d(0, 0);
-            //5
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-            //6
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-            //8
-            glTexCoord2d(Block::SIZE,Block::SIZE);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            ///9
-            glTexCoord2d(0, 0);
+        glTexCoord2d(0, 0);
+        //1
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, 0);
+        //2
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE,Block::SIZE);
+        //3
+        glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+        glTexCoord2d(0, 0);
+        //4
+        glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+        glTexCoord2d(Block::SIZE,0);
+        //5
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        //6
+        glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+        glTexCoord2d(0,0);
+        ///7
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, 0);
+        ///8
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        //9
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(0, 0);
 
 
-            glVertex3d(0, 0,Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
     }
     //  0 0 0
+    //  0 1 1
     //  0 1 2
-    //  0 2 2
     else if(
        !neighbours(1,0,1) &&
        !neighbours(0,-1,1) &&
@@ -1018,7 +1018,7 @@ namespace Block
 
             )
         {
-            glRotatef(-90,0,0,1);
+            glRotatef(-180,0,0,1);
             glBegin(GL_TRIANGLE_STRIP);
             glTexCoord2d(0, 0);
             //1
@@ -1026,34 +1026,34 @@ namespace Block
             glTexCoord2d(Block::SIZE, 0);
             //2
             glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
+            glTexCoord2d(Block::SIZE,Block::SIZE);
             //3
             glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            //4
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,Block::SIZE);
             glTexCoord2d(0, 0);
+            //4
+            glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+            glTexCoord2d(Block::SIZE,0);
             //5
             glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+            glTexCoord2d(Block::SIZE, Block::SIZE);
             //6
-            glTexCoord2d(Block::SIZE, 0);
+            glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+            glTexCoord2d(0,0);
+            ///7
             glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-            //8
-            glTexCoord2d(Block::SIZE,Block::SIZE);
+            glTexCoord2d(Block::SIZE, 0);
+            ///8
             glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            ///9
+            glTexCoord2d(Block::SIZE, Block::SIZE);
+            //9
+            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
             glTexCoord2d(0, 0);
 
-
-            glVertex3d(0, 0,Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
     }
     //  0 0 0
     //  1 1 0
     //  2 1 0
-    else if(
+  else if(
        !neighbours(-1,0,1) &&
        !neighbours(0,-1,1) &&
       !neighbours(0,1,1) &&
@@ -1064,42 +1064,38 @@ namespace Block
         neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1))&&
         (neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0))||
         neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))
-
-
-
-            )
+         )
         {
-        glRotatef(180,0,0,1);
-            glBegin(GL_TRIANGLE_STRIP);
-            glTexCoord2d(0, 0);
-            //1
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
-            //2
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            glTexCoord2d(Block::SIZE, 0);
-            //3
-            glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
-            //4
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,Block::SIZE);
-            glTexCoord2d(0, 0);
-            //5
-            glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-            //6
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-            //8
-            glTexCoord2d(Block::SIZE,Block::SIZE);
-            glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-            ///9
-            glTexCoord2d(0, 0);
-
-
-            glVertex3d(0, 0,Block::SIZE);
-            glTexCoord2d(Block::SIZE, 0);
-            glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
-            glTexCoord2d(Block::SIZE, Block::SIZE);
+        glRotatef(90,0,0,1);
+        glBegin(GL_TRIANGLE_STRIP);
+        glTexCoord2d(0, 0);
+        //1
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, 0);
+        //2
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE,Block::SIZE);
+        //3
+        glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+        glTexCoord2d(0, 0);
+        //4
+        glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+        glTexCoord2d(Block::SIZE,0);
+        //5
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        //6
+        glVertex3d(-Block::SIZE/2, Block::SIZE/2,Block::SIZE);
+        glTexCoord2d(0,0);
+        ///7
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, 0);
+        ///8
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        glTexCoord2d(Block::SIZE, Block::SIZE);
+        //9
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+        glTexCoord2d(0, 0);
     }
 
 
@@ -1107,8 +1103,6 @@ namespace Block
 //  0 1 2  0 1 2  0 1 2
 //  0 0 2  0 0 0  0 0 2
     else if(
-       //!neighbours(0,-1,1) &&
-       //!neighbours(0,1,1) &&
        !neighbours(-1,-1,1) &&
        !neighbours(-1,0,1) &&
        !neighbours(-1,1,1) &&
@@ -1163,8 +1157,6 @@ namespace Block
     //  2 1 0  2 1 0  2 1 0
     //  2 0 0  2 0 0  0 0 0
      else if(
-       //!neighbours(0,-1,1) &&
-       //!neighbours(0,1,1) &&
        !neighbours(1,0,1) &&
        !neighbours(1,1,1) &&
        !neighbours(1,-1,1) &&
@@ -1220,8 +1212,6 @@ namespace Block
     //  2 2 2  2 2 0  0 2 2
     else if
        (
-       //!neighbours(-1,0,1) &&
-       //!neighbours(1,0,1) &&
        !neighbours(-1,1,1) &&
        !neighbours(0,1,1) &&
        !neighbours(1,1,1) &&
@@ -1276,8 +1266,6 @@ namespace Block
     //  0 1 0  0 1 0  0 1 0
     //  0 0 0  0 0 0  0 0 0
     else if(
-       //!neighbours(-1,0,1) &&
-       //!neighbours(1,0,1) &&
        !neighbours(-1,-1,1) &&
        !neighbours(0,-1,1) &&
        !neighbours(1,-1,1) &&
@@ -1327,64 +1315,8 @@ namespace Block
             glVertex3d  (-Block::SIZE/2,Block::SIZE/2 , Block::SIZE);
     }
 
-
-
-/*
-   else if
-            (neighbours(0,1,1)&&
-             neighbours(-1,0,0)&&
-             neighbours(1,0,0) &&
-             typeid(*this)==typeid(*neighbours(0,1,1))&&
-             typeid(*this)==typeid(*neighbours(-1,0,0))&&
-             typeid(*this)==typeid(*neighbours(1,0,0)))
-    { glBegin(GL_TRIANGLE_STRIP);
-        glTexCoord2d(0, 0);
-    //1
-        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
-    //
-        glTexCoord2d(Block::SIZE, 0);
-    //2
-        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-    //
-        glTexCoord2d(Block::SIZE, Block::SIZE);
-    //3
-        glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
-    //
-        glTexCoord2d(0, 0);
-    //4
-        glVertex3d(Block::SIZE/2, Block::SIZE/2,Block::SIZE);
-    //
-        glTexCoord2d(Block::SIZE, 0);
-    //5
-        glVertex3d(-Block::SIZE / 2, Block::SIZE/2,0);
-    //
-        glTexCoord2d(Block::SIZE, Block::SIZE);
-    //6
-        glVertex3d(-Block::SIZE / 2, Block::SIZE/2,Block::SIZE);
-    //
-        glTexCoord2d(0,0);
-    //7
-        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
-
-        glTexCoord2d(Block::SIZE, 0);
-    //8
-        glVertex3d(Block::SIZE/2 , -Block::SIZE/2 , 0);
-
-        glTexCoord2d(Block::SIZE, Block::SIZE);
-     //9
-        glVertex3d(-Block::SIZE/2 , Block::SIZE/2 , Block::SIZE);
-
-         glTexCoord2d(0,0);
-      //10
-         glVertex3d(Block::SIZE/2 , Block::SIZE/2 , Block::SIZE);*/
-}
-
-
-
-
-
-
     else
+
     {
             glBegin(GL_TRIANGLE_STRIP);
             glTexCoord2d(0, 0);
@@ -1417,6 +1349,42 @@ namespace Block
             glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
             glTexCoord2d(Block::SIZE, Block::SIZE);
     }
+
+}
+ else
+
+ {
+         glBegin(GL_TRIANGLE_STRIP);
+         glTexCoord2d(0, 0);
+         //1
+         glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+         glTexCoord2d(Block::SIZE, 0);
+         //2
+         glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+         glTexCoord2d(Block::SIZE, 0);
+         //3
+         glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+         glTexCoord2d(Block::SIZE, Block::SIZE);
+         //4
+         glVertex3d(0, 0,Block::SIZE);
+         glTexCoord2d(0, 0);
+         //5
+         glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+         //6
+         glTexCoord2d(Block::SIZE, 0);
+         glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+         //8
+         glTexCoord2d(Block::SIZE,Block::SIZE);
+         glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+         ///9
+         glTexCoord2d(0, 0);
+
+
+         glVertex3d(0, 0,Block::SIZE);
+         glTexCoord2d(Block::SIZE, 0);
+         glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
+         glTexCoord2d(Block::SIZE, Block::SIZE);
+ }
 
     glEnd();
 

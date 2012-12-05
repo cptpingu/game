@@ -59,6 +59,9 @@ InputManager::handleInput()
   bool mouseChange = false;
 //  _motion_info.xrel = 0;
 //  _motion_info.yrel = 0;
+
+  _mouse_states[SDL_BUTTON_WHEELUP] = false;
+  _mouse_states[SDL_BUTTON_WHEELDOWN] = false;
   while (SDL_PollEvent(&event))
   {
     switch (event.type)
@@ -74,24 +77,15 @@ InputManager::handleInput()
         mouseChange = true;
         break;
       case SDL_MOUSEBUTTONUP:
-        _mouse_states[SDL_BUTTON_LEFT] = false;
-        _mouse_states[SDL_BUTTON_RIGHT] = false;
-        _mouse_states[SDL_BUTTON_WHEELUP] = false;
-        _mouse_states[SDL_BUTTON_WHEELDOWN] = false;
+        if (event.button.button != SDL_BUTTON_WHEELUP &&
+            event.button.button != SDL_BUTTON_WHEELDOWN)
+          _mouse_states[event.button.button] = false;
         break;
       case SDL_MOUSEBUTTONDOWN:
-        _mouse_states[SDL_BUTTON_LEFT] = true;
-        _mouse_states[SDL_BUTTON_RIGHT] = true;
-        _mouse_states[SDL_BUTTON_WHEELUP] = true;
-        _mouse_states[SDL_BUTTON_WHEELDOWN] = true;
+        _mouse_states[event.button.button] = true;
         break;
     }
   }
-
-  std::cout << "Left:  " << std::boolalpha << _mouse_states[SDL_BUTTON_LEFT] << std::endl
-            << "Right: " << std::boolalpha << _mouse_states[SDL_BUTTON_RIGHT] << std::endl
-            << "Up:    " << std::boolalpha << _mouse_states[SDL_BUTTON_WHEELUP] << std::endl
-            << "Down:  " << std::boolalpha << _mouse_states[SDL_BUTTON_WHEELDOWN] << std::endl;
 
   return mouseChange;
 }

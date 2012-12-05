@@ -44,7 +44,7 @@ namespace Camera
     if ((input.mouse("fly_down") || input.mouse("fly_up")) && !_verticalMotionActive)
     {
       _verticalMotionActive = true;
-      _verticalMotionDirection = input.key("fly_up") ? 1 : -1;
+      _verticalMotionDirection = input.mouse("fly_up") ? 1 : -1;
       _timeBeforeStoppingVerticalMotion = 250;
     }
 

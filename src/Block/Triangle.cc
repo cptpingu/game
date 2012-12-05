@@ -39,37 +39,32 @@ namespace Block
     glTranslatef(_x * Block::SIZE, _y * Block::SIZE, _z * Block::SIZE);
     glUniform1f(glGetUniformLocation(shaders.get(getShaderName()), "cube_color"), isHighlight() ? 0.2 : 0.0);
 
-
-    //glBegin(GL_TRIANGLE_STRIP);
-    //glBegin(GL_TRIANGLE_FAN);
-
     //Median plan Begin
 
    if( (
-        (neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0))) ||
-        (neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0))) ||
-        (neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0))) ||
-        (neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))
+        neighbours.same(1,0,0) ||
+        neighbours.same(-1,0,0) ||
+        neighbours.same(0,1,0) ||
+        neighbours.same(0,-1,0)
         )
         &&
         (
-        !((neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1))) ||
-        (neighbours(-1,0,1)&& typeid(*this)==typeid(*neighbours(-1,0,1))) ||
-        (neighbours(-1,1,1)&& typeid(*this)==typeid(*neighbours(-1,1,1))) ||
-        (neighbours(0,-1,1)&& typeid(*this)==typeid(*neighbours(0,-1,1))) ||
-        (neighbours(0,1,1)&& typeid(*this)==typeid(*neighbours(0,1,1))) ||
-        (neighbours(1,-1,1)&& typeid(*this)==typeid(*neighbours(1,-1,1))) ||
-        (neighbours(1,0,1)&& typeid(*this)==typeid(*neighbours(1,0,1))) ||
-        (neighbours(1,1,1)&& typeid(*this)==typeid(*neighbours(1,1,1))) )
+        !(neighbours.same(-1,-1,1) ||
+        neighbours.same(-1,0,1)    ||
+        neighbours.same(-1,1,1)    ||
+        neighbours.same(0,-1,1)    ||
+        neighbours.same(0,1,1)     ||
+        neighbours.same(1,-1,1)    ||
+        neighbours.same(1,0,1)     ||
+        neighbours.same(1,1,1))
         )
         )
 
 {
-    if (!(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
-        !(neighbours(0,1,0)  && typeid(*this)==typeid(*neighbours(0,1,0)))&&
-        !(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
-         neighbours(1,0,0)  &&
-         typeid(*this)==typeid(*neighbours(1,0,0)))
+    if (!(neighbours.same(0,-1,0))&&
+        !(neighbours.same(0,1,0) )&&
+        !(neighbours.same(-1,0,0))&&
+         neighbours.same(1,0,0) )
     {
     glBegin(GL_TRIANGLE_STRIP);
     glTexCoord2d(0, 0);
@@ -107,11 +102,11 @@ namespace Block
     //glVertex3d(Block::SIZE/2, 0,Block::SIZE);
     }
 
-    else if (!(neighbours(1,0,0)  && typeid(*this)==typeid(*neighbours(1,0,0)))&&
-         !(neighbours(0,1,0)  && typeid(*this)==typeid(*neighbours(0,1,0)))&&
-         !(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
-         neighbours(-1,0,0) &&
-         typeid(*this)==typeid(*neighbours(-1,0,0)))
+    else if (!(neighbours.same(1,0,0)  )&&
+         !(neighbours.same(0,1,0)  )&&
+         !(neighbours.same(0,-1,0) )&&
+         neighbours.same(-1,0,0)
+             )
     {
         glBegin(GL_TRIANGLE_STRIP);
         glTexCoord2d(0, 0);
@@ -149,11 +144,11 @@ namespace Block
         //glVertex3d(Block::SIZE/2, 0,Block::SIZE);
     }
 
-    else if(!(neighbours(0,-1,0)&& typeid(*this)==typeid(*neighbours(0,-1,0)))&&
-       !(neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))&&
-       !(neighbours(-1,0,0)&& typeid(*this)==typeid(*neighbours(-1,0,0)))&&
-       neighbours(0,1,0) &&
-       typeid(*this)==typeid(*neighbours(0,1,0)))
+    else if(!(neighbours.same(0,-1,0))&&
+       !(neighbours.same(1,0,0))&&
+       !(neighbours.same(-1,0,0))&&
+       neighbours.same(0,1,0)
+            )
     {
         glBegin(GL_TRIANGLE_STRIP);
         glTexCoord2d(0, 0);
@@ -192,11 +187,11 @@ namespace Block
 
     }
 
-    else if(!(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
-       !(neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))&&
-       !(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
-       neighbours(0,-1,0) &&
-       typeid(*this)==typeid(*neighbours(0,-1,0)))
+    else if(!(neighbours.same(0,1,0))&&
+       !(neighbours.same(1,0,0))&&
+       !(neighbours.same(-1,0,0))&&
+       neighbours.same(0,-1,0)
+            )
     {
         glBegin(GL_TRIANGLE_STRIP);
         glTexCoord2d(0, 0);
@@ -235,12 +230,11 @@ namespace Block
 
     }
 
-    else if(!(neighbours(1,0,0)&& typeid(*this)==typeid(*neighbours(1,0,0)))&&
-       !(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
-       neighbours(0,1,0) &&
-       neighbours(0,-1,0)&&
-       typeid(*this)==typeid(*neighbours(0,-1,0)) &&
-       typeid(*this)==typeid(*neighbours(0,1,0)))
+    else if(!(neighbours.same(1,0,0))&&
+       !(neighbours.same(-1,0,0))&&
+       neighbours.same(0,1,0) &&
+       neighbours.same(0,-1,0)
+       )
     {
 
         glBegin(GL_TRIANGLE_STRIP);
@@ -285,12 +279,12 @@ namespace Block
             glVertex3d  (0,Block::SIZE/2 , Block::SIZE);
     }
 
-    else if(!(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
-       !(neighbours(0,-1,0)&& typeid(*this)==typeid(*neighbours(0,-1,0)))&&
-       neighbours(1,0,0) &&
-       neighbours(-1,0,0)&&
-       typeid(*this)==typeid(*neighbours(1,0,0)) &&
-       typeid(*this)==typeid(*neighbours(-1,0,0)))
+    else if(!(neighbours.same(0,1,0))&&
+       !(neighbours.same(0,-1,0))&&
+       neighbours.same(1,0,0) &&
+       neighbours.same(-1,0,0)
+              )
+
     {
         glRotatef(90,0,0,1);
         glBegin(GL_TRIANGLE_STRIP);
@@ -336,12 +330,12 @@ namespace Block
     }
 
 
-    else if(!(neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))&&
-       !(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
-       neighbours(0,1,0) &&
-       neighbours(-1,0,0)&&
-       typeid(*this)==typeid(*neighbours(0,1,0)) &&
-       typeid(*this)==typeid(*neighbours(-1,0,0)))
+    else if(!(neighbours.same(1,0,0))&&
+       !(neighbours.same(0,-1,0) )&&
+       neighbours.same(0,1,0) &&
+       neighbours.same(-1,0,0)
+            )
+
     {
         glBegin(GL_TRIANGLE_STRIP);
         glTexCoord2d(0, 0);
@@ -387,12 +381,11 @@ namespace Block
                  //11
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);}
 
-    else if(!(neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0)))&&
-       !(neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))&&
-       neighbours(0,1,0) &&
-       neighbours(1,0,0)&&
-       typeid(*this)==typeid(*neighbours(0,1,0)) &&
-       typeid(*this)==typeid(*neighbours(1,0,0)))
+    else if(!(neighbours.same(-1,0,0) )&&
+       !(neighbours.same(0,-1,0))&&
+       neighbours.same(0,1,0) &&
+       neighbours.same(1,0,0)
+            )
     {
 
         glRotatef(-90,0,0,1);
@@ -441,12 +434,12 @@ namespace Block
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);
     }
 
-    else if(!(neighbours(1,0,0)&& typeid(*this)==typeid(*neighbours(1,0,0)))&&
-       !(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
-       neighbours(0,-1,0) &&
-       neighbours(-1,0,0)&&
-       typeid(*this)==typeid(*neighbours(0,-1,0)) &&
-       typeid(*this)==typeid(*neighbours(-1,0,0)))
+    else if(!(neighbours.same(1,0,0))&&
+       !(neighbours.same(0,1,0))&&
+       neighbours.same(0,-1,0) &&
+       neighbours.same(-1,0,0)
+            )
+
     {
 
         glRotatef(90,0,0,1);
@@ -495,12 +488,11 @@ namespace Block
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);
     }
 
-    else if(!(neighbours(-1,0,0)&& typeid(*this)==typeid(*neighbours(-1,0,0)))&&
-       !(neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0)))&&
-       neighbours(0,-1,0) &&
-       neighbours(1,0,0)&&
-       typeid(*this)==typeid(*neighbours(0,-1,0)) &&
-       typeid(*this)==typeid(*neighbours(1,0,0)))
+    else if(!(neighbours.same(-1,0,0))&&
+       !(neighbours.same(0,1,0) )&&
+       neighbours.same(0,-1,0) &&
+       neighbours.same(1,0,0)
+            )
     {
 
         glRotatef(-180,0,0,1);
@@ -549,13 +541,11 @@ namespace Block
                 glVertex3d(-Block::SIZE/2 ,0 ,Block::SIZE);
     }
 
-    else if(!(neighbours(-1,0,0)&& typeid(*this)==typeid(*neighbours(-1,0,0)))&&
-       neighbours(0,1,0) &&
-       neighbours(0,-1,0) &&
-       neighbours(1,0,0)&&
-       typeid(*this)==typeid(*neighbours(0,1,0)) &&
-       typeid(*this)==typeid(*neighbours(0,-1,0)) &&
-       typeid(*this)==typeid(*neighbours(1,0,0)))
+    else if(!(neighbours.same(-1,0,0))&&
+       neighbours.same(0,1,0) &&
+       neighbours.same(0,-1,0) &&
+       neighbours.same(1,0,0)
+            )
     {
 
         glRotatef(-180,0,0,1);
@@ -616,13 +606,12 @@ namespace Block
 
     }
 
-    else if(!(neighbours(1,0,0)&& typeid(*this)==typeid(*neighbours(1,0,0)))&&
-       neighbours(0,1,0) &&
-       neighbours(0,-1,0) &&
-       neighbours(-1,0,0)&&
-       typeid(*this)==typeid(*neighbours(0,1,0)) &&
-       typeid(*this)==typeid(*neighbours(0,-1,0)) &&
-       typeid(*this)==typeid(*neighbours(-1,0,0)))
+    else if(!(neighbours.same(1,0,0))&&
+       neighbours.same(0,1,0) &&
+       neighbours.same(0,-1,0) &&
+       neighbours.same(-1,0,0)
+            )
+
     {
 
         glRotatef(0,0,0,1);
@@ -683,13 +672,11 @@ namespace Block
 
     }
 
-    else if(!(neighbours(0,1,0)&& typeid(*this)==typeid(*neighbours(0,1,0)))&&
-       neighbours(1,0,0) &&
-       neighbours(0,-1,0) &&
-       neighbours(-1,0,0)&&
-       typeid(*this)==typeid(*neighbours(1,0,0)) &&
-       typeid(*this)==typeid(*neighbours(0,-1,0)) &&
-       typeid(*this)==typeid(*neighbours(-1,0,0)))
+    else if(!(neighbours.same(0,1,0))&&
+       neighbours.same(1,0,0) &&
+       neighbours.same(0,-1,0) &&
+       neighbours.same(-1,0,0)
+            )
     {
 
         glRotatef(90,0,0,1);
@@ -750,13 +737,11 @@ namespace Block
 
     }
 
-    else if(!(neighbours(0,-1,0)&& typeid(*this)==typeid(*neighbours(0,-1,0)))&&
-       neighbours(1,0,0) &&
-       neighbours(0,1,0) &&
-       neighbours(-1,0,0)&&
-       typeid(*this)==typeid(*neighbours(1,0,0)) &&
-       typeid(*this)==typeid(*neighbours(0,1,0)) &&
-       typeid(*this)==typeid(*neighbours(-1,0,0)))
+    else if(!(neighbours.same(0,-1,0))&&
+       neighbours.same(1,0,0) &&
+       neighbours.same(0,1,0) &&
+       neighbours.same(-1,0,0)
+            )
     {
 
         glRotatef(270,0,0,1);
@@ -817,14 +802,10 @@ namespace Block
 
     }
 
-    else if(neighbours(0,-1,0) &&
-       neighbours(1,0,0) &&
-       neighbours(0,1,0) &&
-       neighbours(-1,0,0)&&
-       typeid(*this)==typeid(*neighbours(1,0,0)) &&
-       typeid(*this)==typeid(*neighbours(0,1,0)) &&
-       typeid(*this)==typeid(*neighbours(-1,0,0))&&
-       typeid(*this)==typeid(*neighbours(0,-1,0)))
+    else if(neighbours.same(0,-1,0) &&
+       neighbours.same(1,0,0) &&
+       neighbours.same(0,1,0) &&
+       neighbours.same(-1,0,0))
          {
 
              glRotatef(270,0,0,1);
@@ -890,16 +871,16 @@ namespace Block
 
 
 
-//Begin superior plan ...
+//Superior plan begin ...
  else if(
-         (neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1))) ||
-                 (neighbours(-1,0,1)&& typeid(*this)==typeid(*neighbours(-1,0,1))) ||
-                 (neighbours(-1,1,1)&& typeid(*this)==typeid(*neighbours(-1,1,1))) ||
-                 (neighbours(0,-1,1)&& typeid(*this)==typeid(*neighbours(0,-1,1))) ||
-                 (neighbours(0,1,1)&& typeid(*this)==typeid(*neighbours(0,1,1))) ||
-                 (neighbours(1,-1,1)&& typeid(*this)==typeid(*neighbours(1,-1,1))) ||
-                 (neighbours(1,0,1)&& typeid(*this)==typeid(*neighbours(1,0,1))) ||
-                 (neighbours(1,1,1)&& typeid(*this)==typeid(*neighbours(1,1,1)))
+         (neighbours.same(-1,-1,1) ||
+                 neighbours.same(-1,0,1) ||
+                 neighbours.same(-1,1,1) ||
+                 neighbours.same(0,-1,1) ||
+                 neighbours.same(0,1,1) ||
+                 neighbours.same(1,-1,1) ||
+                 neighbours.same(1,0,1) ||
+                 neighbours.same(1,1,1))
 
          )
 
@@ -908,16 +889,16 @@ namespace Block
         //  0 1 1
         //  0 0 0
     if(
-        !(neighbours(1,0,1) && typeid(*this)==typeid(*neighbours(1,0,1)))&&
-        !(neighbours(0,1,1) && typeid(*this)==typeid(*neighbours(0,1,1)))&&
-       !(neighbours(-1,0,1) && typeid(*this)==typeid(*neighbours(-1,0,1)))&&
-       !(neighbours(0,-1,1) && typeid(*this)==typeid(*neighbours(0,-1,1)))&&
-       !(neighbours(-1,1,1) && typeid(*this)==typeid(*neighbours(-1,1,1)))&&
-       !(neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1)))&&
-       !(neighbours(1,-1,1) && typeid(*this)==typeid(*neighbours(1,-1,1)))&&
-        neighbours(1,1,1) && typeid(*this)==typeid(*neighbours(1,1,1)) &&
-        ((neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0)))||
-        (neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0))))
+        !(neighbours.same(1,0,1))&&
+        !(neighbours.same(0,1,1))&&
+       !(neighbours.same(-1,0,1))&&
+       !(neighbours.same(0,-1,1) )&&
+       !(neighbours.same(-1,1,1) )&&
+       !(neighbours.same(-1,-1,1) )&&
+       !(neighbours.same(1,-1,1) )&&
+        neighbours.same(1,1,1) &&
+        ((neighbours.same(1,0,0) )||
+        (neighbours.same(0,1,0)))
         )
         {
         glRotatef(-90,0,0,1);
@@ -955,16 +936,16 @@ namespace Block
     //  1 1 0
     //  0 0 0
     else if(
-       !neighbours(0,1,1) &&
-       !neighbours(-1,0,1) &&
-       !neighbours(1,0,1) &&
-       !neighbours(0,-1,1) &&
-       !neighbours(1,1,1) &&
-       !neighbours(-1,-1,1) &&
-       !neighbours(1,-1,1) &&
-        ((neighbours(0,1,0) && typeid(*this)==typeid(*neighbours(0,1,0)))||
-        (neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0))))&&
-        neighbours(-1,1,1) && typeid(*this)==typeid(*neighbours(-1,1,1))
+       !neighbours.same(0,1,1) &&
+       !neighbours.same(-1,0,1) &&
+       !neighbours.same(1,0,1) &&
+       !neighbours.same(0,-1,1) &&
+       !neighbours.same(1,1,1) &&
+       !neighbours.same(-1,-1,1) &&
+       !neighbours.same(1,-1,1) &&
+        ((neighbours.same(0,1,0) )||
+        (neighbours.same(-1,0,0) ))&&
+        neighbours.same(-1,1,1)
 
             )
         {
@@ -1005,16 +986,16 @@ namespace Block
     //  0 1 1
     //  0 1 2
     else if(
-       !neighbours(1,0,1) &&
-       !neighbours(0,-1,1) &&
-       !neighbours(0,1,1) &&
-       !neighbours(-1,0,1) &&
-       !neighbours(1,1,1) &&
-       !neighbours(-1,-1,1) &&
-       !neighbours(-1,1,1) &&
-        neighbours(1,-1,1) && typeid(*this)==typeid(*neighbours(1,-1,1))&&
-        ((neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))||
-        (neighbours(1,0,0) && typeid(*this)==typeid(*neighbours(1,0,0))))
+       !neighbours.same(1,0,1) &&
+       !neighbours.same(0,-1,1) &&
+       !neighbours.same(0,1,1) &&
+       !neighbours.same(-1,0,1) &&
+       !neighbours.same(1,1,1) &&
+       !neighbours.same(-1,-1,1) &&
+       !neighbours.same(-1,1,1) &&
+        neighbours.same(1,-1,1) &&
+        ((neighbours.same(0,-1,0) )||
+        (neighbours.same(1,0,0) ))
 
 
             )
@@ -1055,17 +1036,18 @@ namespace Block
     //  1 1 0
     //  2 1 0
   else if(
-       !neighbours(-1,0,1) &&
-       !neighbours(0,-1,1) &&
-      !neighbours(0,1,1) &&
-      !neighbours(-1,0,1) &&
-       !neighbours(1,1,1) &&
-       !neighbours(-1,1,1) &&
-       !neighbours(1,-1,1) &&
-        neighbours(-1,-1,1) && typeid(*this)==typeid(*neighbours(-1,-1,1))&&
-        ((neighbours(0,-1,0) && typeid(*this)==typeid(*neighbours(0,-1,0)))||
-        (neighbours(-1,0,0) && typeid(*this)==typeid(*neighbours(-1,0,0))))
-         )
+       !neighbours.same(-1,0,1) &&
+       !neighbours.same(0,-1,1) &&
+      !neighbours.same(0,1,1) &&
+      !neighbours.same(-1,0,1) &&
+       !neighbours.same(1,1,1) &&
+       !neighbours.same(-1,1,1) &&
+       !neighbours.same(1,-1,1) &&
+        neighbours.same(-1,-1,1) &&
+        ((neighbours.same(0,-1,0) )||
+        (neighbours.same(-1,0,0) ))
+          )
+
         {
         glRotatef(90,0,0,1);
         glBegin(GL_TRIANGLE_STRIP);
@@ -1104,10 +1086,10 @@ namespace Block
 //  0 1 2  0 1 2  0 1 2
 //  0 0 2  0 0 0  0 0 2
     else if(
-       !neighbours(-1,-1,1) &&
-       !neighbours(-1,0,1) &&
-       !neighbours(-1,1,1) &&
-       neighbours(1,0,1) && typeid(*this)==typeid(*neighbours(1,0,1))
+       !neighbours.same(-1,-1,1) &&
+       !neighbours.same(-1,0,1) &&
+       !neighbours.same(-1,1,1) &&
+       neighbours.same(1,0,1)
        )
 
         {
@@ -1158,10 +1140,10 @@ namespace Block
     //  2 1 0  2 1 0  2 1 0
     //  2 0 0  2 0 0  0 0 0
      else if(
-       !neighbours(1,0,1) &&
-       !neighbours(1,1,1) &&
-       !neighbours(1,-1,1) &&
-       neighbours(-1,0,1) && typeid(*this)==typeid(*neighbours(-1,0,1))
+       !neighbours.same(1,0,1) &&
+       !neighbours.same(1,1,1) &&
+       !neighbours.same(1,-1,1) &&
+       neighbours.same(-1,0,1)
             )
         {
 
@@ -1213,10 +1195,10 @@ namespace Block
     //  2 2 2  2 2 0  0 2 2
     else if
        (
-       !neighbours(-1,1,1) &&
-       !neighbours(0,1,1) &&
-       !neighbours(1,1,1) &&
-       neighbours(0,-1,1) && typeid(*this)==typeid(*neighbours(0,-1,1))
+       !neighbours.same(-1,1,1) &&
+       !neighbours.same(0,1,1) &&
+       !neighbours.same(1,1,1) &&
+       neighbours.same(0,-1,1)
        )
 
 
@@ -1267,11 +1249,11 @@ namespace Block
     //  0 1 0  0 1 0  0 1 0
     //  0 0 0  0 0 0  0 0 0
     else if(
-       !neighbours(-1,-1,1) &&
-       !neighbours(0,-1,1) &&
-       !neighbours(1,-1,1) &&
-       neighbours(0,1,1) && typeid(*this)==typeid(*neighbours(0,1,1))
-        )
+       !neighbours.same(-1,-1,1) &&
+       !neighbours.same(0,-1,1) &&
+       !neighbours.same(1,-1,1) &&
+       neighbours.same(0,1,1)
+            )
         {
         glRotatef(270,0,0,1);
         glBegin(GL_TRIANGLE_STRIP);
@@ -1350,6 +1332,7 @@ namespace Block
             glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
             glTexCoord2d(Block::SIZE, Block::SIZE);
     }
+//End Superior plan...
 
 }
  else

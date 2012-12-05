@@ -1,6 +1,27 @@
 #include "ConfigManager.hh"
 
 #include <cassert>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+#include <iostream>
+
+namespace
+{
+  std::string trim(const std::string& s)
+  {
+    const int size = s.size();
+    int start = 0;
+    while (start < size && s[start] == ' ')
+      ++start;
+    int stop = size - 1;
+    while (stop > 0 && s[stop] == ' ')
+      --stop;
+
+    return s.substr(start, stop - start + 1);
+  }
+} // namespace
 
 ConfigManager::ConfigManager()
 {
@@ -20,7 +41,6 @@ ConfigManager::ConfigManager()
 
   _bindings["invert_mouse"] = 1;
 
-
   _bindings["speed"] = 10;
   _bindings["sensivity"] = 10;
   _bindings["fps"] = 50;
@@ -31,6 +51,41 @@ ConfigManager::ConfigManager()
 
 ConfigManager::~ConfigManager()
 {
+}
+
+bool
+ConfigManager::load(const std::string& filename)
+{
+  bool change = false;
+  std::ifstream file(filename.c_str());
+  if (!file)
+    return change;
+
+  std::string line;
+  while (std::getline(file, line))
+  {
+    std::string res[2];
+    int i = 0;
+    std::string word;
+
+    std::istringstream buff(line);
+    while (std::getline(buff, word, '=') && i < 2)
+      res[i++] = word;
+
+    _bindings[trim(res[0])] = atoi(res[1].c_str());
+    std::cout << "found <" << res[0] << "> = " << res[1] << std::endl;
+    change = true;
+  }
+
+  return change;
+}
+
+void
+ConfigManager::dump(std::ostream& out) const
+{
+  auto end = _bindings.cend();
+  for (auto it = _bindings.cbegin(); it != end; ++it)
+    out << it->first << " = " << it->second << std::endl;
 }
 
 int

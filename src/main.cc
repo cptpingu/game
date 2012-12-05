@@ -21,7 +21,11 @@ namespace
 
 MAIN
 {
+  static const std::string fileconf = "data/conf.txt";
   ConfigManager& config = ConfigManager::getInstance();
+  if (!config.load(fileconf))
+    std::cout << "Load of " << fileconf << " failed!" << std::endl;
+
   unsigned int width = config["window_width"];
   unsigned int height = config["window_height"];
 

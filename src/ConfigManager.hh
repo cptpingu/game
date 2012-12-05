@@ -26,6 +26,9 @@ private:
 public:
   ~ConfigManager();
 
+  bool load(const std::string& filename);
+  void dump(std::ostream& out) const;
+
   int operator[](const std::string& name) const;
   void set(const std::string& name, int value);
 

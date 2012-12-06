@@ -39,7 +39,7 @@ public:
 
   /*!
   **Light fixing ....*/
-  void light();
+  void light(unsigned int timestep);
 
 
 

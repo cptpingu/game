@@ -152,6 +152,7 @@ Game::loadShaders()
   shaders.load("texture_invert_color", "data/shaders/texture.vert.c", "data/shaders/texture_invert_color.frag.c");
   shaders.load("phong_lightning", "data/shaders/phong_lightning.vert.c", "data/shaders/phong_lightning.frag.c");
   shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");
+  shaders.load("basic_lightning", "data/shaders/basic_lightning.vert.c", "data/shaders/basic_lightning.frag.c");
 }
 
 void
@@ -171,7 +172,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord,
 
   _drawer.drawBlocks(_map);
   _drawer.drawChunks(_map.getChunks(), selectedCoord);
-  _drawer.light();
+  _drawer.light(fpsFromSDL);
 
 
   showCoord(selectedCoord);

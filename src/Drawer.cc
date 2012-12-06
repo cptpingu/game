@@ -157,15 +157,123 @@ Drawer::drawBlocks(const Map& map) const
 }
 
 
-void Drawer::light()
+void Drawer::light(unsigned int timestep)
 {
-    ShadersManager& shaders = ShadersManager::getInstance();
-    shaders.enable("identity");
 
-    /*glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    int LightPos[4] = {0,0,33,1};
-    glLightiv(GL_LIGHT0,GL_POSITION,LightPos);*/
+
+
+    ShadersManager& shaders = ShadersManager::getInstance();
+    shaders.enable("basic_lightning");
+
+
+
+
+    glPushMatrix();
+    glTranslated(0,0,30);
+    glRotated(45,1,0,0);
+
+    GLfloat ambient[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat cyan[] = {0.8f, .2f, .0f, 1.f};
+
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,ambient);
+    GLfloat shininess[] = {50};
+    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+
+    glBegin(GL_QUADS);
+
+        glNormal3d(0,1,0);
+        glColor3ub(100,0,0); //face rouge
+        glVertex3d(1,1,1);
+        glNormal3d(0,1,0);
+        glVertex3d(1,1,-1);
+        glNormal3d(0,1,0);
+        glVertex3d(-1,1,-1);
+        glNormal3d(0,1,0);
+        glVertex3d(-1,1,1);
+
+        glColor3ub(0,100,0); //face verte
+        glNormal3d(1,0,0);
+        glVertex3d(1,-1,1);
+        glNormal3d(1,0,0);
+        glVertex3d(1,-1,-1);
+        glNormal3d(1,0,0);
+        glVertex3d(1,1,-1);
+        glNormal3d(1,0,0);
+        glVertex3d(1,1,1);
+
+        glColor3ub(0,0,100); //face bleue
+        glNormal3d(0,-1,0);
+        glNormal3d(0,-1,0);
+        glVertex3d(-1,-1,1);
+        glNormal3d(0,-1,0);
+        glVertex3d(-1,-1,-1);
+        glNormal3d(0,-1,0);
+        glVertex3d(1,-1,-1);
+        glNormal3d(0,-1,0);
+        glVertex3d(1,-1,1);
+
+        glColor3ub(100,100,0); //face jaune
+        glNormal3d(-1,0,0);
+        glVertex3d(-1,1,1);
+        glNormal3d(-1,0,0);
+        glVertex3d(-1,1,-1);
+        glNormal3d(-1,0,0);
+        glVertex3d(-1,-1,-1);
+        glNormal3d(-1,0,0);
+        glVertex3d(-1,-1,1);
+
+        glColor3ub(0,100,100); //face cyan
+        glNormal3d(0,0,-1);
+        glVertex3d(1,1,-1);
+        glNormal3d(0,0,-1);
+        glVertex3d(1,-1,-1);
+        glNormal3d(0,0,-1);
+        glVertex3d(-1,-1,-1);
+        glNormal3d(0,0,-1);
+        glVertex3d(-1,1,-1);
+
+
+        glColor3ub(100,0,100); //face magenta
+        glNormal3d(0,0,1);
+        glVertex3d(1,-1,1);
+        glNormal3d(0,0,1);
+        glVertex3d(1,1,1);
+        glNormal3d(0,0,1);
+        glVertex3d(-1,1,1);
+        glNormal3d(0,0,1);
+        glVertex3d(-1,-1,1);
+
+        glEnd();
+        glPopMatrix();
+
+
+        static double move = 0;
+        move += 1 * timestep;
+        glRotatef((move/60), 0, 1, 0);
+
+
+
+        glPushMatrix();
+        glBegin(GL_TRIANGLES);
+        glColor3ub(255,0,255);
+        glVertex3d(0,0,33);
+        glVertex3d(1,0,33);
+        glVertex3d(0,1,33);
+        glEnd();
+        glPopMatrix();
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        int LightPos[4] = {0,0,40,1};
+        glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+
+
+
+    //glTranslatef(move / 1000, 0, 0);
+
 
     /*GLfloat specular[] = {0.5f, 0.5f, 0.5f , 1.0f};
     glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
@@ -191,64 +299,8 @@ void Drawer::light()
       glEnable(GL_LIGHT0);*/
 
 
-    glPushMatrix();
 
-    glTranslated(0,0,30);
-    glRotated(45,1,0,0);
 
-    /*GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-    GLfloat shininess[] = {50};
-    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);*/
-
-    glBegin(GL_QUADS);
-
-        glNormal3d(0,0,1);
-        glColor3ub(255,0,0); //face rouge
-        glVertex3d(1,1,1);
-        glVertex3d(1,1,-1);
-        glVertex3d(-1,1,-1);
-        glVertex3d(-1,1,1);
-
-        glNormal3d(0,1,0);
-        glColor3ub(0,255,0); //face verte
-        glVertex3d(1,-1,1);
-        glVertex3d(1,-1,-1);
-        glVertex3d(1,1,-1);
-        glVertex3d(1,1,1);
-
-        glNormal3d(1,0,0);
-        glColor3ub(0,0,255); //face bleue
-        glVertex3d(-1,-1,1);
-        glVertex3d(-1,-1,-1);
-        glVertex3d(1,-1,-1);
-        glVertex3d(1,-1,1);
-
-        glNormal3d(0,0,1);
-        glColor3ub(255,255,0); //face jaune
-        glVertex3d(-1,1,1);
-        glVertex3d(-1,1,-1);
-        glVertex3d(-1,-1,-1);
-        glVertex3d(-1,-1,1);
-
-        glNormal3d(0,1,0);
-        glColor3ub(0,255,255); //face cyan
-        glVertex3d(1,1,-1);
-        glVertex3d(1,-1,-1);
-        glVertex3d(-1,-1,-1);
-        glVertex3d(-1,1,-1);
-
-        glNormal3d(1,0,0);
-        glColor3ub(255,0,255); //face magenta
-        glVertex3d(1,-1,1);
-        glVertex3d(1,1,1);
-        glVertex3d(-1,1,1);
-        glVertex3d(-1,-1,1);
-
-        glEnd();
-        glPopMatrix();
     shaders.disable();
 }
 

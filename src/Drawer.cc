@@ -161,7 +161,7 @@ void Drawer::light()
 {
     TextureManager& textures = TextureManager::getInstance();
     ShadersManager& shaders = ShadersManager::getInstance();
-    shaders.enable("texture_invert_color");
+    shaders.enable("identity");
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 

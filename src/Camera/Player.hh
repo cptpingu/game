@@ -15,6 +15,14 @@ namespace Camera
     virtual void animate(Uint32 timestep);
     virtual std::pair<Block::Basic*, Block::FaceType>
     picking(const Map& map, const Drawer& drawer) const;
+
+  private:
+    void fall(double speed, unsigned int timestep);
+    bool jump(bool jumping, double speed, unsigned int timestep);
+
+  private:
+    int  _heightBeforeJump;
+    bool _isJumping;
   };
 } // Camera
 

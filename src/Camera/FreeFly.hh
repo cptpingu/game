@@ -12,7 +12,7 @@ namespace Camera
     FreeFly();
     virtual ~FreeFly();
 
-    virtual void animate(Uint32 timestep);
+    virtual void animate(unsigned int timestep);
     virtual std::pair<Block::Basic*, Block::FaceType>
     picking(const Map& map, const Drawer& drawer) const;
   };

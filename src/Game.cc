@@ -12,7 +12,7 @@
 #include <chrono>
 
 Game::Game()
-  : _camera(new Camera::FreeFly), _map(), _drawer()
+  : _map(), _drawer(), _camera(new Camera::Player(_map))
 {
 }
 
@@ -77,7 +77,7 @@ Game::play()
 
     //float fps = ( numFrames/(float)(SDL_GetTicks() - startTime) )*1000;
     stop_time = SDL_GetTicks();
-    drawGL(pickedCoord, elapsed_time);
+    drawGL(pickedBlock.first, elapsed_time);
     if ((stop_time - last_time) < time_per_frame)
       SDL_Delay(time_per_frame - (stop_time - last_time));
 
@@ -155,13 +155,8 @@ Game::loadShaders()
 }
 
 void
-Game::drawGL(const Chunk::Coord* selectedCoord,
-             int fpsFromSDL)
+Game::drawGL(const Block::Basic* selectedCoord, int fpsFromSDL)
 {
-  //glEnable(GL_TEXTURE_2D);
-  //glEnable(GL_FOG);
-  //glEnable(GL_LIGHTING);
-
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glMatrixMode(GL_MODELVIEW);
@@ -170,12 +165,11 @@ Game::drawGL(const Chunk::Coord* selectedCoord,
   _camera->look();
 
   _drawer.drawBlocks(_map);
-  _drawer.drawChunks(_map.getChunks(), selectedCoord);
+  //_drawer.drawChunks(_map.getChunks(), selectedCoord);
   _drawer.light();
 
-
   showCoord(selectedCoord);
-  //drawAxis(10000);
+  drawAxis(1000);
   drawFPS(fpsFromSDL);
   drawHUD();
 
@@ -184,7 +178,7 @@ Game::drawGL(const Chunk::Coord* selectedCoord,
 }
 
 void
-Game::showCoord(const Chunk::Coord* selectedCoord)
+Game::showCoord(const Block::Basic* selectedCoord)
 {
   ConfigManager& config = ConfigManager::getInstance();
   auto pos = _camera->getCurrentPosition();
@@ -197,9 +191,9 @@ Game::showCoord(const Chunk::Coord* selectedCoord)
        << "Chunk coord: " << x << " " << y << "\n"
        << "Look: " << look._x << " " << look._y << " " << look._z << "\n";
   if (selectedCoord)
-    buff << "Pick: " << selectedCoord->getX() << " "
-         << selectedCoord->getY() << " "
-         << selectedCoord->getZ() << "\n";
+    buff << "Pick: " << selectedCoord->_x << " "
+         << selectedCoord->_y << " "
+         << selectedCoord->_z << "\n";
 
   TextureManager& textures = TextureManager::getInstance();
   std::string line;

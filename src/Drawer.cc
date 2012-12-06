@@ -248,6 +248,8 @@ void Drawer::light()
         glVertex3d(-1,-1,1);
 
         glEnd();
+
+
         glPopMatrix();
     shaders.disable();
 }

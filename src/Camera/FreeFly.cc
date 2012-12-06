@@ -26,7 +26,7 @@ namespace Camera
   }
 
   void
-  FreeFly::animate(Uint32 timestep)
+  FreeFly::animate(unsigned int timestep)
   {
     ConfigManager& config = ConfigManager::getInstance();
     InputManager& input = InputManager::getInstance();

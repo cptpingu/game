@@ -29,7 +29,7 @@ namespace Camera
     virtual void setPosition(const Core::Vector3D& position);
     virtual void look();
 
-    virtual void animate(Uint32 timestep) = 0;
+    virtual void animate(unsigned int timestep) = 0;
     virtual std::pair<Block::Basic*, Block::FaceType>
     picking(const Map& map, const Drawer& drawer) const = 0;
 

@@ -2,6 +2,7 @@
 # define CAMERA_PLAYER_HH_
 
 # include "BasicCamera.hh"
+# include "../Map.hh"
 
 namespace Camera
 {
@@ -9,20 +10,22 @@ namespace Camera
   {
     typedef Basic super;
   public:
-    Player();
+    Player(const Map& map);
     virtual ~Player();
 
-    virtual void animate(Uint32 timestep);
+    virtual void animate(unsigned int timestep);
     virtual std::pair<Block::Basic*, Block::FaceType>
     picking(const Map& map, const Drawer& drawer) const;
 
   private:
+    bool collide(const Core::Vector3D& pos) const;
     void fall(double speed, unsigned int timestep);
     bool jump(bool jumping, double speed, unsigned int timestep);
 
   private:
-    int  _heightBeforeJump;
-    bool _isJumping;
+    const Map&  _map;
+    int         _heightBeforeJump;
+    bool        _isJumping;
   };
 } // Camera
 

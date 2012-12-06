@@ -27,16 +27,16 @@ namespace Block
     {                                                                                       \
       glTexCoord2d(0, 0);                                                                   \
       glVertexAttrib1f(attrib, isHighlighted(HIGHLIGHT) ? 0.1 : 0.0);                       \
-      glVertex3d(X1 * Block::HALF_SIZE, Y1 * Block::HALF_SIZE, Z1 * Block::SIZE);           \
+      glVertex3d(X1 * Block::SIZE, Y1 * Block::SIZE, Z1 * Block::SIZE);                     \
       glTexCoord2d(Block::SIZE, 0);                                                         \
       glVertexAttrib1f(attrib, isHighlighted(HIGHLIGHT) ? 0.1 : 0.0);                       \
-      glVertex3d(X2 * Block::HALF_SIZE, Y2 * Block::HALF_SIZE, Z2 * Block::SIZE);           \
+      glVertex3d(X2 * Block::SIZE, Y2 * Block::SIZE, Z2 * Block::SIZE);                     \
       glTexCoord2d(Block::SIZE, Block::SIZE);                                               \
       glVertexAttrib1f(attrib, isHighlighted(HIGHLIGHT) ? 0.1 : 0.0);                       \
-      glVertex3d(X3 * Block::HALF_SIZE, Y3 * Block::HALF_SIZE, Z3 * Block::SIZE);           \
+      glVertex3d(X3 * Block::SIZE, Y3 * Block::SIZE, Z3 * Block::SIZE);                     \
       glTexCoord2d(0, Block::SIZE);                                                         \
       glVertexAttrib1f(attrib, isHighlighted(HIGHLIGHT) ? 0.1 : 0.0);                       \
-      glVertex3d(X4 * Block::HALF_SIZE, Y4 * Block::HALF_SIZE, Z4 * Block::SIZE);           \
+      glVertex3d(X4 * Block::SIZE, Y4 * Block::SIZE, Z4 * Block::SIZE);                     \
     }
 
     TextureManager& textures = TextureManager::getInstance();

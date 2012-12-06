@@ -159,11 +159,8 @@ Drawer::drawBlocks(const Map& map) const
 
 void Drawer::light()
 {
-    TextureManager& textures = TextureManager::getInstance();
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable("identity");
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
     /*glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -211,7 +208,7 @@ void Drawer::light()
         glNormal3d(0,0,1);
         glColor3ub(255,0,0); //face rouge
         glVertex3d(1,1,1);
-        glVertex3d(1,1,-1);       
+        glVertex3d(1,1,-1);
         glVertex3d(-1,1,-1);
         glVertex3d(-1,1,1);
 

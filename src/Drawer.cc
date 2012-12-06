@@ -165,10 +165,10 @@ void Drawer::light()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
-    glEnable(GL_LIGHTING);
+    /*glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     int LightPos[4] = {0,0,33,1};
-    glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+    glLightiv(GL_LIGHT0,GL_POSITION,LightPos);*/
 
     /*GLfloat specular[] = {0.5f, 0.5f, 0.5f , 1.0f};
     glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
@@ -199,12 +199,12 @@ void Drawer::light()
     glTranslated(0,0,30);
     glRotated(45,1,0,0);
 
-    GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    /*GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
     glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
     glMaterialfv(GL_FRONT, GL_SPECULAR, white);
     GLfloat shininess[] = {50};
-    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);*/
 
     glBegin(GL_QUADS);
 

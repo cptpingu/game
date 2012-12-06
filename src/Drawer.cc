@@ -155,6 +155,8 @@ Drawer::drawBlocks(const Map& map) const
         block->second->resetHighlight();
     }
 }
+
+
 void Drawer::light()
 {
     TextureManager& textures = TextureManager::getInstance();
@@ -165,31 +167,91 @@ void Drawer::light()
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    int LightPos[4] = {0,0,33,1};
+    glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
 
-    GLfloat specular[] = {0.5f, 0.5f, 0.5f , 1.0f};
-    glLightfv(GL_LIGHT0, GL_AMBIENT, specular);
+    /*GLfloat specular[] = {0.5f, 0.5f, 0.5f , 1.0f};
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
     glEnable(GL_COLOR_MATERIAL);
     float specReflection[] = { 0.8f, 0.8f, 0.8f, 1.0f };
     glMaterialfv(GL_FRONT, GL_SPECULAR, specReflection);
-    float mcolor[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mcolor);
+    float mcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mcolor);*/
+
+    /*glRotated(90,0,1,0);
+    glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+    glRotated(-90,0,1,0);*/
+    /*GLfloat diffuse[] = { 0.9,0.9,0.9,1.0 };
+      GLfloat specular[] = { 1.0,1.0,1.0,1.0 };
+      GLfloat shinines[] = { 50.0 };
+      GLfloat l_pos[] = { 1.0,1.0,1.0,0.0 };
+      glMaterialfv(GL_FRONT,GL_DIFFUSE,diffuse);
+      glMaterialfv(GL_FRONT,GL_SPECULAR,specular);
+      glMaterialfv(GL_FRONT,GL_SHININESS,shinines);
+      glLightfv(GL_LIGHT0,GL_POSITION,l_pos);
+      glLightfv(GL_LIGHT0,GL_DIFFUSE,diffuse);
+      glEnable(GL_LIGHTING);
+      glEnable(GL_LIGHT0);*/
+
 
     glPushMatrix();
 
+    glTranslated(0,0,30);
+    glRotated(45,1,0,0);
+
+    GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+    GLfloat shininess[] = {50};
+    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+
     glBegin(GL_QUADS);
 
-    glTexCoord2d(0, 0);
-    glVertex3d(-Block::HALF_SIZE,Block::HALF_SIZE, 30* Block::SIZE);
-    glTexCoord2d(Block::SIZE, 0);
-    glVertex3d(Block::HALF_SIZE, Block::HALF_SIZE, 30 * Block::SIZE);
-    glTexCoord2d(Block::SIZE, Block::SIZE);
-    glVertex3d( Block::HALF_SIZE, - Block::HALF_SIZE, 30 * Block::SIZE);
-    glTexCoord2d(0, Block::SIZE);
-    glVertex3d(- Block::HALF_SIZE, - Block::HALF_SIZE, 30 * Block::SIZE);
+        glNormal3d(0,0,1);
+        glColor3ub(255,0,0); //face rouge
+        glVertex3d(1,1,1);
+        glVertex3d(1,1,-1);       
+        glVertex3d(-1,1,-1);
+        glVertex3d(-1,1,1);
 
-    glEnd();
+        glNormal3d(0,1,0);
+        glColor3ub(0,255,0); //face verte
+        glVertex3d(1,-1,1);
+        glVertex3d(1,-1,-1);
+        glVertex3d(1,1,-1);
+        glVertex3d(1,1,1);
 
-    glPopMatrix();
+        glNormal3d(1,0,0);
+        glColor3ub(0,0,255); //face bleue
+        glVertex3d(-1,-1,1);
+        glVertex3d(-1,-1,-1);
+        glVertex3d(1,-1,-1);
+        glVertex3d(1,-1,1);
+
+        glNormal3d(0,0,1);
+        glColor3ub(255,255,0); //face jaune
+        glVertex3d(-1,1,1);
+        glVertex3d(-1,1,-1);
+        glVertex3d(-1,-1,-1);
+        glVertex3d(-1,-1,1);
+
+        glNormal3d(0,1,0);
+        glColor3ub(0,255,255); //face cyan
+        glVertex3d(1,1,-1);
+        glVertex3d(1,-1,-1);
+        glVertex3d(-1,-1,-1);
+        glVertex3d(-1,1,-1);
+
+        glNormal3d(1,0,0);
+        glColor3ub(255,0,255); //face magenta
+        glVertex3d(1,-1,1);
+        glVertex3d(1,1,1);
+        glVertex3d(-1,1,1);
+        glVertex3d(-1,-1,1);
+
+        glEnd();
+        glPopMatrix();
     shaders.disable();
 }
 

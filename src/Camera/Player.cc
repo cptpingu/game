@@ -69,13 +69,13 @@ namespace Camera
     const double speed = config["speed"] / 1000.0;
     const double realspeed = input.isPressed("boost") ? 10 * speed : speed;
     if (input.isPressed("forward"))
-      _position += Core::Vector3D(_forward._x, _forward._y, 0) * (realspeed * timestep);
+        _position += Core::Vector3D((_forward._x>=0) -(_forward._x<0), (_forward._y>=0) -(_forward._y<0), 0) * (realspeed * timestep);
     if (input.isPressed("backward"))
-      _position -= Core::Vector3D(_forward._x, _forward._y, 0) * (realspeed * timestep);
+      _position -= Core::Vector3D((_forward._x>=0) -(_forward._x<0), (_forward._y>=0) -(_forward._y<0), 0) * (realspeed * timestep);
     if (input.isPressed("strafe_left"))
-      _position += Core::Vector3D(_left._x, _left._y, 0) * (realspeed * timestep);
+        _position += Core::Vector3D((_left._x>=0) -(_left._x <0), (_left._y>=0) -(_left._y <0), 0) * (realspeed * timestep);
     if (input.isPressed("strafe_right"))
-      _position -= Core::Vector3D(_left._x, _left._y, 0) * (realspeed * timestep);
+      _position -= Core::Vector3D((_left._x>=0) -(_left._x <0), (_left._y>=0) -(_left._y <0), 0) * (realspeed * timestep);
 
     if (!jump(input.isPressed("jump"), speed, timestep))
       fall(speed, timestep);

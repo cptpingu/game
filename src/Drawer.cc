@@ -251,26 +251,27 @@ void Drawer::light(unsigned int timestep)
 
         glPopMatrix();
 
-
+       glPushMatrix();
         static double move = 0;
         move += 1 * timestep;
         glRotatef((move/60), 0, 1, 0);
 
 
 
-        glPushMatrix();
+
         glBegin(GL_TRIANGLES);
         glColor3ub(255,0,255);
         glVertex3d(0,0,33);
         glVertex3d(1,0,33);
         glVertex3d(0,1,33);
         glEnd();
-        glPopMatrix();
+
 
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
         int LightPos[4] = {0,0,40,1};
         glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+        glPopMatrix();
 
 
 

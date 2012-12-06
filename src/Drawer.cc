@@ -6,7 +6,6 @@
 #include "Opengl.hh"
 #include "Architecte.hh"
 #include "iostream"
-
 #include <vector>
 #include <sstream>
 

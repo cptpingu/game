@@ -1367,4 +1367,10 @@ namespace Block
 
     glPopMatrix();
 }
+
+  Core::Vector3D
+  Triangle::specificCollision(const Core::Vector3D&, const Core::Vector3D& next) const
+  {
+    return next;
+  }
 } // Block

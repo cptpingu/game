@@ -3,6 +3,7 @@
 
 # include "../Core/Container3D.hh"
 # include "../Block/NeighbourMatrix.hh"
+# include "../Core/Vector3D.hh"
 # include "../Opengl.hh"
 
 # include <array>
@@ -52,9 +53,11 @@ namespace Block
   public:
     virtual std::string getShaderName() const;
     virtual void drawPickingBox() const;
+    virtual Core::Vector3D collision(const Core::Vector3D& current, const Core::Vector3D& next) const;
 
   private:
     virtual void specificDraw(const NeighbourMatrix& neighbours) const = 0;
+    virtual Core::Vector3D specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const = 0;
 
   private:
   public:

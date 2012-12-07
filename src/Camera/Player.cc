@@ -5,6 +5,7 @@
 #include "../Opengl.hh"
 #include "../Chunk.hh"
 #include "../Map.hh"
+#include "../Core/Assert.hh"
 
 #include <cmath>
 #include <limits>
@@ -33,7 +34,10 @@ namespace Camera
   Player::collide(const Core::Vector3D& pos) const
   {
     //static const int playerSize = 1;
-    assert(!_map.findBlock(_position._x, _position._y, 0 * _position._z));
+
+    ASSERT_MSG(!_map.findBlock(_position._x, _position._y, 0 * _position._z),
+               "Current pos is in a cube: (" << _position._x << ", "
+               << _position._y << ", " << _position._z << ")");
     Core::Container3D<int> blockPos;
     blockPos._x = pos._x / Block::SIZE;
     blockPos._y = pos._y / Block::SIZE;

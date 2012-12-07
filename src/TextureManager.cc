@@ -1,4 +1,5 @@
-#include <cassert>
+#include "Core/Assert.hh"
+
 #include "TextureManager.hh"
 #include "ShadersManager.hh"
 
@@ -85,6 +86,7 @@ TextureManager::load(const std::string& path, const std::string& name)
 GLuint
 TextureManager::operator[](const std::string& name)
 {
+  ASSERT_MSG(find(name) != end(), "Texture not found: " << name);
   return (_texture[name]);
 }
 

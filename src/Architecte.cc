@@ -5,7 +5,7 @@
 #include "Core/Vector3D.hh"
 #include "Map.hh"
 #include "Core/Random.hh"
-
+#include "Core/Assert.hh"
 
 #include "TextureManager.hh"
 #include "Opengl.hh"
@@ -212,8 +212,8 @@ namespace Architecte
   void fillCoords(Chunk::chunk_coord_type& coords, int whereX, int whereY,
                   Chunk& neighborChunk, int fromX,int toX,int fromY, int toY)
   {
-    assert(whereX + (toX - fromX) <= Chunk::SIZE && "X out of bound");
-    assert(whereY + (toY - fromY) <= Chunk::SIZE && "Y out of bound");
+    ASSERT_MSG(whereX + (toX - fromX) <= Chunk::SIZE, "X out of bound");
+    ASSERT_MSG(whereY + (toY - fromY) <= Chunk::SIZE, "Y out of bound");
 
     int posX = whereX;
     for (int x = fromX; x < toX; ++x, ++posX)

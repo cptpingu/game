@@ -1,5 +1,5 @@
 #include "ImageFile.hh"
-#include <cassert>
+#include "Core/Assert.hh"
 
 ImageFile::ImageFile(const std::string& filename)
     : _filename(filename), _width(0), _heigth(0), _isValid(false), _pixels()
@@ -68,48 +68,48 @@ void
 ImageFile::write(std::ostream&) const
 {
     // FIXME
-    assert(false && "Not implemented yet !");
+    ASSERT_MSG(false, "Not implemented yet !");
 }
 
 const ImageFile::Color&
 ImageFile::operator()(int x, int y) const
 {
-    assert(_isValid && "Can't use invalid ImageFile !");
+    ASSERT_MSG(_isValid, "Can't use invalid ImageFile !");
     return _pixels[x + _pixels.size() + y];
 }
 
 ImageFile::Color&
 ImageFile::operator()(int x, int y)
 {
-    assert(_isValid && "Can't use invalid ImageFile !");
+    ASSERT_MSG(_isValid, "Can't use invalid ImageFile !");
     return _pixels[x + _pixels.size() + y];
 }
 
 ImageFile::const_iterator
 ImageFile::begin() const
 {
-    assert(_isValid && "Can't use invalid ImageFile !");
+    ASSERT_MSG(_isValid, "Can't use invalid ImageFile !");
     return _pixels.begin();
 }
 
 ImageFile::const_iterator
 ImageFile::end() const
 {
-    assert(_isValid && "Can't use invalid ImageFile !");
+    ASSERT_MSG(_isValid, "Can't use invalid ImageFile !");
     return _pixels.end();
 }
 
 int
 ImageFile::getWidth() const
 {
-    assert(_isValid && "Can't use invalid ImageFile !");
+    ASSERT_MSG(_isValid, "Can't use invalid ImageFile !");
     return _width;
 }
 
 int
 ImageFile::getHeight() const
 {
-    assert(_isValid && "Can't use invalid ImageFile !");
+    ASSERT_MSG(_isValid, "Can't use invalid ImageFile !");
     return _heigth;
 }
 

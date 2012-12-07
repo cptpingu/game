@@ -116,7 +116,7 @@ Chunk::operator()(double x, double y) const
 {
   auto found = _fast_access_chunk.find(fast_access_chunk_type::key_type(x, y));
   if (found == _fast_access_chunk.cend())
-    assert(false && "Chunk: Index out of bound");
+    ASSERT_MSG(false, "Chunk: Index out of bound: (" << x << ", " << y << ")");
 
   return found->second;
 }
@@ -169,7 +169,7 @@ Chunk::createRealCoord(const chunk_coord_type& coords)
 bool
 Chunk::saveToFile(const chunk_coord_type& coords) const
 {
-  assert(coords.size() == SIZE * SIZE && "Number of points is incorrect!");
+  ASSERT_MSG(coords.size() == SIZE * SIZE, "Number of points is incorrect!");
   std::ofstream file(_filename.c_str(), std::ios::binary);
   if (!file)
     return false;

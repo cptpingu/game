@@ -1,9 +1,9 @@
 #include "ConfigManager.hh"
 
-#include <cassert>
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "Core/Assert.hh"
 
 namespace
 {
@@ -95,7 +95,8 @@ int
 ConfigManager::operator[](const std::string& name) const
 {
   auto found = _bindings.find(name);
-  assert(found != _bindings.end());
+  ASSERT_MSG(found != _bindings.end(),
+             "Option \" " << name << " \" not found in configuration!");
   return found->second;
 }
 

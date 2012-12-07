@@ -3,6 +3,7 @@
 #include "Core/Traits.hh"
 #include "Architecte.hh"
 #include "Core/Random.hh"
+#include "Core/Assert.hh"
 #include "Block/Cube.hh"
 #include "Block/Triangle.hh"
 
@@ -51,7 +52,6 @@ void Map::InitGroundBlocks(int)
   }
 }
 
-
 void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
 
 {
@@ -80,7 +80,7 @@ void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType wh
       container = Core::Container3D<int>(who->_x, who->_y, who->_z-1);
       break;
     default:
-      assert(false && "Bad face");
+      ASSERT_MSG(false, "Bad face");
   }
 
   createBlock(container);
@@ -145,7 +145,7 @@ namespace
       Architecte::initChunk(coords, std::make_pair(x, y), chunks);
       chunk->createRealCoord(coords);
       const bool res = chunk->saveToFile(coords);
-      assert(res && "Unable to save file!");
+      ASSERT_MSG(res, "Unable to save file!");
       _UNUSED(res);
     }
     return chunk;

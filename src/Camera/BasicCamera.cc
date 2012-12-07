@@ -18,7 +18,7 @@ namespace Camera
   Basic::Basic()
   {
     _position = Core::Vector3D(0, 0, 0);
-    _target = Core::Vector3D(1, 0, 1);
+    _target = Core::Vector3D(1, 1, 0);
     _phi = 0;
     _theta = 0;
     _verticalMotionActive = false;

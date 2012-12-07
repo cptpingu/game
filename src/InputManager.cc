@@ -1,7 +1,6 @@
 #include "InputManager.hh"
 #include "ConfigManager.hh"
 
-#include <cassert>
 #include <iostream>
 
 InputManager::InputManager()

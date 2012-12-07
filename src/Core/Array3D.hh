@@ -4,7 +4,7 @@
 # include "NonCopyable.hh"
 
 # include <vector>
-# include <cassert>
+# include "Assert.hh"
 
 namespace Core
 {
@@ -26,19 +26,25 @@ namespace Core
 
     T operator()(int x, int y, int z) const
     {
-      assert(x >= 0 && "Invalid range");
-      assert(y >= 0 && "Invalid range");
-      assert(z >= 0 && "Invalid range");
-      assert(x + y * LENGTH + z * LENGTH * LENGTH < std::vector<T>::size() && "Index out of bound");
+      ASSERT_MSG(x >= 0, "Invalid range x = " << x);
+      ASSERT_MSG(y >= 0, "Invalid range y = " << y);
+      ASSERT_MSG(z >= 0, "Invalid range y = " << z);
+      ASSERT_MSG(x + y * LENGTH + z * LENGTH * LENGTH < std::vector<T>::size(),
+                 "Index out of bound, index is "
+                 << x + y * LENGTH + z * LENGTH * LENGTH
+                 << " but max size is " << std::vector<T>::size());
       return std::vector<T>::operator[](x + y * LENGTH + z * LENGTH * LENGTH);
     }
 
     T& operator()(int x, int y, int z)
     {
-      assert(x >= 0 && "Invalid range");
-      assert(y >= 0 && "Invalid range");
-      assert(z >= 0 && "Invalid range");
-      assert(x + y * LENGTH + z * LENGTH * LENGTH < std::vector<T>::size() && "Index out of bound");
+      ASSERT_MSG(x >= 0, "Invalid range x = " << x);
+      ASSERT_MSG(y >= 0, "Invalid range y = " << y);
+      ASSERT_MSG(z >= 0, "Invalid range y = " << z);
+      ASSERT_MSG(x + y * LENGTH + z * LENGTH * LENGTH < std::vector<T>::size(),
+                 "Index out of bound, index is "
+                 << x + y * LENGTH + z * LENGTH * LENGTH
+                 << " but max size is " << std::vector<T>::size());
       return std::vector<T>::operator[](x + y * LENGTH + z * LENGTH * LENGTH);
     }
 

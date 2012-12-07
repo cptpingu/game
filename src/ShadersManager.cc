@@ -1,7 +1,8 @@
 #include "ShadersManager.hh"
 
+#include "Core/Assert.hh"
+
 #include <iostream>
-#include <cassert>
 #include <cstdio>
 
 namespace
@@ -90,7 +91,7 @@ void
 ShadersManager::enable(const std::string& name) const
 {
   auto found = _programs.find(name);
-  assert(found != _programs.cend() && "Shaders not found !");
+  ASSERT_MSG(found != _programs.cend(), "Shaders not found: " << name);
   glUseProgram(found->second);
 }
 
@@ -104,7 +105,7 @@ GLuint
 ShadersManager::get(const std::string& name) const
 {
   auto found = _programs.find(name);
-  assert(found != _programs.cend() && "Shaders not found !");
+  ASSERT_MSG(found != _programs.cend(), "Shaders not found: " << name);
   return found->second;
 }
 

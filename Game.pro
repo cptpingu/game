@@ -63,7 +63,8 @@ HEADERS += \
     src/Camera/Player.hh \
     src/ConfigManager.hh \
     src/InputManager.hh \
-    src/Block/NeighbourMatrix.hh
+    src/Block/NeighbourMatrix.hh \
+    src/Core/Assert.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

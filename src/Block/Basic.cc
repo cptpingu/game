@@ -41,14 +41,14 @@ namespace Block
   void
   Basic::highlight(FaceType face, bool highlight)
   {
-    assert(face >= none && face <= back && "Index out of bound!");
+    ASSERT_MSG(face >= none && face <= back, "Index out of bound: " << face);
     _highlights[face] = highlight;
   }
 
   bool
   Basic::isHighlighted(FaceType face) const
   {
-    assert(face >= none && face <= back && "Index out of bound!");
+    ASSERT_MSG(face >= none && face <= back, "Index out of bound: " << face);
     return _highlights[face];
   }
 
@@ -73,7 +73,7 @@ namespace Block
   {
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable(getShaderName());
-    assert(neighbours(0, 0, 0) == this && "Neighbours (0,0,0) must be the block itself!");
+    ASSERT_MSG(neighbours(0, 0, 0) == this, "Neighbours (0,0,0) must be the block itself!");
     specificDraw(neighbours);
     shaders.disable();
     //drawPickingBox();

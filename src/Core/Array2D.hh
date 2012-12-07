@@ -2,9 +2,9 @@
 # define ARRAY2D_HH_
 
 # include "NonCopyable.hh"
-
+# include "Assert.hh"
 # include <vector>
-# include <cassert>
+
 
 namespace Core
 {
@@ -26,17 +26,23 @@ namespace Core
 
     T operator()(int x, int y) const
     {
-      assert(x >= 0 && "Invalid range");
-      assert(y >= 0 && "Invalid range");
-      assert(x + y * LENGTH < std::vector<T>::size() && "Index out of bound");
+      ASSERT_MSG(x >= 0, "Invalid range x = " << x);
+      ASSERT_MSG(y >= 0, "Invalid range y = " << y);
+      ASSERT_MSG(x + y * LENGTH < std::vector<T>::size(),
+                 "Index out of bound, index is "
+                 << x + y * LENGTH
+                 << " but max size is " << std::vector<T>::size());
       return std::vector<T>::operator[](x + y * LENGTH);
     }
 
     T& operator()(int x, int y)
     {
-      assert(x >= 0 && "Invalid range");
-      assert(y >= 0 && "Invalid range");
-      assert(x + y * LENGTH < std::vector<T>::size() && "Index out of bound");
+      ASSERT_MSG(x >= 0, "Invalid range x = " << x);
+      ASSERT_MSG(y >= 0, "Invalid range y = " << y);
+      ASSERT_MSG(x + y * LENGTH < std::vector<T>::size(),
+                 "Index out of bound, index is "
+                 << x + y * LENGTH
+                 << " but max size is " << std::vector<T>::size());
       return std::vector<T>::operator[](x + y * LENGTH);
     }
 

@@ -39,12 +39,12 @@ namespace Block
     */
     Basic* operator()(int x, int y, int z) const
     {
-      assert(x >= -1 && "x out of bound");
-      assert(x <= 1 && "x out of bound");
-      assert(y >= -1 && "y out of bound");
-      assert(y <= 1 && "y out of bound");
-      assert(z >= -1 && "x out of bound");
-      assert(z <= 1 && "x out of bound");
+      ASSERT_MSG(x >= -1, "x out of bound: " << x);
+      ASSERT_MSG(x <= 1, "x out of bound: " << x);
+      ASSERT_MSG(y >= -1, "y out of bound: " << y);
+      ASSERT_MSG(y <= 1, "y out of bound: " << y);
+      ASSERT_MSG(z >= -1, "x out of bound: " << z);
+      ASSERT_MSG(z <= 1, "x out of bound: " << z);
       return super::operator()(x + 1, y + 1, z + 1);
     }
 
@@ -59,12 +59,12 @@ namespace Block
     */
     Basic*& operator()(int x, int y, int z)
     {
-      assert(x >= -1 && "x out of bound");
-      assert(x <= 1 && "x out of bound");
-      assert(y >= -1 && "y out of bound");
-      assert(y <= 1 && "y out of bound");
-      assert(z >= -1 && "x out of bound");
-      assert(z <= 1 && "x out of bound");
+      ASSERT_MSG(x >= -1, "x out of bound: " << x);
+      ASSERT_MSG(x <= 1, "x out of bound: " << x);
+      ASSERT_MSG(y >= -1, "y out of bound: " << y);
+      ASSERT_MSG(y <= 1, "y out of bound: " << y);
+      ASSERT_MSG(z >= -1, "x out of bound: " << z);
+      ASSERT_MSG(z <= 1, "x out of bound: " << z);
       return super::operator()(x + 1, y + 1, z + 1);
     }
 
@@ -75,12 +75,12 @@ namespace Block
     */
     bool same(int x, int y, int z) const
     {
-      assert(x >= -1 && "x out of bound");
-      assert(x <= 1 && "x out of bound");
-      assert(y >= -1 && "y out of bound");
-      assert(y <= 1 && "y out of bound");
-      assert(z >= -1 && "x out of bound");
-      assert(z <= 1 && "x out of bound");
+      ASSERT_MSG(x >= -1, "x out of bound: " << x);
+      ASSERT_MSG(x <= 1, "x out of bound: " << x);
+      ASSERT_MSG(y >= -1, "y out of bound: " << y);
+      ASSERT_MSG(y <= 1, "y out of bound: " << y);
+      ASSERT_MSG(z >= -1, "x out of bound: " << z);
+      ASSERT_MSG(z <= 1, "x out of bound: " << z);
       return isSame((*this)(0, 0, 0), (*this)(x, y, z));
     }
 

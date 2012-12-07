@@ -26,6 +26,7 @@ namespace Camera
     const Map&  _map;
     int         _heightBeforeJump;
     bool        _isJumping;
+    bool        _isFalling;
   };
 } // Camera
 

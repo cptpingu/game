@@ -6,7 +6,6 @@
 #include "../Chunk.hh"
 #include "../Map.hh"
 
-
 #include <cmath>
 #include <limits>
 #include <iostream>
@@ -21,7 +20,8 @@ namespace Camera
     : super(),
       _map(map),
       _heightBeforeJump(0),
-      _isJumping(false)
+      _isJumping(false),
+      _isFalling(false)
   {
   }
 
@@ -50,31 +50,37 @@ namespace Camera
   void
   Player::fall(double speed, unsigned int timestep)
   {
+    _isFalling = true;
+    _isJumping  = false;
     if (_position._z <= 0)
       _position._z = 0;
     else
       _position._z -= speed * timestep;
-    _isJumping = false;
   }
 
   bool
   Player::jump(bool jumping, double speed, unsigned int timestep)
   {
     if (!jumping)
+    {
+      _isJumping  = false;
       return false;
+    }
 
     if (!_isJumping)
-    {
-      _heightBeforeJump = 0;
-      _isJumping = true;
-      return true;
-    }
+      _heightBeforeJump = _position._z;
+
     int nextHeight = _position._z + speed * timestep;
     if (nextHeight - _heightBeforeJump < 2500)
     {
       _position._z = nextHeight;
+      _isJumping  = true;
+      _isFalling = false;
       return true;
     }
+
+    _isJumping  = false;
+    _isFalling = true;
 
     return false;
   }
@@ -104,8 +110,10 @@ namespace Camera
     if (input.isPressed("strafe_right"))
       nextPos -= Core::Vector3D(leftX, leftY, 0);
 
-//    if (!jump(input.isPressed("jump"), speed, timestep))
-//      fall(speed, timestep);
+    if (!_isFalling)
+      jump(input.isPressed("jump"), speed, timestep);
+    if (!_isJumping)
+      fall(speed, timestep);
 
     if (!collide(nextPos))
       _position = nextPos;

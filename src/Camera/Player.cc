@@ -35,13 +35,14 @@ namespace Camera
   {
     //static const int playerSize = 1;
 
-    ASSERT_MSG(!_map.findBlock(_position._x / Block::SIZE, _position._y / Block::SIZE, 0 * _position._z),
+    ASSERT_MSG(!_map.findBlock(_position._x / Block::SIZE,
+                               _position._y / Block::SIZE, 0 * _position._z / Block::SIZE),
                "Current pos is in a cube: (" << _position._x / Block::SIZE << ", "
                << _position._y / Block::SIZE << ", " << _position._z / Block::SIZE << ")");
     Core::Container3D<int> blockPos;
     blockPos._x = pos._x / Block::SIZE;
     blockPos._y = pos._y / Block::SIZE;
-    blockPos._z = 0;
+    blockPos._z = 0* pos._y / Block::SIZE;
 
     Block::Basic* nextPos = _map.findBlock(blockPos);
     if (nextPos)
@@ -51,32 +52,35 @@ namespace Camera
   }
 
   void
-  Player::fall(double speed, unsigned int timestep)
+  Player::fall(double speed, unsigned int timestep, Core::Vector3D& nextPos)
   {
     _isFalling = true;
     _isJumping  = false;
     if (_position._z <= 0)
-      _position._z = 0;
+    {
+      nextPos._z = 0;
+      _isFalling = false;
+    }
     else
-      _position._z -= speed * timestep;
+      nextPos._z -= speed * timestep;
   }
 
   bool
-  Player::jump(bool jumping, double speed, unsigned int timestep)
+  Player::jump(bool jumping, double speed,
+               unsigned int timestep, Core::Vector3D& nextPos)
   {
     if (!jumping)
     {
       _isJumping  = false;
       return false;
     }
-
     if (!_isJumping)
-      _heightBeforeJump = _position._z;
+      _heightBeforeJump = nextPos._z;
 
-    int nextHeight = _position._z + speed * timestep;
-    if (nextHeight - _heightBeforeJump < 2500)
+    double nextHeight = nextPos._z + speed * timestep;
+    if (nextHeight - _heightBeforeJump < 6)
     {
-      _position._z = nextHeight;
+      nextPos._z = nextHeight;
       _isJumping  = true;
       _isFalling = false;
       return true;
@@ -114,9 +118,9 @@ namespace Camera
       nextPos -= Core::Vector3D(leftX, leftY, 0);
 
     if (!_isFalling)
-      jump(input.isPressed("jump"), speed, timestep);
+      jump(input.isPressed("jump"), speed, timestep, nextPos);
     if (!_isJumping)
-      fall(speed, timestep);
+      fall(speed, timestep, nextPos);
 
     if (!collide(nextPos))
       _position = nextPos;

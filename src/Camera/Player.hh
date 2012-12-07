@@ -19,8 +19,9 @@ namespace Camera
 
   private:
     bool collide(const Core::Vector3D& pos) const;
-    void fall(double speed, unsigned int timestep);
-    bool jump(bool jumping, double speed, unsigned int timestep);
+    void fall(double speed, unsigned int timestep, Core::Vector3D& nextPos);
+    bool jump(bool jumping, double speed,
+              unsigned int timestep, Core::Vector3D& nextPos);
 
   private:
     const Map&  _map;

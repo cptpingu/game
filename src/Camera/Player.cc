@@ -36,13 +36,13 @@ namespace Camera
     //static const int playerSize = 1;
 
     ASSERT_MSG(!_map.findBlock(_position._x / Block::SIZE,
-                               _position._y / Block::SIZE, 0 * _position._z / Block::SIZE),
+                               _position._y / Block::SIZE, _position._z / Block::SIZE),
                "Current pos is in a cube: (" << _position._x / Block::SIZE << ", "
                << _position._y / Block::SIZE << ", " << _position._z / Block::SIZE << ")");
     Core::Container3D<int> blockPos;
     blockPos._x = pos._x / Block::SIZE;
     blockPos._y = pos._y / Block::SIZE;
-    blockPos._z = 0* pos._y / Block::SIZE;
+    blockPos._z = pos._z / Block::SIZE;
 
     Block::Basic* nextPos = _map.findBlock(blockPos);
     if (nextPos)
@@ -56,13 +56,27 @@ namespace Camera
   {
     _isFalling = true;
     _isJumping  = false;
-    if (_position._z <= 0)
+
+    Core::Container3D<int> tmp;
+    tmp._x = nextPos._x / Block::SIZE;
+    tmp._y = nextPos._y / Block::SIZE;
+    tmp._z = nextPos._z / Block::SIZE;
+    Block::Basic* blockPos = _map.findBlock(tmp);
+
+    if (!blockPos)
     {
-      nextPos._z = 0;
-      _isFalling = false;
+      if (nextPos._z <= 0)
+      {
+        nextPos._z = 0;
+        _isFalling = false;
+      }
+      else
+        nextPos._z -= speed * timestep;
+      return;
     }
-    else
-      nextPos._z -= speed * timestep;
+
+    nextPos._z = blockPos->_z;
+    _isFalling = false;
   }
 
   bool

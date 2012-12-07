@@ -166,7 +166,6 @@ Game::drawGL(const Block::Basic* selectedCoord, int fpsFromSDL)
   _camera->look();
 
   _drawer.drawBlocks(_map);
-  //_drawer.drawChunks(_map.getChunks(), selectedCoord);
   _drawer.light(fpsFromSDL);
 
   showCoord(selectedCoord);

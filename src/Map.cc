@@ -35,7 +35,7 @@ Map::createBlock(const Core::Container3D<int>& where)
   }
 }
 
-void Map::InitGroundBlocks(int SIZE)
+void Map::InitGroundBlocks(int)
 {
   Core::Container3D<int> where;
 

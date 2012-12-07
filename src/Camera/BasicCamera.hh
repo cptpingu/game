@@ -19,11 +19,6 @@ namespace Camera
     Basic();
     virtual ~Basic();
 
-    // FIXME
-    virtual Chunk::Coord* picking(const Map::chunks_type& chunks) const;
-    virtual std::pair<Block::Basic*, Block::FaceType> picking(const Map& blocks) const;
-    // !
-
     virtual std::pair<Block::Basic*, Block::FaceType>
     picking(const Map& map, const Drawer& drawer, int mouseX, int mouseY) const;
     virtual void setPosition(const Core::Vector3D& position);
@@ -49,7 +44,7 @@ namespace Camera
     double _theta;
     double _phi;
 
-    void VectorsFromAngles();
+    void vectorsFromAngles();
     std::pair<int, int> innerCoordChunktoAbsolute(const std::pair<int, int>& coord,
                                                   const std::pair<int, int>& selectedCoord);
   };

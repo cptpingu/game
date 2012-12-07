@@ -32,7 +32,7 @@ namespace Camera
   bool
   Player::collide(const Core::Vector3D& pos) const
   {
-    static const int playerSize = 1;
+    //static const int playerSize = 1;
     assert(!_map.findBlock(_position._x, _position._y, 0 * _position._z));
     Core::Container3D<int> blockPos;
     blockPos._x = pos._x / Block::SIZE;
@@ -112,11 +112,11 @@ namespace Camera
 
     if (input.xrel() || input.yrel())
     {
-      const int sensivity = config["sensivity"] / 10;
+      const int sensitivity = config["sensitivity"] / 10;
       const int invert = config["invert_mouse"] ? - 1 : 1;
-      _theta -= input.xrel() * sensivity;
-      _phi -= input.yrel() * sensivity * invert;
-      VectorsFromAngles();
+      _theta -= input.xrel() * sensitivity;
+      _phi -= input.yrel() * sensitivity * invert;
+      vectorsFromAngles();
     }
     else
       _target = _position + _forward;

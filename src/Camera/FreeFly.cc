@@ -63,7 +63,7 @@ namespace Camera
       const int invert = config["invert_mouse"] ? - 1 : 1;
       _theta -= input.xrel() * sensivity;
       _phi -= input.yrel() * sensivity * invert;
-      VectorsFromAngles();
+      vectorsFromAngles();
     }
     else
       _target = _position + _forward;

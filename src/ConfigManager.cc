@@ -44,7 +44,7 @@ ConfigManager::ConfigManager()
   _bindings["invert_mouse"] = 1;
 
   _bindings["speed"] = 10;
-  _bindings["sensivity"] = 10;
+  _bindings["sensitivity"] = 10;
   _bindings["fps"] = 50;
   _bindings["window_width"] = 640;
   _bindings["window_height"] = 480;

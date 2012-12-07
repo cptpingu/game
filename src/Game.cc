@@ -69,10 +69,7 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    _map.chunkLazyLoading(_camera->getCurrentPosition(), _map.getChunks());
     _camera->animate(elapsed_time);
-    Chunk::Coord* pickedCoord = _camera->picking(_map.getChunks());
-    //std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera->picking(_map);
     std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera->picking(_map, _drawer);
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);

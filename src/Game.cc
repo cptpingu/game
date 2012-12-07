@@ -12,8 +12,8 @@
 #include <chrono>
 
 Game::Game()
-  : _map(), _drawer(), _camera(new Camera::FreeFly)
-     //_camera(new Camera::Player(_map))
+  : _map(), _drawer(), //_camera(new Camera::FreeFly)
+    _camera(new Camera::Player(_map))
 {
 }
 
@@ -26,10 +26,11 @@ bool
 Game::load()
 {
   ConfigManager& config = ConfigManager::getInstance();
-  std::cout << "SIZE: " << Chunk::SIZE << std::endl
-            << "QUALITY: " << Chunk::QUALITY << std::endl
+  std::cout << "Block size:   " << Block::SIZE << std::endl
+            << "Game version: " << "v0.1 alpha" << std::endl
+            << "Compile time: " << __DATE__ << " " << __TIME__ << std::endl
             << "TEXTURE_SIZE: " << Chunk::TEXTURE_SIZE << std::endl
-            << "OpenGL v: " << glGetString(GL_VERSION) << std::endl;
+            << "OpenGL v:     " << glGetString(GL_VERSION) << std::endl;
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();

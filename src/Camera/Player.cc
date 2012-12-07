@@ -35,8 +35,8 @@ namespace Camera
     static const int playerSize = 1;
     assert(!_map.findBlock(_position._x, _position._y, 0 * _position._z));
     Core::Container3D<int> blockPos;
-    blockPos._x = pos._x + Block::HALF_SIZE;
-    blockPos._y = pos._y + Block::HALF_SIZE;
+    blockPos._x = pos._x / Block::SIZE;
+    blockPos._y = pos._y / Block::SIZE;
     blockPos._z = 0;
 
     Block::Basic* nextPos = _map.findBlock(blockPos);

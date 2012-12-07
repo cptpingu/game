@@ -152,6 +152,7 @@ Game::loadShaders()
   shaders.load("phong_lightning", "data/shaders/phong_lightning.vert.c", "data/shaders/phong_lightning.frag.c");
   shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");
   shaders.load("basic_lightning", "data/shaders/basic_lightning.vert.c", "data/shaders/basic_lightning.frag.c");
+  shaders.load("tex_lightning", "data/shaders/tex_lightning.vert.c", "data/shaders/tex_lightning.frag.c");
 }
 
 void

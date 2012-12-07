@@ -8,6 +8,7 @@
 #include "iostream"
 #include <vector>
 #include <sstream>
+#include <cmath>
 
 namespace
 {
@@ -249,6 +250,59 @@ void Drawer::light(unsigned int timestep)
         glEnd();
         glPopMatrix();
 
+
+        glTranslated(0,0,40);
+
+
+        glPushMatrix();
+        glBegin(GL_TRIANGLE_STRIP);
+
+        glTexCoord2d(0, 0);
+        //1
+        glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+
+        glTexCoord2d(Block::SIZE, 0);
+        //2
+
+        glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+//3
+        glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+        glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+
+        //4
+        glNormal3d(0,0,1);
+
+        glVertex3d(0, 0,Block::SIZE);
+
+        //5
+
+        //glNormal3d(0,1,0);
+        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+
+        //6
+        glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+
+        //7
+        glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+        //8
+/*
+        glVertex3d(0, 0,Block::SIZE);
+
+        glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
+
+*/
+        glEnd();
+        glPopMatrix();
+
+
+
+
+
+
        glPushMatrix();
         static double move = 0;
         move += 1 * timestep;
@@ -259,15 +313,15 @@ void Drawer::light(unsigned int timestep)
 
         glBegin(GL_TRIANGLES);
         glColor3ub(255,0,255);
-        glVertex3d(0,0,33);
-        glVertex3d(1,0,33);
-        glVertex3d(0,1,33);
+        glVertex3d(0,0,60);
+        glVertex3d(1,0,60);
+        glVertex3d(0,1,60);
         glEnd();
 
 
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
-        int LightPos[4] = {0,0,40,1};
+        int LightPos[4] = {0,0,60,1};
         glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
         glPopMatrix();
 

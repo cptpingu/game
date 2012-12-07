@@ -81,6 +81,12 @@ namespace Block
       selectionDraw();
   }
 
+  Core::Vector3D
+  Basic::collision(const Core::Vector3D& current, const Core::Vector3D& next) const
+  {
+    return specificCollision(current, next);
+  }
+
   void
   Basic::drawPickingBox() const
   {

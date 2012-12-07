@@ -18,7 +18,7 @@ namespace Camera
     picking(const Map& map, const Drawer& drawer) const;
 
   private:
-    bool collide(const Core::Vector3D& pos) const;
+    Core::Vector3D collide(const Core::Vector3D& next) const;
     void fall(double speed, unsigned int timestep, Core::Vector3D& nextPos);
     bool jump(bool jumping, double speed,
               unsigned int timestep, Core::Vector3D& nextPos);

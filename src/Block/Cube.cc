@@ -103,4 +103,10 @@ namespace Block
 
     glPopMatrix();
   }
+
+  Core::Vector3D
+  Cube::specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const
+  {
+    return current;
+  }
 } // Block

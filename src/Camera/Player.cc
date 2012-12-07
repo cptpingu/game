@@ -30,25 +30,23 @@ namespace Camera
   {
   }
 
-  bool
-  Player::collide(const Core::Vector3D& pos) const
+  Core::Vector3D
+  Player::collide(const Core::Vector3D& next) const
   {
-    //static const int playerSize = 1;
-
     ASSERT_MSG(!_map.findBlock(_position._x / Block::SIZE,
                                _position._y / Block::SIZE, _position._z / Block::SIZE),
                "Current pos is in a cube: (" << _position._x / Block::SIZE << ", "
                << _position._y / Block::SIZE << ", " << _position._z / Block::SIZE << ")");
+
     Core::Container3D<int> blockPos;
-    blockPos._x = pos._x / Block::SIZE;
-    blockPos._y = pos._y / Block::SIZE;
-    blockPos._z = pos._z / Block::SIZE;
+    blockPos._x = next._x / Block::SIZE;
+    blockPos._y = next._y / Block::SIZE;
+    blockPos._z = next._z / Block::SIZE;
 
     Block::Basic* nextPos = _map.findBlock(blockPos);
-    if (nextPos)
-      return true;
-
-    return false;
+    if (!nextPos)
+      return next;
+    return nextPos->collision(_position, next);
   }
 
   void
@@ -136,8 +134,7 @@ namespace Camera
     if (!_isJumping)
       fall(speed, timestep, nextPos);
 
-    if (!collide(nextPos))
-      _position = nextPos;
+    _position = collide(nextPos);
 
     if (input.xrel() || input.yrel())
     {

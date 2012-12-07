@@ -12,7 +12,8 @@
 #include <chrono>
 
 Game::Game()
-  : _map(), _drawer(), _camera(new Camera::Player(_map))
+  : _map(), _drawer(), _camera(new Camera::FreeFly)
+     //_camera(new Camera::Player(_map))
 {
 }
 
@@ -186,10 +187,7 @@ Game::showCoord(const Block::Basic* selectedCoord)
   std::stringstream buff;
 
   Core::Vector3D look = _camera->getCurrentLook();
-  const int x = Chunk::absoluteToChunkCoord(pos._x);
-  const int y = Chunk::absoluteToChunkCoord(pos._y);
   buff << "World coord: " << pos._x << " " << pos._y << " " << pos._z << "\n"
-       << "Chunk coord: " << x << " " << y << "\n"
        << "Look: " << look._x << " " << look._y << " " << look._z << "\n";
   if (selectedCoord)
     buff << "Pick: " << selectedCoord->_x << " "

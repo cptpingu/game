@@ -35,9 +35,9 @@ namespace Camera
   {
     //static const int playerSize = 1;
 
-    ASSERT_MSG(!_map.findBlock(_position._x, _position._y, 0 * _position._z),
-               "Current pos is in a cube: (" << _position._x << ", "
-               << _position._y << ", " << _position._z << ")");
+    ASSERT_MSG(!_map.findBlock(_position._x / Block::SIZE, _position._y / Block::SIZE, 0 * _position._z),
+               "Current pos is in a cube: (" << _position._x / Block::SIZE << ", "
+               << _position._y / Block::SIZE << ", " << _position._z / Block::SIZE << ")");
     Core::Container3D<int> blockPos;
     blockPos._x = pos._x / Block::SIZE;
     blockPos._y = pos._y / Block::SIZE;
@@ -48,7 +48,6 @@ namespace Camera
       return true;
 
     return false;
-    //if (pos._x + playerSize > )
   }
 
   void

@@ -185,7 +185,7 @@ Game::showCoord(const Block::Basic* selectedCoord)
   std::stringstream buff;
 
   Core::Vector3D look = _camera->getCurrentLook();
-  buff << "World coord: " << pos._x << " " << pos._y << " " << pos._z << "\n"
+  buff << "Current pos: " << pos._x << " " << pos._y << " " << pos._z << "\n"
        << "Look: " << look._x << " " << look._y << " " << look._z << "\n";
   if (selectedCoord)
     buff << "Pick: " << selectedCoord->_x << " "

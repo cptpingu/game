@@ -12,8 +12,8 @@
 #include <chrono>
 
 Game::Game()
-  : _map(), _drawer(), //_camera(new Camera::FreeFly)
-    _camera(new Camera::Player(_map))
+  : _map(), _drawer(), _camera(new Camera::FreeFly)
+    //_camera(new Camera::Player(_map))
 {
 }
 

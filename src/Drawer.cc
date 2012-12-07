@@ -248,6 +248,8 @@ void Drawer::light(unsigned int timestep)
         glVertex3d(-1,-1,1);
 
         glEnd();
+
+
         glPopMatrix();
 
 

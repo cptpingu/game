@@ -2,7 +2,7 @@
 
 uniform sampler2D tex;
 
-varying float vCubeColor;
+uniform float cube_color;
 varying float vFaceColor;
 
 void main()
@@ -10,7 +10,7 @@ void main()
   vec4 color = texture2D(tex, gl_TexCoord[0].st);
   gl_FragColor = color;
 
-  gl_FragColor.x += vCubeColor + vFaceColor;
-  gl_FragColor.y += vCubeColor + vFaceColor;
-  gl_FragColor.z += vCubeColor + vFaceColor * 1000;
+  gl_FragColor.x = color.x + cube_color;
+  gl_FragColor.y = color.y + cube_color;
+  gl_FragColor.z = color.z + cube_color + vFaceColor;
 }

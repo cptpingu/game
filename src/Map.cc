@@ -27,10 +27,10 @@ Map::createBlock(const Core::Container3D<int>& where)
   if (_blocks.find(where) == _blocks.end())
   {
     Block::Basic* block = 0;
-   if (Core::Random::rand() % 2 == 0)
+   //if (Core::Random::rand() % 2 == 0)
       block = new Block::Cube(where._x , where._y, where._z);
-    else
-      block = new Block::Triangle(where._x , where._y, where._z);
+//    else
+//      block = new Block::Triangle(where._x , where._y, where._z);
     _blocks.insert(blocks_type::value_type(where, block));
   }
 }
@@ -43,23 +43,9 @@ void Map::InitGroundBlocks(int SIZE)
   {
     for (int j = 0; j < 4; ++j)
     {
-      where._x = i;
-      where._y = j;
+      where._x = i + 1;
+      where._y = j + 1;
       where._z = 0;
-      createBlock(where);
-    }
-  }
-
-  for (int i = 0; i < SIZE; ++i)
-  {
-    for (int j = 0; j < SIZE; ++j)
-    {
-      where._x= i;
-      where._y= j;
-      where._z= 100*cos(fabs(i+j-50)*2*3.1467) + 100*sin(fabs(i+j-50)*2*3.1467);
-      //where._z = 100*exp(- (sqrt((i-25)^2+(j-25)^2))/100);
-      //where._z= where._z + Random::rand()%3 - 1;
-      //where._z = 100/(sqrt((i-SIZE/2)*(i-SIZE/2) + (j-SIZE/2)*(j-SIZE/2)));
       createBlock(where);
     }
   }

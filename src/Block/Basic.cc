@@ -87,13 +87,13 @@ namespace Block
 #define DRAW_FACE(X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3, X4, Y4, Z4, FACE)           \
     {                                                                             \
       glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X1 * Block::HALF_SIZE, Y1 * Block::HALF_SIZE, Z1 * Block::SIZE); \
+      glVertex3d(X1 * Block::SIZE, Y1 * Block::SIZE, Z1 * Block::SIZE);           \
       glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X2 * Block::HALF_SIZE, Y2 * Block::HALF_SIZE, Z2 * Block::SIZE); \
+      glVertex3d(X2 * Block::SIZE, Y2 * Block::SIZE, Z2 * Block::SIZE);           \
       glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X3 * Block::HALF_SIZE, Y3 * Block::HALF_SIZE, Z3 * Block::SIZE); \
+      glVertex3d(X3 * Block::SIZE, Y3 * Block::SIZE, Z3 * Block::SIZE);           \
       glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X4 * Block::HALF_SIZE, Y4 * Block::HALF_SIZE, Z4 * Block::SIZE); \
+      glVertex3d(X4 * Block::SIZE, Y4 * Block::SIZE, Z4 * Block::SIZE);           \
     }
 
     glPushMatrix();
@@ -102,45 +102,45 @@ namespace Block
     glBegin(GL_QUADS);
 
     //par terre
-    DRAW_FACE(-1, -1, 0,
-              +1, -1, 0,
-              +1, +1, 0,
-              -1, +1, 0,
+    DRAW_FACE(0, 0, 0,
+              1, 0, 0,
+              1, 1, 0,
+              0, 1, 0,
               Block::down);
 
     //face droite
-    DRAW_FACE(-1, -1, 1,
-              -1, +1, 1,
-              -1, +1, 0,
-              -1, -1, 0,
+    DRAW_FACE(0, 0, 1,
+              0, 1, 1,
+              0, 1, 0,
+              0, 0, 0,
               Block::right);
 
     //face gauche
-    DRAW_FACE(+1, -1, 1,
-              +1, +1, 1,
-              +1, +1, 0,
-              +1, -1, 0,
+    DRAW_FACE(1, 0, 1,
+              1, 1, 1,
+              1, 1, 0,
+              1, 0, 0,
               Block::left);
 
     //face face
-    DRAW_FACE(-1, +1, 1,
-              +1, +1, 1,
-              +1, +1, 0,
-              -1, +1, 0,
+    DRAW_FACE(0, 1, 1,
+              1, 1, 1,
+              1, 1, 0,
+              0, 1, 0,
               Block::front);
 
     //face derriere
-    DRAW_FACE(-1, -1, 1,
-              +1, -1, 1,
-              +1, -1, 0,
-              -1, -1, 0,
+    DRAW_FACE(0, 0, 1,
+              1, 0, 1,
+              1, 0, 0,
+              0, 0, 0,
               Block::back);
 
     //face au ciel
-    DRAW_FACE(-1, -1, 1,
-              +1, -1, 1,
-              +1, +1, 1,
-              -1, +1, 1,
+    DRAW_FACE(0, 0, 1,
+              1, 0, 1,
+              1, 1, 1,
+              0, 1, 1,
               Block::up);
 #undef DRAW_FACE
 
@@ -153,7 +153,7 @@ namespace Block
   Basic::selectionDraw() const
   {
 #define DRAW_LINE(X, Y, Z) \
-  glVertex3d(X * Block::HALF_SIZE, Y * Block::HALF_SIZE, Z * Block::SIZE)
+  glVertex3d(X * Block::SIZE, Y * Block::SIZE, Z * Block::SIZE)
 
     glLineWidth(2.0);
 
@@ -163,47 +163,47 @@ namespace Block
 
     glBegin(GL_LINES);
 
-    DRAW_LINE(-1, -1, 0);
-    DRAW_LINE(-1, -1, 0);
-    DRAW_LINE(+1, +1, 0);
-    DRAW_LINE(-1, +1, 0);
+    DRAW_LINE(0, 0, 0);
+    DRAW_LINE(0, 0, 0);
+    DRAW_LINE(1, 1, 0);
+    DRAW_LINE(0, 1, 0);
 
-    DRAW_LINE(-1, -1, 1);
-    DRAW_LINE(-1, +1, 1);
-    DRAW_LINE(-1, +1, 0);
-    DRAW_LINE(-1, -1, 0);
+    DRAW_LINE(0, 0, 1);
+    DRAW_LINE(0, 1, 1);
+    DRAW_LINE(0, 1, 0);
+    DRAW_LINE(0, 0, 0);
 
-    DRAW_LINE(+1, -1, 1);
-    DRAW_LINE(+1, +1, 1);
-    DRAW_LINE(+1, +1, 0);
-    DRAW_LINE(+1, -1, 0);
+    DRAW_LINE(1, 0, 1);
+    DRAW_LINE(1, 1, 1);
+    DRAW_LINE(1, 1, 0);
+    DRAW_LINE(1, 0, 0);
 
-    DRAW_LINE(-1, +1, 1);
-    DRAW_LINE(+1, +1, 1);
-    DRAW_LINE(+1, +1, 0);
-    DRAW_LINE(-1, +1, 0);
+    DRAW_LINE(0, 1, 1);
+    DRAW_LINE(1, 1, 1);
+    DRAW_LINE(1, 1, 0);
+    DRAW_LINE(0, 1, 0);
 
-    DRAW_LINE(-1, -1, 1);
-    DRAW_LINE(+1, -1, 1);
-    DRAW_LINE(+1, -1, 0);
-    DRAW_LINE(-1, -1, 0);
+    DRAW_LINE(0, 0, 1);
+    DRAW_LINE(1, 0, 1);
+    DRAW_LINE(1, 0, 0);
+    DRAW_LINE(0, 0, 0);
 
-    DRAW_LINE(-1, -1, 1);
-    DRAW_LINE(+1, -1, 1);
-    DRAW_LINE(+1, +1, 1);
-    DRAW_LINE(-1, +1, 1);
+    DRAW_LINE(0, 0, 1);
+    DRAW_LINE(1, 0, 1);
+    DRAW_LINE(1, 1, 1);
+    DRAW_LINE(0, 1, 1);
 
-    DRAW_LINE(-1, -1, 0);
-    DRAW_LINE(-1, -1, 1);
+    DRAW_LINE(0, 0, 0);
+    DRAW_LINE(0, 0, 1);
 
-    DRAW_LINE(+1, +1, 0);
-    DRAW_LINE(+1, +1, 1);
+    DRAW_LINE(1, 1, 0);
+    DRAW_LINE(1, 1, 1);
 
-    DRAW_LINE(-1, +1, 0);
-    DRAW_LINE(-1, +1, 1);
+    DRAW_LINE(0, 1, 0);
+    DRAW_LINE(0, 1, 1);
 
-    DRAW_LINE(+1, -1, 0);
-    DRAW_LINE(+1, -1, 1);
+    DRAW_LINE(1, 0, 0);
+    DRAW_LINE(1, 0, 1);
 #undef DRAW_FACE
 
     glEnd();

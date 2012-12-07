@@ -164,7 +164,7 @@ void Drawer::light(unsigned int timestep)
 
 
     ShadersManager& shaders = ShadersManager::getInstance();
-    shaders.enable("basic_lightning");
+    shaders.enable("tex_lightning");
 
 
 
@@ -175,7 +175,7 @@ void Drawer::light(unsigned int timestep)
 
     GLfloat ambient[] = {1.0f, 1.0f, 1.0f, 1.0f};
     GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat cyan[] = {0.8f, .2f, .0f, 1.f};
+    GLfloat cyan[] = {0.f, .0f, 1.0f, 1.f};
 
     glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
     glMaterialfv(GL_FRONT, GL_SPECULAR, white);
@@ -267,76 +267,113 @@ void Drawer::light(unsigned int timestep)
 
         glBegin(GL_QUADS);
 
-        glNormal3d(1/sqrt(3),1/sqrt(3),1/sqrt(3));
-            glColor3ub(100,0,0); //face rouge
-            glVertex3d(1,1,1);
-            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-            glVertex3d(1,1,-1);
-            glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-            glVertex3d(-1,1,-1);
-            glNormal3d(-1/sqrt(3),1/sqrt(3),1/sqrt(3));
-            glVertex3d(-1,1,1);
-
-            glColor3ub(0,100,0); //face verte
-            glNormal3d(1/sqrt(3),-1/sqrt(3),1/sqrt(3));
-            glVertex3d(1,-1,1);
-            glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-            glVertex3d(1,-1,-1);
-            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-            glVertex3d(1,1,-1);
             glNormal3d(1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,0);
             glVertex3d(1,1,1);
 
-            glColor3ub(0,0,100); //face bleue
+            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,0);
+            glVertex3d(1,1,-1);
 
-            glNormal3d(-1/sqrt(3),-1/sqrt(3),1/sqrt(3));
-            glVertex3d(-1,-1,1);
-            glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-            glVertex3d(-1,-1,-1);
-            glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-            glVertex3d(1,-1,-1);
+            glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,1);
+            glVertex3d(-1,1,-1);
+
+            glNormal3d(-1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0, 1);
+            glVertex3d(-1,1,1);
+
+
             glNormal3d(1/sqrt(3),-1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,0);
             glVertex3d(1,-1,1);
 
-            glColor3ub(100,100,0); //face jaune
-            glNormal3d(-1/sqrt(3),1/sqrt(3),1/sqrt(3));
-            glVertex3d(-1,1,1);
-            glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-            glVertex3d(-1,1,-1);
-            glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-            glVertex3d(-1,-1,-1);
+            glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,0);
+            glVertex3d(1,-1,-1);
+
+            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,1);
+            glVertex3d(1,1,-1);
+
+            glNormal3d(1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,1);
+            glVertex3d(1,1,1);
+
+
+
             glNormal3d(-1/sqrt(3),-1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,0);
             glVertex3d(-1,-1,1);
 
-            glColor3ub(0,100,100); //face cyan
-            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-            glVertex3d(1,1,-1);
-            glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-            glVertex3d(1,-1,-1);
             glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,0);
             glVertex3d(-1,-1,-1);
+
+            glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,1);
+            glVertex3d(1,-1,-1);
+
+            glNormal3d(1/sqrt(3),-1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,1);
+            glVertex3d(1,-1,1);
+
+
+            glNormal3d(-1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,0);
+            glVertex3d(-1,1,1);
+
             glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,0);
+            glVertex3d(-1,1,-1);
+
+            glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,1);
+            glVertex3d(-1,-1,-1);
+
+            glNormal3d(-1/sqrt(3),-1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,1);
+            glVertex3d(-1,-1,1);
+
+
+            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(0,0);
+            glVertex3d(1,1,-1);
+
+            glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,0);
+            glVertex3d(1,-1,-1);
+
+            glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(1,1);
+            glVertex3d(-1,-1,-1);
+
+            glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glTexCoord2d(0,1);
             glVertex3d(-1,1,-1);
 
 
-            glColor3ub(100,0,100); //face magenta
+
             glNormal3d(1/sqrt(3),-1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,0);
             glVertex3d(1,-1,1);
+
             glNormal3d(1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(1,0);
             glVertex3d(1,1,1);
+
             glNormal3d(-1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(1,1);
             glVertex3d(-1,1,1);
+
             glNormal3d(-1/sqrt(3),-1/sqrt(3),1/sqrt(3));
+            glTexCoord2d(0,1);
             glVertex3d(-1,-1,1);
 
            glEnd();
 
 
             glPopMatrix();
-
-
-
-
 
         glPushMatrix();
         glTranslated(0,0,40);

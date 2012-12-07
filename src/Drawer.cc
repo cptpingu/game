@@ -253,10 +253,93 @@ void Drawer::light(unsigned int timestep)
         glPopMatrix();
 
 
-        glTranslated(0,0,40);
+        glPushMatrix();
+        glTranslated(10,0,30);
+        glRotated(45,1,0,0);
+
+
+
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+        glMaterialfv(GL_FRONT, GL_AMBIENT,ambient);
+
+        glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+
+        glBegin(GL_QUADS);
+
+        glNormal3d(1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glColor3ub(100,0,0); //face rouge
+            glVertex3d(1,1,1);
+            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glVertex3d(1,1,-1);
+            glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glVertex3d(-1,1,-1);
+            glNormal3d(-1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glVertex3d(-1,1,1);
+
+            glColor3ub(0,100,0); //face verte
+            glNormal3d(1/sqrt(3),-1/sqrt(3),1/sqrt(3));
+            glVertex3d(1,-1,1);
+            glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+            glVertex3d(1,-1,-1);
+            glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+            glVertex3d(1,1,-1);
+            glNormal3d(1/sqrt(3),1/sqrt(3),1/sqrt(3));
+            glVertex3d(1,1,1);
+/*
+            glColor3ub(0,0,100); //face bleue
+            glNormal3d(0,-1,0);
+            glNormal3d(0,-1,0);
+            glVertex3d(-1,-1,1);
+            glNormal3d(0,-1,0);
+            glVertex3d(-1,-1,-1);
+            glNormal3d(0,-1,0);
+            glVertex3d(1,-1,-1);
+            glNormal3d(0,-1,0);
+            glVertex3d(1,-1,1);
+
+            glColor3ub(100,100,0); //face jaune
+            glNormal3d(-1,0,0);
+            glVertex3d(-1,1,1);
+            glNormal3d(-1,0,0);
+            glVertex3d(-1,1,-1);
+            glNormal3d(-1,0,0);
+            glVertex3d(-1,-1,-1);
+            glNormal3d(-1,0,0);
+            glVertex3d(-1,-1,1);
+
+            glColor3ub(0,100,100); //face cyan
+            glNormal3d(0,0,-1);
+            glVertex3d(1,1,-1);
+            glNormal3d(0,0,-1);
+            glVertex3d(1,-1,-1);
+            glNormal3d(0,0,-1);
+            glVertex3d(-1,-1,-1);
+            glNormal3d(0,0,-1);
+            glVertex3d(-1,1,-1);
+
+
+            glColor3ub(100,0,100); //face magenta
+            glNormal3d(0,0,1);
+            glVertex3d(1,-1,1);
+            glNormal3d(0,0,1);
+            glVertex3d(1,1,1);
+            glNormal3d(0,0,1);
+            glVertex3d(-1,1,1);
+            glNormal3d(0,0,1);
+            glVertex3d(-1,-1,1);
+*/
+            glEnd();
+
+
+            glPopMatrix();
+
+
+
 
 
         glPushMatrix();
+        glTranslated(0,0,40);
         glBegin(GL_TRIANGLE_STRIP);
 
         glTexCoord2d(0, 0);

@@ -280,7 +280,7 @@ void Drawer::light(unsigned int timestep)
 
         //5
 
-        //glNormal3d(0,1,0);
+        glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
         glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
 
         //6
@@ -291,12 +291,13 @@ void Drawer::light(unsigned int timestep)
         glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
         glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
         //8
-/*
+        glNormal3d(0,0,1);
         glVertex3d(0, 0,Block::SIZE);
-
+        //9
+        glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
         glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
 
-*/
+
         glEnd();
         glPopMatrix();
 

@@ -59,10 +59,10 @@ namespace Camera
 
     if (input.xrel() || input.yrel())
     {
-      const int sensivity = config["sensivity"] / 10;
+      const int sensitivity = config["sensitivity"] / 10;
       const int invert = config["invert_mouse"] ? - 1 : 1;
-      _theta -= input.xrel() * sensivity;
-      _phi -= input.yrel() * sensivity * invert;
+      _theta -= input.xrel() * sensitivity;
+      _phi -= input.yrel() * sensitivity * invert;
       vectorsFromAngles();
     }
     else

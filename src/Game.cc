@@ -12,8 +12,8 @@
 #include <chrono>
 
 Game::Game()
-  : _map(), _drawer(), //_camera(new Camera::FreeFly)
-    _camera(new Camera::Player(_map))
+  : _map(), _drawer(), _camera(new Camera::FreeFly)
+    //_camera(new Camera::Player(_map))
 {
 }
 
@@ -166,10 +166,10 @@ Game::drawGL(const Block::Basic* selectedCoord, int fpsFromSDL)
 
   _drawer.drawBlocks(_map);
   //_drawer.drawChunks(_map.getChunks(), selectedCoord);
- // _drawer.light(fpsFromSDL);
+  _drawer.light(fpsFromSDL);
 
   showCoord(selectedCoord);
-  drawAxis(1000);
+  drawAxis(100);
   drawFPS(fpsFromSDL);
   drawHUD();
 

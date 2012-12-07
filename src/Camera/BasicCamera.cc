@@ -35,7 +35,7 @@ namespace Camera
   }
 
   void
-  Basic::setPosition(const Core::Vector3D & position)
+  Basic::setPosition(const Core::Vector3D& position)
   {
     _position = position;
     _target = _position + _forward;

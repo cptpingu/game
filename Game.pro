@@ -27,7 +27,8 @@ SOURCES += \
     src/Camera/FreeFly.cc \
     src/Camera/Player.cc \
     src/ConfigManager.cc \
-    src/InputManager.cc
+    src/InputManager.cc \
+    src/State.cc
 
 HEADERS += \
     src/Core/Vector3D.hh \
@@ -64,7 +65,8 @@ HEADERS += \
     src/ConfigManager.hh \
     src/InputManager.hh \
     src/Block/NeighbourMatrix.hh \
-    src/Core/Assert.hh
+    src/Core/Assert.hh \
+    src/State.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

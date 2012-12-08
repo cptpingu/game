@@ -4,9 +4,9 @@
 # include "Opengl.hh"
 # include "Map.hh"
 # include "GLUtils.hh"
-# include "Camera/BasicCamera.hh"
 # include "Drawer.hh"
 # include "ImageFile.hh"
+# include "State.hh"
 
 # include <SDL/SDL.h>
 # include <iostream>
@@ -42,9 +42,10 @@ private:
   void drawHUD();
 
 private:
-  Map            _map;
-  Drawer         _drawer;
-  Camera::Basic* _camera;
+  Map     _map;
+  Drawer  _drawer;
+  State   _state;
+
 };
 
 #endif /* !GAME_HH_ */

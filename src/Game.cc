@@ -12,14 +12,12 @@
 #include <chrono>
 
 Game::Game()
-  : _map(), _drawer(), //_camera(new Camera::FreeFly)
-    _camera(new Camera::Player(_map))
+  : _map(), _drawer(), _state(_map)
 {
 }
 
 Game::~Game()
 {
-  delete _camera;
 }
 
 bool
@@ -69,8 +67,9 @@ Game::play()
     elapsed_time = current_time - last_time;
     last_time = current_time;
 
-    _camera->animate(elapsed_time);
-    std::pair<Block::Basic*, Block::FaceType> pickedBlock = _camera->picking(_map, _drawer);
+    _state.getCamera()->animate(elapsed_time);
+    std::pair<Block::Basic*, Block::FaceType> pickedBlock =
+        _state.getCamera()->picking(_map, _drawer);
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);
 
@@ -97,6 +96,10 @@ Game::play()
       buff << "screenshot-" << time(0) << ".bmp";
       takeScreenshot(buff.str().c_str());
     }
+    else if (input.isPressed("freefly_state", true))
+      _state.changeState(State::FreeFly);
+    else if (input.isPressed("player_state", true))
+      _state.changeState(State::Player);
     else if (input.isPressed("quit", true))
       return;
   }
@@ -163,7 +166,7 @@ Game::drawGL(const Block::Basic* selectedCoord, int fpsFromSDL)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  _camera->look();
+  _state.getCamera()->look();
 
   _drawer.drawBlocks(_map);
   _drawer.light(fpsFromSDL);
@@ -181,10 +184,10 @@ void
 Game::showCoord(const Block::Basic* selectedCoord)
 {
   ConfigManager& config = ConfigManager::getInstance();
-  auto pos = _camera->getCurrentPosition();
+  auto pos = _state.getCamera()->getCurrentPosition();
   std::stringstream buff;
 
-  Core::Vector3D look = _camera->getCurrentLook();
+  Core::Vector3D look = _state.getCamera()->getCurrentLook();
   buff << "Current pos: " << pos._x << " " << pos._y << " " << pos._z << "\n"
        << "Look: " << look._x << " " << look._y << " " << look._z << "\n";
   if (selectedCoord)

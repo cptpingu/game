@@ -19,6 +19,8 @@ namespace Camera
     Basic();
     virtual ~Basic();
 
+    Basic& operator=(const Basic& camera);
+
     virtual std::pair<Block::Basic*, Block::FaceType>
     picking(const Map& map, const Drawer& drawer, int mouseX, int mouseY) const;
     virtual void setPosition(const Core::Vector3D& position);
@@ -33,20 +35,15 @@ namespace Camera
     Core::Vector3D getCurrentLook() const;
 
   protected:
-    //vertical motion stuffs
-    Uint32 _timeBeforeStoppingVerticalMotion;
-    bool _verticalMotionActive;
-    int _verticalMotionDirection;
+    void vectorsFromAngles();
+
+  protected:
     Core::Vector3D _position;
     Core::Vector3D _target;
     Core::Vector3D _forward;
     Core::Vector3D _left;
     double _theta;
     double _phi;
-
-    void vectorsFromAngles();
-    std::pair<int, int> innerCoordChunktoAbsolute(const std::pair<int, int>& coord,
-                                                  const std::pair<int, int>& selectedCoord);
   };
 } // Camera
 

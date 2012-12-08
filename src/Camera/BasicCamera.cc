@@ -21,7 +21,6 @@ namespace Camera
     _target = Core::Vector3D(1, 1, 0);
     _phi = 0;
     _theta = 0;
-    _verticalMotionActive = false;
     vectorsFromAngles();
 
     SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -32,6 +31,19 @@ namespace Camera
   {
     SDL_WM_GrabInput(SDL_GRAB_OFF);
     SDL_ShowCursor(SDL_ENABLE);
+  }
+
+  Basic&
+  Basic::operator=(const Basic& camera)
+  {
+    _position = camera._position;
+    _target = camera._target;
+    _forward = camera._forward;
+    _left = camera._left;
+    _theta = camera._theta;
+    _phi = camera._phi;
+
+    return *this;
   }
 
   void

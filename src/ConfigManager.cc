@@ -35,11 +35,14 @@ ConfigManager::ConfigManager()
   _bindings["insert_block"] = SDLK_g;
   _bindings["remove_block"] = SDLK_f;
 
-
   _bindings["wireframe_mode"] = SDLK_w;
   _bindings["normal_mode"] = SDLK_x;
   _bindings["take_screenshot"] = SDLK_p;
   _bindings["quit"] = SDLK_ESCAPE;
+
+  _bindings["freefly_state"] = SDLK_F1;
+  _bindings["player_state"] = SDLK_F2;
+
 
   _bindings["invert_mouse"] = 1;
 
@@ -96,7 +99,7 @@ ConfigManager::operator[](const std::string& name) const
 {
   auto found = _bindings.find(name);
   ASSERT_MSG(found != _bindings.end(),
-             "Option \" " << name << " \" not found in configuration!");
+             "Option \"" << name << "\" not found in configuration!");
   return found->second;
 }
 

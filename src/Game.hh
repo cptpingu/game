@@ -36,16 +36,16 @@ public:
 private:
   void loadtextures();
   void loadShaders();
-  void drawGL(const Block::Basic* selectedCoord, int fpsFromSDL);
+  void drawGL(const Block::Basic* selectedCoord, int elapsedTime);
   void showCoord(const Block::Basic* selectedCoord);
-  void drawFPS(int fpsFromSDL);
+  void drawFPS(int elapsedTime);
   void drawHUD();
 
 private:
-  Map     _map;
-  Drawer  _drawer;
-  State   _state;
-
+  Map    _map;
+  Drawer _drawer;
+  State  _state;
+  Uint32 _fps;
 };
 
 #endif /* !GAME_HH_ */

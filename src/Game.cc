@@ -56,30 +56,32 @@ void
 Game::play()
 {
   ConfigManager& config = ConfigManager::getInstance();
-  const Uint32 time_per_frame = 1000 / config["fps"];
-  Uint32 last_time,current_time,elapsed_time; //for time animation
-  Uint32 stop_time; //for frame limit
+  InputManager& input = InputManager::getInstance();
+  const Uint32 timePerFrame = 1000 / config["fps"];
+  Uint32 accumulatedTime = 0;
+  Uint32 nbFrame = 0;
+  Uint32 currentTime = 0;
+  Uint32 elapsedTime = 0;
+  Uint32 stopTime = 0;
+  Uint32 lastTime = SDL_GetTicks();
+  bool stop = false;
 
-  last_time = SDL_GetTicks();
-  for (;;)
+  while (!stop)
   {
-    current_time = SDL_GetTicks();
-    elapsed_time = current_time - last_time;
-    last_time = current_time;
+    currentTime = SDL_GetTicks();
+    elapsedTime = currentTime - lastTime;
+    accumulatedTime += elapsedTime;
+    lastTime = currentTime;
+    ++nbFrame;
 
-    _state.getCamera()->animate(elapsed_time);
+    _state.getCamera()->animate(elapsedTime);
     std::pair<Block::Basic*, Block::FaceType> pickedBlock =
         _state.getCamera()->picking(_map, _drawer);
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);
 
-    //float fps = ( numFrames/(float)(SDL_GetTicks() - startTime) )*1000;
-    stop_time = SDL_GetTicks();
-    drawGL(pickedBlock.first, elapsed_time);
-    if ((stop_time - last_time) < time_per_frame)
-      SDL_Delay(time_per_frame - (stop_time - last_time));
+    drawGL(pickedBlock.first, elapsedTime);
 
-    InputManager& input = InputManager::getInstance();
     input.handleInput();
 
     if (input.isPressed("insert_block", true))
@@ -101,7 +103,17 @@ Game::play()
     else if (input.isPressed("player_state", true))
       _state.changeState(State::Player);
     else if (input.isPressed("quit", true))
-      return;
+      stop = true;
+
+    stopTime = SDL_GetTicks();
+    if ((stopTime - lastTime) < timePerFrame)
+      SDL_Delay(timePerFrame - (stopTime - lastTime));
+    if (accumulatedTime >= 1000)
+    {
+      _fps = nbFrame / (accumulatedTime / 1000.0);
+      accumulatedTime = 0;
+      nbFrame = 0;
+    }
   }
 }
 
@@ -159,7 +171,7 @@ Game::loadShaders()
 }
 
 void
-Game::drawGL(const Block::Basic* selectedCoord, int fpsFromSDL)
+Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -169,11 +181,11 @@ Game::drawGL(const Block::Basic* selectedCoord, int fpsFromSDL)
   _state.getCamera()->look();
 
   _drawer.drawBlocks(_map);
-  _drawer.light(fpsFromSDL);
+  _drawer.light(elapsedTime);
 
   showCoord(selectedCoord);
   drawAxis(100);
-  drawFPS(fpsFromSDL);
+  drawFPS(elapsedTime);
   drawHUD();
 
   glFlush();
@@ -207,26 +219,11 @@ Game::showCoord(const Block::Basic* selectedCoord)
 }
 
 void
-Game::drawFPS(int fpsFromSDL)
+Game::drawFPS(int elapsedTime)
 {
   ConfigManager& config = ConfigManager::getInstance();
-  typedef std::chrono::time_point<std::chrono::high_resolution_clock> chrono;
-
-  static unsigned int frames = 0;
-  static chrono lastTime;
   static char strFrameRate[50] = {0};
-
-  const chrono currentTime =  std::chrono::high_resolution_clock::now();
-  ++frames;
-  const int elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>
-      (currentTime - lastTime).count();
-
-  if (elapsedTime > 1000)
-  {
-    lastTime = currentTime;
-    sprintf(strFrameRate, "FPS: %d %d", frames, fpsFromSDL);
-    frames = 0;
-  }
+  sprintf(strFrameRate, "FPS: %d", _fps);
 
   TextureManager& textures = TextureManager::getInstance();
   textures.glPrint(0, config["window_height"] - (16 * 10), strFrameRate, 0);

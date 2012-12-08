@@ -50,6 +50,17 @@ void Map::InitGroundBlocks(int)
       createBlock(where);
     }
   }
+
+//  for (int i = 0; i < 40; ++i)
+//  {
+//    for (int j = 0; j < 40; ++j)
+//    {
+//      where._x = i + 1;
+//      where._y = j + 1;
+//      where._z = 20;
+//      createBlock(where);
+//    }
+//  }
 }
 
 void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)

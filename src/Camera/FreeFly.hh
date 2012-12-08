@@ -15,6 +15,11 @@ namespace Camera
     virtual void animate(unsigned int timestep);
     virtual std::pair<Block::Basic*, Block::FaceType>
     picking(const Map& map, const Drawer& drawer) const;
+
+  private:
+    unsigned int _timeBeforeStoppingVerticalMotion;
+    bool _verticalMotionActive;
+    int _verticalMotionDirection;
   };
 } // Camera
 

@@ -43,6 +43,9 @@ Game::load()
   glDepthFunc(GL_LEQUAL);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
+
+  _drawer.initVBO(_map);
+
   _map.loadBlocks("data/map/block.txt");
   _map.InitGroundBlocks(20);
 
@@ -78,7 +81,10 @@ Game::play()
     std::pair<Block::Basic*, Block::FaceType> pickedBlock =
         _state.getCamera()->picking(_map, _drawer);
     if (pickedBlock.first)
+    {
       pickedBlock.first->highlight(pickedBlock.second, true);
+      std::cout << pickedBlock.second << std::endl;
+    }
 
     drawGL(pickedBlock.first, elapsedTime);
 
@@ -182,6 +188,7 @@ Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
 
   _drawer.drawBlocks(_map);
   _drawer.light(elapsedTime);
+   _drawer.drawVBO();
 
   showCoord(selectedCoord);
   drawAxis(100);

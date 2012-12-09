@@ -6,11 +6,79 @@
 
 #include <iostream>
 
+// front up
+
 namespace Block
 {
+  const GLfloat Basic::_vertices[108] =
+  {
+    +1, +1, +1,  -1, +1, +1,  -1, -1, +1, // v0-v1-v2 (up)
+    -1, -1, +1,  +1, -1, +1,  +1, +1, +1, // v2-v3-v0
+
+    +1, +1, +1,  +1, -1, +1,  +1, -1, -1, // v0-v3-v4 (right)
+    +1, -1, -1,  +1, +1, -1,  +1, +1, +1, // v4-v5-v0
+
+    +1, +1, +1,   +1, +1,-1,  -1, +1, -1, // v0-v5-v6 (back)
+    -1, +1, -1,  -1, +1, +1,  +1, +1, +1, // v6-v1-v0
+
+    -1, +1, +1,  -1, +1, -1,  -1, -1, -1, // v1-v6-v7 (left)
+    -1, -1, -1,  -1, -1, +1,  -1, +1, +1, // v7-v2-v1
+
+    -1, -1, -1,  +1, -1, -1,  +1, -1, +1, // v7-v4-v3 (front)
+    +1, -1, +1,  -1, -1, +1,  -1, -1, -1, // v3-v2-v7
+
+    +1, -1, -1,  -1, -1, -1,  -1, +1, -1, // v4-v7-v6 (down)
+    -1, +1, -1,  +1, +1, -1,  +1, -1, -1  // v6-v5-v4
+  };
+
+  // normal array
+  const GLfloat Basic::_normals[108] =
+  {
+    0, 0, 1,   0, 0, 1,   0, 0, 1,        // v0-v1-v2 (up)
+    0, 0, 1,   0, 0, 1,   0, 0, 1,        // v2-v3-v0
+
+    1, 0, 0,   1, 0, 0,   1, 0, 0,        // v0-v3-v4 (right)
+    1, 0, 0,   1, 0, 0,   1, 0, 0,        // v4-v5-v0
+
+    0, 1, 0,   0, 1, 0,   0, 1, 0,        // v0-v5-v6 (back)
+    0, 1, 0,   0, 1, 0,   0, 1, 0,        // v6-v1-v0
+
+    -1, 0, 0,  -1, 0, 0,  -1, 0, 0,       // v1-v6-v7 (left)
+    -1, 0, 0,  -1, 0, 0,  -1, 0, 0,       // v7-v2-v1
+
+    0,-1, 0,   0,-1, 0,   0,-1, 0,        // v7-v4-v3 (front)
+    0,-1, 0,   0,-1, 0,   0,-1, 0,        // v3-v2-v7
+
+    0, 0,-1,   0, 0,-1,   0, 0,-1,        // v4-v7-v6 (down)
+    0, 0,-1,   0, 0,-1,   0, 0,-1         // v6-v5-v4
+  };
+
+  // texture array
+  const GLfloat Basic::_textures[108] =
+  {
+    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v0-v1-v2 (up)
+    0, 0, 0,  1, 0, 0,  1, 1, 0,          // v2-v3-v0
+
+    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v0-v3-v4 (right)
+    0, 0, 0,  1, 0, 0,  1, 1, 0,          // v4-v5-v0
+
+    0, 1, 0,  0, 0, 0,  1, 0, 0,          // v0-v5-v6 (back)
+    1, 0, 0,  1, 1, 0,  0, 1, 0,          // v6-v1-v0
+
+    0, 1, 0,  0, 0, 0,  1, 0, 0,          // v1-v6-v7 (left)
+    1, 0, 0,  1, 1, 0,  0, 1, 0,          // v7-v2-v1
+
+    0, 0, 0,  1, 0, 0,  1, 1, 0,          // v7-v4-v3 (front)
+    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v3-v2-v7
+
+    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v4-v7-v6 (down)
+    0, 0, 0,  1, 0, 0,  1, 1, 0           // v6-v5-v4
+  };
+
   Basic::Basic(int x, int y, int z)
     : super(x, y, z),
-      _highlights()
+      _highlights(),
+      _pickingVBOId(0)
   {
     registerBlock();
   }
@@ -18,6 +86,42 @@ namespace Block
   Basic::~Basic()
   {
     unregisterBlock();
+  }
+
+  void
+  Basic::init()
+  {
+    initPickingBox();
+    specificInit();
+  }
+
+  void
+  Basic::initPickingBox()
+  {
+#define INIT_COLOR(SHIFT, COLOR)                            \
+    for (int i = 18 * SHIFT; i < 18 + (18 * SHIFT); i += 3) \
+    {                                                       \
+      _pickingColors[0 + i] = _id._x / 255.0;               \
+      _pickingColors[1 + i] = _id._y / 255.0;               \
+      _pickingColors[2 + i] = COLOR / 255.0;                \
+    }
+
+    INIT_COLOR(0, Block::up);
+    INIT_COLOR(1, Block::right);
+    INIT_COLOR(2, Block::back);
+    INIT_COLOR(3, Block::left);
+    INIT_COLOR(4, Block::front);
+    INIT_COLOR(5, Block::down);
+#undef INIT_COLOR
+
+    glGenBuffers(1, &_pickingVBOId);
+    ASSERT_MSG(_pickingVBOId, "Vertex buffer initialisation failed!");
+    glBindBuffer(GL_ARRAY_BUFFER, _pickingVBOId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices) + sizeof(_normals) + sizeof(_pickingColors), 0, GL_STATIC_DRAW);
+
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(_vertices), _vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(_vertices), sizeof(_normals), _normals);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(_vertices) + sizeof(_normals), sizeof(_pickingColors), _pickingColors);
   }
 
   std::string
@@ -73,7 +177,7 @@ namespace Block
   {
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable(getShaderName());
-    ASSERT_MSG(neighbours(0, 0, 0) == this, "Neighbours (0,0,0) must be the block itself!");
+    //ASSERT_MSG(neighbours(0, 0, 0) == this, "Neighbours (0,0,0) must be the block itself!");
     specificDraw(neighbours);
     shaders.disable();
     //drawPickingBox();
@@ -90,74 +194,35 @@ namespace Block
   void
   Basic::drawPickingBox() const
   {
-#define DRAW_FACE(X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3, X4, Y4, Z4, FACE)           \
-    {                                                                             \
-      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X1 * Block::SIZE, Y1 * Block::SIZE, Z1 * Block::SIZE);           \
-      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X2 * Block::SIZE, Y2 * Block::SIZE, Z2 * Block::SIZE);           \
-      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X3 * Block::SIZE, Y3 * Block::SIZE, Z3 * Block::SIZE);           \
-      glColor3f(_id._x / 255.0, _id._y / 255.0, FACE / 255.0);                    \
-      glVertex3d(X4 * Block::SIZE, Y4 * Block::SIZE, Z4 * Block::SIZE);           \
-    }
+    ASSERT_MSG(_pickingVBOId, "Invalid vertex buffer!");
+    glBindBuffer(GL_ARRAY_BUFFER, _pickingVBOId);
+
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(_vertices));
+    glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(_vertices)+sizeof(_normals)));
+    glVertexPointer(3, GL_FLOAT, 0, 0);
 
     glPushMatrix();
-    glTranslatef(_x * Block::SIZE, _y * Block::SIZE, _z * Block::SIZE);
-
-    glBegin(GL_QUADS);
-
-    //par terre
-    DRAW_FACE(0, 0, 0,
-              1, 0, 0,
-              1, 1, 0,
-              0, 1, 0,
-              Block::down);
-
-    //face droite
-    DRAW_FACE(0, 0, 1,
-              0, 1, 1,
-              0, 1, 0,
-              0, 0, 0,
-              Block::right);
-
-    //face gauche
-    DRAW_FACE(1, 0, 1,
-              1, 1, 1,
-              1, 1, 0,
-              1, 0, 0,
-              Block::left);
-
-    //face face
-    DRAW_FACE(0, 1, 1,
-              1, 1, 1,
-              1, 1, 0,
-              0, 1, 0,
-              Block::front);
-
-    //face derriere
-    DRAW_FACE(0, 0, 1,
-              1, 0, 1,
-              1, 0, 0,
-              0, 0, 0,
-              Block::back);
-
-    //face au ciel
-    DRAW_FACE(0, 0, 1,
-              1, 0, 1,
-              1, 1, 1,
-              0, 1, 1,
-              Block::up);
-#undef DRAW_FACE
-
-    glEnd();
-
+    glTranslatef(_x * Block::SIZE + Block::SIZE / 2,
+                 _y * Block::SIZE + Block::SIZE / 2,
+                 _z * Block::SIZE + Block::SIZE / 2);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
     glPopMatrix();
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
   }
 
   void
   Basic::selectionDraw() const
   {
+    // FIXME put in a vbo
 #define DRAW_LINE(X, Y, Z) \
   glVertex3d(X * Block::SIZE, Y * Block::SIZE, Z * Block::SIZE)
 

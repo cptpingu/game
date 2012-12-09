@@ -15,6 +15,11 @@ namespace Block
   {
   }
 
+  void
+  Triangle::specificInit()
+  {
+  }
+
   std::string
   Triangle::getShaderName() const
   {

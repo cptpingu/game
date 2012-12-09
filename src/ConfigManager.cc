@@ -48,7 +48,7 @@ ConfigManager::ConfigManager()
 
   _bindings["speed"] = 10;
   _bindings["sensitivity"] = 10;
-  _bindings["fps"] = 50;
+  _bindings["fps"] = 60;
   _bindings["window_width"] = 640;
   _bindings["window_height"] = 480;
   _bindings["fullscreen"] = 0;

@@ -1,5 +1,7 @@
 varying vec3 N;
 varying vec3 v;
+attribute float Temps;
+varying float vTemps;
 
 void main(void)
 {
@@ -9,5 +11,5 @@ void main(void)
    gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 
-
+   vTemps = Temps;
 }

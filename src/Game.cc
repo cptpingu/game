@@ -15,14 +15,14 @@
 Game::Game()
   : _map(), _drawer(), _state(_map)
 {
-    // SDL_WM_GrabInput(SDL_GRAB_ON);
-    // SDL_ShowCursor(SDL_DISABLE);
+  SDL_WM_GrabInput(SDL_GRAB_ON);
+  SDL_ShowCursor(SDL_DISABLE);
 }
 
 Game::~Game()
 {
-    SDL_WM_GrabInput(SDL_GRAB_OFF);
-    SDL_ShowCursor(SDL_ENABLE);
+  SDL_WM_GrabInput(SDL_GRAB_OFF);
+  SDL_ShowCursor(SDL_ENABLE);
 }
 
 bool

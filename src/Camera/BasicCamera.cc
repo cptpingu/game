@@ -22,15 +22,10 @@ namespace Camera
     _phi = 0;
     _theta = 0;
     vectorsFromAngles();
-
-    SDL_WM_GrabInput(SDL_GRAB_ON);
-    SDL_ShowCursor(SDL_DISABLE);
   }
 
   Basic::~Basic()
   {
-    SDL_WM_GrabInput(SDL_GRAB_OFF);
-    SDL_ShowCursor(SDL_ENABLE);
   }
 
   Basic&

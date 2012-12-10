@@ -66,6 +66,8 @@ HEADERS += \
     src/InputManager.hh \
     src/Block/NeighbourMatrix.hh \
     src/Core/Assert.hh \
+    src/Model/StaticModelManager.hh \
+    src/Model/StaticCubeModel.hh \
     src/State.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall

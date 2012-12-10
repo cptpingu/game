@@ -17,7 +17,7 @@ namespace Block
   void
   Cube::specificInit()
   {
-    _vboId = Model::Cube::init();
+    _vboId = Model::CubeModel::getInstance().getVboId();
     ASSERT_MSG(_vboId, "Vertex buffer initialisation failed!");
   }
 

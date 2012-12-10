@@ -28,6 +28,7 @@ SOURCES += \
     src/Camera/Player.cc \
     src/ConfigManager.cc \
     src/InputManager.cc \
+    src/Model/StaticCubeModel.cc \
     src/State.cc
 
 HEADERS += \

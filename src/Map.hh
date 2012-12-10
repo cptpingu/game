@@ -28,11 +28,6 @@ public:
   Map();
   ~Map();
 
-
-
-    void InitGroundBlocks(int SIZE);
-
-
   /*!
   ** Create a block at a given position.
   **

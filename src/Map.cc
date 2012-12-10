@@ -37,35 +37,7 @@ Map::createBlock(const Core::Container3D<int>& where)
   }
 }
 
-void Map::InitGroundBlocks(int)
-{
-  Core::Container3D<int> where;
-
-  for (int i = 0; i < 4; ++i)
-  {
-    for (int j = 0; j < 4; ++j)
-    {
-      where._x = i + 1;
-      where._y = j + 1;
-      where._z = 0;
-      createBlock(where);
-    }
-  }
-
-  for (int i = 0; i < 40; ++i)
-  {
-    for (int j = 0; j < 40; ++j)
-    {
-      where._x = i + 1;
-      where._y = j + 1;
-      where._z = 20;
-      createBlock(where);
-    }
-  }
-}
-
 void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
-
 {
   if (!who)
     return;

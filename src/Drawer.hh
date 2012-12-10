@@ -44,7 +44,7 @@ public:
 
   void initVBO(const Map& map);
   void drawVBO();
-
+  void drawSomeBlocks(Map& map);
 
 };
 

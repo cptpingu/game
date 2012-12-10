@@ -9,12 +9,12 @@ namespace Model
   {
     void init()
     {
-      Cube::init();
+      CubeModel::getInstance().init();
     }
 
     void release()
     {
-      Cube::release();
+      CubeModel::getInstance().release();
     }
   } // StaticModelManager
 } // Model

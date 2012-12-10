@@ -18,6 +18,9 @@
 namespace Camera
 {
   FreeFly::FreeFly()
+    : _timeBeforeStoppingVerticalMotion(0),
+      _verticalMotionActive(false),
+      _verticalMotionDirection(0)
   {
   }
 

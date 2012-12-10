@@ -113,12 +113,11 @@ namespace Block
   }
 
   void
-  Basic::draw(const NeighbourMatrix& neighbours) const
+  Basic::draw() const
   {
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable(getShaderName());
-    //ASSERT_MSG(neighbours(0, 0, 0) == this, "Neighbours (0,0,0) must be the block itself!");
-    specificDraw(neighbours);
+    specificDraw();
     shaders.disable();
     //drawPickingBox();
     if (isHighlight())

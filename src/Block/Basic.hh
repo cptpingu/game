@@ -52,7 +52,7 @@ namespace Block
     bool isHighlighted(FaceType face) const;
     bool isHighlight() const;
     void resetHighlight();
-    void draw(const NeighbourMatrix& neighbours) const;
+    void draw() const;
     void selectionDraw() const;
 
   public:
@@ -63,7 +63,7 @@ namespace Block
   private:
     void initPickingBox();
     virtual void specificInit() = 0;
-    virtual void specificDraw(const NeighbourMatrix& neighbours) const = 0;
+    virtual void specificDraw() const = 0;
     virtual Core::Vector3D specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const = 0;
 
   protected:

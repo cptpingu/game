@@ -19,7 +19,7 @@ namespace Block
 
   private:
     virtual void specificInit();
-    virtual void specificDraw(const NeighbourMatrix& neighbours) const;
+    virtual void specificDraw() const;
     virtual Core::Vector3D specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const;
   };
 } // Block

@@ -117,17 +117,36 @@ void
 Drawer::drawBlocks(const Map& map) const
 {
     const Map::blocks_type& blocks = map.getBlocks();
-    Block::NeighbourMatrix neighbours;
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+
+
+    ShadersManager& shaders = ShadersManager::getInstance();
+    //glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), isHighlight() ? 0.2 : 0.0);
+    glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), 0.0);
+    GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
+    glVertexAttrib1f(attrib, 0.0);
+
+    TextureManager& textures = TextureManager::getInstance();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+
+    ASSERT_MSG(Model::CubeModel::getInstance().getVboId(), "Invalid vertex buffer!");
+    glBindBuffer(GL_ARRAY_BUFFER, Model::CubeModel::getInstance().getVboId());
+
+    glVertexPointer(3, GL_FLOAT, 0, 0);
+    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::Cube::vertices));
+    glTexCoordPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
+
+
     auto end = blocks.end();
     for (auto block = blocks.begin(); block != end; ++block)
     {
-        block->second->draw(neighbours);
-        block->second->resetHighlight();
+      block->second->draw();
+      block->second->resetHighlight();
     }
 
     glDisableClientState(GL_VERTEX_ARRAY);

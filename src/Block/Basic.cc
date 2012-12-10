@@ -3,7 +3,7 @@
 #include "../ShadersManager.hh"
 #include "../IdManager.hh"
 #include "../Core/Random.hh"
-#include "../Model/StaticCubeModel.hh"
+#include "../Model/StaticPickingBoxModel.hh"
 
 #include <iostream>
 
@@ -51,14 +51,17 @@ namespace Block
     glGenBuffers(1, &_pickingVBOId);
     ASSERT_MSG(_pickingVBOId, "Vertex buffer initialisation failed!");
     glBindBuffer(GL_ARRAY_BUFFER, _pickingVBOId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Model::Cube::vertices) +
-		 sizeof(Model::Cube::normals) + sizeof(_pickingColors), 0, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Model::PickingBox::vertices) +
+                 sizeof(_pickingColors), 0, GL_STATIC_DRAW);
 
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Model::Cube::vertices), Model::Cube::vertices);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(Model::Cube::vertices),
-		    sizeof(Model::Cube::normals), Model::Cube::normals);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals),
-		    sizeof(_pickingColors), _pickingColors);
+    glBufferSubData(GL_ARRAY_BUFFER,
+                    0,
+                    sizeof(Model::PickingBox::vertices),
+                    Model::PickingBox::vertices);
+    glBufferSubData(GL_ARRAY_BUFFER,
+                    sizeof(Model::PickingBox::vertices),
+                    sizeof(_pickingColors),
+                    _pickingColors);
   }
 
   std::string
@@ -138,8 +141,9 @@ namespace Block
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::Cube::vertices));
-    glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
+    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::PickingBox::vertices));
+    glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::PickingBox::vertices) +
+                                           sizeof(_pickingColors)));
     glVertexPointer(3, GL_FLOAT, 0, 0);
 
     glPushMatrix();

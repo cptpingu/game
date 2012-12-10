@@ -29,6 +29,7 @@ SOURCES += \
     src/ConfigManager.cc \
     src/InputManager.cc \
     src/Model/StaticCubeModel.cc \
+    src/Model/StaticPickingBoxModel.cc \
     src/State.cc
 
 HEADERS += \
@@ -69,6 +70,7 @@ HEADERS += \
     src/Core/Assert.hh \
     src/Model/StaticModelManager.hh \
     src/Model/StaticCubeModel.hh \
+    src/Model/StaticPickingBoxModel.hh \
     src/State.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall

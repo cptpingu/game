@@ -236,16 +236,16 @@ void Drawer::light(unsigned int timestep)
         ShadersManager& shaders = ShadersManager::getInstance();
         shaders.enable("tex_lightning");
 
-
-        float distance = 5;
+        //float  id = glGetUniformLocation(prog, "var");
+        //float distance = 5;
 
         for (int i = 1;i<10;++i)
         {
         glPushMatrix();
-        glTranslated(0,3*i+1,30);
+        glTranslated(2*i,0,30);
         glRotated(45,1,0,0);
 
-        glVertexAttrib1f(,distance*i);
+        //glVertexAttrib1f(,distance*i);
 /*
         glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
         glMaterialfv(GL_FRONT, GL_SPECULAR, white);
@@ -432,7 +432,7 @@ void Drawer::light(unsigned int timestep)
         glEnable(GL_LIGHT0);
         int LightPos[4] = {0,0,60,1};
         glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
-
+        glLightf(GL_LIGHT0,GL_QUADRATIC_ATTENUATION,.1f);
 
         glPopMatrix();
 

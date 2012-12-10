@@ -24,8 +24,8 @@ void main (void)
 
    vec4 color = texture2D(tex, gl_TexCoord[0].st);
 
-     gl_FragColor.x = gl_FragColor.x/distance + color.x;
-     gl_FragColor.y =  gl_FragColor.y/distance + color.y;
-     gl_FragColor.z = gl_FragColor.z/distance + color.z;
+     gl_FragColor.x = gl_FragColor.x + color.x;
+     gl_FragColor.y =  gl_FragColor.y + color.y;
+     gl_FragColor.z = gl_FragColor.z + color.z;
 
 }

@@ -32,6 +32,7 @@ Map::createBlock(const Core::Container3D<int>& where)
       block = new Block::Cube(where._x , where._y, where._z);
 //    else
 //      block = new Block::Triangle(where._x , where._y, where._z);
+      block->init();
     _blocks.insert(blocks_type::value_type(where, block));
   }
 }
@@ -51,16 +52,16 @@ void Map::InitGroundBlocks(int)
     }
   }
 
-//  for (int i = 0; i < 40; ++i)
-//  {
-//    for (int j = 0; j < 40; ++j)
-//    {
-//      where._x = i + 1;
-//      where._y = j + 1;
-//      where._z = 20;
-//      createBlock(where);
-//    }
-//  }
+  for (int i = 0; i < 40; ++i)
+  {
+    for (int j = 0; j < 40; ++j)
+    {
+      where._x = i + 1;
+      where._y = j + 1;
+      where._z = 20;
+      createBlock(where);
+    }
+  }
 }
 
 void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
@@ -73,22 +74,22 @@ void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType wh
   switch (where)
   {
     case Block::back:
-      container = Core::Container3D<int>(who->_x , who->_y-1, who->_z);
+      container = Core::Container3D<int>(who->_x , who->_y + 1, who->_z);
       break;
     case Block::front:
-      container = Core::Container3D<int>(who->_x , who->_y+1, who->_z);
+      container = Core::Container3D<int>(who->_x , who->_y - 1, who->_z);
       break;
     case Block::left:
-      container = Core::Container3D<int>(who->_x+1 , who->_y, who->_z );
+      container = Core::Container3D<int>(who->_x - 1 , who->_y, who->_z );
       break;
     case Block::right:
-      container = Core::Container3D<int>(who->_x-1 , who->_y, who->_z );
+      container = Core::Container3D<int>(who->_x + 1 , who->_y, who->_z );
       break;
     case Block::up:
-      container = Core::Container3D<int>(who->_x , who->_y, who->_z+1);
+      container = Core::Container3D<int>(who->_x, who->_y, who->_z + 1);
       break;
     case Block::down:
-      container = Core::Container3D<int>(who->_x, who->_y, who->_z-1);
+      container = Core::Container3D<int>(who->_x, who->_y, who->_z - 1);
       break;
     default:
       ASSERT_MSG(false, "Bad face");

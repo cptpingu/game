@@ -42,6 +42,9 @@ public:
   void light(unsigned int timestep);
 
 
+  void initVBO(const Map& map);
+  void drawVBO();
+
 
 };
 

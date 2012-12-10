@@ -18,6 +18,7 @@ namespace Block
     virtual std::string getShaderName() const;
 
   private:
+    virtual void specificInit();
     virtual void specificDraw(const NeighbourMatrix& neighbors) const;
     virtual Core::Vector3D specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const;
   };

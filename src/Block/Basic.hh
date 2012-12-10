@@ -31,6 +31,23 @@ namespace Block
     back
   };
 
+  /*!
+  ** @class Basic
+  **
+  **
+  **    v1------v0
+  **   /|      /|
+  **  v2------v3|
+  **  | |     | |
+  **  | v6----|-v5
+  **  |/      |/
+  **  v7------v4
+  **
+  ** A cube has 6 sides and each side has 2 triangles, therefore, a cube consists
+  ** of 36 vertices (6 sides * 2 triangles * 3 vertices = 36 vertices). And, each
+  ** vertex is 3 components (x, y, z) of floats, therefore, the size of vertex
+  ** array is 108 floats (36 * 3 = 108).
+  */
   class Basic : public Core::Container3D<int>
   {
     typedef Core::Container3D<int> super;
@@ -42,6 +59,7 @@ namespace Block
   public:
     void registerBlock();
     void unregisterBlock();
+    void init();
 
     void highlight(FaceType face, bool highlight);
     bool isHighlighted(FaceType face) const;
@@ -56,13 +74,22 @@ namespace Block
     virtual Core::Vector3D collision(const Core::Vector3D& current, const Core::Vector3D& next) const;
 
   private:
+    void initPickingBox();
+    virtual void specificInit() = 0;
     virtual void specificDraw(const NeighbourMatrix& neighbours) const = 0;
     virtual Core::Vector3D specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const = 0;
 
-  private:
-  public:
+  protected:
     id_type _id;
     std::array<bool, FaceType::back + 1> _highlights;
+    GLuint  _pickingVBOId;
+    GLfloat _pickingColors[108];
+    GLuint  _vboId;
+
+  protected:
+    static const GLfloat _vertices[108];
+    static const GLfloat _normals[108];
+    static const GLfloat _textures[108];
   };
 } // Block
 

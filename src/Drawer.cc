@@ -408,8 +408,11 @@ void Drawer::light(unsigned int timestep)
         glPopMatrix();
 
 
-
-
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glLightf(GL_LIGHT0,GL_QUADRATIC_ATTENUATION,0.5f);
+        glLightf(GL_LIGHT0,GL_LINEAR_ATTENUATION,1.0f);
+        glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,2.0f);
 
 
         glPushMatrix();
@@ -426,11 +429,11 @@ void Drawer::light(unsigned int timestep)
         glEnd();
 
 
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
+
         int LightPos[4] = {0,0,60,1};
         glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
-        glLightf(GL_LIGHT0,GL_QUADRATIC_ATTENUATION,.1f);
+
+
 
         glPopMatrix();
 

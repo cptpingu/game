@@ -6,6 +6,7 @@
 #include "Architecte.hh"
 #include "Camera/FreeFly.hh"
 #include "Camera/Player.hh"
+#include "Model/StaticModelManager.hh"
 
 #include <ctime>
 #include <sstream>
@@ -14,10 +15,14 @@
 Game::Game()
   : _map(), _drawer(), _state(_map)
 {
+    // SDL_WM_GrabInput(SDL_GRAB_ON);
+    // SDL_ShowCursor(SDL_DISABLE);
 }
 
 Game::~Game()
 {
+    SDL_WM_GrabInput(SDL_GRAB_OFF);
+    SDL_ShowCursor(SDL_ENABLE);
 }
 
 bool
@@ -29,6 +34,8 @@ Game::load()
             << "Compile time: " << __DATE__ << " " << __TIME__ << std::endl
             << "TEXTURE_SIZE: " << Chunk::TEXTURE_SIZE << std::endl
             << "OpenGL v:     " << glGetString(GL_VERSION) << std::endl;
+
+  Model::StaticModelManager::init();
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -43,14 +50,16 @@ Game::load()
   glDepthFunc(GL_LEQUAL);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-
+  // Debug function
   _drawer.initVBO(_map);
+  //!
 
   _map.loadBlocks("data/map/block.txt");
   _map.InitGroundBlocks(20);
 
   loadtextures();
   loadShaders();
+
 
   return true;
 }
@@ -81,10 +90,7 @@ Game::play()
     std::pair<Block::Basic*, Block::FaceType> pickedBlock =
         _state.getCamera()->picking(_map, _drawer);
     if (pickedBlock.first)
-    {
       pickedBlock.first->highlight(pickedBlock.second, true);
-      std::cout << pickedBlock.second << std::endl;
-    }
 
     drawGL(pickedBlock.first, elapsedTime);
 

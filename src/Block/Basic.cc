@@ -3,78 +3,12 @@
 #include "../ShadersManager.hh"
 #include "../IdManager.hh"
 #include "../Core/Random.hh"
+#include "../Model/StaticCubeModel.hh"
 
 #include <iostream>
 
-// front up
-
 namespace Block
 {
-  const GLfloat Basic::_vertices[108] =
-  {
-    +1, +1, +1,  -1, +1, +1,  -1, -1, +1, // v0-v1-v2 (up)
-    -1, -1, +1,  +1, -1, +1,  +1, +1, +1, // v2-v3-v0
-
-    +1, +1, +1,  +1, -1, +1,  +1, -1, -1, // v0-v3-v4 (right)
-    +1, -1, -1,  +1, +1, -1,  +1, +1, +1, // v4-v5-v0
-
-    +1, +1, +1,  +1, +1, -1,  -1, +1, -1, // v0-v5-v6 (back)
-    -1, +1, -1,  -1, +1, +1,  +1, +1, +1, // v6-v1-v0
-
-    -1, +1, +1,  -1, +1, -1,  -1, -1, -1, // v1-v6-v7 (left)
-    -1, -1, -1,  -1, -1, +1,  -1, +1, +1, // v7-v2-v1
-
-    -1, -1, -1,  +1, -1, -1,  +1, -1, +1, // v7-v4-v3 (front)
-    +1, -1, +1,  -1, -1, +1,  -1, -1, -1, // v3-v2-v7
-
-    +1, -1, -1,  -1, -1, -1,  -1, +1, -1, // v4-v7-v6 (down)
-    -1, +1, -1,  +1, +1, -1,  +1, -1, -1  // v6-v5-v4
-  };
-
-  // normal array
-  const GLfloat Basic::_normals[108] =
-  {
-    0, 0, 1,   0, 0, 1,   0, 0, 1,        // v0-v1-v2 (up)
-    0, 0, 1,   0, 0, 1,   0, 0, 1,        // v2-v3-v0
-
-    1, 0, 0,   1, 0, 0,   1, 0, 0,        // v0-v3-v4 (right)
-    1, 0, 0,   1, 0, 0,   1, 0, 0,        // v4-v5-v0
-
-    0, 1, 0,   0, 1, 0,   0, 1, 0,        // v0-v5-v6 (back)
-    0, 1, 0,   0, 1, 0,   0, 1, 0,        // v6-v1-v0
-
-    -1, 0, 0,  -1, 0, 0,  -1, 0, 0,       // v1-v6-v7 (left)
-    -1, 0, 0,  -1, 0, 0,  -1, 0, 0,       // v7-v2-v1
-
-    0,-1, 0,   0,-1, 0,   0,-1, 0,        // v7-v4-v3 (front)
-    0,-1, 0,   0,-1, 0,   0,-1, 0,        // v3-v2-v7
-
-    0, 0,-1,   0, 0,-1,   0, 0,-1,        // v4-v7-v6 (down)
-    0, 0,-1,   0, 0,-1,   0, 0,-1         // v6-v5-v4
-  };
-
-  // texture array
-  const GLfloat Basic::_textures[108] =
-  {
-    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v0-v1-v2 (up)
-    0, 0, 0,  1, 0, 0,  1, 1, 0,          // v2-v3-v0
-
-    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v0-v3-v4 (right)
-    0, 0, 0,  1, 0, 0,  1, 1, 0,          // v4-v5-v0
-
-    0, 1, 0,  0, 0, 0,  1, 0, 0,          // v0-v5-v6 (back)
-    1, 0, 0,  1, 1, 0,  0, 1, 0,          // v6-v1-v0
-
-    0, 1, 0,  0, 0, 0,  1, 0, 0,          // v1-v6-v7 (left)
-    1, 0, 0,  1, 1, 0,  0, 1, 0,          // v7-v2-v1
-
-    0, 0, 0,  1, 0, 0,  1, 1, 0,          // v7-v4-v3 (front)
-    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v3-v2-v7
-
-    1, 1, 0,  0, 1, 0,  0, 0, 0,          // v4-v7-v6 (down)
-    0, 0, 0,  1, 0, 0,  1, 1, 0           // v6-v5-v4
-  };
-
   Basic::Basic(int x, int y, int z)
     : super(x, y, z),
       _highlights(),
@@ -117,11 +51,14 @@ namespace Block
     glGenBuffers(1, &_pickingVBOId);
     ASSERT_MSG(_pickingVBOId, "Vertex buffer initialisation failed!");
     glBindBuffer(GL_ARRAY_BUFFER, _pickingVBOId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices) + sizeof(_normals) + sizeof(_pickingColors), 0, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Model::Cube::vertices) +
+		 sizeof(Model::Cube::normals) + sizeof(_pickingColors), 0, GL_STATIC_DRAW);
 
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(_vertices), _vertices);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(_vertices), sizeof(_normals), _normals);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(_vertices) + sizeof(_normals), sizeof(_pickingColors), _pickingColors);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Model::Cube::vertices), Model::Cube::vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(Model::Cube::vertices),
+		    sizeof(Model::Cube::normals), Model::Cube::normals);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals),
+		    sizeof(_pickingColors), _pickingColors);
   }
 
   std::string
@@ -201,8 +138,8 @@ namespace Block
     glEnableClientState(GL_COLOR_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(_vertices));
-    glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(_vertices)+sizeof(_normals)));
+    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::Cube::vertices));
+    glColorPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
     glVertexPointer(3, GL_FLOAT, 0, 0);
 
     glPushMatrix();

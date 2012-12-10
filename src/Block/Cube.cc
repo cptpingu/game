@@ -1,6 +1,7 @@
 #include "Cube.hh"
 #include "../TextureManager.hh"
 #include "../ShadersManager.hh"
+#include "../Model/StaticCubeModel.hh"
 
 namespace Block
 {
@@ -16,14 +17,8 @@ namespace Block
   void
   Cube::specificInit()
   {
-    glGenBuffers(1, &_vboId);
+    _vboId = Model::Cube::init();
     ASSERT_MSG(_vboId, "Vertex buffer initialisation failed!");
-    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices) + sizeof(_normals) + sizeof(_textures), 0, GL_STATIC_DRAW);
-
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(_vertices), _vertices);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(_vertices), sizeof(_normals), _normals);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(_textures) + sizeof(_normals), sizeof(_textures), _textures);
   }
 
   std::string
@@ -35,6 +30,11 @@ namespace Block
   void
   Cube::specificDraw(const NeighbourMatrix& neighbours) const
   {
+    ShadersManager& shaders = ShadersManager::getInstance();
+    glUniform1f(glGetUniformLocation(shaders.get(getShaderName()), "cube_color"), isHighlight() ? 0.2 : 0.0);
+    GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
+    glVertexAttrib1f(attrib, 0.0);
+
     TextureManager& textures = TextureManager::getInstance();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
@@ -43,8 +43,8 @@ namespace Block
     glBindBuffer(GL_ARRAY_BUFFER, _vboId);
 
     glVertexPointer(3, GL_FLOAT, 0, 0);
-    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(_vertices));
-    glTexCoordPointer(3, GL_FLOAT, 0, (void*)(sizeof(_vertices) + sizeof(_normals)));
+    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::Cube::vertices));
+    glTexCoordPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
 
     glPushMatrix();
     glTranslatef(_x * Block::SIZE + Block::SIZE / 2,
@@ -52,8 +52,6 @@ namespace Block
                  _z * Block::SIZE + Block::SIZE / 2);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glPopMatrix();
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
   }
 
   Core::Vector3D

@@ -117,10 +117,6 @@ Drawer::drawBlocks(const Map& map) const
     const Map::blocks_type& blocks = map.getBlocks();
     Block::NeighbourMatrix neighbours;
 
-    ShadersManager& shaders = ShadersManager::getInstance();
-    GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
-    glVertexAttrib1f(attrib, 0.0);
-
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -136,7 +132,9 @@ Drawer::drawBlocks(const Map& map) const
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    shaders.disable();
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    ShadersManager::getInstance().disable();
 }
 
 

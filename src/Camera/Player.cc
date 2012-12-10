@@ -73,7 +73,7 @@ namespace Camera
       return;
     }
 
-    nextPos._z = blockPos->_z;
+    //nextPos._z = blockPos->_z;
     _isFalling = false;
   }
 

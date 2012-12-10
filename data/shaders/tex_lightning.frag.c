@@ -2,6 +2,7 @@ varying vec3 N;
 varying vec3 v;
 uniform sampler2D tex;
 
+
 void main (void)  
 {  
    vec3 L = normalize(gl_LightSource[0].position.xyz - v);   
@@ -23,8 +24,8 @@ void main (void)
 
    vec4 color = texture2D(tex, gl_TexCoord[0].st);
 
-     gl_FragColor.x = gl_FragColor.x + color.x;
-     gl_FragColor.y =  gl_FragColor.y + color.y;
-     gl_FragColor.z = gl_FragColor.z + color.z;
+     gl_FragColor.x = gl_FragColor.x/distance + color.x;
+     gl_FragColor.y =  gl_FragColor.y/distance + color.y;
+     gl_FragColor.z = gl_FragColor.z/distance + color.z;
 
 }

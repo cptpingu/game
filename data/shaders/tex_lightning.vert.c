@@ -1,5 +1,6 @@
 varying vec3 N;
 varying vec3 v;
+attribute float distance;
 
 void main(void)
 {

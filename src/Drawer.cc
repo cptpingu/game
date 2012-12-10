@@ -163,8 +163,7 @@ void Drawer::light(unsigned int timestep)
 
 
 
-    ShadersManager& shaders = ShadersManager::getInstance();
-    shaders.enable("tex_lightning");
+
 
 
 
@@ -180,7 +179,7 @@ void Drawer::light(unsigned int timestep)
     glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
     glMaterialfv(GL_FRONT, GL_SPECULAR, white);
     glMaterialfv(GL_FRONT, GL_AMBIENT,ambient);
-    GLfloat shininess[] = {50};
+    GLfloat shininess[] = {40};
     glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
 
     glBegin(GL_QUADS);
@@ -252,19 +251,26 @@ void Drawer::light(unsigned int timestep)
 
         glPopMatrix();
 
+        ShadersManager& shaders = ShadersManager::getInstance();
+        shaders.enable("tex_lightning");
 
+
+        float distance = 5;
+
+        for (int i = 1;i<10;++i)
+        {
         glPushMatrix();
-        glTranslated(10,0,30);
+        glTranslated(0,3*i+1,30);
         glRotated(45,1,0,0);
 
-
-
+        glVertexAttrib1f(,distance*i);
+/*
         glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
         glMaterialfv(GL_FRONT, GL_SPECULAR, white);
         glMaterialfv(GL_FRONT, GL_AMBIENT,ambient);
 
         glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
-
+        }*/
         glBegin(GL_QUADS);
 
             glNormal3d(1/sqrt(3),1/sqrt(3),1/sqrt(3));
@@ -374,7 +380,7 @@ void Drawer::light(unsigned int timestep)
 
 
             glPopMatrix();
-
+}
         glPushMatrix();
         glTranslated(0,0,40);
         glBegin(GL_TRIANGLE_STRIP);
@@ -426,14 +432,11 @@ void Drawer::light(unsigned int timestep)
 
 
 
-       glPushMatrix();
+        glPushMatrix();
 
         static double move = 0;
         move += 1 * timestep;
         glRotatef((move/60), 0, 1, 0);
-
-
-
 
         glBegin(GL_TRIANGLES);
         glColor3ub(255,0,255);
@@ -447,6 +450,7 @@ void Drawer::light(unsigned int timestep)
         glEnable(GL_LIGHT0);
         int LightPos[4] = {0,0,60,1};
         glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+
 
         glPopMatrix();
 

@@ -114,8 +114,7 @@ namespace Core
     return sqrt(_x * _x + _y * _y + _z * _z);
   }
 
-  Vector3D&
-  Vector3D::normalize()
+  Vector3D& Vector3D::normalize()
   {
     (*this) /= length();
     return (*this);

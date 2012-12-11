@@ -12,6 +12,7 @@ namespace Block
   Basic::Basic(int x, int y, int z)
     : super(x, y, z),
       _highlights(),
+      _isHighlighted(false),
       _pickingVBOId(0)
   {
     registerBlock();
@@ -87,6 +88,9 @@ namespace Block
   {
     ASSERT_MSG(face >= none && face <= back, "Index out of bound: " << face);
     _highlights[face] = highlight;
+    _isHighlighted = isHighlighted(Block::up) || isHighlighted(Block::down) ||
+        isHighlighted(Block::left) || isHighlighted(Block::right) ||
+        isHighlighted(Block::front) || isHighlighted(Block::back);
   }
 
   bool
@@ -99,14 +103,13 @@ namespace Block
   bool
   Basic::isHighlight() const
   {
-    return isHighlighted(Block::up) || isHighlighted(Block::down) ||
-        isHighlighted(Block::left) || isHighlighted(Block::right) ||
-        isHighlighted(Block::front) || isHighlighted(Block::back);
+    return _isHighlighted;
   }
 
   void
   Basic::resetHighlight()
   {
+    _isHighlighted = false;
     auto end = _highlights.end();
     for (auto it = _highlights.begin(); it != end; ++it)
       *it = false;
@@ -115,10 +118,7 @@ namespace Block
   void
   Basic::draw() const
   {
-    ShadersManager& shaders = ShadersManager::getInstance();
-    shaders.enable(getShaderName());
     specificDraw();
-    shaders.disable();
     //drawPickingBox();
     if (isHighlight())
       selectionDraw();

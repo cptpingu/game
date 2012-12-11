@@ -69,6 +69,7 @@ namespace Block
   protected:
     id_type _id;
     std::array<bool, FaceType::back + 1> _highlights;
+    bool _isHighlighted;
     GLuint  _pickingVBOId;
     GLfloat _pickingColors[108];
     GLuint  _vboId;

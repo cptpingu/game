@@ -189,8 +189,8 @@ Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
   _state.getCamera()->look();
 
   _drawer.drawBlocks(_map);
-  _drawer.light(elapsedTime);
-  // _drawer.drawVBO();
+  //_drawer.light(elapsedTime);
+  //_drawer.drawVBO();
 
   showCoord(selectedCoord);
   drawAxis(100);

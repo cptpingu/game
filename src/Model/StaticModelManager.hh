@@ -1,21 +1,18 @@
 #ifndef MODEL_STATICMODELMANAGER_HH_
 # define MODEL_STATICMODELMANAGER_HH_
 
-# include "StaticCubeModel.hh"
-
 namespace Model
 {
+  enum Type
+  {
+    CubeType,
+    TriangleType
+  };
+
   namespace StaticModelManager
   {
-    void init()
-    {
-      CubeModel::getInstance().init();
-    }
-
-    void release()
-    {
-      CubeModel::getInstance().release();
-    }
+    void init();
+    void release();
   } // StaticModelManager
 } // Model
 

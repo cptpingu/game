@@ -1,0 +1,73 @@
+#include "GroupBlock.hh"
+#include "../TextureManager.hh"
+#include "../ShadersManager.hh"
+#include "../Model/StaticModelManager.hh"
+
+#include "../Model/StaticCubeModel.hh"
+
+namespace Block
+{
+  GroupBlock::GroupBlock()
+  {
+  }
+
+  GroupBlock::~GroupBlock()
+  {
+    auto end = _assoc.cend();
+    for (auto it = _assoc.cbegin(); it != end; ++it)
+      delete it->second;
+  }
+
+  void
+  GroupBlock::add(int index, Block::Basic* block)
+  {
+    auto found = _assoc.find(index);
+    if (found == _assoc.end())
+    {
+      auto pair = _assoc.insert(assoc_type::value_type(index, new list_type));
+      ASSERT(pair.second);
+      found = pair.first;
+    }
+    ASSERT_MSG(found != _assoc.end(), "Error while adding model state!");
+    found->second->push_back(block);
+  }
+
+  void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform)
+  {
+
+    Model::CubeModel::getInstance().bindVBO(index);
+    auto end = list->cend();
+    for (auto it = list->cbegin(); it != end; ++it)
+    {
+        glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
+        (*it)->draw();
+        (*it)->resetHighlight();
+    }
+  }
+
+  void
+  GroupBlock::draw() const
+  {
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    ShadersManager& shaders = ShadersManager::getInstance();
+    shaders.enable("cube");
+    GLuint uniform = glGetUniformLocation(shaders.get("cube"), "cube_color");
+    GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
+    glVertexAttrib1f(attrib, 0.0);
+
+    TextureManager& textures = TextureManager::getInstance();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+
+    auto end = _assoc.cend();
+    for (auto it = _assoc.cbegin(); it != end; ++it)
+      drawModelState(it->first, it->second, uniform);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  }
+} // Block

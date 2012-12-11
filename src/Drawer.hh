@@ -11,14 +11,6 @@
 class Drawer
 {
 public:
-  /*!
-  ** Draw the chunks.
-  **
-  ** @param chunks The chunks to draw.
-  ** @param selectedCoord The selected coord (or 0 if nothing is selected).
-  */
-  void drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedCoord) const;
-
   void drawPickingBox(const Map& map) const;
 
   /*!

@@ -33,7 +33,16 @@ Map::createBlock(const Core::Container3D<int>& where)
 //    else
 //      block = new Block::Triangle(where._x , where._y, where._z);
       block->init();
-    _blocks.insert(blocks_type::value_type(where, block));
+      _blocks.insert(blocks_type::value_type(where, block));
+      auto found = _groups.find(Model::CubeType);
+      if (found == _groups.end())
+      {
+        auto pair =  _groups.insert(groups_type::value_type(Model::CubeType, new Block::GroupBlock));
+        ASSERT(pair.second);
+        found = pair.first;
+      }
+      ASSERT_MSG(found != _groups.end(), "Error while adding block!");
+      found->second->add(0, block);
   }
 }
 
@@ -69,7 +78,6 @@ void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType wh
 
   createBlock(container);
 }
-
 
 void
 Map::eraseBlock(const Block::Basic* who)
@@ -117,77 +125,14 @@ Map::loadBlocks(const std::string& filename)
   return true;
 }
 
-namespace
-{
-  Chunk* loadChunk(int x, int y, const Map::chunks_type& chunks)
-  {
-    Chunk* chunk = new Chunk(x, y);
-
-    if (!chunk->loadFromFile())
-    {
-      Chunk::chunk_coord_type coords;
-      Architecte::initChunk(coords, std::make_pair(x, y), chunks);
-      chunk->createRealCoord(coords);
-      const bool res = chunk->saveToFile(coords);
-      ASSERT_MSG(res, "Unable to save file!");
-      _UNUSED(res);
-    }
-    return chunk;
-  }
-} // namespace
-
-void
-Map::chunkLazyLoading(const Core::Vector3D& position, const Map::chunks_type& chunks)
-{
-  const int x = Chunk::absoluteToChunkCoord(position._x);
-  const int y = Chunk::absoluteToChunkCoord(position._y);
-  std::vector<std::pair<int, int> > tmpChunkList;
-
-#define LAZY_LOAD(X, Y)                                                 \
-  {                                                                     \
-    std::pair<int, int> current(x + (X), y + (Y));                      \
-    tmpChunkList.push_back(current);                                    \
-    if (_chunks.find(current) == _chunks.end())                         \
-      _chunks.insert(chunks_type::value_type(current, loadChunk(current.first, current.second, chunks))); \
-  }
-
-  LAZY_LOAD(0, 0);
-  LAZY_LOAD(1, 0);
-  LAZY_LOAD(0, 1);
-  LAZY_LOAD(-1, 0);
-  LAZY_LOAD(0, -1);
-  LAZY_LOAD(-1, 1);
-
-  LAZY_LOAD(-1, -1);
-  LAZY_LOAD(1, -1);
-  LAZY_LOAD(1, 1);
-
-
-
-#undef LAZY_LOAD
-
-  std::vector<std::pair<int, int> > deleteList;
-  auto chunkEnd = _chunks.end();
-  for (auto it =_chunks.begin(); it != chunkEnd; ++it)
-    if (std::find(tmpChunkList.begin(), tmpChunkList.end(), it->first) == tmpChunkList.end())
-      deleteList.push_back(it->first);
-
-  auto deleteEnd = deleteList.end();
-  for (auto it = deleteList.begin(); it != deleteEnd; ++it)
-  {
-    delete _chunks[*it];
-    _chunks.erase(*it);
-  }
-
-  //std::cout << "Taille map: " << _chunks.size() << std::endl;
-
-}
-
 void
 Map::clear()
 {
   _blocks.clear();
-  _chunks.clear();
+  auto end = _groups.cend();
+  for (auto it = _groups.cbegin(); it != end; ++it)
+    delete it->second;
+  _groups.clear();
 }
 
 Map::blocks_type&
@@ -196,25 +141,17 @@ Map::getBlocks()
   return _blocks;
 }
 
-Map::chunks_type&
-Map::getChunks()
-{
-  return _chunks;
-}
-
 const Map::blocks_type&
 Map::getBlocks() const
 {
   return _blocks;
 }
 
-const Map::chunks_type&
-Map::getChunks() const
+const Map::groups_type&
+Map::getGroups() const
 {
-  return _chunks;
+  return _groups;
 }
-
-
 
 
 

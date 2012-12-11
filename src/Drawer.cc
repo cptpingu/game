@@ -12,98 +12,6 @@
 
 #include "Model/StaticCubeModel.hh"
 
-namespace
-{
-void drawChunk(const std::pair<int, int>& coord, const Chunk& chunk,
-               const Chunk::Coord* selectedCoord)
-{
-    TextureManager& textures = TextureManager::getInstance();
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textures["veg1"]);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, textures["wood1"]);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    ShadersManager& shaders = ShadersManager::getInstance();
-    shaders.enable("terrain");
-
-    glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex0"), 0);
-    glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex1"), 1);
-    glUniform1i(glGetUniformLocation(shaders.get("terrain"), "tex2"), 2);
-    GLuint attrib = glGetAttribLocation(shaders.get("terrain"), "selected");
-
-    /*if (selectedCoord)
-      glUniform3f(glGetUniformLocation(shaders.get("terrain"), "selectedCoord"),
-                  selectedCoord->getX(), selectedCoord->getY(), selectedCoord->getZ());
-*/
-    int selectX = 0;
-    int selectY = 0;
-
-    if (selectedCoord)
-    {
-        selectX = selectedCoord->getX();
-        selectY = selectedCoord->getY();
-    }
-
-    glPushMatrix();
-    glBegin(GL_TRIANGLE_STRIP);
-    auto end = chunk.cend();
-    for (auto it = chunk.cbegin(); it != end; ++it)
-    {
-        const double xTex = ((*it)->getY() / Chunk::SIZE) * 15;
-        const double yTex =  (1.0 - (*it)->getX() / Chunk::SIZE) * 15;
-        glMultiTexCoord2fARB(GL_TEXTURE0, xTex, yTex);
-        glMultiTexCoord2fARB(GL_TEXTURE1, xTex, yTex);
-        glMultiTexCoord2fARB(GL_TEXTURE2, xTex, yTex);
-
-        const double realX = coord.first*(Chunk::SIZE-1) + (*it)->getX() -Chunk::SIZE/2;
-        const double realY = coord.second*(Chunk::SIZE-1) + (*it)->getY()-Chunk::SIZE/2;
-        const double realZ = (*it)->getZ();
-
-
-        glVertexAttrib1f(attrib, /*selectedCoord &&*/
-                         realX - 4 < selectX - Chunk::SIZE/2  && selectX - Chunk::SIZE/2 < realX + 4 &&
-                         realY - 4 < selectY - Chunk::SIZE/2 && selectY - Chunk::SIZE/2  < realY + 4);
-        glVertex3f(realX, realY, realZ);
-    }
-    glEnd();
-    glPopMatrix();
-
-    shaders.disable();
-}
-
-} // namespace
-
-void
-Drawer::drawChunks(const Map::chunks_type& chunks, const Chunk::Coord* selectedCoord) const
-{
-    auto end = chunks.cend();
-    for (auto it = chunks.cbegin(); it != end; ++it)
-        drawChunk(it->first, *it->second, selectedCoord);
-}
-
 void
 Drawer::drawPickingBox(const Map& map) const
 {
@@ -116,29 +24,14 @@ Drawer::drawPickingBox(const Map& map) const
 void
 Drawer::drawBlocks(const Map& map) const
 {
-    const Map::blocks_type& blocks = map.getBlocks();
-    Block::NeighbourMatrix neighbours;
+  const Map::groups_type& groups = map.getGroups();
+  auto end = groups.cend();
+  for (auto it = groups.cbegin(); it != end; ++it)
+    it->second->draw();
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    auto end = blocks.end();
-    for (auto block = blocks.begin(); block != end; ++block)
-    {
-        block->second->draw(neighbours);
-        block->second->resetHighlight();
-    }
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    ShadersManager::getInstance().disable();
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  ShadersManager::getInstance().disable();
 }
-
 
 void Drawer::light(unsigned int timestep)
 {
@@ -517,8 +410,9 @@ internalDraw()
   glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::Cube::vertices));
   glTexCoordPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
 
+  // 400 * 100 => 45 fps
   int z = 20;
-  for (int x = 0; x < 100; ++x)
+  for (int x = 0; x < 400; ++x)
   {
     for (int y = 0; y < 100; ++y)
     {
@@ -561,9 +455,10 @@ Drawer::drawSomeBlocks(Map& map)
     }
   }
 
-  for (int i = 0; i < 40; ++i)
+  // 400 * 100 => 40fps
+  for (int i = 0; i < 400; ++i)
   {
-    for (int j = 0; j < 40; ++j)
+    for (int j = 0; j < 100; ++j)
     {
       where._x = i + 1;
       where._y = j + 1;

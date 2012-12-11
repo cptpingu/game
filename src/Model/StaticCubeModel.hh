@@ -97,6 +97,7 @@ namespace Model
     void init();
     GLuint getVboId() const;
     void release();
+    void bindVBO(int index) const;
 
   private:
     GLuint _vboId;

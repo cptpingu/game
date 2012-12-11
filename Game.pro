@@ -28,9 +28,11 @@ SOURCES += \
     src/Camera/Player.cc \
     src/ConfigManager.cc \
     src/InputManager.cc \
+    src/Model/StaticModelManager.cc \
     src/Model/StaticCubeModel.cc \
     src/Model/StaticPickingBoxModel.cc \
-    src/State.cc
+    src/State.cc \
+    src/Block/GroupBlock.cc
 
 HEADERS += \
     src/Core/Vector3D.hh \
@@ -71,7 +73,8 @@ HEADERS += \
     src/Model/StaticModelManager.hh \
     src/Model/StaticCubeModel.hh \
     src/Model/StaticPickingBoxModel.hh \
-    src/State.hh
+    src/State.hh \
+    src/Block/GroupBlock.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

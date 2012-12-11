@@ -27,8 +27,9 @@ namespace Block
   }
 
   void
-  Triangle::specificDraw(const NeighbourMatrix& neighbours) const
+  Triangle::specificDraw() const
   {
+    const NeighbourMatrix neighbours;
       /*if(isHighlight())
       {
       std::cout << (typeid(*this)==typeid(*neighbours(0,0,0))) << std::endl;

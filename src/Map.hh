@@ -2,7 +2,9 @@
 # define MAP_HH_
 
 # include "Block/Basic.hh"
+# include "Block/GroupBlock.hh"
 # include "Core/Vector3D.hh"
+# include "Model/StaticModelManager.hh"
 # include "Chunk.hh"
 
 # include "Core/ListContainer3D.hh"
@@ -21,8 +23,8 @@
 class Map
 {
 public:
-  typedef std::unordered_map<std::pair<int, int>, Chunk*, Core::PairHash<int, int> > chunks_type;
   typedef std::unordered_map<Core::Container3D<int>, Block::Basic*, Core::NumericalContainerHash<int> > blocks_type;
+  typedef std::unordered_map<Model::Type, Block::GroupBlock*, std::hash<int> > groups_type;
 
 public:
   Map();
@@ -34,7 +36,6 @@ public:
   ** @param where The position.
   */
   void createBlock(const Core::Container3D<int> & where);
-
 
   /*!
   ** Create a block near another block.
@@ -85,28 +86,11 @@ public:
   void clear();
 
   /*!
-  ** Check if a map chunk need to be loaded.
-  ** Release too far map chunks.
-  ** Inexistant chunk is dynamically generated.
-  **
-  ** @param position The current position of the camera.
-  ** @param chunks All the world chunks.
-  */
-  void chunkLazyLoading(const Core::Vector3D& position, const Map::chunks_type& chunks);
-
-  /*!
   ** Return an instance on the list of all blocks.
   **
   ** @return Instance on all blocks.
   */
   blocks_type& getBlocks();
-
-  /*!
-  ** Return an instance on the list of all chunks.
-  **
-  ** @return Instance on all chunks.
-  */
-  chunks_type& getChunks();
 
   /*!
   ** Return an instance on the list of all blocks.
@@ -115,16 +99,10 @@ public:
   */
   const blocks_type& getBlocks() const;
 
-  /*!
-  ** Return an instance on the list of all chunks.
-  **
-  ** @return Instance on all chunks.
-  */
-  const chunks_type& getChunks() const;
-
+  const groups_type& getGroups() const;
 private:
   blocks_type _blocks;
-  chunks_type _chunks;
+  groups_type _groups;
 };
 
 #endif /* !MAP_HH_ */

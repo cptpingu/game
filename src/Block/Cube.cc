@@ -28,23 +28,23 @@ namespace Block
   }
 
   void
-  Cube::specificDraw(const NeighbourMatrix& neighbours) const
+  Cube::specificDraw() const
   {
-    ShadersManager& shaders = ShadersManager::getInstance();
-    glUniform1f(glGetUniformLocation(shaders.get(getShaderName()), "cube_color"), isHighlight() ? 0.2 : 0.0);
-    GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
-    glVertexAttrib1f(attrib, 0.0);
+//    ShadersManager& shaders = ShadersManager::getInstance();
+//    glUniform1f(glGetUniformLocation(shaders.get(getShaderName()), "cube_color"), isHighlight() ? 0.2 : 0.0);
+//    GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
+//    glVertexAttrib1f(attrib, 0.0);
 
-    TextureManager& textures = TextureManager::getInstance();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+//    TextureManager& textures = TextureManager::getInstance();
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
-    ASSERT_MSG(_vboId, "Invalid vertex buffer!");
-    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
+//    ASSERT_MSG(_vboId, "Invalid vertex buffer!");
+//    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
 
-    glVertexPointer(3, GL_FLOAT, 0, 0);
-    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::Cube::vertices));
-    glTexCoordPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
+//    glVertexPointer(3, GL_FLOAT, 0, 0);
+//    glNormalPointer(GL_FLOAT, 0, (void*)sizeof(Model::Cube::vertices));
+//    glTexCoordPointer(3, GL_FLOAT, 0, (void*)(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
 
     glPushMatrix();
     glTranslatef(_x * Block::SIZE + Block::SIZE / 2,

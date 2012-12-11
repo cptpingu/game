@@ -4,6 +4,7 @@
 namespace Model
 {
   CubeModel::CubeModel()
+    : _vboId(0)
   {
   }
 
@@ -49,5 +50,17 @@ namespace Model
   {
     ASSERT_MSG(_vboId, "Invalid vertex buffer!");
     glDeleteBuffers(1, &_vboId);
+  }
+
+  void
+  CubeModel::bindVBO(int index) const
+  {
+    ASSERT_MSG(_vboId, "Invalid vertex buffer!");
+    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
+
+    // FIXME
+    glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(index * 128));
+    glNormalPointer(GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices)));
+    glTexCoordPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices) + sizeof(Cube::normals)));
   }
 } // Model

@@ -148,7 +148,7 @@ void Drawer::light(unsigned int timestep)
 
     GLfloat ambient[] = {1.0f, 1.0f, 1.0f, 1.0f};
     GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat cyan[] = {0.f, .0f, 1.0f, 1.f};
+    GLfloat cyan[] = {1.f, .1f, .1f, 1.f};
 
     glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
     glMaterialfv(GL_FRONT, GL_SPECULAR, white);
@@ -441,10 +441,10 @@ void Drawer::light(unsigned int timestep)
 
         static double move = 0;
         move += 1 * timestep;
-        glRotatef((move/60), 0, 1, 0);
+        glRotatef((move/20), 0, 1, 0);
 
         glBegin(GL_TRIANGLES);
-        glColor3ub(255,0,255);
+        glColor3ub(0,0,255);
         glVertex3d(0,0,60);
         glVertex3d(1,0,60);
         glVertex3d(0,1,60);

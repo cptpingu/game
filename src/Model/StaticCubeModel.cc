@@ -62,5 +62,8 @@ namespace Model
     glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(index * 128));
     glNormalPointer(GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices)));
     glTexCoordPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices) + sizeof(Cube::normals)));
+    // glIndexPointer(GL_UNSIGNED_INT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices) +
+    // 							       sizeof(Cube::normals) +
+    // 							       sizeof(Cube::textures)));
   }
 } // Model

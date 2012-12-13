@@ -176,6 +176,7 @@ Game::loadShaders()
   shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");
   shaders.load("basic_lightning", "data/shaders/basic_lightning.vert.c", "data/shaders/basic_lightning.frag.c");
   shaders.load("tex_lightning", "data/shaders/tex_lightning.vert.c", "data/shaders/tex_lightning.frag.c");
+  shaders.load("cubeLight", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c");
 }
 
 void
@@ -189,7 +190,7 @@ Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
   _state.getCamera()->look();
 
   _drawer.drawBlocks(_map);
-  //_drawer.light(elapsedTime);
+  _drawer.light(elapsedTime);
   //_drawer.drawVBO();
 
   showCoord(selectedCoord);

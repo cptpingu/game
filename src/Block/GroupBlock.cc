@@ -51,7 +51,7 @@ namespace Block
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    // glEnableClientState(GL_INDEX_ARRAY);
+    glEnableClientState(GL_INDEX_ARRAY);
 
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable("cube");
@@ -70,6 +70,6 @@ namespace Block
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    // glDisableClientState(GL_INDEX_ARRAY);
+    glDisableClientState(GL_INDEX_ARRAY);
   }
 } // Block

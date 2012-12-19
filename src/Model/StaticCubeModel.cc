@@ -16,6 +16,10 @@ namespace Model
   void
   CubeModel::init()
   {
+    glGenBuffers(1, &_iboId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Cube::indices), Cube::indices, GL_STATIC_DRAW);
+
     glGenBuffers(1, &_vboId);
     ASSERT_MSG(_vboId, "Vertex buffer initialisation failed!");
     glBindBuffer(GL_ARRAY_BUFFER, _vboId);
@@ -49,21 +53,25 @@ namespace Model
   CubeModel::release()
   {
     ASSERT_MSG(_vboId, "Invalid vertex buffer!");
+    ASSERT_MSG(_iboId, "Invalid index buffer!");
     glDeleteBuffers(1, &_vboId);
+    glDeleteBuffers(1, &_iboId);
   }
 
   void
   CubeModel::bindVBO(int index) const
   {
     ASSERT_MSG(_vboId, "Invalid vertex buffer!");
+    ASSERT_MSG(_iboId, "Invalid index buffer!");
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
+    glIndexPointer(GL_UNSIGNED_BYTE, 0, 0);
+
     glBindBuffer(GL_ARRAY_BUFFER, _vboId);
 
     // FIXME
     glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(index * 128));
     glNormalPointer(GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices)));
     glTexCoordPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices) + sizeof(Cube::normals)));
-    // glIndexPointer(GL_UNSIGNED_INT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices) +
-    // 							       sizeof(Cube::normals) +
-    // 							       sizeof(Cube::textures)));
   }
 } // Model

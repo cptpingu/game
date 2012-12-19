@@ -455,15 +455,15 @@ Drawer::drawSomeBlocks(Map& map)
     }
   }
 
-  // 400 * 100 => 40fps
-  // for (int i = 0; i < 400; ++i)
-  // {
-  //   for (int j = 0; j < 100; ++j)
-  //   {
-  //     where._x = i + 1;
-  //     where._y = j + 1;
-  //     where._z = 20;
-  //     map.createBlock(where);
-  //   }
-  // }
+  //400 * 100 => 40fps
+//   for (int i = 0; i < 400; ++i)
+//   {
+//     for (int j = 0; j < 100; ++j)
+//     {
+//       where._x = i + 1;
+//       where._y = j + 1;
+//       where._z = 20;
+//       map.createBlock(where);
+//     }
+//   }
 }

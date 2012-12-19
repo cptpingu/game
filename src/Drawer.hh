@@ -33,7 +33,7 @@ public:
   **Light fixing ....*/
   void light(unsigned int timestep);
 
-
+  std::vector<Core::Vector3D> collisionlist(const  Core::Vector3D &from,const Core::Vector3D &to);
   void initVBO(const Map& map);
   void drawVBO();
   void drawSomeBlocks(Map& map);

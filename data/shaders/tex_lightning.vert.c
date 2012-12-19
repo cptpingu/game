@@ -2,6 +2,8 @@ varying vec3 N;
 varying vec3 v;
 attribute float Temps;
 varying float vTemps;
+attribute float Distance;
+varying float vDistance;
 
 void main(void)
 {
@@ -12,4 +14,5 @@ void main(void)
    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 
    vTemps = Temps;
+   vDistance = Distance;
 }

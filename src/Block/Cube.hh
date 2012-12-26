@@ -19,6 +19,7 @@ namespace Block
     virtual std::string getShaderName() const;
 
   private:
+    virtual bool specificIsNullIndex(int index) const;
     virtual void specificInit();
     virtual void specificDraw(const Model::MemoryPiece& mem) const;
     virtual void specificChangeState(const NeighbourMatrix& neighbours);

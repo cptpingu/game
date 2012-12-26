@@ -15,6 +15,13 @@ namespace Block
   {
   }
 
+  bool
+  Cube::specificIsNullIndex(int index) const
+  {
+    const int empty = Model::Cube::emptyIndex;
+    return index == empty;
+  }
+
   void
   Cube::specificInit()
   {

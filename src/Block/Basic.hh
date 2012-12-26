@@ -49,6 +49,7 @@ namespace Block
     void unregisterBlock();
     void init();
 
+    bool isNullIndex(int index) const;
     void highlight(FaceType face, bool highlight);
     bool isHighlighted(FaceType face) const;
     bool isHighlight() const;
@@ -65,6 +66,7 @@ namespace Block
 
   private:
     void initPickingBox();
+    virtual bool specificIsNullIndex(int index) const = 0;
     virtual void specificInit() = 0;
     virtual void specificDraw(const Model::MemoryPiece& mem) const = 0;
     virtual void specificChangeState(const NeighbourMatrix& neighbours) = 0;

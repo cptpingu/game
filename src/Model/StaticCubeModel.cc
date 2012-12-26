@@ -117,7 +117,6 @@ namespace Model
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
     glIndexPointer(GL_UNSIGNED_BYTE, 0, 0);
-                   //reinterpret_cast<const void*>(0*_computedIndices[index].from));
     return _computedIndices[index];
   }
 } // Model

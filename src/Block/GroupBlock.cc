@@ -23,6 +23,9 @@ namespace Block
   void
   GroupBlock::add(int index, Block::Basic* block)
   {
+    if (block->isNullIndex(index))
+      return;
+
     auto found = _assoc.find(index);
     if (found == _assoc.end())
     {
@@ -37,6 +40,9 @@ namespace Block
   void
   GroupBlock::remove(int index, Block::Basic* block)
   {
+    if (block->isNullIndex(index))
+      return;
+
     auto found = _assoc.find(index);
     if (found == _assoc.end())
       return;
@@ -52,9 +58,9 @@ namespace Block
     auto end = list->cend();
     for (auto it = list->cbegin(); it != end; ++it)
     {
-        glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
-        (*it)->draw(mem);
-        (*it)->resetHighlight();
+      glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
+      (*it)->draw(mem);
+      (*it)->resetHighlight();
     }
   }
 

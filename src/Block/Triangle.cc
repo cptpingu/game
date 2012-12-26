@@ -15,6 +15,12 @@ namespace Block
   {
   }
 
+  bool
+  Triangle::specificIsNullIndex(int) const
+  {
+    return false;
+  }
+
   void
   Triangle::specificInit()
   {

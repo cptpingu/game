@@ -497,7 +497,6 @@ Drawer::drawSomeBlocks(Map& map)
     }
   }
 
-
 //  for (int i = 0; i < 64; ++i)
 //  {
 //    where._x = 2 * i;

@@ -444,7 +444,7 @@ Drawer::drawSomeBlocks(Map& map)
 {
   Core::Container3D<int> where;
 
-  static const int nb = 10;
+  static const int nb = 40;
   for (int i = 0; i < nb; ++i)
   {
     for (int j = 0; j < nb; ++j)
@@ -460,15 +460,15 @@ Drawer::drawSomeBlocks(Map& map)
   }
 
 
-  for (int i = 0; i < 64; ++i)
-  {
-    where._x = 2 * i;
-    where._y = -1;
-    where._z = -1;
-    map.createBlock(where, i);
-  }
+//  for (int i = 0; i < 64; ++i)
+//  {
+//    where._x = 2 * i;
+//    where._y = -1;
+//    where._z = -1;
+//    map.createBlock(where, i);
+//  }
 
-  //400 * 100 => 40fps
+//  400 * 100 => 40fps
 //   for (int i = 0; i < 400; ++i)
 //   {
 //     for (int j = 0; j < 100; ++j)

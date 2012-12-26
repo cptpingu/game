@@ -482,7 +482,7 @@ Drawer::drawSomeBlocks(Map& map)
 {
   Core::Container3D<int> where;
 
-  static const int nb = 40;
+  static const int nb = 5;
   for (int i = 0; i < nb; ++i)
   {
     for (int j = 0; j < nb; ++j)

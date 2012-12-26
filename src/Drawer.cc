@@ -480,13 +480,68 @@ Drawer::drawVBO()
 void
 Drawer::drawSomeBlocks(Map& map)
 {
+
+  static const int nb = 40;
   Core::Container3D<int> where;
 
-  static const int nb = 5;
+  Core::Array2D<int,nb> Tab;
+
   for (int i = 0; i < nb; ++i)
   {
     for (int j = 0; j < nb; ++j)
     {
+
+
+            Tab(i,j) =  rand()%nb;
+
+  }
+    }
+
+
+
+
+
+  for (int N = 0;N < 3;N++)
+  {
+  for (int i = 1; i < nb-1; ++i)
+  {
+    for (int j = 1; j < nb-1; ++j)
+    {
+
+
+  Tab(i,j) = (Tab(i,j) +
+               Tab(i+1,j)+
+               Tab(i,j+1)+
+          Tab(i+1,j+1)+
+          Tab(i-1,j)+
+          Tab(i-1,j+1)+
+          Tab(i,j-1)+
+          Tab(i+1,j-1)+
+          Tab(i-1,j-1))/9;
+        }
+          }
+        }
+
+  for (int i = 0; i < nb-1; ++i)
+  {
+    for (int j = 0; j < nb-1; ++j)
+    {
+        for (int k = 0; k < nb; ++k)
+        {
+
+            where._x = i + 1;
+            where._y = j + 1;
+            where._z = k*(k < Tab(i+1,j+1));
+            map.createBlock(where);
+  }
+    }
+  }
+/*
+  for (int i = 0; i < nb; ++i)
+  {
+    for (int j = 0; j < nb; ++j)
+    {
+
       for (int k = 0; k < nb; ++k)
       {
         where._x = i + 1;
@@ -496,7 +551,7 @@ Drawer::drawSomeBlocks(Map& map)
       }
     }
   }
-
+*/
 //  for (int i = 0; i < 64; ++i)
 //  {
 //    where._x = 2 * i;

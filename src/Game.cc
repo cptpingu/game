@@ -177,6 +177,8 @@ Game::loadShaders()
   shaders.load("basic_lightning", "data/shaders/basic_lightning.vert.c", "data/shaders/basic_lightning.frag.c");
   shaders.load("tex_lightning", "data/shaders/tex_lightning.vert.c", "data/shaders/tex_lightning.frag.c");
   shaders.load("cubeLight", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c");
+  //shaders.load("tex2_lightning", "data/shaders/tex2_lightning.vert.c", "data/shaders/tex2_lightning.frag.c");
+
 }
 
 void

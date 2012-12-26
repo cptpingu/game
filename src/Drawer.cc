@@ -15,10 +15,13 @@
 void
 Drawer::drawPickingBox(const Map& map) const
 {
-    const Map::blocks_type& blocks = map.getBlocks();
-    auto end = blocks.end();
-    for (auto block = blocks.begin(); block != end; ++block)
-        block->second->drawPickingBox();
+    const Map::groups_type& groups = map.getGroups();
+    auto end = groups.cend();
+    for (auto it = groups.cbegin(); it != end; ++it)
+      it->second->drawPicking();
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    ShadersManager::getInstance().disable();
 }
 
 void

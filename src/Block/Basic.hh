@@ -61,7 +61,7 @@ namespace Block
 
   public:
     virtual std::string getShaderName() const;
-    virtual void drawPickingBox() const;
+    virtual void drawPickingBox(const Model::MemoryPiece& mem) const;
     virtual Core::Vector3D collision(const Core::Vector3D& current, const Core::Vector3D& next) const;
 
   private:
@@ -78,6 +78,7 @@ namespace Block
     bool _isHighlighted;
     GLuint  _pickingVBOId;
     GLuint  _vboId;
+    unsigned int _pickingModelState;
     unsigned int _modelState;
     GLfloat _pickingColors[108];
   };

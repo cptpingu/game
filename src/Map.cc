@@ -25,6 +25,8 @@ Map::~Map()
 void
 Map::createBlock(const Core::Container3D<int>& where)
 {
+  static int temp = 63 - 6;
+
   if (_blocks.find(where) == _blocks.end())
   {
     Block::Basic* block = 0;
@@ -42,7 +44,7 @@ Map::createBlock(const Core::Container3D<int>& where)
         found = pair.first;
       }
       ASSERT_MSG(found != _groups.end(), "Error while adding block!");
-      found->second->add(0, block);
+      found->second->add(temp++, block);
   }
 }
 

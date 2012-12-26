@@ -3,6 +3,9 @@
 
 # include "../Opengl.hh"
 # include "../Core/Singleton.hh"
+# include "../Core/Assert.hh"
+
+# include <array>
 
 namespace Model
 {
@@ -24,69 +27,6 @@ namespace Model
   */
   namespace Cube
   {
-    static const GLfloat vertices1[] =
-    {
-      +1, +1, +1,  -1, +1, +1,  -1, -1, +1, // v0-v1-v2 (up)
-      -1, -1, +1,  +1, -1, +1,  +1, +1, +1, // v2-v3-v0
-
-      +1, +1, +1,  +1, -1, +1,  +1, -1, -1, // v0-v3-v4 (right)
-      +1, -1, -1,  +1, +1, -1,  +1, +1, +1, // v4-v5-v0
-
-      +1, +1, +1,  +1, +1, -1,  -1, +1, -1, // v0-v5-v6 (back)
-      -1, +1, -1,  -1, +1, +1,  +1, +1, +1, // v6-v1-v0
-
-      -1, +1, +1,  -1, +1, -1,  -1, -1, -1, // v1-v6-v7 (left)
-      -1, -1, -1,  -1, -1, +1,  -1, +1, +1, // v7-v2-v1
-
-      -1, -1, -1,  +1, -1, -1,  +1, -1, +1, // v7-v4-v3 (front)
-      +1, -1, +1,  -1, -1, +1,  -1, -1, -1, // v3-v2-v7
-
-      +1, -1, -1,  -1, -1, -1,  -1, +1, -1, // v4-v7-v6 (down)
-      -1, +1, -1,  +1, +1, -1,  +1, -1, -1  // v6-v5-v4
-    };
-
-    static const GLfloat normals1[] =
-    {
-      0, 0, 1,   0, 0, 1,   0, 0, 1,        // v0-v1-v2 (up)
-      0, 0, 1,   0, 0, 1,   0, 0, 1,        // v2-v3-v0
-
-      1, 0, 0,   1, 0, 0,   1, 0, 0,        // v0-v3-v4 (right)
-      1, 0, 0,   1, 0, 0,   1, 0, 0,        // v4-v5-v0
-
-      0, 1, 0,   0, 1, 0,   0, 1, 0,        // v0-v5-v6 (back)
-      0, 1, 0,   0, 1, 0,   0, 1, 0,        // v6-v1-v0
-
-      -1, 0, 0,  -1, 0, 0,  -1, 0, 0,       // v1-v6-v7 (left)
-      -1, 0, 0,  -1, 0, 0,  -1, 0, 0,       // v7-v2-v1
-
-      0,-1, 0,   0,-1, 0,   0,-1, 0,        // v7-v4-v3 (front)
-      0,-1, 0,   0,-1, 0,   0,-1, 0,        // v3-v2-v7
-
-      0, 0,-1,   0, 0,-1,   0, 0,-1,        // v4-v7-v6 (down)
-      0, 0,-1,   0, 0,-1,   0, 0,-1         // v6-v5-v4
-    };
-
-    static const GLfloat textures1[] =
-    {
-      1, 1, 0,  0, 1, 0,  0, 0, 0,          // v0-v1-v2 (up)
-      0, 0, 0,  1, 0, 0,  1, 1, 0,          // v2-v3-v0
-
-      1, 1, 0,  0, 1, 0,  0, 0, 0,          // v0-v3-v4 (right)
-      0, 0, 0,  1, 0, 0,  1, 1, 0,          // v4-v5-v0
-
-      0, 1, 0,  0, 0, 0,  1, 0, 0,          // v0-v5-v6 (back)
-      1, 0, 0,  1, 1, 0,  0, 1, 0,          // v6-v1-v0
-
-      0, 1, 0,  0, 0, 0,  1, 0, 0,          // v1-v6-v7 (left)
-      1, 0, 0,  1, 1, 0,  0, 1, 0,          // v7-v2-v1
-
-      0, 0, 0,  1, 0, 0,  1, 1, 0,          // v7-v4-v3 (front)
-      1, 1, 0,  0, 1, 0,  0, 0, 0,          // v3-v2-v7
-
-      1, 1, 0,  0, 1, 0,  0, 0, 0,          // v4-v7-v6 (down)
-      0, 0, 0,  1, 0, 0,  1, 1, 0           // v6-v5-v4
-    };
-
     static const GLfloat vertices[] =
     {
       +1, +1, +1,  -1, +1, +1,  -1, -1, +1,  +1, -1, +1, // v0-v1-v2-v3 (up)
@@ -131,17 +71,59 @@ namespace Model
   class CubeModel : public Core::Singleton<CubeModel>
   {
   public:
+    struct MemoryPiece
+    {
+      MemoryPiece()
+        : from(0), size(0)
+      {
+      }
+      unsigned int from;
+      unsigned int size;
+    };
+    class MemoryPieces
+    {
+    public:
+      MemoryPieces()
+        : _last(0)
+      {
+      }
+
+      inline const MemoryPiece& operator[](unsigned int index) const
+      {
+        ASSERT_MSG(index < 64, "index: " << index);
+        return _data[index];
+      }
+      inline MemoryPiece& operator[](unsigned int index)
+      {
+        ASSERT_MSG(index < 64, "index: " << index);
+        return _data[index];
+      }
+      inline MemoryPiece& last()
+      {
+        return operator[](_last);
+      }
+      inline void next()
+      {
+        ++_last;
+      }
+    private:
+      unsigned int _last;
+      std::array<MemoryPiece, 64> _data;
+    };
+
+  public:
     CubeModel();
     ~CubeModel();
 
     void init();
     GLuint getVboId() const;
     void release();
-    void bindVBO(int index) const;
+    unsigned int bindVBO(int index) const;
 
   private:
-    GLuint _vboId;
-    GLuint _iboId;
+    GLuint       _vboId;
+    GLuint       _iboId;
+    MemoryPieces _computedIndices;
   };
 } // Model
 

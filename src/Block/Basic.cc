@@ -116,9 +116,9 @@ namespace Block
   }
 
   void
-  Basic::draw() const
+  Basic::draw(int hint) const
   {
-    specificDraw();
+    specificDraw(hint);
     //drawPickingBox();
     if (isHighlight())
       selectionDraw();

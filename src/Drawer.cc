@@ -444,11 +444,12 @@ Drawer::drawSomeBlocks(Map& map)
 {
   Core::Container3D<int> where;
 
-  for (int i = 0; i < 4; ++i)
+  int shift = 0;
+  for (int i = 0; i < 7; ++i)
   {
-    for (int j = 0; j < 4; ++j)
+    for (int j = 0; j < 1; ++j)
     {
-      where._x = i + 1;
+      where._x = i + 1 + ++shift;
       where._y = j + 1;
       where._z = 0;
       map.createBlock(where);

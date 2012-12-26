@@ -28,14 +28,13 @@ namespace Block
   }
 
   void
-  Cube::specificDraw() const
+  Cube::specificDraw(int hint) const
   {
     glPushMatrix();
     glTranslatef(_x * Block::SIZE + Block::SIZE / 2,
                  _y * Block::SIZE + Block::SIZE / 2,
                  _z * Block::SIZE + Block::SIZE / 2);
-    //glDrawArrays(GL_TRIANGLES, 0, 36);
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, hint /*36*/, GL_UNSIGNED_BYTE, 0);
     glPopMatrix();
   }
 

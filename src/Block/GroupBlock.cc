@@ -34,13 +34,12 @@ namespace Block
 
   void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform)
   {
-
-    Model::CubeModel::getInstance().bindVBO(index);
+    const int hint = Model::CubeModel::getInstance().bindVBO(index);
     auto end = list->cend();
     for (auto it = list->cbegin(); it != end; ++it)
     {
         glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
-        (*it)->draw();
+        (*it)->draw(hint);
         (*it)->resetHighlight();
     }
   }
@@ -62,6 +61,11 @@ namespace Block
     TextureManager& textures = TextureManager::getInstance();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+
+    glBindBuffer(GL_ARRAY_BUFFER, Model::CubeModel::getInstance().getVboId());
+    glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(0));
+    glNormalPointer(GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Model::Cube::vertices)));
+    glTexCoordPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
 
     auto end = _assoc.cend();
     for (auto it = _assoc.cbegin(); it != end; ++it)

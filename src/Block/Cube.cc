@@ -29,15 +29,138 @@ namespace Block
   }
 
   void
-  Cube::specificDraw() const
+  Cube::specificDraw(const Model::MemoryPiece& mem) const
   {
     glPushMatrix();
     glTranslatef(_x * Block::SIZE + Block::SIZE / 2,
                  _y * Block::SIZE + Block::SIZE / 2,
                  _z * Block::SIZE + Block::SIZE / 2);
-    //glDrawArrays(GL_TRIANGLES, 0, 36);
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(GL_TRIANGLES, mem.size, GL_UNSIGNED_BYTE,
+                   reinterpret_cast<void*>(mem.from));
     glPopMatrix();
+  }
+
+  void
+  Cube::specificChangeState(const NeighbourMatrix& neighbours)
+  {
+#define CLEAR(FROM) states[FROM] = false
+#define CLEAR_RANGE(FROM, TO) for (int i = FROM; i <= TO; ++i) states[i] = false
+
+    std::array<bool, 64> states;
+    auto end = states.end();
+    for (auto it = states.begin(); it != end; ++it)
+      *it = true;
+    if (neighbours(0, 0, 1)) // up
+    {
+      CLEAR(0);
+      CLEAR_RANGE(2, 6);
+      CLEAR_RANGE(12, 21);
+      CLEAR_RANGE(32, 41);
+      CLEAR_RANGE(52, 56);
+      CLEAR(62);
+    }
+
+    if (neighbours(0, 0, -1)) // down
+    {
+      CLEAR_RANGE(0, 5);
+      CLEAR_RANGE(7, 10);
+      CLEAR_RANGE(12, 14);
+      CLEAR_RANGE(16, 17);
+      CLEAR(19);
+      CLEAR_RANGE(22, 24);
+      CLEAR_RANGE(26, 27);
+      CLEAR(29);
+      CLEAR_RANGE(32, 33);
+      CLEAR(35);
+      CLEAR(38);
+      CLEAR_RANGE(42, 43);
+      CLEAR(45);
+      CLEAR(48);
+      CLEAR(52);
+      CLEAR(57);
+    }
+
+    if (neighbours(0, 1, 0)) // front
+    {
+      CLEAR_RANGE(0, 4);
+      CLEAR_RANGE(6, 9);
+      CLEAR_RANGE(11, 13);
+      CLEAR_RANGE(15, 16);
+      CLEAR(18);
+      CLEAR(20);
+      CLEAR_RANGE(22, 23);
+      CLEAR_RANGE(25, 26);
+      CLEAR(28);
+      CLEAR(30);
+      CLEAR(32);
+      CLEAR(34);
+      CLEAR(36);
+      CLEAR(39);
+      CLEAR(42);
+      CLEAR(44);
+      CLEAR(46);
+      CLEAR(49);
+      CLEAR(53);
+      CLEAR(58);
+    }
+
+    if (neighbours(0, -1, 0)) // back
+    {
+      CLEAR_RANGE(0, 2);
+      CLEAR_RANGE(4, 7);
+      CLEAR_RANGE(9, 11);
+      CLEAR_RANGE(13, 15);
+      CLEAR_RANGE(19, 21);
+      CLEAR_RANGE(23, 25);
+      CLEAR_RANGE(29, 31);
+      CLEAR_RANGE(35, 37);
+      CLEAR(41);
+      CLEAR_RANGE(45, 47);
+      CLEAR(51);
+      CLEAR(55);
+      CLEAR(60);
+    }
+
+    if (neighbours(-1, 0, 0)) // left
+    {
+      CLEAR_RANGE(0, 3);
+      CLEAR_RANGE(5, 8);
+      CLEAR_RANGE(10, 12);
+      CLEAR_RANGE(14, 15);
+      CLEAR_RANGE(17, 18);
+      CLEAR_RANGE(21, 22);
+      CLEAR_RANGE(24, 25);
+      CLEAR_RANGE(27, 28);
+      CLEAR(31);
+      CLEAR_RANGE(33, 34);
+      CLEAR(37);
+      CLEAR(40);
+      CLEAR_RANGE(43, 44);
+      CLEAR(47);
+      CLEAR(50);
+      CLEAR(54);
+      CLEAR(59);
+    }
+
+    if (neighbours(1, 0, 0)) // right
+    {
+      CLEAR_RANGE(0, 1);
+      CLEAR_RANGE(3, 6);
+      CLEAR_RANGE(8, 11);
+      CLEAR_RANGE(16, 21);
+      CLEAR_RANGE(26, 31);
+      CLEAR_RANGE(38, 41);
+      CLEAR_RANGE(48, 51);
+      CLEAR(56);
+      CLEAR(61);
+    }
+
+    unsigned int state = 0;
+    auto it = states.cbegin();
+    while (it != end && !*it)
+      ++it, ++state;
+    ASSERT(it != end);
+    _modelState = state;
   }
 
   Core::Vector3D

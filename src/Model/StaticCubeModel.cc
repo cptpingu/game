@@ -1,10 +1,58 @@
 #include "StaticCubeModel.hh"
 #include "../Core/Assert.hh"
+#include <algorithm>
 
 namespace Model
 {
+  namespace
+  {
+    int copyIndices(GLubyte* indices, int offset, bool tab[6])
+    {
+      int nb = 0;
+      for (int i = 0; i < 6; ++i)
+      {
+        if (tab[i])
+        {
+          memcpy(indices + offset, Model::Cube::indices + (i * 6), 6);
+          indices += 6;
+          nb += 6;
+        }
+      }
+      return nb;
+    }
+
+    int initAllIndices(GLubyte* indices, int offset, unsigned char nb_zero,
+                       MemoryPieces<64>& computedIndices)
+    {
+      ASSERT_MSG(nb_zero <= 6, "nb_zero: " << nb_zero);
+      bool tab[6] = {true, true, true, true, true, true};
+      for (int i = 0; i < nb_zero; ++i)
+        tab[i] = false;
+
+      int nb = 0;
+      do
+      {
+        computedIndices.last().from = offset + nb;
+        computedIndices.last().size = copyIndices(indices + nb, offset, tab);
+        nb += computedIndices.last().size;
+        computedIndices.next();
+      }
+      while (std::next_permutation(tab, tab + 6));
+
+      return nb;
+    }
+
+    void initAllIndices2(GLubyte* indices, MemoryPieces<64>& computedIndices)
+    {
+      int nb = 0;
+      for (int i = 0; i <= 6; ++i)
+        nb += initAllIndices(indices, nb, i, computedIndices);
+    }
+  } // namespace
+
   CubeModel::CubeModel()
-    : _vboId(0)
+    : _vboId(0),
+      _iboId(0)
   {
   }
 
@@ -16,10 +64,6 @@ namespace Model
   void
   CubeModel::init()
   {
-    glGenBuffers(1, &_iboId);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Cube::indices), Cube::indices, GL_STATIC_DRAW);
-
     glGenBuffers(1, &_vboId);
     ASSERT_MSG(_vboId, "Vertex buffer initialisation failed!");
     glBindBuffer(GL_ARRAY_BUFFER, _vboId);
@@ -40,6 +84,13 @@ namespace Model
                     sizeof(Cube::textures) + sizeof(Cube::normals),
                     sizeof(Cube::textures),
                     Cube::textures);
+
+    GLubyte* indices = new GLubyte[1152];
+    initAllIndices2(indices, _computedIndices);
+    glGenBuffers(1, &_iboId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1152, indices, GL_STATIC_DRAW);
+    delete indices;
   }
 
   GLuint
@@ -58,7 +109,7 @@ namespace Model
     glDeleteBuffers(1, &_iboId);
   }
 
-  void
+  const MemoryPiece&
   CubeModel::bindVBO(int index) const
   {
     ASSERT_MSG(_vboId, "Invalid vertex buffer!");
@@ -66,12 +117,7 @@ namespace Model
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
     glIndexPointer(GL_UNSIGNED_BYTE, 0, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, _vboId);
-
-    // FIXME
-    glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(index * 128));
-    glNormalPointer(GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices)));
-    glTexCoordPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Cube::vertices) + sizeof(Cube::normals)));
+                   //reinterpret_cast<const void*>(0*_computedIndices[index].from));
+    return _computedIndices[index];
   }
 } // Model

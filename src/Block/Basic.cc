@@ -13,7 +13,9 @@ namespace Block
     : super(x, y, z),
       _highlights(),
       _isHighlighted(false),
-      _pickingVBOId(0)
+      _pickingVBOId(0),
+      _vboId(0),
+      _modelState(0)
   {
     registerBlock();
   }
@@ -28,6 +30,12 @@ namespace Block
   {
     initPickingBox();
     specificInit();
+  }
+
+  unsigned int
+  Basic::getState() const
+  {
+    return _modelState;
   }
 
   void
@@ -116,12 +124,18 @@ namespace Block
   }
 
   void
-  Basic::draw() const
+  Basic::draw(const Model::MemoryPiece& mem) const
   {
-    specificDraw();
+    specificDraw(mem);
     //drawPickingBox();
     if (isHighlight())
       selectionDraw();
+  }
+
+  void
+  Basic::changeState(const NeighbourMatrix& neighbour)
+  {
+    specificChangeState(neighbour);
   }
 
   Core::Vector3D

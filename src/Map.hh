@@ -35,7 +35,10 @@ public:
   **
   ** @param where The position.
   */
-  void createBlock(const Core::Container3D<int> & where);
+  void createBlock(const Core::Container3D<int> & where, unsigned int state = 0);
+
+  void changeBlockState(const Core::Container3D<int>& where, bool propagate);
+  void changeAllBlockState();
 
   /*!
   ** Create a block near another block.

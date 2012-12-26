@@ -52,6 +52,7 @@ Game::load()
 
   _map.loadBlocks("data/map/block.txt");
   _drawer.drawSomeBlocks(_map);
+  _map.changeAllBlockState();
 
   loadtextures();
   loadShaders();
@@ -231,7 +232,7 @@ Game::showCoord(const Block::Basic* selectedCoord)
 }
 
 void
-Game::drawFPS(int elapsedTime)
+Game::drawFPS(int)
 {
   ConfigManager& config = ConfigManager::getInstance();
   static char strFrameRate[50] = {0};

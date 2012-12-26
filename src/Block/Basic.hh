@@ -5,6 +5,7 @@
 # include "../Block/NeighbourMatrix.hh"
 # include "../Core/Vector3D.hh"
 # include "../Opengl.hh"
+# include "../Model/MemoryPiece.hh"
 
 # include <array>
 # include <string>
@@ -52,8 +53,10 @@ namespace Block
     bool isHighlighted(FaceType face) const;
     bool isHighlight() const;
     void resetHighlight();
-    void draw() const;
+    void draw(const Model::MemoryPiece& mem) const;
+    void changeState(const NeighbourMatrix& neighbours);
     void selectionDraw() const;
+    unsigned int getState() const;
 
   public:
     virtual std::string getShaderName() const;
@@ -63,7 +66,8 @@ namespace Block
   private:
     void initPickingBox();
     virtual void specificInit() = 0;
-    virtual void specificDraw() const = 0;
+    virtual void specificDraw(const Model::MemoryPiece& mem) const = 0;
+    virtual void specificChangeState(const NeighbourMatrix& neighbours) = 0;
     virtual Core::Vector3D specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const = 0;
 
   protected:
@@ -71,8 +75,9 @@ namespace Block
     std::array<bool, FaceType::back + 1> _highlights;
     bool _isHighlighted;
     GLuint  _pickingVBOId;
-    GLfloat _pickingColors[108];
     GLuint  _vboId;
+    unsigned int _modelState;
+    GLfloat _pickingColors[108];
   };
 } // Block
 

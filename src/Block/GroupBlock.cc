@@ -5,6 +5,8 @@
 
 #include "../Model/StaticCubeModel.hh"
 
+#include <algorithm>
+
 namespace Block
 {
   GroupBlock::GroupBlock()
@@ -32,15 +34,26 @@ namespace Block
     found->second->push_back(block);
   }
 
+  void
+  GroupBlock::remove(int index, Block::Basic* block)
+  {
+    auto found = _assoc.find(index);
+    if (found == _assoc.end())
+      return;
+
+    auto res = std::remove(found->second->begin(), found->second->end(), block);
+    if (res != found->second->end())
+      found->second->erase(res, found->second->end());
+  }
+
   void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform)
   {
-
-    Model::CubeModel::getInstance().bindVBO(index);
+    const Model::MemoryPiece& mem = Model::CubeModel::getInstance().bindVBO(index);
     auto end = list->cend();
     for (auto it = list->cbegin(); it != end; ++it)
     {
         glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
-        (*it)->draw();
+        (*it)->draw(mem);
         (*it)->resetHighlight();
     }
   }
@@ -62,6 +75,11 @@ namespace Block
     TextureManager& textures = TextureManager::getInstance();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+
+    glBindBuffer(GL_ARRAY_BUFFER, Model::CubeModel::getInstance().getVboId());
+    glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(0));
+    glNormalPointer(GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Model::Cube::vertices)));
+    glTexCoordPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(sizeof(Model::Cube::vertices) + sizeof(Model::Cube::normals)));
 
     auto end = _assoc.cend();
     for (auto it = _assoc.cbegin(); it != end; ++it)

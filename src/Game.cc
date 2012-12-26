@@ -52,6 +52,7 @@ Game::load()
 
   _map.loadBlocks("data/map/block.txt");
   _drawer.drawSomeBlocks(_map);
+  _map.changeAllBlockState();
 
   loadtextures();
   loadShaders();

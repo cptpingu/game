@@ -29,7 +29,6 @@ namespace Model
       for (int i = 0; i < nb_zero; ++i)
         tab[i] = false;
 
-      int nb_perm = 0;
       int nb = 0;
       do
       {
@@ -37,12 +36,9 @@ namespace Model
         computedIndices.last().size = copyIndices(indices + nb, offset, tab);
         nb += computedIndices.last().size;
         computedIndices.next();
-        ++nb_perm;
       }
       while (std::next_permutation(tab, tab + 6));
 
-      std::cout << "nb face " << ((int)6 - nb_zero) << ": " << nb
-                << ", nb_perm = " << nb_perm << std::endl;
       return nb;
     }
 
@@ -51,7 +47,6 @@ namespace Model
       int nb = 0;
       for (int i = 0; i <= 6; ++i)
         nb += initAllIndices(indices, nb, i, computedIndices);
-      std::cout << "nb: " << nb << std::endl;
     }
   } // namespace
 
@@ -95,20 +90,6 @@ namespace Model
     glGenBuffers(1, &_iboId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1152, indices, GL_STATIC_DRAW);
-
-    for (int i = 0; i < 1152; ++i)
-      std::cout << i  << ": " << (int)indices[i] << std::endl;
-
-    for (auto i = 0; i < 64; ++i)
-    {
-      std::cout << i << ": " << _computedIndices[i].from << " "
-                << _computedIndices[i].size << std::endl;
-      for (unsigned int j = _computedIndices[i].from;
-           j < _computedIndices[i].from + _computedIndices[i].size; ++j)
-        std::cout << (int)indices[j] << " ";
-      std::cout << std::endl;
-    }
-
     delete indices;
   }
 

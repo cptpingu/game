@@ -19,6 +19,7 @@ namespace Block
     ~GroupBlock();
 
     void add(int index, Block::Basic* block);
+    void remove(int index, Block::Basic* block);
     void draw() const;
 
   private:

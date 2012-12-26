@@ -5,6 +5,8 @@
 
 #include "../Model/StaticCubeModel.hh"
 
+#include <algorithm>
+
 namespace Block
 {
   GroupBlock::GroupBlock()
@@ -30,6 +32,18 @@ namespace Block
     }
     ASSERT_MSG(found != _assoc.end(), "Error while adding model state!");
     found->second->push_back(block);
+  }
+
+  void
+  GroupBlock::remove(int index, Block::Basic* block)
+  {
+    auto found = _assoc.find(index);
+    if (found == _assoc.end())
+      return;
+
+    auto res = std::remove(found->second->begin(), found->second->end(), block);
+    if (res != found->second->end())
+      found->second->erase(res, found->second->end());
   }
 
   void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform)

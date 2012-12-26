@@ -23,32 +23,106 @@ Map::~Map()
 }
 
 void
-Map::createBlock(const Core::Container3D<int>& where)
+Map::createBlock(const Core::Container3D<int>& where, unsigned int state)
 {
-  static int temp = 0;
+  if (_blocks.find(where) != _blocks.end())
+    return;
 
-  if (_blocks.find(where) == _blocks.end())
+  Block::Basic* block = 0;
+  //if (Core::Random::rand() % 2 == 0)
+  block = new Block::Cube(where._x , where._y, where._z);
+  //    else
+  //      block = new Block::Triangle(where._x , where._y, where._z);
+  block->init();
+  _blocks.insert(blocks_type::value_type(where, block));
+
+  if (state > 0)
   {
-    Block::Basic* block = 0;
-   //if (Core::Random::rand() % 2 == 0)
-      block = new Block::Cube(where._x , where._y, where._z);
-//    else
-//      block = new Block::Triangle(where._x , where._y, where._z);
-      block->init();
-      _blocks.insert(blocks_type::value_type(where, block));
-      auto found = _groups.find(Model::CubeType);
-      if (found == _groups.end())
-      {
-        auto pair =  _groups.insert(groups_type::value_type(Model::CubeType, new Block::GroupBlock));
-        ASSERT(pair.second);
-        found = pair.first;
-      }
-      ASSERT_MSG(found != _groups.end(), "Error while adding block!");
-      found->second->add(temp++, block);
+    auto found = _groups.find(Model::CubeType);
+    if (found == _groups.end())
+    {
+      auto pair =  _groups.insert(groups_type::value_type(Model::CubeType, new Block::GroupBlock));
+      ASSERT(pair.second);
+      found = pair.first;
+    }
+    ASSERT_MSG(found != _groups.end(), "Error while adding block!");
+    found->second->add(state, block);
   }
 }
 
-void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
+void
+Map::changeBlockState(const Core::Container3D<int>& where, bool propagate)
+{
+  Block::NeighbourMatrix neighbours;
+  const int x = where._x;
+  const int y = where._y;
+  const int z = where._z;
+  Block::Basic* block = findBlock(x, y, z);
+
+  neighbours(-1, +1, -1) = findBlock(x - 1, y + 1, z - 1);
+  neighbours(+0, +1, -1) = findBlock(x + 0, y + 1, z - 1);
+  neighbours(+1, +1, -1) = findBlock(x + 1, y + 1, z - 1);
+  neighbours(-1, +0, -1) = findBlock(x - 1, y + 0, z - 1);
+  neighbours(+0, +0, -1) = findBlock(x + 0, y + 0, z - 1);
+  neighbours(+1, +0, -1) = findBlock(x + 1, y + 0, z - 1);
+  neighbours(-1, -1, -1) = findBlock(x - 1, y - 1, z - 1);
+  neighbours(+0, -1, -1) = findBlock(x + 0, y - 1, z - 1);
+  neighbours(+1, -1, -1) = findBlock(x + 1, y - 1, z - 1);
+
+  neighbours(-1, +1, +0) = findBlock(x - 1, y + 1, z + 0);
+  neighbours(+0, +1, +0) = findBlock(x + 0, y + 1, z + 0);
+  neighbours(+1, +1, +0) = findBlock(x + 1, y + 1, z + 0);
+  neighbours(-1, +0, +0) = findBlock(x - 1, y + 0, z + 0);
+  neighbours(+0, +0, +0) = block;
+  neighbours(+1, +0, +0) = findBlock(x + 1, y + 0, z + 0);
+  neighbours(-1, -1, +0) = findBlock(x - 1, y - 1, z + 0);
+  neighbours(+0, -1, +0) = findBlock(x + 0, y - 1, z + 0);
+  neighbours(+1, -1, +0) = findBlock(x + 1, y - 1, z + 0);
+
+  neighbours(-1, +1, +1) = findBlock(x - 1, y + 1, z + 1);
+  neighbours(+0, +1, +1) = findBlock(x + 0, y + 1, z + 1);
+  neighbours(+1, +1, +1) = findBlock(x + 1, y + 1, z + 1);
+  neighbours(-1, +0, +1) = findBlock(x - 1, y + 0, z + 1);
+  neighbours(+0, +0, +1) = findBlock(x + 0, y + 0, z + 1);
+  neighbours(+1, +0, +1) = findBlock(x + 1, y + 0, z + 1);
+  neighbours(-1, -1, +1) = findBlock(x - 1, y - 1, z + 1);
+  neighbours(+0, -1, +1) = findBlock(x + 0, y - 1, z + 1);
+  neighbours(+1, -1, +1) = findBlock(x + 1, y - 1, z + 1);
+
+  const unsigned int oldState = block->getState();
+  block->changeState(neighbours);
+  const unsigned int state = block->getState();
+  if (oldState == state)
+    return;
+
+  auto found = _groups.find(Model::CubeType);
+  if (found == _groups.end())
+  {
+    auto pair =  _groups.insert(groups_type::value_type(Model::CubeType, new Block::GroupBlock));
+    ASSERT(pair.second);
+    found = pair.first;
+  }
+  ASSERT_MSG(found != _groups.end(), "Error while adding block!");
+  found->second->remove(oldState, block);
+  found->second->add(state, block);
+
+  if (!propagate)
+    return;
+
+  // fixme
+}
+
+void
+Map::changeAllBlockState()
+{
+  auto end = _blocks.end();
+  for (auto it = _blocks.begin(); it != end; ++it)
+    if (it->second->getState() == 0)
+      changeBlockState(it->first, false);
+}
+
+void
+Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
 {
   if (!who)
     return;
@@ -57,16 +131,16 @@ void Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType wh
   switch (where)
   {
     case Block::back:
-      container = Core::Container3D<int>(who->_x , who->_y + 1, who->_z);
+      container = Core::Container3D<int>(who->_x, who->_y + 1, who->_z);
       break;
     case Block::front:
-      container = Core::Container3D<int>(who->_x , who->_y - 1, who->_z);
+      container = Core::Container3D<int>(who->_x, who->_y - 1, who->_z);
       break;
     case Block::left:
-      container = Core::Container3D<int>(who->_x - 1 , who->_y, who->_z );
+      container = Core::Container3D<int>(who->_x - 1, who->_y, who->_z );
       break;
     case Block::right:
-      container = Core::Container3D<int>(who->_x + 1 , who->_y, who->_z );
+      container = Core::Container3D<int>(who->_x + 1, who->_y, who->_z );
       break;
     case Block::up:
       container = Core::Container3D<int>(who->_x, who->_y, who->_z + 1);
@@ -154,6 +228,3 @@ Map::getGroups() const
 {
   return _groups;
 }
-
-
-

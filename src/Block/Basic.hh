@@ -5,6 +5,7 @@
 # include "../Block/NeighbourMatrix.hh"
 # include "../Core/Vector3D.hh"
 # include "../Opengl.hh"
+# include "../Model/MemoryPiece.hh"
 
 # include <array>
 # include <string>
@@ -52,7 +53,7 @@ namespace Block
     bool isHighlighted(FaceType face) const;
     bool isHighlight() const;
     void resetHighlight();
-    void draw(int hint) const;
+    void draw(const Model::MemoryPiece& mem) const;
     void selectionDraw() const;
 
   public:
@@ -63,7 +64,7 @@ namespace Block
   private:
     void initPickingBox();
     virtual void specificInit() = 0;
-    virtual void specificDraw(int hint) const = 0;
+    virtual void specificDraw(const Model::MemoryPiece& mem) const = 0;
     virtual Core::Vector3D specificCollision(const Core::Vector3D& current, const Core::Vector3D& next) const = 0;
 
   protected:

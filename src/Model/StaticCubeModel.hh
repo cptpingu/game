@@ -4,8 +4,7 @@
 # include "../Opengl.hh"
 # include "../Core/Singleton.hh"
 # include "../Core/Assert.hh"
-
-# include <array>
+# include "MemoryPiece.hh"
 
 namespace Model
 {
@@ -71,59 +70,18 @@ namespace Model
   class CubeModel : public Core::Singleton<CubeModel>
   {
   public:
-    struct MemoryPiece
-    {
-      MemoryPiece()
-        : from(0), size(0)
-      {
-      }
-      unsigned int from;
-      unsigned int size;
-    };
-    class MemoryPieces
-    {
-    public:
-      MemoryPieces()
-        : _last(0)
-      {
-      }
-
-      inline const MemoryPiece& operator[](unsigned int index) const
-      {
-        ASSERT_MSG(index < 64, "index: " << index);
-        return _data[index];
-      }
-      inline MemoryPiece& operator[](unsigned int index)
-      {
-        ASSERT_MSG(index < 64, "index: " << index);
-        return _data[index];
-      }
-      inline MemoryPiece& last()
-      {
-        return operator[](_last);
-      }
-      inline void next()
-      {
-        ++_last;
-      }
-    private:
-      unsigned int _last;
-      std::array<MemoryPiece, 64> _data;
-    };
-
-  public:
     CubeModel();
     ~CubeModel();
 
     void init();
     GLuint getVboId() const;
     void release();
-    unsigned int bindVBO(int index) const;
+    const MemoryPiece& bindVBO(int index) const;
 
   private:
-    GLuint       _vboId;
-    GLuint       _iboId;
-    MemoryPieces _computedIndices;
+    GLuint           _vboId;
+    GLuint           _iboId;
+    MemoryPieces<64> _computedIndices;
   };
 } // Model
 

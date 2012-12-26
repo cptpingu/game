@@ -445,7 +445,7 @@ Drawer::drawSomeBlocks(Map& map)
   Core::Container3D<int> where;
 
   int shift = 0;
-  for (int i = 0; i < 7; ++i)
+  for (int i = 0; i < 64; ++i)
   {
     for (int j = 0; j < 1; ++j)
     {

@@ -34,12 +34,12 @@ namespace Block
 
   void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform)
   {
-    const int hint = Model::CubeModel::getInstance().bindVBO(index);
+    const Model::MemoryPiece& mem = Model::CubeModel::getInstance().bindVBO(index);
     auto end = list->cend();
     for (auto it = list->cbegin(); it != end; ++it)
     {
         glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
-        (*it)->draw(hint);
+        (*it)->draw(mem);
         (*it)->resetHighlight();
     }
   }

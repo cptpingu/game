@@ -25,7 +25,7 @@ Map::~Map()
 void
 Map::createBlock(const Core::Container3D<int>& where)
 {
-  static int temp = 63 - 6;
+  static int temp = 0;
 
   if (_blocks.find(where) == _blocks.end())
   {

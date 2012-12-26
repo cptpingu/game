@@ -228,7 +228,7 @@ Game::showCoord(const Block::Basic* selectedCoord)
 }
 
 void
-Game::drawFPS(int elapsedTime)
+Game::drawFPS(int)
 {
   ConfigManager& config = ConfigManager::getInstance();
   static char strFrameRate[50] = {0};

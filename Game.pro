@@ -74,7 +74,8 @@ HEADERS += \
     src/Model/StaticCubeModel.hh \
     src/Model/StaticPickingBoxModel.hh \
     src/State.hh \
-    src/Block/GroupBlock.hh
+    src/Block/GroupBlock.hh \
+    src/Model/MemoryPiece.hh
 
 QMAKE_CXXFLAGS += -std=c++0x -Wno-unknown-pragmas -W -Wall
 LIBS+= -L$$PWD/../../include/SDL-1.2.14/lib/ -lSDL -lSDL_image -lSDLmain -lopengl32 -lglu32 -lpng12-0

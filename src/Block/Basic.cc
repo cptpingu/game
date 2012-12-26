@@ -116,9 +116,9 @@ namespace Block
   }
 
   void
-  Basic::draw(int hint) const
+  Basic::draw(const Model::MemoryPiece& mem) const
   {
-    specificDraw(hint);
+    specificDraw(mem);
     //drawPickingBox();
     if (isHighlight())
       selectionDraw();

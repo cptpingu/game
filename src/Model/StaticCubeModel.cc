@@ -22,7 +22,7 @@ namespace Model
     }
 
     int initAllIndices(GLubyte* indices, int offset, unsigned char nb_zero,
-                       CubeModel::MemoryPieces& computedIndices)
+                       MemoryPieces<64>& computedIndices)
     {
       ASSERT_MSG(nb_zero <= 6, "nb_zero: " << nb_zero);
       bool tab[6] = {true, true, true, true, true, true};
@@ -46,7 +46,7 @@ namespace Model
       return nb;
     }
 
-    void initAllIndices2(GLubyte* indices, CubeModel::MemoryPieces& computedIndices)
+    void initAllIndices2(GLubyte* indices, MemoryPieces<64>& computedIndices)
     {
       int nb = 0;
       for (int i = 0; i <= 6; ++i)
@@ -103,7 +103,7 @@ namespace Model
     {
       std::cout << i << ": " << _computedIndices[i].from << " "
                 << _computedIndices[i].size << std::endl;
-      for (int j = _computedIndices[i].from;
+      for (unsigned int j = _computedIndices[i].from;
            j < _computedIndices[i].from + _computedIndices[i].size; ++j)
         std::cout << (int)indices[j] << " ";
       std::cout << std::endl;
@@ -128,15 +128,15 @@ namespace Model
     glDeleteBuffers(1, &_iboId);
   }
 
-  unsigned int
+  const MemoryPiece&
   CubeModel::bindVBO(int index) const
   {
     ASSERT_MSG(_vboId, "Invalid vertex buffer!");
     ASSERT_MSG(_iboId, "Invalid index buffer!");
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iboId);
-    glIndexPointer(GL_UNSIGNED_BYTE, 0,
-                   reinterpret_cast<void*>(_computedIndices[index].from));
-    return _computedIndices[index].size;
+    glIndexPointer(GL_UNSIGNED_BYTE, 0, 0);
+                   //reinterpret_cast<const void*>(0*_computedIndices[index].from));
+    return _computedIndices[index];
   }
 } // Model

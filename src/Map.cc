@@ -59,35 +59,39 @@ Map::changeBlockState(const Core::Container3D<int>& where, bool propagate)
   const int z = where._z;
   Block::Basic* block = findBlock(x, y, z);
 
-  neighbours(-1, +1, -1) = findBlock(x - 1, y + 1, z - 1);
-  neighbours(+0, +1, -1) = findBlock(x + 0, y + 1, z - 1);
-  neighbours(+1, +1, -1) = findBlock(x + 1, y + 1, z - 1);
-  neighbours(-1, +0, -1) = findBlock(x - 1, y + 0, z - 1);
   neighbours(+0, +0, -1) = findBlock(x + 0, y + 0, z - 1);
-  neighbours(+1, +0, -1) = findBlock(x + 1, y + 0, z - 1);
-  neighbours(-1, -1, -1) = findBlock(x - 1, y - 1, z - 1);
-  neighbours(+0, -1, -1) = findBlock(x + 0, y - 1, z - 1);
-  neighbours(+1, -1, -1) = findBlock(x + 1, y - 1, z - 1);
-
-  neighbours(-1, +1, +0) = findBlock(x - 1, y + 1, z + 0);
   neighbours(+0, +1, +0) = findBlock(x + 0, y + 1, z + 0);
-  neighbours(+1, +1, +0) = findBlock(x + 1, y + 1, z + 0);
   neighbours(-1, +0, +0) = findBlock(x - 1, y + 0, z + 0);
   neighbours(+0, +0, +0) = block;
   neighbours(+1, +0, +0) = findBlock(x + 1, y + 0, z + 0);
-  neighbours(-1, -1, +0) = findBlock(x - 1, y - 1, z + 0);
   neighbours(+0, -1, +0) = findBlock(x + 0, y - 1, z + 0);
-  neighbours(+1, -1, +0) = findBlock(x + 1, y - 1, z + 0);
-
-  neighbours(-1, +1, +1) = findBlock(x - 1, y + 1, z + 1);
-  neighbours(+0, +1, +1) = findBlock(x + 0, y + 1, z + 1);
-  neighbours(+1, +1, +1) = findBlock(x + 1, y + 1, z + 1);
-  neighbours(-1, +0, +1) = findBlock(x - 1, y + 0, z + 1);
   neighbours(+0, +0, +1) = findBlock(x + 0, y + 0, z + 1);
-  neighbours(+1, +0, +1) = findBlock(x + 1, y + 0, z + 1);
-  neighbours(-1, -1, +1) = findBlock(x - 1, y - 1, z + 1);
-  neighbours(+0, -1, +1) = findBlock(x + 0, y - 1, z + 1);
-  neighbours(+1, -1, +1) = findBlock(x + 1, y - 1, z + 1);
+
+  if (false /* check diagonale */)
+  {
+    neighbours(-1, +1, -1) = findBlock(x - 1, y + 1, z - 1);
+    neighbours(+0, +1, -1) = findBlock(x + 0, y + 1, z - 1);
+    neighbours(+1, +1, -1) = findBlock(x + 1, y + 1, z - 1);
+    neighbours(-1, +0, -1) = findBlock(x - 1, y + 0, z - 1);
+    neighbours(+1, +0, -1) = findBlock(x + 1, y + 0, z - 1);
+    neighbours(-1, -1, -1) = findBlock(x - 1, y - 1, z - 1);
+    neighbours(+0, -1, -1) = findBlock(x + 0, y - 1, z - 1);
+    neighbours(+1, -1, -1) = findBlock(x + 1, y - 1, z - 1);
+
+    neighbours(-1, +1, +0) = findBlock(x - 1, y + 1, z + 0);
+    neighbours(-1, -1, +0) = findBlock(x - 1, y - 1, z + 0);
+    neighbours(+1, -1, +0) = findBlock(x + 1, y - 1, z + 0);
+    neighbours(+1, +1, +0) = findBlock(x + 1, y + 1, z + 0);
+
+    neighbours(-1, +1, +1) = findBlock(x - 1, y + 1, z + 1);
+    neighbours(+0, +1, +1) = findBlock(x + 0, y + 1, z + 1);
+    neighbours(+1, +1, +1) = findBlock(x + 1, y + 1, z + 1);
+    neighbours(-1, +0, +1) = findBlock(x - 1, y + 0, z + 1);
+    neighbours(+1, +0, +1) = findBlock(x + 1, y + 0, z + 1);
+    neighbours(-1, -1, +1) = findBlock(x - 1, y - 1, z + 1);
+    neighbours(+0, -1, +1) = findBlock(x + 0, y - 1, z + 1);
+    neighbours(+1, -1, +1) = findBlock(x + 1, y - 1, z + 1);
+  }
 
   const unsigned int oldState = block->getState();
   block->changeState(neighbours);

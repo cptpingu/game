@@ -65,6 +65,8 @@ namespace Model
       16,17,18,  18,19,16,  // front
       20,21,22,  22,23,20   // down
     };
+
+    static const unsigned int emptyIndex = 63;
   } // Cube
 
   class CubeModel : public Core::Singleton<CubeModel>

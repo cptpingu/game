@@ -38,6 +38,12 @@ namespace Block
     return _modelState;
   }
 
+  bool
+  Basic::isNullIndex(int index) const
+  {
+    return specificIsNullIndex(index);
+  }
+
   void
   Basic::initPickingBox()
   {

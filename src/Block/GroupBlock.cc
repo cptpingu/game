@@ -52,15 +52,21 @@ namespace Block
       found->second->erase(res, found->second->end());
   }
 
-  void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform)
+  void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform,
+                      bool picking)
   {
     const Model::MemoryPiece& mem = Model::CubeModel::getInstance().bindVBO(index);
     auto end = list->cend();
     for (auto it = list->cbegin(); it != end; ++it)
     {
-      glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
-      (*it)->draw(mem);
-      (*it)->resetHighlight();
+      if (picking)
+        (*it)->drawPickingBox(mem);
+      else
+      {
+        glUniform1f(uniform, (*it)->isHighlight() ? 0.2 : 0.0);
+        (*it)->draw(mem);
+        (*it)->resetHighlight();
+      }
     }
   }
 
@@ -89,11 +95,32 @@ namespace Block
 
     auto end = _assoc.cend();
     for (auto it = _assoc.cbegin(); it != end; ++it)
-      drawModelState(it->first, it->second, uniform);
+      drawModelState(it->first, it->second, uniform, false);
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_INDEX_ARRAY);
+  }
+
+  void
+  GroupBlock::drawPicking() const
+  {
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glEnableClientState(GL_INDEX_ARRAY);
+
+    ShadersManager::getInstance().disable();
+
+    glBindBuffer(GL_ARRAY_BUFFER, Model::CubeModel::getInstance().getVboId());
+    glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(0));
+
+    auto end = _assoc.cend();
+    for (auto it = _assoc.cbegin(); it != end; ++it)
+      drawModelState(it->first, it->second, 0, true);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_INDEX_ARRAY);
   }
 } // Block

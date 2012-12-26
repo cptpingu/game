@@ -84,10 +84,11 @@ Game::play()
     ++nbFrame;
 
     _state.getCamera()->animate(elapsedTime);
-    std::pair<Block::Basic*, Block::FaceType> pickedBlock;/*
+
+    std::pair<Block::Basic*, Block::FaceType> pickedBlock =
         _state.getCamera()->picking(_map, _drawer);
     if (pickedBlock.first)
-      pickedBlock.first->highlight(pickedBlock.second, true);*/
+      pickedBlock.first->highlight(pickedBlock.second, true);
 
     drawGL(pickedBlock.first, elapsedTime);
 

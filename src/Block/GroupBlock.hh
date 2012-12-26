@@ -21,6 +21,7 @@ namespace Block
     void add(int index, Block::Basic* block);
     void remove(int index, Block::Basic* block);
     void draw() const;
+    void drawPicking() const;
 
   private:
     std::string   _shaderName;

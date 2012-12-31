@@ -2,6 +2,7 @@
 #include "../TextureManager.hh"
 #include "../ShadersManager.hh"
 #include "../Model/StaticCubeModel.hh"
+#include <cmath>
 
 namespace Block
 {
@@ -58,7 +59,12 @@ namespace Block
       Core::Vector3D pos;
       /*Core::Vector3D direction;
 
-      for int i =
+      int[6] Alpha;
+
+      for int i = 0;i<6;++i
+       Alpha[i]=  current.x
+
+
       direction = current + (next - current).normalize()*t;
 
 */
@@ -70,17 +76,18 @@ namespace Block
       Core::Vector3D Repulse;
       Repulse = next - cubecenter;
 
-      pos =
+      pos
 
       */
       pos = next;
 
- if(current._x > (_x+1)*Block::SIZE && next._x < (_x+1)*Block::SIZE)
+
+
+     if(current._x > (_x+1)*Block::SIZE  && next._x < (_x+1)*Block::SIZE)
       {
 
           pos._x = (_x+1)*Block::SIZE + 0.005;
 
-      //pos._y = pos._y/100;
 
       std::cout << "X+1"<<std::endl;
       }
@@ -90,12 +97,13 @@ namespace Block
       {
           pos._x = _x*Block::SIZE - 0.005;
 
-      //pos._y = pos._y/100;
+
       std::cout << "X"<<std::endl;
       }
 
 
-      else if(current._y > (_y+1)*Block::SIZE && next._y < (_y+1)*Block::SIZE)
+
+       if(current._y > (_y+1)*Block::SIZE && next._y < (_y+1)*Block::SIZE)
       {
       pos._y = (_y+1)*Block::SIZE + 0.005;
 
@@ -145,5 +153,7 @@ namespace Block
 
 
       return pos;
-  }
-} // Block
+
+ // Block
+}
+}

@@ -11,7 +11,7 @@ void main()
 	(gl_LightSource[0].ambient * gl_FrontMaterial.ambient) * att + texture2D(tex, gl_TexCoord[0].st);
 
 	vec3 N = normalize(normal);
-	vec3 L = normalize(lightDir);
+    vec3 L = normalize(lightDir);
 
 	float lambertTerm = dot(N,L);
 

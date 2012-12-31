@@ -51,7 +51,7 @@ Game::load()
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
   _map.loadBlocks("data/map/block.txt");
-  _drawer.drawSomeBlocks(_map);
+  _drawer.drawDebug(_map);
   _map.changeAllBlockState();
 
   loadtextures();
@@ -84,6 +84,7 @@ Game::play()
     ++nbFrame;
 
     _state.getCamera()->animate(elapsedTime);
+
     std::pair<Block::Basic*, Block::FaceType> pickedBlock =
         _state.getCamera()->picking(_map, _drawer);
     if (pickedBlock.first)
@@ -177,6 +178,9 @@ Game::loadShaders()
   shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");
   shaders.load("basic_lightning", "data/shaders/basic_lightning.vert.c", "data/shaders/basic_lightning.frag.c");
   shaders.load("tex_lightning", "data/shaders/tex_lightning.vert.c", "data/shaders/tex_lightning.frag.c");
+  shaders.load("cubeLight", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c");
+  //shaders.load("tex2_lightning", "data/shaders/tex2_lightning.vert.c", "data/shaders/tex2_lightning.frag.c");
+
 }
 
 void
@@ -192,7 +196,7 @@ Game::drawGL(const Block::Basic* selectedCoord, const Block::FaceType where,
 
   _drawer.drawBlocks(_map);
   //_drawer.drawPickingBox(_map);
-  //_drawer.light(elapsedTime);
+  _drawer.light(elapsedTime);
   //_drawer.drawVBO();
 
   showCoord(selectedCoord, where);

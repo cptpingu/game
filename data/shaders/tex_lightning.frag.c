@@ -3,8 +3,12 @@ varying vec3 v;
 uniform sampler2D tex;
 varying float vTemps;
 
+
 void main (void)  
 {  
+
+
+
    vec3 L = normalize(gl_LightSource[0].position.xyz - v);   
    vec3 E = normalize(-v); // we are in Eye Coordinates, so EyePos is (0,0,0)  
    vec3 R = normalize(-reflect(L,N));  
@@ -25,7 +29,7 @@ void main (void)
    vec4 color = texture2D(tex, gl_TexCoord[0].st);
 
      gl_FragColor.x = gl_FragColor.x  + color.x*vTemps;
-     gl_FragColor.y =  gl_FragColor.y + color.y*vTemps;
-     gl_FragColor.z = gl_FragColor.z + color.z* vTemps;
+     gl_FragColor.y = gl_FragColor.y + color.y*vTemps;
+     gl_FragColor.z = gl_FragColor.z + color.z*vTemps;
 
 }

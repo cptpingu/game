@@ -93,7 +93,7 @@ std::vector<Core::Vector3D> Drawer::collisionlist(const  Core::Vector3D &from,co
 
 void Drawer::light(unsigned int timestep)
 {
-
+/*
     std::vector<Core::Vector3D> list = collisionlist(Core::Vector3D (0,0,0),Core::Vector3D (50,0,50));
 
 
@@ -195,29 +195,30 @@ void Drawer::light(unsigned int timestep)
          //glVertexAttrib1f(temps,0.5);
         //GLuint Light = glGetAttribLocation(shaders.get("cubeLight"), "LightPosition");
 
-
+*/
        glPushMatrix();
 
        static double move = 0;
-       //move += 1 * timestep;
-       //glRotatef((move/20), 30, 1, 0);
+       move += 1 * timestep;
+       glRotatef((move/20), 30, 1, 0);
 
        glBegin(GL_TRIANGLES);
-       glColor3ub(0,0,255);
-       glVertex3d(0,0,60);
-       glVertex3d(1,0,60);
-       glVertex3d(0,1,60);
+       glColor3ub(200,200,0);
+       glVertex3d(40,40,80);
+       glColor3ub(200,200,0);
+       glVertex3d(50,40,80);
+       glColor3ub(200,200,0);
+       glVertex3d(40,50,80);
        glEnd();
 
-       int LightPos[4] = {0,0,60,1};
-       glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+       /*int LightPos[4] = {40,40,60,1};
+       glLightiv(GL_LIGHT0,GL_POSITION,LightPos);*/
 
 
 
        glPopMatrix();
 
-
-
+/*
 
 
 
@@ -231,10 +232,10 @@ void Drawer::light(unsigned int timestep)
        for (int x = 0; x < list.size(); ++x)
        {
 
-/*
+
 Core::Vector3D Point;
 Point(x-LightPos[1]*1.0,y-LightPos[2]*1.0,z-LightPos[3]*1.0);
-double D = Point.length();*/
+double D = Point.length();
            float D = 1-(list[x]._z+list[x]._y+list[x]._x)/list.size()*(list[x]._z+list[x]._y+list[x]._x)/list.size();
 
                    //1/log(sqrt(list[x]._x*list[x]._x + list[x]._y*list[x]._y + list[x]._z*list[x]._z));
@@ -424,7 +425,7 @@ double D = Point.length();*/
         glEnd();
         glPopMatrix();
 
-    shaders.disable();
+    shaders.disable();*/
 }
 
 void

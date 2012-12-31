@@ -80,7 +80,7 @@ namespace Block
     GLuint  _vboId;
     unsigned int _pickingModelState;
     unsigned int _modelState;
-    GLfloat _pickingColors[108];
+    GLfloat _pickingColors[72];
   };
 } // Block
 

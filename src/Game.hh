@@ -36,8 +36,8 @@ public:
 private:
   void loadtextures();
   void loadShaders();
-  void drawGL(const Block::Basic* selectedCoord, int elapsedTime);
-  void showCoord(const Block::Basic* selectedCoord);
+  void drawGL(const Block::Basic* selectedCoord, const Block::FaceType where, int elapsedTime);
+  void showCoord(const Block::Basic* selectedCoord, const Block::FaceType where);
   void drawFPS(int elapsedTime);
   void drawHUD();
 

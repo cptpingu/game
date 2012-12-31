@@ -23,6 +23,7 @@ namespace Block
   void
   GroupBlock::add(int index, Block::Basic* block)
   {
+    ASSERT(block);
     if (block->isNullIndex(index))
       return;
 
@@ -40,6 +41,7 @@ namespace Block
   void
   GroupBlock::remove(int index, Block::Basic* block)
   {
+    ASSERT(block);
     if (block->isNullIndex(index))
       return;
 
@@ -50,6 +52,15 @@ namespace Block
     auto res = std::remove(found->second->begin(), found->second->end(), block);
     if (res != found->second->end())
       found->second->erase(res, found->second->end());
+  }
+
+  void
+  GroupBlock::removeFromAll(Block::Basic* block)
+  {
+    ASSERT(block);
+    auto end = _assoc.end();
+    for (auto it = _assoc.begin(); it != end; ++it)
+      remove(it->first, block);
   }
 
   void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform,

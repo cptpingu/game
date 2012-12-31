@@ -54,15 +54,43 @@ void
 Map::changeBlockState(const Core::Container3D<int>& where, bool propagate)
 {
   Block::NeighbourMatrix neighbours;
+  Block::Basic* block = findBlock(where._x, where._y, where._z);
+  fillNeighbours(where, neighbours);
+  neighbours(+0, +0, +0) = block;
+
+  const unsigned int oldState = block->getState();
+  block->changeState(neighbours);
+  const unsigned int state = block->getState();
+  if (oldState == state)
+    return;
+
+  auto found = _groups.find(Model::CubeType);
+  if (found == _groups.end())
+  {
+    auto pair =  _groups.insert(groups_type::value_type(Model::CubeType, new Block::GroupBlock));
+    ASSERT(pair.second);
+    found = pair.first;
+  }
+  ASSERT_MSG(found != _groups.end(), "Error while adding block!");
+  found->second->remove(oldState, block);
+  found->second->add(state, block);
+
+  if (propagate)
+    changeNeighbourState(where, false);
+}
+
+bool
+Map::fillNeighbours(const Core::Container3D<int>& where,
+                    Block::NeighbourMatrix& neighbours)
+{
   const int x = where._x;
   const int y = where._y;
   const int z = where._z;
-  Block::Basic* block = findBlock(x, y, z);
 
   neighbours(+0, +0, -1) = findBlock(x + 0, y + 0, z - 1);
   neighbours(+0, +1, +0) = findBlock(x + 0, y + 1, z + 0);
   neighbours(-1, +0, +0) = findBlock(x - 1, y + 0, z + 0);
-  neighbours(+0, +0, +0) = block;
+  neighbours(+0, +0, +0) = 0;
   neighbours(+1, +0, +0) = findBlock(x + 1, y + 0, z + 0);
   neighbours(+0, -1, +0) = findBlock(x + 0, y - 1, z + 0);
   neighbours(+0, +0, +1) = findBlock(x + 0, y + 0, z + 1);
@@ -93,27 +121,54 @@ Map::changeBlockState(const Core::Container3D<int>& where, bool propagate)
     neighbours(+1, -1, +1) = findBlock(x + 1, y - 1, z + 1);
   }
 
-  const unsigned int oldState = block->getState();
-  block->changeState(neighbours);
-  const unsigned int state = block->getState();
-  if (oldState == state)
-    return;
+  return true;
+}
 
-  auto found = _groups.find(Model::CubeType);
-  if (found == _groups.end())
-  {
-    auto pair =  _groups.insert(groups_type::value_type(Model::CubeType, new Block::GroupBlock));
-    ASSERT(pair.second);
-    found = pair.first;
+void
+Map::changeNeighbourState(const Core::Container3D<int>& where, bool propagate)
+{
+#define CHANGE(X, Y, Z)                                                                            \
+  if (neighbours(X, Y, Z))                                                                         \
+  {                                                                                                \
+    changeBlockState(Core::Container3D<int>(where._x + X, where._y + Y, where._z + Z), propagate); \
   }
-  ASSERT_MSG(found != _groups.end(), "Error while adding block!");
-  found->second->remove(oldState, block);
-  found->second->add(state, block);
 
-  if (!propagate)
-    return;
+  Block::NeighbourMatrix neighbours;
+  fillNeighbours(where, neighbours);
 
-  // fixme
+  CHANGE(+0, +0, -1);
+  CHANGE(+0, +1, +0);
+  CHANGE(-1, +0, +0);
+  CHANGE(+0, +0, +0);
+  CHANGE(+1, +0, +0);
+  CHANGE(+0, -1, +0);
+  CHANGE(+0, +0, +1);
+
+  // Diagonals
+  CHANGE(-1, +1, -1);
+  CHANGE(+0, +1, -1);
+  CHANGE(+1, +1, -1);
+  CHANGE(-1, +0, -1);
+  CHANGE(+1, +0, -1);
+  CHANGE(-1, -1, -1);
+  CHANGE(+0, -1, -1);
+  CHANGE(+1, -1, -1);
+
+  CHANGE(-1, +1, +0);
+  CHANGE(-1, -1, +0);
+  CHANGE(+1, -1, +0);
+  CHANGE(+1, +1, +0);
+
+  CHANGE(-1, +1, +1);
+  CHANGE(+0, +1, +1);
+  CHANGE(+1, +1, +1);
+  CHANGE(-1, +0, +1);
+  CHANGE(+1, +0, +1);
+  CHANGE(-1, -1, +1);
+  CHANGE(+0, -1, +1);
+  CHANGE(+1, -1, +1);
+
+#undef CHANGE
 }
 
 void
@@ -157,16 +212,21 @@ Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
   }
 
   createBlock(container);
+  changeBlockState(container, true);
 }
 
 void
-Map::eraseBlock(const Block::Basic* who)
+Map::eraseBlock(Block::Basic* who)
 {
   if (who)
   {
     auto container = Core::Container3D<int>(who->_x, who->_y, who->_z);
+    auto group = _groups.find(Model::CubeType);
+    ASSERT(group != _groups.end());
+    group->second->removeFromAll(who);
     delete _blocks[container];
     _blocks.erase(container);
+    changeNeighbourState(container, false);
   }
 }
 

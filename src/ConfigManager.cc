@@ -32,8 +32,8 @@ ConfigManager::ConfigManager()
   _bindings["boost"] = SDLK_RSHIFT;
   _bindings["fly_up"] = SDL_BUTTON_WHEELUP;
   _bindings["fly_down"] = SDL_BUTTON_WHEELDOWN;
-  _bindings["insert_block"] = SDLK_g;
-  _bindings["remove_block"] = SDLK_f;
+  _bindings["insert_block"] = SDL_BUTTON_LEFT;
+  _bindings["remove_block"] = SDL_BUTTON_RIGHT;
 
   _bindings["wireframe_mode"] = SDLK_w;
   _bindings["normal_mode"] = SDLK_x;
@@ -53,7 +53,7 @@ ConfigManager::ConfigManager()
   _bindings["window_height"] = 480;
   _bindings["fullscreen"] = 0;
 
-    _bindings["height_jump"] = 250;
+  _bindings["height_jump"] = 250;
 }
 
 ConfigManager::~ConfigManager()

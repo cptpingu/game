@@ -20,8 +20,6 @@ public:
   */
   void drawBlocks(const Map& map) const;
 
-
-
   /*!
   ** Draw the trees.
   **
@@ -36,7 +34,9 @@ public:
   std::vector<Core::Vector3D> collisionlist(const  Core::Vector3D &from,const Core::Vector3D &to);
   void initVBO(const Map& map);
   void drawVBO();
+  void drawDebug(Map& map);
   void drawSomeBlocks(Map& map);
+  void drawALittleMap(Map& map);
 
 };
 

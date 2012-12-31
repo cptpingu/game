@@ -51,7 +51,7 @@ Game::load()
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
   _map.loadBlocks("data/map/block.txt");
-  _drawer.drawSomeBlocks(_map);
+  _drawer.drawDebug(_map);
   _map.changeAllBlockState();
 
   loadtextures();
@@ -90,7 +90,7 @@ Game::play()
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);
 
-    drawGL(pickedBlock.first, elapsedTime);
+    drawGL(pickedBlock.first, pickedBlock.second, elapsedTime);
 
     input.handleInput();
 
@@ -180,11 +180,11 @@ Game::loadShaders()
   shaders.load("tex_lightning", "data/shaders/tex_lightning.vert.c", "data/shaders/tex_lightning.frag.c");
   shaders.load("cubeLight", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c");
   //shaders.load("tex2_lightning", "data/shaders/tex2_lightning.vert.c", "data/shaders/tex2_lightning.frag.c");
-
 }
 
 void
-Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
+Game::drawGL(const Block::Basic* selectedCoord, const Block::FaceType where,
+             int elapsedTime)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -194,10 +194,11 @@ Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
   _state.getCamera()->look();
 
   _drawer.drawBlocks(_map);
+  //_drawer.drawPickingBox(_map);
   _drawer.light(elapsedTime);
   //_drawer.drawVBO();
 
-  showCoord(selectedCoord);
+  showCoord(selectedCoord, where);
   drawAxis(100);
   drawFPS(elapsedTime);
   drawHUD();
@@ -207,7 +208,7 @@ Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
 }
 
 void
-Game::showCoord(const Block::Basic* selectedCoord)
+Game::showCoord(const Block::Basic* selectedCoord, const Block::FaceType where)
 {
   ConfigManager& config = ConfigManager::getInstance();
   auto pos = _state.getCamera()->getCurrentPosition();
@@ -219,7 +220,8 @@ Game::showCoord(const Block::Basic* selectedCoord)
   if (selectedCoord)
     buff << "Pick: " << selectedCoord->_x << " "
          << selectedCoord->_y << " "
-         << selectedCoord->_z << "\n";
+         << selectedCoord->_z << " ("
+         << where << ")\n";
 
   TextureManager& textures = TextureManager::getInstance();
   std::string line;

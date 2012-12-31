@@ -9,6 +9,7 @@
 #include <vector>
 #include <sstream>
 #include <cmath>
+#include "Core/Random.hh"
 
 #include "Model/StaticCubeModel.hh"
 
@@ -81,7 +82,7 @@ std::vector<Core::Vector3D> Drawer::collisionlist(const  Core::Vector3D &from,co
         dy++;
     if (alphaz==alpha && alphaz < (to - from).length())
         dz++;
-    std::cout<< dx*((v._x > 0) - (v._x < 0)) << "_" << dy*((v._y > 0) - (v._y < 0)) << "_" << dz*((v._z > 0) - (v._z < 0)) << "_" << alpha <<std::endl;
+    //std::cout<< dx*((v._x > 0) - (v._x < 0)) << "_" << dy*((v._y > 0) - (v._y < 0)) << "_" << dz*((v._z > 0) - (v._z < 0)) << "_" << alpha <<std::endl;
     List.push_back(Core::Vector3D (from._x + dx*((v._x > 0) - (v._x < 0)),from._y + dy*((v._y > 0) - (v._y < 0)),from._z +dz*((v._z > 0) - (v._z < 0))));
 
     }
@@ -91,7 +92,7 @@ std::vector<Core::Vector3D> Drawer::collisionlist(const  Core::Vector3D &from,co
 
 
 
-void Drawer::light(unsigned int timestep)
+void Drawer::light(unsigned int)
 {
 /*
     std::vector<Core::Vector3D> list = collisionlist(Core::Vector3D (0,0,0),Core::Vector3D (50,0,50));
@@ -198,9 +199,11 @@ void Drawer::light(unsigned int timestep)
 */
        glPushMatrix();
 
+
        static double move = 0;
        move += 1 * timestep;
        glRotatef((move/20), 30, 1, 0);
+
 
        glBegin(GL_TRIANGLES);
        glColor3ub(200,200,0);
@@ -229,7 +232,8 @@ void Drawer::light(unsigned int timestep)
     glNormal3d(X/sqrt(3),Y/sqrt(3),Z/sqrt(3)); \
     glVertex3d(X,Y,Z);
 
-       for (int x = 0; x < list.size(); ++x)
+       const int size = list.size();
+       for (int x = 0; x < size; ++x)
        {
 
 
@@ -482,70 +486,64 @@ Drawer::drawVBO()
 }
 
 void
+Drawer::drawDebug(Map& map)
+{
+  //drawALittleMap(map);
+  drawSomeBlocks(map);
+}
+
+void
+Drawer::drawALittleMap(Map& map)
+{
+  static const int nb = 40;
+
+  Core::Container3D<int> where;
+  Core::Array2D<int, nb> tab;
+
+  for (int i = 0; i < nb; ++i)
+    for (int j = 0; j < nb; ++j)
+      tab(i,j) =  Core::Random::rand() % nb;
+
+  for (int n = 0; n < 3; ++n)
+    for (int i = 1; i < nb - 1; ++i)
+      for (int j = 1; j < nb - 1; ++j)
+        tab(i, j) = (tab(i, j) +
+                    tab(i + 1, j) +
+                    tab(i, j + 1) +
+                    tab(i + 1, j + 1) +
+                    tab(i - 1, j) +
+                    tab(i - 1, j + 1) +
+                    tab(i, j - 1) +
+                    tab(i + 1, j - 1) +
+                    tab(i - 1, j - 1)) / 9;
+
+  for (int i = 0; i < nb - 1; ++i)
+  {
+    for (int j = 0; j < nb - 1; ++j)
+    {
+      for (int k = 0; k < nb; ++k)
+      {
+
+        where._x = i + 1;
+        where._y = j + 1;
+        where._z = k * (k < tab(i + 1, j + 1));
+        map.createBlock(where);
+      }
+    }
+  }
+}
+
+void
 Drawer::drawSomeBlocks(Map& map)
 {
+  static const int nb = 10;
 
-  static const int nb = 40;
   Core::Container3D<int> where;
 
-  Core::Array2D<int,nb> Tab;
-
   for (int i = 0; i < nb; ++i)
   {
     for (int j = 0; j < nb; ++j)
     {
-
-
-            Tab(i,j) =  rand()%nb;
-
-  }
-    }
-
-
-
-
-
-  for (int N = 0;N < 3;N++)
-  {
-  for (int i = 1; i < nb-1; ++i)
-  {
-    for (int j = 1; j < nb-1; ++j)
-    {
-
-
-  Tab(i,j) = (Tab(i,j) +
-               Tab(i+1,j)+
-               Tab(i,j+1)+
-          Tab(i+1,j+1)+
-          Tab(i-1,j)+
-          Tab(i-1,j+1)+
-          Tab(i,j-1)+
-          Tab(i+1,j-1)+
-          Tab(i-1,j-1))/9;
-        }
-          }
-        }
-
-  for (int i = 0; i < nb-1; ++i)
-  {
-    for (int j = 0; j < nb-1; ++j)
-    {
-        for (int k = 0; k < nb; ++k)
-        {
-
-            where._x = i + 1;
-            where._y = j + 1;
-            where._z = k*(k < Tab(i+1,j+1));
-            map.createBlock(where);
-  }
-    }
-  }
-/*
-  for (int i = 0; i < nb; ++i)
-  {
-    for (int j = 0; j < nb; ++j)
-    {
-
       for (int k = 0; k < nb; ++k)
       {
         where._x = i + 1;
@@ -555,24 +553,24 @@ Drawer::drawSomeBlocks(Map& map)
       }
     }
   }
-*/
-//  for (int i = 0; i < 64; ++i)
-//  {
-//    where._x = 2 * i;
-//    where._y = -1;
-//    where._z = -1;
-//    map.createBlock(where, i);
-//  }
 
-//  400 * 100 => 40fps
-//   for (int i = 0; i < 400; ++i)
-//   {
-//     for (int j = 0; j < 100; ++j)
-//     {
-//       where._x = i + 1;
-//       where._y = j + 1;
-//       where._z = 20;
-//       map.createBlock(where);
-//     }
-//   }
+  for (int i = 0; i < 64; ++i)
+  {
+    where._x = 2 * i;
+    where._y = -1;
+    where._z = -1;
+    map.createBlock(where, i);
+  }
+
+  //400 * 100 => 40fps
+//  for (int i = 0; i < 400; ++i)
+//  {
+//    for (int j = 0; j < 100; ++j)
+//    {
+//      where._x = i + 1;
+//      where._y = j + 1;
+//      where._z = 20;
+//      map.createBlock(where);
+//    }
+//  }
 }

@@ -49,7 +49,7 @@ namespace Block
   Basic::initPickingBox()
   {
 #define INIT_COLOR(SHIFT, COLOR)                            \
-    for (int i = 18 * SHIFT; i < 18 + (18 * SHIFT); i += 3) \
+    for (int i = 12 * SHIFT; i < 12 + (12 * SHIFT); i += 3) \
     {                                                       \
       _pickingColors[0 + i] = _id._x / 255.0;               \
       _pickingColors[1 + i] = _id._y / 255.0;               \
@@ -128,7 +128,6 @@ namespace Block
   Basic::draw(const Model::MemoryPiece& mem) const
   {
     specificDraw(mem);
-    //drawPickingBox(mem);
     if (isHighlight())
       selectionDraw();
   }

@@ -38,6 +38,9 @@ public:
   void createBlock(const Core::Container3D<int> & where, unsigned int state = 0);
 
   void changeBlockState(const Core::Container3D<int>& where, bool propagate);
+  void changeNeighbourState(const Core::Container3D<int>& where, bool propagate);
+  bool fillNeighbours(const Core::Container3D<int>& where,
+                      Block::NeighbourMatrix& neighbours);
   void changeAllBlockState();
 
   /*!

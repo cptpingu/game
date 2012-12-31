@@ -52,6 +52,14 @@ namespace Block
       found->second->erase(res, found->second->end());
   }
 
+  void
+  GroupBlock::removeFromAll(Block::Basic* block)
+  {
+    auto end = _assoc.end();
+    for (auto it = _assoc.begin(); it != end; ++it)
+      remove(it->first, block);
+  }
+
   void drawModelState(int index, const GroupBlock::list_type* list, GLuint uniform,
                       bool picking)
   {

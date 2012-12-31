@@ -73,7 +73,7 @@ public:
   **
   ** @param who The block to delete.
   */
-  void eraseBlock(const Block::Basic* who);
+  void eraseBlock(Block::Basic* who);
 
   /*!
   ** Load blocks from file.

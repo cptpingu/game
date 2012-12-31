@@ -89,7 +89,7 @@ Game::play()
     if (pickedBlock.first)
       pickedBlock.first->highlight(pickedBlock.second, true);
 
-    drawGL(pickedBlock.first, elapsedTime);
+    drawGL(pickedBlock.first, pickedBlock.second, elapsedTime);
 
     input.handleInput();
 
@@ -180,7 +180,8 @@ Game::loadShaders()
 }
 
 void
-Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
+Game::drawGL(const Block::Basic* selectedCoord, const Block::FaceType where,
+             int elapsedTime)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -190,10 +191,11 @@ Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
   _state.getCamera()->look();
 
   _drawer.drawBlocks(_map);
+  //_drawer.drawPickingBox(_map);
   //_drawer.light(elapsedTime);
   //_drawer.drawVBO();
 
-  showCoord(selectedCoord);
+  showCoord(selectedCoord, where);
   drawAxis(100);
   drawFPS(elapsedTime);
   drawHUD();
@@ -203,7 +205,7 @@ Game::drawGL(const Block::Basic* selectedCoord, int elapsedTime)
 }
 
 void
-Game::showCoord(const Block::Basic* selectedCoord)
+Game::showCoord(const Block::Basic* selectedCoord, const Block::FaceType where)
 {
   ConfigManager& config = ConfigManager::getInstance();
   auto pos = _state.getCamera()->getCurrentPosition();
@@ -215,7 +217,8 @@ Game::showCoord(const Block::Basic* selectedCoord)
   if (selectedCoord)
     buff << "Pick: " << selectedCoord->_x << " "
          << selectedCoord->_y << " "
-         << selectedCoord->_z << "\n";
+         << selectedCoord->_z << " ("
+         << where << ")\n";
 
   TextureManager& textures = TextureManager::getInstance();
   std::string line;

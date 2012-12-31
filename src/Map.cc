@@ -157,15 +157,19 @@ Map::insertBlockNearBlock(const Block::Basic* who, const Block::FaceType where)
   }
 
   createBlock(container);
+  changeBlockState(container, true);
 }
 
 void
-Map::eraseBlock(const Block::Basic* who)
+Map::eraseBlock(Block::Basic* who)
 {
   if (who)
   {
     auto container = Core::Container3D<int>(who->_x, who->_y, who->_z);
     delete _blocks[container];
+    auto group = _groups.find(Model::CubeType);
+    ASSERT(group != _groups.end());
+    group->second->removeFromAll(who);
     _blocks.erase(container);
   }
 }

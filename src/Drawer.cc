@@ -92,7 +92,7 @@ std::vector<Core::Vector3D> Drawer::collisionlist(const  Core::Vector3D &from,co
 
 
 
-void Drawer::light(unsigned int timestep)
+void Drawer::light(unsigned int)
 {
 
     std::vector<Core::Vector3D> list = collisionlist(Core::Vector3D (0,0,0),Core::Vector3D (50,0,50));
@@ -199,7 +199,7 @@ void Drawer::light(unsigned int timestep)
 
        glPushMatrix();
 
-       static double move = 0;
+       //static double move = 0;
        //move += 1 * timestep;
        //glRotatef((move/20), 30, 1, 0);
 
@@ -229,7 +229,8 @@ void Drawer::light(unsigned int timestep)
     glNormal3d(X/sqrt(3),Y/sqrt(3),Z/sqrt(3)); \
     glVertex3d(X,Y,Z);
 
-       for (int x = 0; x < list.size(); ++x)
+       const int size = list.size();
+       for (int x = 0; x < size; ++x)
        {
 
 /*

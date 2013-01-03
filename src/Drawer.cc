@@ -488,8 +488,8 @@ Drawer::drawVBO()
 void
 Drawer::drawDebug(Map& map)
 {
-  //drawALittleMap(map);
-  drawSomeBlocks(map);
+  drawALittleMap(map);
+  //drawSomeBlocks(map);
 }
 
 void

@@ -5,10 +5,10 @@ uniform sampler2D tex;
 uniform float cube_color;
 varying float vFaceColor;
 
-varying float vdistance;
+uniform float vdistance;
 //varying float Distance;
 
-void main(void)
+void main()
 {
   vec4 color = texture2D(tex, gl_TexCoord[0].st);
   gl_FragColor = color;

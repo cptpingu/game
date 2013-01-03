@@ -54,9 +54,8 @@ Game::load()
   _drawer.drawDebug(_map);
   _map.changeAllBlockState();
 
-  loadtextures();
+  loadTextures();
   loadShaders();
-
 
   return true;
 }
@@ -128,58 +127,63 @@ Game::play()
 }
 
 void
-Game::loadtextures()
+Game::loadTextures()
 {
   TextureManager& textures = TextureManager::getInstance();
 
-  textures.load("data/images/font.png", "font");
+  textures.load("font", "data/images/font.png");
   textures.BuildFont();
 
-  textures.load("data/images/metal091.jpg", "metal");
-  textures.load("data/images/rocket_motor.jpg", "rocketMotor");
-  textures.load("data/images/rocket_bottom.jpg", "rocketBottom");
-  textures.load("data/images/rocket_middle.jpg", "rocketMiddle");
-  textures.load("data/images/rocket_top.jpg", "rocketTop");
-  //autre texture
-  textures.load("data/images/concrete001.jpg", "concrete");
-  textures.load("data/images/floor032.jpg", "floor1");
-  textures.load("data/images/brick009.jpg", "brick1");
-  textures.load("data/images/wood002.jpg", "wood1");
-  textures.load("data/images/wood006.jpg", "wood2");
-  //porte
-  textures.load("data/images/door009.jpg", "door");
-  //pour les caisse
-  textures.load("data/images/crate03.jpg", "crate");
-  //toit
-  textures.load("data/images/roof05.jpg", "roof");
-  //fenetre
-  textures.load("data/images/window031_alpha.png", "window");
-  //Herbe
-  textures.load("data/images/veg008.jpg", "veg1");
-  //Eau de la piscine
-  textures.load("data/images/eau.jpg", "eau");
-  // Dalle de la piscine
-  textures.load("data/images/floor006b.jpg", "floor2");
-  // Fond du puit
-  textures.load("data/images/veg010.jpg", "veg2");
-  // puit
-  textures.load("data/images/brick077.jpg", "brick2");
+#define LOAD_TEXTURE(NAME, PATH)		\
+  if (!textures.load(NAME, "data/images/"PATH)) \
+    std::cerr << "Texture "NAME" not found: "PATH << std::endl
+
+  LOAD_TEXTURE("metal", "metal091.jpg");
+  LOAD_TEXTURE("rocketMotor", "rocket_motor.jpg");
+  LOAD_TEXTURE("rocketBottom", "rocket_bottom.jpg");
+  LOAD_TEXTURE("rocketMiddle", "rocket_middle.jpg");
+  LOAD_TEXTURE("rocketTop", "rocket_top.jpg");
+  LOAD_TEXTURE("concrete", "concrete001.jpg");
+  LOAD_TEXTURE("floor1", "floor032.jpg");
+  LOAD_TEXTURE("brick1", "brick009.jpg");
+  LOAD_TEXTURE("wood1", "wood002.jpg");
+  LOAD_TEXTURE("wood2", "wood006.jpg");
+  LOAD_TEXTURE("door", "door009.jpg");
+  LOAD_TEXTURE("crate", "crate03.jpg");
+  LOAD_TEXTURE("roof", "roof05.jpg");
+  LOAD_TEXTURE("window", "window031_alpha.png");
+  LOAD_TEXTURE("veg1", "veg008.jpg");
+  LOAD_TEXTURE("eau", "eau.jpg");
+  LOAD_TEXTURE("floor2", "floor006b.jpg");
+  LOAD_TEXTURE("veg2", "veg010.jpg");
+  LOAD_TEXTURE("brick2", "brick077.jpg");
+
+#undef LOAD_TEXTURE
 }
 
 void
 Game::loadShaders()
 {
   ShadersManager& shaders = ShadersManager::getInstance();
-  shaders.load("identity", "data/shaders/identity.vert.c", "data/shaders/identity.frag.c");
-  shaders.load("texture", "data/shaders/texture.vert.c", "data/shaders/texture.frag.c");
-  shaders.load("cube", "data/shaders/cube.vert.c", "data/shaders/cube.frag.c");
-  shaders.load("texture_invert_color", "data/shaders/texture.vert.c", "data/shaders/texture_invert_color.frag.c");
-  shaders.load("phong_lightning", "data/shaders/phong_lightning.vert.c", "data/shaders/phong_lightning.frag.c");
-  shaders.load("terrain", "data/shaders/terrain.vert.c", "data/shaders/terrain.frag.c");
-  shaders.load("basic_lightning", "data/shaders/basic_lightning.vert.c", "data/shaders/basic_lightning.frag.c");
-  shaders.load("tex_lightning", "data/shaders/tex_lightning.vert.c", "data/shaders/tex_lightning.frag.c");
-  shaders.load("cubeLight", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c");
-  //shaders.load("tex2_lightning", "data/shaders/tex2_lightning.vert.c", "data/shaders/tex2_lightning.frag.c");
+  if (!shaders.load("texture_invert_color", "data/shaders/texture.vert.c",
+  		    "data/shaders/texture_invert_color.frag.c"))
+    std::cerr << "Can't load texture_invert_color shader!" << std::endl;
+
+#define LOAD_SHADER(X)							\
+  if (!shaders.load(X, "data/shaders/"X".vert.c", "data/shaders/"X".frag.c")) \
+    std::cerr << "Can't load "X" shader!" << std::endl
+
+  LOAD_SHADER("identity");
+  LOAD_SHADER("texture");
+  LOAD_SHADER("cube");
+  LOAD_SHADER("phong_lightning");
+  LOAD_SHADER("terrain");
+  LOAD_SHADER("basic_lightning");
+  LOAD_SHADER("tex_lightning");
+  LOAD_SHADER("cubeLight");
+
+  //LOAD_SHADER("tex2_lightning");
+#undef LOAD_SHADER
 }
 
 void

@@ -43,11 +43,11 @@ public:
   /*!
   ** Load a texture and assign it an identifiant.
   **
-  ** @param path File name of the image to load.
   ** @param name The identifiant of the texture.
+  ** @param path File name of the image to load.
   ** @return If load succeed.
   */
-  bool load(const std::string& path, const std::string& name);
+  bool load(const std::string& name, const std::string& path);
 
   /*!
   ** Get the OpenGL identifiant of a texture, given its name.

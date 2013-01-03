@@ -10,6 +10,9 @@ namespace
   const char* loadSource(const char* filename)
   {
     FILE* fp = fopen(filename,"rb");
+    if (!fp)
+      return 0;
+
     fseek(fp, 0, SEEK_END);
     long len = ftell(fp);
     fseek(fp, 0, SEEK_SET);
@@ -67,24 +70,27 @@ ShadersManager::~ShadersManager()
   clear();
 }
 
-void
+bool
 ShadersManager::load(const std::string& name,
                      const std::string& vertexShader,
                      const std::string& fragmentShader)
 {
   GLuint vert = loadShader(GL_VERTEX_SHADER, vertexShader.c_str());
   if (!vert)
-    return;
+    return false;
   GLuint frag = loadShader(GL_FRAGMENT_SHADER, fragmentShader.c_str());
   if (!frag)
-    return;
+    return false;
 
   GLuint prog = glCreateProgram();
+  if (!prog)
+    return false;
   glAttachShader(prog, vert);
   glAttachShader(prog, frag);
   glLinkProgram(prog);
 
   _programs[name] = prog;
+  return true;
 }
 
 void

@@ -34,7 +34,7 @@ public:
   void play();
 
 private:
-  void loadtextures();
+  void loadTextures();
   void loadShaders();
   void drawGL(const Block::Basic* selectedCoord, const Block::FaceType where, int elapsedTime);
   void showCoord(const Block::Basic* selectedCoord, const Block::FaceType where);

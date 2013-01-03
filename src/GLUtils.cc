@@ -48,7 +48,6 @@ GLuint loadTexture(const char* filename, bool useMipMap)
   Uint32 rmask, gmask, bmask, amask;
 
   picture_surface = IMG_Load(filename);
-  ASSERT_MSG(picture_surface, IMG_GetError());
   if (picture_surface == NULL)
     return 0;
 

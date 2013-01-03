@@ -166,7 +166,7 @@ Game::loadShaders()
 {
   ShadersManager& shaders = ShadersManager::getInstance();
   if (!shaders.load("texture_invert_color", "data/shaders/texture.vert.c",
-  		    "data/shaders/texture_invert_color.frag.c"))
+          "data/shaders/texture_invert_color.frag.c"))
     std::cerr << "Can't load texture_invert_color shader!" << std::endl;
 
 #define LOAD_SHADER(X)							\
@@ -175,12 +175,13 @@ Game::loadShaders()
 
   LOAD_SHADER("identity");
   LOAD_SHADER("texture");
-  LOAD_SHADER("cube");
+  //LOAD_SHADER("cube");
   LOAD_SHADER("phong_lightning");
   LOAD_SHADER("terrain");
   LOAD_SHADER("basic_lightning");
   LOAD_SHADER("tex_lightning");
-  LOAD_SHADER("cubeLight");
+  if (!shaders.load("cube", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c"))
+    std::cerr << "Can't load texture_invert_color shader!" << std::endl;
 
   //LOAD_SHADER("tex2_lightning");
 #undef LOAD_SHADER

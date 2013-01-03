@@ -16,13 +16,13 @@
 void
 Drawer::drawPickingBox(const Map& map) const
 {
-    const Map::groups_type& groups = map.getGroups();
-    auto end = groups.cend();
-    for (auto it = groups.cbegin(); it != end; ++it)
-      it->second->drawPicking();
+  const Map::groups_type& groups = map.getGroups();
+  auto end = groups.cend();
+  for (auto it = groups.cbegin(); it != end; ++it)
+    it->second->drawPicking();
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    ShadersManager::getInstance().disable();
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  ShadersManager::getInstance().disable();
 }
 
 void
@@ -488,7 +488,7 @@ Drawer::drawVBO()
 void
 Drawer::drawDebug(Map& map)
 {
-  //drawALittleMap(map);
+  drawALittleMap(map);
   drawSomeBlocks(map);
 }
 

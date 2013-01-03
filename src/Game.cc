@@ -131,28 +131,34 @@ Game::loadTextures()
 {
   TextureManager& textures = TextureManager::getInstance();
 
-  textures.load("data/images/font.png", "font");
+  textures.load("font", "data/images/font.png");
   textures.BuildFont();
 
-  textures.load("data/images/metal091.jpg", "metal");
-  textures.load("data/images/rocket_motor.jpg", "rocketMotor");
-  textures.load("data/images/rocket_bottom.jpg", "rocketBottom");
-  textures.load("data/images/rocket_middle.jpg", "rocketMiddle");
-  textures.load("data/images/rocket_top.jpg", "rocketTop");
-  textures.load("data/images/concrete001.jpg", "concrete");
-  textures.load("data/images/floor032.jpg", "floor1");
-  textures.load("data/images/brick009.jpg", "brick1");
-  textures.load("data/images/wood002.jpg", "wood1");
-  textures.load("data/images/wood006.jpg", "wood2");
-  textures.load("data/images/door009.jpg", "door");
-  textures.load("data/images/crate03.jpg", "crate");
-  textures.load("data/images/roof05.jpg", "roof");
-  textures.load("data/images/window031_alpha.png", "window");
-  textures.load("data/images/veg008.jpg", "veg1");
-  textures.load("data/images/eau.jpg", "eau");
-  textures.load("data/images/floor006b.jpg", "floor2");
-  textures.load("data/images/veg010.jpg", "veg2");
-  textures.load("data/images/brick077.jpg", "brick2");
+#define LOAD_TEXTURE(NAME, PATH)		\
+  if (!textures.load(NAME, "data/images/"PATH)) \
+    std::cerr << "Texture "NAME" not found: "PATH << std::endl
+
+  LOAD_TEXTURE("metal", "metal091.jpg");
+  LOAD_TEXTURE("rocketMotor", "rocket_motor.jpg");
+  LOAD_TEXTURE("rocketBottom", "rocket_bottom.jpg");
+  LOAD_TEXTURE("rocketMiddle", "rocket_middle.jpg");
+  LOAD_TEXTURE("rocketTop", "rocket_top.jpg");
+  LOAD_TEXTURE("concrete", "concrete001.jpg");
+  LOAD_TEXTURE("floor1", "floor032.jpg");
+  LOAD_TEXTURE("brick1", "brick009.jpg");
+  LOAD_TEXTURE("wood1", "wood002.jpg");
+  LOAD_TEXTURE("wood2", "wood006.jpg");
+  LOAD_TEXTURE("door", "door009.jpg");
+  LOAD_TEXTURE("crate", "crate03.jpg");
+  LOAD_TEXTURE("roof", "roof05.jpg");
+  LOAD_TEXTURE("window", "window031_alpha.png");
+  LOAD_TEXTURE("veg1", "veg008.jpg");
+  LOAD_TEXTURE("eau", "eau.jpg");
+  LOAD_TEXTURE("floor2", "floor006b.jpg");
+  LOAD_TEXTURE("veg2", "veg010.jpg");
+  LOAD_TEXTURE("brick2", "brick077.jpg");
+
+#undef LOAD_TEXTURE
 }
 
 void

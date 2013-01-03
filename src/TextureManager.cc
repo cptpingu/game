@@ -73,7 +73,7 @@ TextureManager::destroy()
 }
 
 bool
-TextureManager::load(const std::string& path, const std::string& name)
+TextureManager::load(const std::string& name, const std::string& path)
 {
   GLuint res = loadTexture(path.c_str ());
   if (!res)

@@ -91,15 +91,12 @@ namespace Block
 
     ShadersManager& shaders = ShadersManager::getInstance();
     shaders.enable("cube");
-
     GLuint uniform = glGetUniformLocation(shaders.get("cube"), "cube_color");
-    //GLuint uniform = glGetUniformLocation(shaders.get("cubeLight"), "cube_color");
     GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
-    //GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
     glVertexAttrib1f(attrib, 0.0);
 
-    GLuint distance = glGetUniformLocation(shaders.get("cube"), "vdistance");
-    glUniform1f(distance, 0.1);
+    GLuint distance = glGetUniformLocation(shaders.get("cube"), "distance");
+    glUniform1f(distance, 0.5);
 
     TextureManager& textures = TextureManager::getInstance();
     glActiveTexture(GL_TEXTURE0);
@@ -118,6 +115,9 @@ namespace Block
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_INDEX_ARRAY);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   }
 
   void
@@ -139,5 +139,8 @@ namespace Block
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_INDEX_ARRAY);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   }
 } // Block

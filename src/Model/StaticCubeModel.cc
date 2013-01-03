@@ -1,6 +1,7 @@
 #include "StaticCubeModel.hh"
 #include "../Core/Assert.hh"
 #include <algorithm>
+#include <cstring>
 
 namespace Model
 {
@@ -13,7 +14,7 @@ namespace Model
       {
         if (tab[i])
         {
-          memcpy(indices + offset, Model::Cube::indices + (i * 6), 6);
+	  std::memcpy(indices + offset, Model::Cube::indices + (i * 6), 6);
           indices += 6;
           nb += 6;
         }

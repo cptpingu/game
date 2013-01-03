@@ -385,10 +385,14 @@ namespace Block
   void
   Basic::selectionDraw() const
   {
-    // FIXME put in a vbo
-#define DRAW_LINE(X, Y, Z) \
-  glVertex3d(X * Block::SIZE, Y * Block::SIZE, Z * Block::SIZE)
+    ShadersManager& shaders = ShadersManager::getInstance();
+    shaders.disable();
 
+    // FIXME put in a vbo
+#define DRAW_LINE(X, Y, Z)						\
+    glVertex3d(X * Block::SIZE, Y * Block::SIZE, Z * Block::SIZE)
+
+    glColor3d(1, 1, 1);
     glLineWidth(2.0);
 
     glPushMatrix();
@@ -445,5 +449,6 @@ namespace Block
     glPopMatrix();
 
     glLineWidth(1.0);
+    shaders.enable("cube");
   }
 } // Block

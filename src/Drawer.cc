@@ -201,7 +201,7 @@ void Drawer::light(unsigned int)
 
 
        static double move = 0;
-       move += 1 * timestep;
+       //move += 1 * timestep;
        glRotatef((move/20), 30, 1, 0);
 
 

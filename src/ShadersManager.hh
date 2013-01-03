@@ -28,8 +28,10 @@ public:
   ** @param name The identifiant of the shader.
   ** @param vertexShader The file name where the vertex shader source code is.
   ** @param fragmentShader The file name where the fragment shader source code is.
+  **
+  ** @return If shaders was successfully loaded.
   */
-  void load(const std::string& name,
+  bool load(const std::string& name,
             const std::string& vertexShader,
             const std::string& fragmentShader);
 

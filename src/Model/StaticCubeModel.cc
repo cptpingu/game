@@ -14,7 +14,7 @@ namespace Model
       {
         if (tab[i])
         {
-	  std::memcpy(indices + offset, Model::Cube::indices + (i * 6), 6);
+          std::memcpy(indices + offset, Model::Cube::indices + (i * 6), 6);
           indices += 6;
           nb += 6;
         }
@@ -82,7 +82,7 @@ namespace Model
                     sizeof(Cube::normals),
                     Cube::normals);
     glBufferSubData(GL_ARRAY_BUFFER,
-                    sizeof(Cube::textures) + sizeof(Cube::normals),
+                    sizeof(Cube::vertices) + sizeof(Cube::normals),
                     sizeof(Cube::textures),
                     Cube::textures);
 

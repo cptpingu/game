@@ -445,7 +445,6 @@ internalDraw()
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
 
-
   glBindBuffer(GL_ARRAY_BUFFER, Model::CubeModel::getInstance().getVboId());
 
   glEnableClientState(GL_VERTEX_ARRAY);
@@ -479,10 +478,152 @@ internalDraw()
   ShadersManager::getInstance().disable();
 }
 
+#define RESTART (0xFF)
+#define W 1
+#define H 1
+
+#define VRT (72)
+#define IDX (36)
+#define SIZE_VRT ((VRT + 0) * (H * W))
+#define SIZE_IDX ((IDX + 1) * (H * W))
+#define NB_ELT (IDX * H * W)
+
+std::pair<GLuint, GLuint>
+init()
+{
+//  GLfloat* vertices = new GLfloat[SIZE_VRT];
+//  GLfloat* textures = new GLfloat[SIZE_VRT];
+//  GLubyte* indices = new GLubyte[SIZE_IDX];
+
+//  int z = 0;
+//  for (int x = 0; x < W; ++x)
+//  {
+//    for (int y = 0; y < H; ++y)
+//    {
+//      int k = 0;
+//      const int indexV = x * VRT + y * W * VRT;
+//      for (int i = indexV; i < indexV + VRT; i += 3)
+//      {
+//        vertices[i + 0] = Model::Cube::vertices[k++];// + 2*x * Block::SIZE + Block::SIZE / 2;
+//        vertices[i + 1] = Model::Cube::vertices[k++];// + 2*y * Block::SIZE + Block::SIZE / 2;
+//        vertices[i + 2] = Model::Cube::vertices[k++];// + 2*z * Block::SIZE + Block::SIZE / 2;
+//        std::cout << vertices[i + 0] << ", "
+//                  << vertices[i + 1] << ", "
+//                  << vertices[i + 2] << "    ";
+//        if (k % 12 == 0)
+//          std::cout << std::endl;
+//      }
+//      std::cout << (indexV + VRT) << std::endl;
+
+//      k = 0;
+//      const int indexT = x * VRT + y * W * VRT;
+//      for (int i = indexT; i < indexT + VRT; i += 3)
+//      {
+//        textures[i + 0] = Model::Cube::textures[k++];
+//        textures[i + 1] = Model::Cube::textures[k++];
+//        textures[i + 2] = Model::Cube::textures[k++];
+//        std::cout << textures[i + 0] << ", "
+//                  << textures[i + 1] << ", "
+//                  << textures[i + 2] << "    ";
+//        if (k % 12 == 0)
+//          std::cout << std::endl;
+//      }
+//      std::cout << std::endl;
+
+//      k = 0;
+//      const int indexI = x * IDX + y * W * IDX;
+//      for (int i = indexI; i < indexI + IDX; ++i, ++k)
+//      {
+//        indices[i] = Model::Cube::indices[k] + 24 * (x + y * W);
+//        std::cout << (int)indices[i] << ", ";
+//        if ((k + 1) % 6 == 0)
+//          std::cout << std::endl;
+//        else if ((k + 1) % 3 == 0)
+//          std::cout << "   ";
+//      }
+//      indices[indexI + IDX] = RESTART;
+//      std::cout << (int)indices[indexI + IDX] << std::endl;
+//    }
+//  }
+
+//  GLuint vboId = 0;
+//  glGenBuffers(1, &vboId);
+//  ASSERT_MSG(vboId, "Vertex buffer initialisation failed!");
+//  glBindBuffer(GL_ARRAY_BUFFER, vboId);
+//  glBufferData(GL_ARRAY_BUFFER, SIZE_VRT + SIZE_VRT, 0, GL_STATIC_DRAW);
+
+//  glBufferSubData(GL_ARRAY_BUFFER, 0, SIZE_VRT, vertices);
+//  glBufferSubData(GL_ARRAY_BUFFER, SIZE_VRT, SIZE_VRT, textures);
+
+//  GLuint iboId = 0;
+//  glGenBuffers(1, &iboId);
+//  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
+//  glBufferData(GL_ELEMENT_ARRAY_BUFFER, NB_ELT, indices, GL_STATIC_DRAW);
+
+  GLuint vboId = 0;
+  glGenBuffers(1, &vboId);
+  ASSERT_MSG(vboId, "Vertex buffer initialisation failed!");
+  glBindBuffer(GL_ARRAY_BUFFER, vboId);
+  glBufferData(GL_ARRAY_BUFFER, SIZE_VRT + SIZE_VRT, 0, GL_STATIC_DRAW);
+
+  glBufferSubData(GL_ARRAY_BUFFER, 0, SIZE_VRT, Model::Cube::vertices);
+  glBufferSubData(GL_ARRAY_BUFFER, SIZE_VRT, SIZE_VRT, Model::Cube::textures);
+
+  GLuint iboId = 0;
+  glGenBuffers(1, &iboId);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36, Model::Cube::indices, GL_STATIC_DRAW);
+
+  return std::make_pair(vboId, iboId);
+}
+
+void
+internalMegaDraw()
+{
+  static const std::pair<GLuint, GLuint> ids = init();
+
+  ShadersManager& shaders = ShadersManager::getInstance();
+  shaders.enable("cube");
+  glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), 0.0);
+  GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
+  glVertexAttrib1f(attrib, 0.0);
+
+  TextureManager& textures = TextureManager::getInstance();
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
+//  glEnable(GL_PRIMITIVE_RESTART);
+//  glPrimitiveRestartIndex(RESTART);
+
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_INDEX_ARRAY);
+
+  glBindBuffer(GL_ARRAY_BUFFER, ids.first);
+  glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(0));
+  glTexCoordPointer(3, GL_FLOAT, 0, (void*)(SIZE_VRT));
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ids.second);
+  glIndexPointer(GL_UNSIGNED_BYTE, 0, 0);
+
+  glPushMatrix();
+  glDrawElements(GL_TRIANGLES, NB_ELT, GL_UNSIGNED_BYTE, (const GLvoid*)0);
+  glPopMatrix();
+
+
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_INDEX_ARRAY);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  ShadersManager::getInstance().disable();
+}
+
 void
 Drawer::drawVBO()
 {
-  internalDraw();
+  //internalDraw();
+  internalMegaDraw();
 }
 
 void

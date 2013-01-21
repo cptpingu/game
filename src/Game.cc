@@ -50,9 +50,9 @@ Game::load()
   glDepthFunc(GL_LEQUAL);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-  _map.loadBlocks("data/map/block.txt");
-  _drawer.drawDebug(_map);
-  _map.changeAllBlockState();
+  //_map.loadBlocks("data/map/block.txt");
+  //_drawer.drawDebug(_map);
+  //_map.changeAllBlockState();
 
   loadTextures();
   loadShaders();
@@ -175,13 +175,13 @@ Game::loadShaders()
 
   LOAD_SHADER("identity");
   LOAD_SHADER("texture");
-  //LOAD_SHADER("cube");
+  LOAD_SHADER("cube");
   LOAD_SHADER("phong_lightning");
   LOAD_SHADER("terrain");
   LOAD_SHADER("basic_lightning");
   LOAD_SHADER("tex_lightning");
-  if (!shaders.load("cube", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c"))
-    std::cerr << "Can't load cube shader!" << std::endl;
+  //if (!shaders.load("cube", "data/shaders/cubeLight.vert.c", "data/shaders/cubeLight.frag.c"))
+  //  std::cerr << "Can't load cube shader!" << std::endl;
 
   //LOAD_SHADER("tex2_lightning");
 #undef LOAD_SHADER
@@ -198,10 +198,10 @@ Game::drawGL(const Block::Basic* selectedCoord, const Block::FaceType where,
 
   _state.getCamera()->look();
 
-  _drawer.drawBlocks(_map);
+  //_drawer.drawBlocks(_map);
   //_drawer.drawPickingBox(_map);
-  _drawer.light(elapsedTime);
-  //_drawer.drawVBO();
+  //_drawer.light(elapsedTime);
+  _drawer.drawVBO();
 
   showCoord(selectedCoord, where);
   drawAxis(100);

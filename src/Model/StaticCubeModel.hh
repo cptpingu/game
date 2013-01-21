@@ -22,7 +22,7 @@ namespace Model
   ** A cube has 6 sides and each side has 2 triangles, therefore, a cube consists
   ** of 36 vertices (6 sides * 2 triangles * 3 vertices = 36 vertices). And, each
   ** vertex is 3 components (x, y, z) of floats, therefore, the size of vertex
-  ** array is 108 floats (36 * 3 = 108).
+  ** array is 108 floats (36 * 3 = 108). 72 points in compact mode.
   */
   namespace Cube
   {

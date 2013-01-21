@@ -449,6 +449,6 @@ namespace Block
     glPopMatrix();
 
     glLineWidth(1.0);
-    shaders.enable("cubeLight");
+    shaders.enable("cube");
   }
 } // Block

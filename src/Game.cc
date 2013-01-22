@@ -51,7 +51,7 @@ Game::load()
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
   //_map.loadBlocks("data/map/block.txt");
-  //_drawer.drawDebug(_map);
+  _drawer.drawDebug(_map);
   //_map.changeAllBlockState();
 
   loadTextures();

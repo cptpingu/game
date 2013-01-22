@@ -44,49 +44,49 @@ Drawer::drawBlocks(const Map& map) const
 std::vector<Core::Vector3D> Drawer::collisionlist(const  Core::Vector3D &from,const Core::Vector3D &to)
 {
 
-    //S'utilise d'a partir d'un block
-    std::vector<Core::Vector3D> List;
-    Core::Vector3D v;
-    float alphax = (to - from).length();
-    float alphay = (to - from).length();
-    float alphaz = (to - from).length();
-    int dx = 0;
-    int dy = 0;
-    int dz = 0;
+  //S'utilise d'a partir d'un block
+  std::vector<Core::Vector3D> List;
+  Core::Vector3D v;
+  float alphax = (to - from).length();
+  float alphay = (to - from).length();
+  float alphaz = (to - from).length();
+  int dx = 0;
+  int dy = 0;
+  int dz = 0;
 
-    v = (to - from);
-    v.normalize();
+  v = (to - from);
+  v.normalize();
 
-    float alpha =0;
+  float alpha =0;
 
 
-    while (alpha <  (to - from).length()-1  )
-    {
+  while (alpha <  (to - from).length()-1  )
+  {
 
     if (v._x != 0)
-    alphax =  ((v._x > 0) - (v._x < 0))*(dx*Block::SIZE + Block::HALF_SIZE)/v._x;
+      alphax =  ((v._x > 0) - (v._x < 0))*(dx*Block::SIZE + Block::HALF_SIZE)/v._x;
 
     if (v._y != 0)
-    alphay = ( (v._y > 0) - (v._y < 0))*(dy*Block::SIZE+ Block::HALF_SIZE)/v._y;
+      alphay = ( (v._y > 0) - (v._y < 0))*(dy*Block::SIZE+ Block::HALF_SIZE)/v._y;
 
     if (v._z != 0)
-    alphaz = ((v._z > 0) - (v._z < 0))*(dz*Block::SIZE+ Block::HALF_SIZE)/v._z;
+      alphaz = ((v._z > 0) - (v._z < 0))*(dz*Block::SIZE+ Block::HALF_SIZE)/v._z;
 
     //if(v._x == 0 && v._y == 0 && v._z == 0 )
     //std::cout<< alphax << "_" << alphaz <<  "_" << alphaz << "_"<< (to - from).length()<< std::endl;
     alpha = std::min(alphaz,std::min(alphax,alphay));
 
     if (alphax==alpha && alphax < (to - from).length())
-        dx++;
+      dx++;
     if (alphay==alpha && alphay < (to - from).length())
-        dy++;
+      dy++;
     if (alphaz==alpha && alphaz < (to - from).length())
-        dz++;
+      dz++;
     //std::cout<< dx*((v._x > 0) - (v._x < 0)) << "_" << dy*((v._y > 0) - (v._y < 0)) << "_" << dz*((v._z > 0) - (v._z < 0)) << "_" << alpha <<std::endl;
     List.push_back(Core::Vector3D (from._x + dx*((v._x > 0) - (v._x < 0)),from._y + dy*((v._y > 0) - (v._y < 0)),from._z +dz*((v._z > 0) - (v._z < 0))));
 
-    }
-    return List;
+  }
+  return List;
 
 }
 
@@ -94,7 +94,7 @@ std::vector<Core::Vector3D> Drawer::collisionlist(const  Core::Vector3D &from,co
 
 void Drawer::light(unsigned int)
 {
-/*
+  /*
     std::vector<Core::Vector3D> list = collisionlist(Core::Vector3D (0,0,0),Core::Vector3D (50,0,50));
 
 
@@ -115,319 +115,319 @@ void Drawer::light(unsigned int)
 
     glBegin(GL_QUADS);
 
-        glNormal3d(0,1,0);
-        glColor3ub(100,0,0); //face rouge
-        glVertex3d(1,1,1);
-        glNormal3d(0,1,0);
-        glVertex3d(1,1,-1);
-        glNormal3d(0,1,0);
-        glVertex3d(-1,1,-1);
-        glNormal3d(0,1,0);
-        glVertex3d(-1,1,1);
+    glNormal3d(0,1,0);
+    glColor3ub(100,0,0); //face rouge
+    glVertex3d(1,1,1);
+    glNormal3d(0,1,0);
+    glVertex3d(1,1,-1);
+    glNormal3d(0,1,0);
+    glVertex3d(-1,1,-1);
+    glNormal3d(0,1,0);
+    glVertex3d(-1,1,1);
 
-        glColor3ub(0,100,0); //face verte
-        glNormal3d(1,0,0);
-        glVertex3d(1,-1,1);
-        glNormal3d(1,0,0);
-        glVertex3d(1,-1,-1);
-        glNormal3d(1,0,0);
-        glVertex3d(1,1,-1);
-        glNormal3d(1,0,0);
-        glVertex3d(1,1,1);
+    glColor3ub(0,100,0); //face verte
+    glNormal3d(1,0,0);
+    glVertex3d(1,-1,1);
+    glNormal3d(1,0,0);
+    glVertex3d(1,-1,-1);
+    glNormal3d(1,0,0);
+    glVertex3d(1,1,-1);
+    glNormal3d(1,0,0);
+    glVertex3d(1,1,1);
 
-        glColor3ub(0,0,100); //face bleue
-        glNormal3d(0,-1,0);
-        glNormal3d(0,-1,0);
-        glVertex3d(-1,-1,1);
-        glNormal3d(0,-1,0);
-        glVertex3d(-1,-1,-1);
-        glNormal3d(0,-1,0);
-        glVertex3d(1,-1,-1);
-        glNormal3d(0,-1,0);
-        glVertex3d(1,-1,1);
+    glColor3ub(0,0,100); //face bleue
+    glNormal3d(0,-1,0);
+    glNormal3d(0,-1,0);
+    glVertex3d(-1,-1,1);
+    glNormal3d(0,-1,0);
+    glVertex3d(-1,-1,-1);
+    glNormal3d(0,-1,0);
+    glVertex3d(1,-1,-1);
+    glNormal3d(0,-1,0);
+    glVertex3d(1,-1,1);
 
-        glColor3ub(100,100,0); //face jaune
-        glNormal3d(-1,0,0);
-        glVertex3d(-1,1,1);
-        glNormal3d(-1,0,0);
-        glVertex3d(-1,1,-1);
-        glNormal3d(-1,0,0);
-        glVertex3d(-1,-1,-1);
-        glNormal3d(-1,0,0);
-        glVertex3d(-1,-1,1);
+    glColor3ub(100,100,0); //face jaune
+    glNormal3d(-1,0,0);
+    glVertex3d(-1,1,1);
+    glNormal3d(-1,0,0);
+    glVertex3d(-1,1,-1);
+    glNormal3d(-1,0,0);
+    glVertex3d(-1,-1,-1);
+    glNormal3d(-1,0,0);
+    glVertex3d(-1,-1,1);
 
-        glColor3ub(0,100,100); //face cyan
-        glNormal3d(0,0,-1);
-        glVertex3d(1,1,-1);
-        glNormal3d(0,0,-1);
-        glVertex3d(1,-1,-1);
-        glNormal3d(0,0,-1);
-        glVertex3d(-1,-1,-1);
-        glNormal3d(0,0,-1);
-        glVertex3d(-1,1,-1);
-
-
-        glColor3ub(100,0,100); //face magenta
-        glNormal3d(0,0,1);
-        glVertex3d(1,-1,1);
-        glNormal3d(0,0,1);
-        glVertex3d(1,1,1);
-        glNormal3d(0,0,1);
-        glVertex3d(-1,1,1);
-        glNormal3d(0,0,1);
-        glVertex3d(-1,-1,1);
-
-        glEnd();
+    glColor3ub(0,100,100); //face cyan
+    glNormal3d(0,0,-1);
+    glVertex3d(1,1,-1);
+    glNormal3d(0,0,-1);
+    glVertex3d(1,-1,-1);
+    glNormal3d(0,0,-1);
+    glVertex3d(-1,-1,-1);
+    glNormal3d(0,0,-1);
+    glVertex3d(-1,1,-1);
 
 
-        glPopMatrix();
+    glColor3ub(100,0,100); //face magenta
+    glNormal3d(0,0,1);
+    glVertex3d(1,-1,1);
+    glNormal3d(0,0,1);
+    glVertex3d(1,1,1);
+    glNormal3d(0,0,1);
+    glVertex3d(-1,1,1);
+    glNormal3d(0,0,1);
+    glVertex3d(-1,-1,1);
 
-        ShadersManager& shaders = ShadersManager::getInstance();
-        //shaders.enable("phong_lightning");
-        shaders.enable("tex_lightning");
-        //shaders.enable("cubeLight");
-
-        //float  id = glGetUniformLocation(prog, "var");
-        //float distance = 0.1;
-       //GLuint dist = glGetAttribLocation(shaders.get("tex_lightning"), "Distance");
-        //GLuint dist = glGetAttribLocation(shaders.get("cubeLight"), "Distance");
-
-        GLuint dist = glGetAttribLocation(shaders.get("tex_lightning"), "Temps");
-         //glVertexAttrib1f(temps,0.5);
-        //GLuint Light = glGetAttribLocation(shaders.get("cubeLight"), "LightPosition");
-
-*/
-       glPushMatrix();
+    glEnd();
 
 
-       static double move = 0;
-       //move += 1 * timestep;
-       glRotatef((move/20), 30, 1, 0);
+    glPopMatrix();
+
+    ShadersManager& shaders = ShadersManager::getInstance();
+    //shaders.enable("phong_lightning");
+    shaders.enable("tex_lightning");
+    //shaders.enable("cubeLight");
+
+    //float  id = glGetUniformLocation(prog, "var");
+    //float distance = 0.1;
+    //GLuint dist = glGetAttribLocation(shaders.get("tex_lightning"), "Distance");
+    //GLuint dist = glGetAttribLocation(shaders.get("cubeLight"), "Distance");
+
+    GLuint dist = glGetAttribLocation(shaders.get("tex_lightning"), "Temps");
+    //glVertexAttrib1f(temps,0.5);
+    //GLuint Light = glGetAttribLocation(shaders.get("cubeLight"), "LightPosition");
+
+    */
+  glPushMatrix();
 
 
-       glBegin(GL_TRIANGLES);
-       glColor3ub(200,200,0);
-       glVertex3d(40,40,80);
-       glColor3ub(200,200,0);
-       glVertex3d(50,40,80);
-       glColor3ub(200,200,0);
-       glVertex3d(40,50,80);
-       glEnd();
-
-       /*int LightPos[4] = {40,40,60,1};
-       glLightiv(GL_LIGHT0,GL_POSITION,LightPos);*/
+  static double move = 0;
+  //move += 1 * timestep;
+  glRotatef((move/20), 30, 1, 0);
 
 
+  glBegin(GL_TRIANGLES);
+  glColor3ub(200,200,0);
+  glVertex3d(40,40,80);
+  glColor3ub(200,200,0);
+  glVertex3d(50,40,80);
+  glColor3ub(200,200,0);
+  glVertex3d(40,50,80);
+  glEnd();
 
-       glPopMatrix();
+  /*int LightPos[4] = {40,40,60,1};
+    glLightiv(GL_LIGHT0,GL_POSITION,LightPos);*/
 
-/*
 
 
+  glPopMatrix();
+
+  /*
 
 
 
 
-#define DRAW(X, Y, Z) \
+
+
+    #define DRAW(X, Y, Z) \
     glNormal3d(X/sqrt(3),Y/sqrt(3),Z/sqrt(3)); \
     glVertex3d(X,Y,Z);
 
-       const int size = list.size();
-       for (int x = 0; x < size; ++x)
-       {
+    const int size = list.size();
+    for (int x = 0; x < size; ++x)
+    {
 
 
-Core::Vector3D Point;
-Point(x-LightPos[1]*1.0,y-LightPos[2]*1.0,z-LightPos[3]*1.0);
-double D = Point.length();
-           float D = 1-(list[x]._z+list[x]._y+list[x]._x)/list.size()*(list[x]._z+list[x]._y+list[x]._x)/list.size();
+    Core::Vector3D Point;
+    Point(x-LightPos[1]*1.0,y-LightPos[2]*1.0,z-LightPos[3]*1.0);
+    double D = Point.length();
+    float D = 1-(list[x]._z+list[x]._y+list[x]._x)/list.size()*(list[x]._z+list[x]._y+list[x]._x)/list.size();
 
-                   //1/log(sqrt(list[x]._x*list[x]._x + list[x]._y*list[x]._y + list[x]._z*list[x]._z));
-
-
-       //float D =0.1;
-                   glPushMatrix();
-                   glTranslated(2*list[x]._x,2*list[x]._y,2*list[x]._z);
-                   //glRotated(45,1,0,0);
-
-                   glBegin(GL_QUADS);
-
-                   glTexCoord2d(0,0);
-                   glVertexAttrib1f(dist,D);
-                  // glVertexAttrib1f(temps,D);
-                   //glVertexAttrib1f(temps,distance*x);
-                   //glVertexAttrib3f(dist,distance*i);
-                   DRAW(1, 1, 1);
+    //1/log(sqrt(list[x]._x*list[x]._x + list[x]._y*list[x]._y + list[x]._z*list[x]._z));
 
 
-                   glTexCoord2d(1,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   //glVertexAttrib1f(temps,distance*x);
-                   DRAW(1, 1, -1);
+    //float D =0.1;
+    glPushMatrix();
+    glTranslated(2*list[x]._x,2*list[x]._y,2*list[x]._z);
+    //glRotated(45,1,0,0);
 
-                   glTexCoord2d(1,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   //glVertexAttrib1f(temps,distance*x);
-                   DRAW(-1,1,-1);
+    glBegin(GL_QUADS);
 
-                   glTexCoord2d(0, 1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,1,1);
-
-                   glTexCoord2d(0,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,-1,1);
-
-                   glTexCoord2d(1,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,-1,-1);
-
-                   glTexCoord2d(1,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,1,-1);
-
-                   glTexCoord2d(0,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,1,1);
-
-                   glTexCoord2d(0,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,-1,1);
-
-                   glTexCoord2d(1,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,-1,-1);
-
-                   glTexCoord2d(1,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,-1,-1);
-
-                   glTexCoord2d(0,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,-1,1);
-
-                   glTexCoord2d(0,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,1,1);
-
-                   glTexCoord2d(1,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,1,-1);
-
-                   glTexCoord2d(1,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,-1,-1);
-
-                   glTexCoord2d(0,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,-1,1);
-
-                   glTexCoord2d(0,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,1,-1);
-
-                   glTexCoord2d(1,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,-1,-1);
-
-                   glTexCoord2d(1,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,-1,-1);
-
-                   glTexCoord2d(0,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,1,-1);
-
-                   glTexCoord2d(0,0);
-                   glVertexAttrib1f(dist,D);
-                  // glVertexAttrib1f(temps,D);
-                   DRAW(1,-1,1);
-
-                   glTexCoord2d(1,0);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(1,1,1);
-
-                   glTexCoord2d(1,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,1,1);
-
-                   glTexCoord2d(0,1);
-                   glVertexAttrib1f(dist,D);
-                   //glVertexAttrib1f(temps,D);
-                   DRAW(-1,-1,1);
-
-                   glEnd();
+    glTexCoord2d(0,0);
+    glVertexAttrib1f(dist,D);
+    // glVertexAttrib1f(temps,D);
+    //glVertexAttrib1f(temps,distance*x);
+    //glVertexAttrib3f(dist,distance*i);
+    DRAW(1, 1, 1);
 
 
-                   glPopMatrix();
+    glTexCoord2d(1,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    //glVertexAttrib1f(temps,distance*x);
+    DRAW(1, 1, -1);
 
-       }
-        glPushMatrix();
-        glTranslated(0,0,40);
-        glBegin(GL_TRIANGLE_STRIP);
+    glTexCoord2d(1,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    //glVertexAttrib1f(temps,distance*x);
+    DRAW(-1,1,-1);
 
-        glTexCoord2d(0, 0);
-        //1
-        glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+    glTexCoord2d(0, 1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,1,1);
 
-        glTexCoord2d(Block::SIZE, 0);
-        //2
+    glTexCoord2d(0,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,-1,1);
 
-        glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-//3
-        glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-        glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+    glTexCoord2d(1,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,-1,-1);
 
-        //4
-        glNormal3d(0,0,1);
+    glTexCoord2d(1,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,1,-1);
 
-        glVertex3d(0, 0,Block::SIZE);
+    glTexCoord2d(0,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,1,1);
 
-        //5
+    glTexCoord2d(0,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,-1,1);
 
-        glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
-        glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+    glTexCoord2d(1,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,-1,-1);
 
-        //6
-        glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-        glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+    glTexCoord2d(1,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,-1,-1);
 
-        //7
-        glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-        glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
-        //8
-        glNormal3d(0,0,1);
-        glVertex3d(0, 0,Block::SIZE);
-        //9
-        glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
-        glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
+    glTexCoord2d(0,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,-1,1);
+
+    glTexCoord2d(0,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,1,1);
+
+    glTexCoord2d(1,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,1,-1);
+
+    glTexCoord2d(1,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,-1,-1);
+
+    glTexCoord2d(0,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,-1,1);
+
+    glTexCoord2d(0,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,1,-1);
+
+    glTexCoord2d(1,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,-1,-1);
+
+    glTexCoord2d(1,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,-1,-1);
+
+    glTexCoord2d(0,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,1,-1);
+
+    glTexCoord2d(0,0);
+    glVertexAttrib1f(dist,D);
+    // glVertexAttrib1f(temps,D);
+    DRAW(1,-1,1);
+
+    glTexCoord2d(1,0);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(1,1,1);
+
+    glTexCoord2d(1,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,1,1);
+
+    glTexCoord2d(0,1);
+    glVertexAttrib1f(dist,D);
+    //glVertexAttrib1f(temps,D);
+    DRAW(-1,-1,1);
+
+    glEnd();
 
 
-        glEnd();
-        glPopMatrix();
+    glPopMatrix();
+
+    }
+    glPushMatrix();
+    glTranslated(0,0,40);
+    glBegin(GL_TRIANGLE_STRIP);
+
+    glTexCoord2d(0, 0);
+    //1
+    glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+
+    glTexCoord2d(Block::SIZE, 0);
+    //2
+
+    glNormal3d(1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+    //3
+    glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+    glVertex3d(Block::SIZE /2, Block::SIZE/2,0);
+
+    //4
+    glNormal3d(0,0,1);
+
+    glVertex3d(0, 0,Block::SIZE);
+
+    //5
+
+    glNormal3d(-1/sqrt(3),1/sqrt(3),-1/sqrt(3));
+    glVertex3d(-Block::SIZE / 2, Block::SIZE / 2,0);
+
+    //6
+    glNormal3d(-1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+    glVertex3d(-Block::SIZE / 2, -Block::SIZE / 2,0);
+
+    //7
+    glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+    glVertex3d(Block::SIZE / 2, -Block::SIZE / 2,0);
+    //8
+    glNormal3d(0,0,1);
+    glVertex3d(0, 0,Block::SIZE);
+    //9
+    glNormal3d(1/sqrt(3),-1/sqrt(3),-1/sqrt(3));
+    glVertex3d(Block::SIZE/2, Block::SIZE/2,0);
+
+
+    glEnd();
+    glPopMatrix();
 
     shaders.disable();*/
 }
@@ -479,101 +479,66 @@ internalDraw()
 }
 
 #define RESTART (0xFF)
-#define W 1
-#define H 1
+#define W 20
+#define H 20
+#define P 20
 
 #define VRT (72)
 #define IDX (36)
-#define SIZE_VRT ((VRT + 0) * (H * W))
-#define SIZE_IDX ((IDX + 1) * (H * W))
-#define NB_ELT (IDX * H * W)
+#define SIZE_VRT (VRT * H * W * P)
+#define SIZE_IDX (IDX * H * W * P)
 
 std::pair<GLuint, GLuint>
 init()
 {
-//  GLfloat* vertices = new GLfloat[SIZE_VRT];
-//  GLfloat* textures = new GLfloat[SIZE_VRT];
-//  GLubyte* indices = new GLubyte[SIZE_IDX];
+  GLfloat* vertices = new GLfloat[SIZE_VRT];
+  GLfloat* textures = new GLfloat[SIZE_VRT];
+  GLuint* indices = new GLuint[SIZE_IDX];
 
-//  int z = 0;
-//  for (int x = 0; x < W; ++x)
-//  {
-//    for (int y = 0; y < H; ++y)
-//    {
-//      int k = 0;
-//      const int indexV = x * VRT + y * W * VRT;
-//      for (int i = indexV; i < indexV + VRT; i += 3)
-//      {
-//        vertices[i + 0] = Model::Cube::vertices[k++];// + 2*x * Block::SIZE + Block::SIZE / 2;
-//        vertices[i + 1] = Model::Cube::vertices[k++];// + 2*y * Block::SIZE + Block::SIZE / 2;
-//        vertices[i + 2] = Model::Cube::vertices[k++];// + 2*z * Block::SIZE + Block::SIZE / 2;
-//        std::cout << vertices[i + 0] << ", "
-//                  << vertices[i + 1] << ", "
-//                  << vertices[i + 2] << "    ";
-//        if (k % 12 == 0)
-//          std::cout << std::endl;
-//      }
-//      std::cout << (indexV + VRT) << std::endl;
-
-//      k = 0;
-//      const int indexT = x * VRT + y * W * VRT;
-//      for (int i = indexT; i < indexT + VRT; i += 3)
-//      {
-//        textures[i + 0] = Model::Cube::textures[k++];
-//        textures[i + 1] = Model::Cube::textures[k++];
-//        textures[i + 2] = Model::Cube::textures[k++];
-//        std::cout << textures[i + 0] << ", "
-//                  << textures[i + 1] << ", "
-//                  << textures[i + 2] << "    ";
-//        if (k % 12 == 0)
-//          std::cout << std::endl;
-//      }
-//      std::cout << std::endl;
-
-//      k = 0;
-//      const int indexI = x * IDX + y * W * IDX;
-//      for (int i = indexI; i < indexI + IDX; ++i, ++k)
-//      {
-//        indices[i] = Model::Cube::indices[k] + 24 * (x + y * W);
-//        std::cout << (int)indices[i] << ", ";
-//        if ((k + 1) % 6 == 0)
-//          std::cout << std::endl;
-//        else if ((k + 1) % 3 == 0)
-//          std::cout << "   ";
-//      }
-//      indices[indexI + IDX] = RESTART;
-//      std::cout << (int)indices[indexI + IDX] << std::endl;
-//    }
-//  }
-
-//  GLuint vboId = 0;
-//  glGenBuffers(1, &vboId);
-//  ASSERT_MSG(vboId, "Vertex buffer initialisation failed!");
-//  glBindBuffer(GL_ARRAY_BUFFER, vboId);
-//  glBufferData(GL_ARRAY_BUFFER, SIZE_VRT + SIZE_VRT, 0, GL_STATIC_DRAW);
-
-//  glBufferSubData(GL_ARRAY_BUFFER, 0, SIZE_VRT, vertices);
-//  glBufferSubData(GL_ARRAY_BUFFER, SIZE_VRT, SIZE_VRT, textures);
-
-//  GLuint iboId = 0;
-//  glGenBuffers(1, &iboId);
-//  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
-//  glBufferData(GL_ELEMENT_ARRAY_BUFFER, NB_ELT, indices, GL_STATIC_DRAW);
+  for (int x = 0; x < W; ++x)
+  {
+    for (int y = 0; y < H; ++y)
+    {
+      for (int z = 0; z < P; ++z)
+      {
+	int k = 0;
+	const int indexV = x * VRT + y * W * VRT + z * W * H * VRT;
+	for (int i = indexV; i < indexV + VRT; i += 3)
+	{
+	  vertices[i + 0] = Model::Cube::vertices[k++] + 2 * x * Block::SIZE + Block::SIZE / 2;
+	  vertices[i + 1] = Model::Cube::vertices[k++] + 2 * y * Block::SIZE + Block::SIZE / 2;
+	  vertices[i + 2] = Model::Cube::vertices[k++] + 2 * z * Block::SIZE + Block::SIZE / 2;
+	}
+	k = 0;
+	for (int i = indexV; i < indexV + VRT; i += 3)
+	{
+	  textures[i + 0] = Model::Cube::textures[k++];
+	  textures[i + 1] = Model::Cube::textures[k++];
+	  textures[i + 2] = Model::Cube::textures[k++];
+	}
+	k = 0;
+	const int indexI = x * IDX + y * W * IDX + z * W * H * IDX;
+	for (int i = indexI; i < indexI + IDX; ++i, ++k)
+	  indices[i] = Model::Cube::indices[k] + 24 * (x + y * W + z * W * H);
+      }
+    }
+  }
 
   GLuint vboId = 0;
   glGenBuffers(1, &vboId);
   ASSERT_MSG(vboId, "Vertex buffer initialisation failed!");
   glBindBuffer(GL_ARRAY_BUFFER, vboId);
-  glBufferData(GL_ARRAY_BUFFER, SIZE_VRT + SIZE_VRT, 0, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, (SIZE_VRT + SIZE_VRT) * sizeof(GLfloat), 0, GL_STATIC_DRAW);
 
-  glBufferSubData(GL_ARRAY_BUFFER, 0, SIZE_VRT, Model::Cube::vertices);
-  glBufferSubData(GL_ARRAY_BUFFER, SIZE_VRT, SIZE_VRT, Model::Cube::textures);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, SIZE_VRT * sizeof(GLfloat), vertices);
+  glBufferSubData(GL_ARRAY_BUFFER, SIZE_VRT * sizeof(GLfloat), SIZE_VRT * sizeof(GLfloat), textures);
 
   GLuint iboId = 0;
   glGenBuffers(1, &iboId);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36, Model::Cube::indices, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, SIZE_IDX * sizeof(GLuint), indices, GL_STATIC_DRAW);
 
+  std::cout << vboId << " " << iboId << std::endl;
   return std::make_pair(vboId, iboId);
 }
 
@@ -582,37 +547,42 @@ internalMegaDraw()
 {
   static const std::pair<GLuint, GLuint> ids = init();
 
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_INDEX_ARRAY);
+
   ShadersManager& shaders = ShadersManager::getInstance();
   shaders.enable("cube");
   glUniform1f(glGetUniformLocation(shaders.get("cube"), "cube_color"), 0.0);
   GLuint attrib = glGetAttribLocation(shaders.get("cube"), "face_color");
   glVertexAttrib1f(attrib, 0.0);
 
+  GLuint distance = glGetUniformLocation(shaders.get("cube"), "distance");
+  glUniform1f(distance, 0.5);
+
   TextureManager& textures = TextureManager::getInstance();
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
-//  glEnable(GL_PRIMITIVE_RESTART);
-//  glPrimitiveRestartIndex(RESTART);
+  //  glEnable(GL_PRIMITIVE_RESTART);
+  //  glPrimitiveRestartIndex(RESTART);
 
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glEnableClientState(GL_INDEX_ARRAY);
 
   glBindBuffer(GL_ARRAY_BUFFER, ids.first);
   glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(0));
-  glTexCoordPointer(3, GL_FLOAT, 0, (void*)(SIZE_VRT));
+  glTexCoordPointer(3, GL_FLOAT, 0, (void*)(SIZE_VRT * sizeof(GLfloat)));
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ids.second);
   glIndexPointer(GL_UNSIGNED_BYTE, 0, 0);
 
   glPushMatrix();
-  glDrawElements(GL_TRIANGLES, NB_ELT, GL_UNSIGNED_BYTE, (const GLvoid*)0);
+  glDrawElements(GL_TRIANGLES, SIZE_IDX, GL_UNSIGNED_INT, (const GLvoid*)0);
   glPopMatrix();
 
 
   glDisableClientState(GL_VERTEX_ARRAY);
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_INDEX_ARRAY);
+  glDisableClientState(GL_COLOR_ARRAY);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -629,7 +599,7 @@ Drawer::drawVBO()
 void
 Drawer::drawDebug(Map& map)
 {
-  drawALittleMap(map);
+  //drawALittleMap(map);
   drawSomeBlocks(map);
 }
 
@@ -649,14 +619,14 @@ Drawer::drawALittleMap(Map& map)
     for (int i = 1; i < nb - 1; ++i)
       for (int j = 1; j < nb - 1; ++j)
         tab(i, j) = (tab(i, j) +
-                    tab(i + 1, j) +
-                    tab(i, j + 1) +
-                    tab(i + 1, j + 1) +
-                    tab(i - 1, j) +
-                    tab(i - 1, j + 1) +
-                    tab(i, j - 1) +
-                    tab(i + 1, j - 1) +
-                    tab(i - 1, j - 1)) / 9;
+		     tab(i + 1, j) +
+		     tab(i, j + 1) +
+		     tab(i + 1, j + 1) +
+		     tab(i - 1, j) +
+		     tab(i - 1, j + 1) +
+		     tab(i, j - 1) +
+		     tab(i + 1, j - 1) +
+		     tab(i - 1, j - 1)) / 9;
 
   for (int i = 0; i < nb - 1; ++i)
   {
@@ -704,14 +674,14 @@ Drawer::drawSomeBlocks(Map& map)
   }
 
   //400 * 100 => 40fps
-//  for (int i = 0; i < 400; ++i)
-//  {
-//    for (int j = 0; j < 100; ++j)
-//    {
-//      where._x = i + 1;
-//      where._y = j + 1;
-//      where._z = 20;
-//      map.createBlock(where);
-//    }
-//  }
+  //  for (int i = 0; i < 400; ++i)
+  //  {
+  //    for (int j = 0; j < 100; ++j)
+  //    {
+  //      where._x = i + 1;
+  //      where._y = j + 1;
+  //      where._z = 20;
+  //      map.createBlock(where);
+  //    }
+  //  }
 }

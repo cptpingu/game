@@ -478,16 +478,19 @@ internalDraw()
   ShadersManager::getInstance().disable();
 }
 
-#define RESTART (0xFF)
-#define W 20
-#define H 20
-#define P 20
+#define W 10
+#define H 10
+#define P 10
 
 #define VRT (72)
 #define IDX (36)
 #define SIZE_VRT (VRT * H * W * P)
 #define SIZE_IDX (IDX * H * W * P)
 
+// METTRE en commentaire pour désactiver
+//#define STRIDE 2
+
+#ifndef STRIDE
 std::pair<GLuint, GLuint>
 init()
 {
@@ -542,6 +545,56 @@ init()
   return std::make_pair(vboId, iboId);
 }
 
+#else
+
+std::pair<GLuint, GLuint>
+init()
+{
+  GLfloat* interleaved = new GLfloat[SIZE_VRT + SIZE_VRT];
+  GLuint* indices = new GLuint[SIZE_IDX];
+
+  for (int x = 0; x < W; ++x)
+  {
+    for (int y = 0; y < H; ++y)
+    {
+      for (int z = 0; z < P; ++z)
+      {
+	int k = 0;
+	const int indexV = x * STRIDE * VRT + y * W * STRIDE * VRT + z * W * H * STRIDE * VRT;
+	for (int i = indexV; i < indexV + STRIDE * VRT; i += 6, k += 3)
+	{
+	  interleaved[i + 0] = Model::Cube::vertices[k + 0] + 2 * x * Block::SIZE + Block::SIZE / 2;
+	  interleaved[i + 1] = Model::Cube::vertices[k + 1] + 2 * y * Block::SIZE + Block::SIZE / 2;
+	  interleaved[i + 2] = Model::Cube::vertices[k + 2] + 2 * z * Block::SIZE + Block::SIZE / 2;
+	  interleaved[i + 3] = Model::Cube::textures[k + 0];
+	  interleaved[i + 4] = Model::Cube::textures[k + 1];
+	  interleaved[i + 5] = Model::Cube::textures[k + 2];
+	}
+	k = 0;
+	const int indexI = x * IDX + y * W * IDX + z * W * H * IDX;
+	for (int i = indexI; i < indexI + IDX; ++i, ++k)
+	  indices[i] = Model::Cube::indices[k] + 24 * (x + y * W + z * W * H);
+      }
+    }
+  }
+
+  GLuint vboId = 0;
+  glGenBuffers(1, &vboId);
+  ASSERT_MSG(vboId, "Vertex buffer initialisation failed!");
+  glBindBuffer(GL_ARRAY_BUFFER, vboId);
+  glBufferData(GL_ARRAY_BUFFER, (SIZE_VRT + SIZE_VRT) * sizeof(GLfloat), 0, GL_STATIC_DRAW);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, (SIZE_VRT + SIZE_VRT) * sizeof(GLfloat), interleaved);
+
+  GLuint iboId = 0;
+  glGenBuffers(1, &iboId);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboId);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, SIZE_IDX * sizeof(GLuint), indices, GL_STATIC_DRAW);
+
+  std::cout << vboId << " " << iboId << std::endl;
+  return std::make_pair(vboId, iboId);
+}
+#endif
+
 void
 internalMegaDraw()
 {
@@ -563,13 +616,16 @@ internalMegaDraw()
   TextureManager& textures = TextureManager::getInstance();
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, textures["brick1"]);
-  //  glEnable(GL_PRIMITIVE_RESTART);
-  //  glPrimitiveRestartIndex(RESTART);
-
 
   glBindBuffer(GL_ARRAY_BUFFER, ids.first);
+
+#ifdef STRIDE
+  glVertexPointer(3, GL_FLOAT, STRIDE * 3 * sizeof(GLfloat), reinterpret_cast<void*>(0));
+  glTexCoordPointer(3, GL_FLOAT, STRIDE * 3 * sizeof(GLfloat), reinterpret_cast<void*>(3 * sizeof(GLfloat)));
+#else
   glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<void*>(0));
   glTexCoordPointer(3, GL_FLOAT, 0, (void*)(SIZE_VRT * sizeof(GLfloat)));
+#endif
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ids.second);
   glIndexPointer(GL_UNSIGNED_BYTE, 0, 0);
